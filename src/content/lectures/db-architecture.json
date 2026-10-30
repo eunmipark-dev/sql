@@ -1,0 +1,1347 @@
+{
+  "slug": "db-architecture",
+  "title": "데이터베이스 아키텍처",
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "데이터베이스 아키텍처",
+      "subtitle": "메모리, 프로세스, 저장 구조",
+      "icon": "database",
+      "steps": [
+        {
+          "say": "데이터베이스 아키텍처를 시작할게요."
+        },
+        {
+          "say": "튜닝은 결국 블록을 적게 읽는 싸움이에요."
+        },
+        {
+          "say": "오늘은 그 무대가 되는 구조를 봐요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "compare",
+      "section": "DB와 인스턴스",
+      "title": "DB와 인스턴스",
+      "left": {
+        "title": "데이터베이스",
+        "icon": "disk",
+        "items": [
+          "디스크의 파일 집합",
+          "데이터 · 리두 · 컨트롤"
+        ]
+      },
+      "right": {
+        "title": "인스턴스",
+        "icon": "layers",
+        "items": [
+          "공유 메모리 SGA",
+          "백그라운드 프로세스"
+        ]
+      },
+      "steps": [
+        {
+          "say": "오라클에선 둘을 구분해요."
+        },
+        {
+          "say": "데이터베이스는 디스크에 있는 파일 묶음이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "데이터 파일, 리두 로그, 컨트롤 파일이요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "인스턴스는 메모리와 프로세스예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "서버를 띄우면 메모리에 생겨요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "flow",
+      "section": "DB와 인스턴스",
+      "title": "전체 구조 한눈에",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "사용자 프로세스",
+          "desc": "애플리케이션",
+          "icon": "user"
+        },
+        {
+          "title": "서버 프로세스",
+          "desc": "전용 메모리 PGA",
+          "icon": "workflow"
+        },
+        {
+          "title": "SGA",
+          "desc": "버퍼 캐시 · 공유 풀",
+          "icon": "layers"
+        },
+        {
+          "title": "데이터베이스",
+          "desc": "데이터 파일들",
+          "icon": "database"
+        }
+      ],
+      "steps": [
+        {
+          "say": "요청은 이렇게 흘러가요."
+        },
+        {
+          "say": "사용자 프로세스가 SQL을 보내요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "서버 프로세스가 받아서 처리해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "공유 메모리 SGA를 거쳐요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "필요하면 디스크 파일을 읽어요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "compare",
+      "section": "DB와 인스턴스",
+      "title": "일반 구성과 RAC",
+      "left": {
+        "title": "일반 구성",
+        "icon": "database",
+        "items": [
+          "인스턴스 1개",
+          "DB 1개"
+        ]
+      },
+      "right": {
+        "title": "RAC",
+        "icon": "network",
+        "items": [
+          "인스턴스 여러 개",
+          "DB 하나를 공유",
+          "캐시 퓨전"
+        ]
+      },
+      "steps": [
+        {
+          "say": "보통은 인스턴스 하나에 DB 하나예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "RAC는 여러 인스턴스가 DB 하나를 공유해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "버퍼 캐시끼리는 캐시 퓨전으로 블록을 주고받아요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "callout",
+      "section": "DB와 인스턴스",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "인스턴스는 **메모리와 프로세스**, DB는 **디스크 파일**. SQL Server는 인스턴스 하나에 DB 여러 개.",
+      "steps": [
+        {
+          "say": "인스턴스는 메모리와 프로세스예요."
+        },
+        {
+          "say": "데이터베이스는 디스크 파일이고요."
+        },
+        {
+          "say": "SQL Server는 한 인스턴스에 DB가 여러 개예요."
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "quiz",
+      "section": "DB와 인스턴스",
+      "question": "Oracle에서 **인스턴스**를 이루는 것은?",
+      "choices": [
+        "데이터 파일",
+        "컨트롤 파일",
+        "메모리와 프로세스",
+        "리두 로그 파일"
+      ],
+      "answer": 3,
+      "explanation": "인스턴스는 메모리와 프로세스예요. 데이터베이스는 디스크의 파일 묶음이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 오라클에서 인스턴스를 이루는 것은?"
+        }
+      ],
+      "id": "s05q"
+    },
+    {
+      "type": "compare",
+      "section": "메모리 구조",
+      "title": "SGA와 PGA",
+      "left": {
+        "title": "SGA",
+        "icon": "users",
+        "items": [
+          "모든 프로세스 공유",
+          "래치가 필요"
+        ]
+      },
+      "right": {
+        "title": "PGA",
+        "icon": "user",
+        "tone": "good",
+        "items": [
+          "서버 프로세스 전용",
+          "래치가 필요 없음"
+        ]
+      },
+      "steps": [
+        {
+          "say": "메모리는 두 종류예요."
+        },
+        {
+          "say": "SGA는 모두가 함께 쓰는 공간이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그래서 줄 세우는 래치가 필요해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "PGA는 서버 프로세스 혼자 쓰는 공간이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "래치가 없어서 더 빨라요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "cards",
+      "section": "메모리 구조",
+      "title": "SGA 안에 있는 것",
+      "cols": 3,
+      "items": [
+        {
+          "title": "버퍼 캐시",
+          "desc": "데이터 블록 캐싱",
+          "icon": "database"
+        },
+        {
+          "title": "공유 풀",
+          "desc": "라이브러리·딕셔너리",
+          "icon": "layers"
+        },
+        {
+          "title": "리두 버퍼",
+          "desc": "변경 내역 임시 보관",
+          "icon": "file"
+        }
+      ],
+      "steps": [
+        {
+          "say": "SGA에는 세 가지가 있어요."
+        },
+        {
+          "say": "DB 버퍼 캐시. 읽은 블록을 담아 둬요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "다시 읽을 때 디스크를 안 가도 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "공유 풀. 라이브러리 캐시와 딕셔너리 캐시가 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "라이브러리 캐시엔 SQL과 실행계획이 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "리두 로그 버퍼. 변경 내역을 잠시 담아요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "cards",
+      "section": "메모리 구조",
+      "title": "PGA 안에 있는 것",
+      "cols": 3,
+      "items": [
+        {
+          "title": "정렬 영역",
+          "desc": "Sort Area",
+          "icon": "filter"
+        },
+        {
+          "title": "해시 영역",
+          "desc": "Hash Area",
+          "icon": "puzzle"
+        },
+        {
+          "title": "세션 정보",
+          "desc": "바인드 값 · 커서",
+          "icon": "user"
+        }
+      ],
+      "steps": [
+        {
+          "say": "PGA에도 세 가지가 있어요."
+        },
+        {
+          "say": "정렬 작업 공간이에요. ORDER BY에 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "부족하면 Temp 테이블스페이스를 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "해시 조인의 해시 맵을 만드는 공간이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "세션 정보와 커서 상태도 여기 있어요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "quiz",
+      "section": "메모리 구조",
+      "question": "래치 없이 접근하는 **서버 프로세스 전용** 메모리는?",
+      "choices": [
+        "SGA",
+        "PGA",
+        "공유 풀",
+        "리두 로그 버퍼"
+      ],
+      "answer": 2,
+      "explanation": "PGA는 혼자 쓰는 메모리라 래치가 필요 없어요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 래치 없이 쓰는 전용 메모리는?"
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "compare",
+      "section": "프로세스 구조",
+      "title": "서버 프로세스 방식",
+      "left": {
+        "title": "전용 서버",
+        "icon": "user",
+        "items": [
+          "사용자마다 하나씩",
+          "생성 비용이 큼",
+          "그래서 커넥션 풀"
+        ]
+      },
+      "right": {
+        "title": "공유 서버",
+        "icon": "users",
+        "items": [
+          "디스패처가 큐에",
+          "소수가 번갈아 처리",
+          "세션은 Large Pool"
+        ]
+      },
+      "steps": [
+        {
+          "say": "서버 프로세스는 SQL을 실제로 처리해요."
+        },
+        {
+          "say": "전용 서버는 사용자마다 하나씩 붙어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "만드는 비용이 커서 커넥션 풀을 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "공유 서버는 디스패처가 요청을 큐에 넣어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "소수의 프로세스가 번갈아 처리해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "type": "cards",
+      "section": "프로세스 구조",
+      "title": "백그라운드 프로세스",
+      "cols": 3,
+      "items": [
+        {
+          "title": "DBWn",
+          "desc": "더티 블록 기록",
+          "icon": "disk"
+        },
+        {
+          "title": "LGWR",
+          "desc": "리두 로그 기록",
+          "icon": "file"
+        },
+        {
+          "title": "CKPT",
+          "desc": "체크포인트 신호",
+          "icon": "check"
+        },
+        {
+          "title": "SMON",
+          "desc": "인스턴스 복구",
+          "icon": "recycle"
+        },
+        {
+          "title": "PMON",
+          "desc": "죽은 프로세스 정리",
+          "icon": "shield"
+        },
+        {
+          "title": "ARCn",
+          "desc": "리두 아카이브",
+          "icon": "box"
+        }
+      ],
+      "steps": [
+        {
+          "say": "뒤에서 일하는 프로세스들이에요."
+        },
+        {
+          "say": "DBWn은 더티 블록을 데이터 파일에 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "LGWR는 리두 로그를 파일에 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "CKPT는 체크포인트 때 기록을 신호해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "SMON은 재기동할 때 인스턴스를 복구해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "PMON은 비정상 종료된 세션을 정리해요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "락을 풀고 트랜잭션을 롤백해요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "ARCn은 리두 로그를 아카이브로 복사해요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "분산 트랜잭션 복구는 RECO가 해요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "type": "callout",
+      "section": "프로세스 구조",
+      "tone": "warning",
+      "title": "자주 나오는 함정",
+      "text": "서버 프로세스는 데이터 파일에 **직접 쓰지 않아요**. 더티 블록은 **DBWn**, 리두는 **LGWR**.",
+      "steps": [
+        {
+          "say": "함정 하나 짚을게요."
+        },
+        {
+          "say": "서버 프로세스는 데이터 파일에 직접 안 써요."
+        },
+        {
+          "say": "더티 블록은 DBWn, 리두는 LGWR가 써요."
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "quiz",
+      "section": "프로세스 구조",
+      "question": "더티 블록을 **데이터 파일에 기록**하는 프로세스는?",
+      "choices": [
+        "LGWR",
+        "SMON",
+        "PMON",
+        "DBWn"
+      ],
+      "answer": 4,
+      "explanation": "더티 블록은 DBWn이 써요. LGWR는 리두 로그를 써요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 더티 블록을 파일에 쓰는 프로세스는?"
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "flow",
+      "section": "Redo와 Undo",
+      "title": "DML이 처리되는 순서",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "블록 적재",
+          "desc": "버퍼 캐시에 올림",
+          "icon": "database"
+        },
+        {
+          "title": "Undo 기록",
+          "desc": "변경 전 이미지",
+          "icon": "recycle"
+        },
+        {
+          "title": "Redo 기록",
+          "desc": "리두 로그 버퍼에",
+          "icon": "file"
+        },
+        {
+          "title": "블록 변경",
+          "desc": "더티 블록이 됨",
+          "icon": "box"
+        },
+        {
+          "title": "커밋",
+          "desc": "LGWR가 기록하면 완료",
+          "icon": "check"
+        },
+        {
+          "title": "나중에 기록",
+          "desc": "DBWn이 일괄 기록",
+          "icon": "disk"
+        }
+      ],
+      "steps": [
+        {
+          "say": "DML은 디스크에 바로 쓰지 않아요."
+        },
+        {
+          "say": "먼저 블록을 버퍼 캐시에 올려요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "변경 전 모습을 Undo에 남겨요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "변경 내역은 리두 로그 버퍼에 적어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "그다음 버퍼의 블록을 바꿔요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "이제 디스크와 다른 더티 블록이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "LGWR가 리두를 파일에 쓰면 커밋 완료예요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "더티 블록은 나중에 DBWn이 몰아서 써요.",
+          "focus": [
+            5
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "cards",
+      "section": "Redo와 Undo",
+      "title": "Redo의 3가지 목적",
+      "cols": 3,
+      "items": [
+        {
+          "title": "DB 복구",
+          "desc": "디스크 손상 복구",
+          "icon": "disk"
+        },
+        {
+          "title": "캐시 복구",
+          "desc": "인스턴스 장애 복구",
+          "icon": "recycle"
+        },
+        {
+          "title": "빠른 커밋",
+          "desc": "로그만 순차 기록",
+          "icon": "train"
+        }
+      ],
+      "steps": [
+        {
+          "say": "Redo는 왜 남길까요? 세 가지예요."
+        },
+        {
+          "say": "Database Recovery. 디스크가 깨졌을 때 복구해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Cache Recovery. 인스턴스가 죽었을 때예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "메모리에서 날아간 변경을 다시 적용해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Fast Commit. 블록 대신 로그만 쓰고 커밋해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "순차 기록이라 아주 빨라요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "cards",
+      "section": "Redo와 Undo",
+      "title": "LGWR가 쓰는 시점",
+      "cols": 2,
+      "items": [
+        {
+          "title": "3초마다",
+          "desc": "주기적으로",
+          "icon": "workflow"
+        },
+        {
+          "title": "DBWn 신호",
+          "desc": "더티 블록 쓰기 전",
+          "icon": "disk"
+        },
+        {
+          "title": "버퍼 3분의1",
+          "desc": "또는 1MB 초과",
+          "icon": "layers"
+        },
+        {
+          "title": "커밋·롤백",
+          "desc": "사용자 요청 시",
+          "icon": "check"
+        }
+      ],
+      "steps": [
+        {
+          "say": "LGWR는 네 경우에 리두를 써요."
+        },
+        {
+          "say": "첫째, 3초마다요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, DBWn이 쓰기 전에 신호를 줄 때요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 로그 버퍼가 3분의 1 찼을 때요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "또는 안 쓴 리두가 1메가를 넘을 때요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 커밋이나 롤백할 때예요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "callout",
+      "section": "Redo와 Undo",
+      "tone": "info",
+      "title": "WAL 원칙",
+      "text": "DBWn이 더티 블록을 쓰기 **전에** 그 블록의 Redo가 먼저 파일에 기록돼야 해요.",
+      "steps": [
+        {
+          "say": "Write Ahead Logging 원칙이에요."
+        },
+        {
+          "say": "더티 블록보다 리두가 먼저 기록돼요."
+        },
+        {
+          "say": "그래서 언제든 리두로 복구할 수 있어요."
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "cards",
+      "section": "Redo와 Undo",
+      "title": "Undo의 3가지 목적",
+      "cols": 3,
+      "items": [
+        {
+          "title": "롤백",
+          "desc": "변경 전으로 되돌림",
+          "icon": "recycle"
+        },
+        {
+          "title": "트랜잭션 복구",
+          "desc": "미커밋 작업 취소",
+          "icon": "shield"
+        },
+        {
+          "title": "읽기 일관성",
+          "desc": "CR 블록 생성",
+          "icon": "eye"
+        }
+      ],
+      "steps": [
+        {
+          "say": "Undo의 목적도 세 가지예요."
+        },
+        {
+          "say": "Transaction Rollback. 변경을 되돌려요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Transaction Recovery. 복구 때 쓰여요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "커밋 안 된 트랜잭션을 롤백해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Read Consistency. 읽기 일관성이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "쿼리 시작 시점의 블록을 만들어 읽어요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "compare",
+      "section": "Redo와 Undo",
+      "title": "Redo와 Undo 구분",
+      "left": {
+        "title": "Redo",
+        "icon": "file",
+        "items": [
+          "앞으로 재실행",
+          "Roll Forward",
+          "Fast Commit"
+        ]
+      },
+      "right": {
+        "title": "Undo",
+        "icon": "recycle",
+        "items": [
+          "되돌리기",
+          "Rollback",
+          "읽기 일관성"
+        ]
+      },
+      "steps": [
+        {
+          "say": "Redo는 앞으로 다시 실행하는 거예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Undo는 되돌리는 거예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "읽기 일관성은 Undo 몫이에요. 꼭 기억하세요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "quiz",
+      "section": "Redo와 Undo",
+      "question": "**Undo**의 목적이 **아닌** 것은?",
+      "choices": [
+        "Fast Commit",
+        "트랜잭션 롤백",
+        "트랜잭션 복구",
+        "읽기 일관성"
+      ],
+      "answer": 1,
+      "explanation": "Fast Commit은 Redo의 목적이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. Undo의 목적이 아닌 것은?"
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "flow",
+      "section": "Redo와 Undo",
+      "title": "체크포인트",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "더티 블록",
+          "desc": "메모리에만 변경",
+          "icon": "box"
+        },
+        {
+          "title": "파일에 기록",
+          "desc": "메모리와 디스크 동기화",
+          "icon": "disk"
+        },
+        {
+          "title": "복구 시간 단축",
+          "desc": "적용할 리두 감소",
+          "icon": "check"
+        }
+      ],
+      "steps": [
+        {
+          "say": "체크포인트도 알아 둬요."
+        },
+        {
+          "say": "메모리에만 바뀐 더티 블록이 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "이걸 데이터 파일에 써서 맞추는 시점이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "자주 하면 복구할 리두가 줄어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "대신 디스크 쓰기는 늘어나요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "layers",
+      "section": "저장 구조",
+      "title": "논리 저장 구조",
+      "axis": {
+        "top": "큰 단위",
+        "bottom": "I/O 최소 단위"
+      },
+      "layers": [
+        {
+          "title": "테이블스페이스",
+          "desc": "세그먼트를 담는 그릇",
+          "icon": "building"
+        },
+        {
+          "title": "세그먼트",
+          "desc": "테이블 · 인덱스 · 파티션",
+          "icon": "table"
+        },
+        {
+          "title": "익스텐트",
+          "desc": "연속된 블록 묶음",
+          "icon": "layers"
+        },
+        {
+          "title": "블록",
+          "desc": "기본 8KB · 읽기 단위",
+          "icon": "box"
+        }
+      ],
+      "steps": [
+        {
+          "say": "저장 구조는 네 단계예요."
+        },
+        {
+          "say": "테이블스페이스. 세그먼트를 담는 그릇이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "여러 데이터 파일로 이루어져요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "세그먼트. 테이블이나 인덱스 같은 객체예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "익스텐트. 연속된 블록 묶음이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "공간은 익스텐트 단위로 늘어나요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "블록. 읽고 쓰는 최소 단위예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "SQL Server에선 페이지라고 불러요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "cards",
+      "section": "저장 구조",
+      "title": "데이터 파일과의 관계",
+      "cols": 3,
+      "items": [
+        {
+          "title": "세그먼트",
+          "desc": "여러 파일에 걸침",
+          "icon": "table",
+          "tone": "good"
+        },
+        {
+          "title": "익스텐트",
+          "desc": "한 파일 안에만",
+          "icon": "layers",
+          "tone": "warn"
+        },
+        {
+          "title": "파티션",
+          "desc": "각자 세그먼트",
+          "icon": "puzzle"
+        }
+      ],
+      "steps": [
+        {
+          "say": "파일과의 관계가 시험에 자주 나와요."
+        },
+        {
+          "say": "세그먼트는 여러 데이터 파일에 걸칠 수 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "익스텐트는 반드시 한 파일 안에 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "세그먼트는 테이블스페이스 하나에 속해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "단, 파티션은 각자 세그먼트예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "그래서 테이블스페이스를 달리할 수 있어요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s23"
+    },
+    {
+      "type": "quiz",
+      "section": "저장 구조",
+      "question": "Oracle 저장 구조 설명으로 **옳은** 것은?",
+      "choices": [
+        "익스텐트는 여러 파일에 걸침",
+        "세그먼트는 한 파일에만",
+        "블록이 I/O 최소 단위",
+        "레코드 단위로 읽음"
+      ],
+      "answer": 3,
+      "explanation": "블록이 I/O 최소 단위예요. 익스텐트는 한 파일 안에 있어요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 저장 구조 설명으로 옳은 것은?"
+        }
+      ],
+      "id": "s24"
+    },
+    {
+      "type": "flow",
+      "section": "저장 구조",
+      "title": "ROWID의 구성",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "오브젝트 번호"
+        },
+        {
+          "title": "파일 번호"
+        },
+        {
+          "title": "블록 번호"
+        },
+        {
+          "title": "로우 번호"
+        }
+      ],
+      "steps": [
+        {
+          "say": "레코드 위치는 ROWID로 찾아요."
+        },
+        {
+          "say": "오브젝트 번호,",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "데이터 파일 번호,",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "블록 번호,",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "그리고 블록 안의 로우 번호예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "인덱스는 이 ROWID로 테이블을 찾아가요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "id": "s25"
+    },
+    {
+      "type": "callout",
+      "section": "저장 구조",
+      "tone": "tip",
+      "title": "블록 단위 I/O",
+      "text": "레코드 하나만 읽어도 **블록 전체**를 읽어요. 성능은 **읽은 블록 수**로 결정돼요.",
+      "steps": [
+        {
+          "say": "레코드 하나만 필요해도 블록 전체를 읽어요."
+        },
+        {
+          "say": "그래서 성능은 읽은 블록 수로 정해져요."
+        }
+      ],
+      "id": "s26"
+    },
+    {
+      "type": "cards",
+      "section": "저장 구조",
+      "title": "테이블스페이스 종류",
+      "cols": 2,
+      "items": [
+        {
+          "title": "SYSTEM",
+          "desc": "딕셔너리 저장",
+          "icon": "book-open"
+        },
+        {
+          "title": "일반",
+          "desc": "테이블과 인덱스",
+          "icon": "table"
+        },
+        {
+          "title": "Undo",
+          "desc": "Undo 세그먼트",
+          "icon": "recycle"
+        },
+        {
+          "title": "Temp",
+          "desc": "정렬 · 해시 임시",
+          "icon": "filter"
+        }
+      ],
+      "steps": [
+        {
+          "say": "테이블스페이스도 용도별로 나뉘어요."
+        },
+        {
+          "say": "SYSTEM과 SYSAUX엔 딕셔너리가 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "일반 테이블스페이스엔 사용자 데이터가 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Undo 테이블스페이스엔 Undo가 있어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "Temp는 PGA가 부족할 때 쓰는 임시 공간이에요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s27"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "인스턴스 = SGA + 백그라운드 프로세스",
+        "SGA는 공유·래치, PGA는 전용",
+        "더티 블록은 DBWn, 리두는 LGWR",
+        "Redo는 재실행, Undo는 롤백·읽기 일관성",
+        "블록 → 익스텐트 → 세그먼트 → 테이블스페이스",
+        "익스텐트는 한 파일, 세그먼트는 여러 파일"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "인스턴스는 메모리와 프로세스예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SGA는 공유, PGA는 전용이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "더티 블록은 DBWn, 리두는 LGWR.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "Redo는 재실행, Undo는 되돌리기와 읽기 일관성.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "블록이 읽기의 최소 단위예요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "익스텐트는 한 파일 안에만 있어요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s28"
+    }
+  ]
+}

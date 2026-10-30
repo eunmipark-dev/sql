@@ -1,0 +1,22 @@
+[
+  { "text": "일반적인 Lock 기반 DBMS에서 공유 Lock끼리는 서로 호환되어 여러 트랜잭션이 같은 데이터를 함께 읽을 수 있다.", "answer": true, "explain": "공유 Lock끼리는 호환되지만 공유 Lock이 걸린 데이터에 배타 Lock은 대기한다." },
+  { "text": "배타 Lock이 걸린 데이터에 다른 트랜잭션이 공유 Lock을 요청하면 즉시 허용된다.", "answer": false, "explain": "배타 Lock은 공유·배타 어떤 Lock과도 호환되지 않으므로 대기한다." },
+  { "text": "Oracle은 일반 SELECT문에 공유 Lock을 걸지 않으므로 읽기와 쓰기가 서로 블로킹하지 않는다.", "answer": true, "explain": "Oracle은 MVCC로 커밋된 과거 버전을 읽어 Lock 없이 읽기 일관성을 확보한다." },
+  { "text": "블로킹은 Lock 경합에 의한 대기로 선행 트랜잭션이 커밋 또는 롤백하면 해소된다.", "answer": true, "explain": "블로킹은 언젠가 풀리지만 교착상태는 서로 기다려 스스로 풀리지 않는다." },
+  { "text": "Oracle은 교착상태를 감지하면 ORA-00060을 발생시키고 해당 트랜잭션 전체를 롤백한다.", "answer": false, "explain": "Oracle은 ORA-00060을 발생시킨 문장만 롤백하며, 트랜잭션 처리는 애플리케이션이 결정해야 한다." },
+  { "text": "SQL Server는 교착상태 발생 시 희생자로 선택한 트랜잭션 전체를 롤백한다.", "answer": true, "explain": "SQL Server는 Victim 트랜잭션 전체를 롤백하고 오류 1205를 반환한다." },
+  { "text": "여러 트랜잭션이 여러 행을 갱신할 때 모두 같은 순서로 접근하면 교착상태를 예방할 수 있다.", "answer": true, "explain": "Lock 획득 순서를 통일하면 서로 상대의 Lock을 기다리는 순환 대기가 생기지 않는다." },
+  { "text": "Oracle의 로우 Lock은 Lock 관리자 메모리에 저장되므로 Lock 수가 많아지면 테이블 Lock으로 에스컬레이션된다.", "answer": false, "explain": "Oracle 로우 Lock은 블록의 ITL과 로우 헤더의 Lock Byte에 기록되어 개수 제한과 에스컬레이션이 없다." },
+  { "text": "Oracle에서 DML 수행 시 거는 TM Lock은 해당 테이블 전체 행의 변경을 막는 Lock이다.", "answer": false, "explain": "TM Lock은 테이블에서 어떤 작업을 하는지 알리는 푯말 역할로, 다른 트랜잭션도 다른 행을 동시에 갱신할 수 있다." },
+  { "text": "Oracle에서 INSERT, UPDATE, DELETE는 테이블에 RX(Row Exclusive) 모드 TM Lock을 건다.", "answer": true, "explain": "RX 모드끼리는 호환되므로 여러 세션이 같은 테이블의 서로 다른 행에 DML을 할 수 있다." },
+  { "text": "Oracle에서 DML 중인 테이블에 DDL을 수행하려면 X 모드 TM Lock이 필요해 충돌이 발생한다.", "answer": true, "explain": "X 모드는 RX를 포함한 어떤 테이블 Lock 모드와도 호환되지 않는다." },
+  { "text": "Oracle에서 Unique 인덱스가 없는 테이블에 두 트랜잭션이 같은 값을 INSERT하면 후행 트랜잭션이 대기한다.", "answer": false, "explain": "INSERT끼리는 Unique 인덱스가 있을 때만 같은 값 입력 시 대기한다." },
+  { "text": "Unique 인덱스가 있는 컬럼에 같은 값을 INSERT하며 대기하던 후행 트랜잭션은 선행이 롤백하면 INSERT에 성공한다.", "answer": true, "explain": "선행이 커밋하면 후행은 Unique 제약 위반, 롤백하면 후행 INSERT가 성공한다." },
+  { "text": "SELECT ... FOR UPDATE NOWAIT는 Lock을 얻지 못하면 기다리지 않고 즉시 ORA-00054 예외를 발생시킨다.", "answer": true, "explain": "NOWAIT는 즉시 예외, WAIT n은 n초 대기 후 예외, 옵션이 없으면 무한 대기한다." },
+  { "text": "SELECT ... FOR UPDATE SKIP LOCKED는 Lock이 걸린 행을 만나면 Lock이 풀릴 때까지 대기한 뒤 읽는다.", "answer": false, "explain": "SKIP LOCKED는 Lock이 걸린 행을 건너뛰고 나머지만 읽어 Lock을 건다." },
+  { "text": "SELECT ... FOR UPDATE로 획득한 로우 Lock은 SELECT문의 Fetch가 끝나는 즉시 해제된다.", "answer": false, "explain": "FOR UPDATE로 건 Lock도 커밋 또는 롤백 시점에 풀린다." },
+  { "text": "조인 쿼리에서 FOR UPDATE OF 절에 특정 테이블의 컬럼을 지정하면 그 테이블의 행에만 Lock을 걸 수 있다.", "answer": true, "explain": "FOR UPDATE OF o.상태처럼 지정하면 해당 컬럼이 속한 테이블 행에만 Lock이 걸린다." },
+  { "text": "SQL Server에서 갱신(U) Lock은 두 세션이 공유 Lock을 배타 Lock으로 동시에 변환하려다 생기는 교착상태를 방지한다.", "answer": true, "explain": "읽은 뒤 갱신할 대상에 U Lock을 걸어 변환 교착상태를 막는다." },
+  { "text": "SQL Server의 기본 READ COMMITTED에서 공유 Lock은 트랜잭션이 끝날 때까지 유지된다.", "answer": false, "explain": "기본 READ COMMITTED에서는 공유 Lock을 읽는 즉시 해제한다." },
+  { "text": "SQL Server에서 의도 Lock(IS, IX)은 하위 리소스에 Lock이 있음을 상위 리소스인 테이블이나 페이지에 표시한다.", "answer": true, "explain": "의도 Lock으로 테이블 Lock 요청 시 하위 Lock 존재 여부를 빠르게 판단한다." }
+]

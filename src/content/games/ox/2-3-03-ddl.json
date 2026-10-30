@@ -1,0 +1,21 @@
+[
+  { "text": "CHAR(10) 컬럼에 'ABC'를 입력하면 남는 길이가 공백으로 채워져 길이 10으로 저장된다.", "answer": true, "explain": "CHAR는 고정 길이 타입이라 정의 길이보다 짧은 값은 공백으로 채워 저장한다." },
+  { "text": "VARCHAR2 타입끼리 비교할 때는 짧은 쪽에 공백을 채워 길이를 맞춘 뒤 비교한다.", "answer": false, "explain": "공백을 채워 비교하는 것은 CHAR다. VARCHAR2는 공백도 하나의 문자로 보고 그대로 비교한다." },
+  { "text": "NUMBER(7,2) 컬럼에는 정수부 5자리, 소수부 2자리까지 저장할 수 있다.", "answer": true, "explain": "p=7은 전체 자릿수, s=2는 소수점 이하 자릿수이므로 99999.99까지 저장 가능하다." },
+  { "text": "Oracle의 DATE 타입은 날짜만 저장하고 시각 정보는 저장하지 않는다.", "answer": false, "explain": "Oracle DATE는 날짜와 시각(초 단위)까지 저장한다." },
+  { "text": "emp_10, emp$, emp#은 모두 일반 식별자로 쓸 수 있는 테이블 이름이다.", "answer": true, "explain": "문자로 시작하고 문자, 숫자, _, $, #만 사용했으므로 유효한 이름이다." },
+  { "text": "10_emp는 밑줄을 포함하므로 Oracle의 일반 식별자로 사용할 수 있는 테이블 이름이다.", "answer": false, "explain": "일반 식별자는 문자로 시작해야 하므로 숫자로 시작하는 10_emp는 사용할 수 없다." },
+  { "text": "PRIMARY KEY 제약조건은 UNIQUE와 NOT NULL의 성질을 함께 가지며 테이블당 하나만 정의할 수 있다.", "answer": true, "explain": "PK는 UNIQUE + NOT NULL이며 테이블당 하나이고 자동으로 인덱스가 생성된다." },
+  { "text": "UNIQUE 제약조건이 걸린 컬럼에는 NULL을 입력할 수 없다.", "answer": false, "explain": "UNIQUE는 중복만 막고 NULL은 허용한다." },
+  { "text": "NOT NULL 제약조건은 컬럼 레벨로만 정의할 수 있다.", "answer": true, "explain": "NOT NULL은 테이블 레벨 제약조건 문법으로 정의하지 않고 컬럼 정의에 붙인다." },
+  { "text": "SQL Server에서는 UNIQUE 컬럼에 NULL을 여러 건 입력할 수 있다.", "answer": false, "explain": "UNIQUE 컬럼의 NULL은 Oracle에서는 여러 건 허용되지만 SQL Server에서는 한 건만 허용된다." },
+  { "text": "FK에 ON DELETE SET NULL을 지정하면 부모 행 삭제 시 자식 행의 FK 컬럼이 NULL로 바뀐다.", "answer": true, "explain": "SET NULL은 자식 행을 남기고 FK 컬럼만 NULL로 변경한다." },
+  { "text": "Oracle에서 FK 생성 시 참조 동작을 생략하면 부모 행 삭제 시 자식 행이 함께 삭제된다.", "answer": false, "explain": "생략하면 NO ACTION이라 자식 행이 있으면 부모 행 삭제가 오류로 실패한다." },
+  { "text": "Oracle의 FK 제약조건은 ON UPDATE CASCADE 절을 지원하지 않는다.", "answer": true, "explain": "Oracle은 ON DELETE CASCADE와 ON DELETE SET NULL만 지원하며 ON UPDATE 절은 없다." },
+  { "text": "CTAS로 테이블을 복사하면 원본 테이블의 PRIMARY KEY 제약조건도 함께 복사된다.", "answer": false, "explain": "CTAS는 제약조건 중 NOT NULL만 복사하며 PK, UNIQUE, CHECK, FK, DEFAULT는 복사되지 않는다." },
+  { "text": "CTAS에서 WHERE 1 = 2처럼 항상 거짓인 조건을 주면 데이터 없이 테이블 구조만 복사된다.", "answer": true, "explain": "조건을 만족하는 행이 없으므로 컬럼명과 데이터 타입만 가진 빈 테이블이 만들어진다." },
+  { "text": "Oracle에서 ALTER TABLE ... ADD로 추가한 컬럼은 테이블의 마지막 위치에 추가된다.", "answer": true, "explain": "컬럼 위치를 지정할 수 없으며 새 컬럼은 항상 마지막에 추가된다." },
+  { "text": "컬럼의 DEFAULT 값을 변경하면 기존 행 중 그 컬럼이 NULL인 행에도 새 기본값이 채워진다.", "answer": false, "explain": "DEFAULT 변경은 이후 입력되는 행부터 적용되며 기존 행은 바뀌지 않는다." },
+  { "text": "SQL Server에서 컬럼의 데이터 타입을 변경할 때는 ALTER TABLE ... MODIFY 구문을 사용한다.", "answer": false, "explain": "MODIFY는 Oracle 문법이다. SQL Server는 ALTER TABLE ... ALTER COLUMN을 사용한다." },
+  { "text": "자식 테이블이 참조 중인 Oracle의 부모 테이블은 CASCADE CONSTRAINTS 옵션을 써야 DROP할 수 있다.", "answer": true, "explain": "DROP TABLE ... CASCADE CONSTRAINTS는 참조하는 FK 제약조건까지 함께 삭제한다." }
+]

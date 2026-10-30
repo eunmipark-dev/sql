@@ -1,0 +1,1374 @@
+{
+  "slug": "null-attribute",
+  "title": "Null 속성의 이해",
+  "tables": {
+    "사원 3명": {
+      "columns": [
+        "이름",
+        "커미션"
+      ],
+      "rows": [
+        [
+          "A",
+          "100"
+        ],
+        [
+          "B",
+          "NULL"
+        ],
+        [
+          "C",
+          "200"
+        ]
+      ]
+    },
+    "사원 4명": {
+      "columns": [
+        "이름",
+        "부서코드"
+      ],
+      "rows": [
+        [
+          "김",
+          "10"
+        ],
+        [
+          "이",
+          "20"
+        ],
+        [
+          "박",
+          "30"
+        ],
+        [
+          "최",
+          "NULL"
+        ]
+      ]
+    },
+    "T": {
+      "columns": [
+        "A",
+        "B"
+      ],
+      "rows": [
+        [
+          "10",
+          "NULL"
+        ],
+        [
+          "20",
+          "5"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "Null 속성의 이해",
+      "subtitle": "0도 공백도 아닌 NULL",
+      "icon": "help",
+      "steps": [
+        {
+          "say": "NULL 속성을 시작할게요."
+        },
+        {
+          "say": "NULL은 규칙이 특별해서 시험에 자주 나와요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "cards",
+      "section": "NULL의 의미",
+      "title": "NULL의 세 가지 뜻",
+      "cols": 3,
+      "items": [
+        {
+          "title": "미확정",
+          "desc": "아직 안 정한 퇴사일",
+          "icon": "help"
+        },
+        {
+          "title": "해당 없음",
+          "desc": "영업직 아닌 커미션",
+          "icon": "box"
+        },
+        {
+          "title": "알 수 없음",
+          "desc": "밝히지 않은 생일",
+          "icon": "eye"
+        }
+      ],
+      "steps": [
+        {
+          "say": "NULL은 값을 알 수 없다는 표시예요."
+        },
+        {
+          "say": "첫째, 아직 정해지지 않은 값이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 그 행에선 의미가 없는 값이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 값은 있지만 모르는 경우예요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "compare",
+      "section": "NULL의 의미",
+      "title": "NULL과 헷갈리는 값",
+      "left": {
+        "title": "NULL 아님",
+        "icon": "check",
+        "items": [
+          "숫자 0",
+          "공백 문자"
+        ]
+      },
+      "right": {
+        "title": "빈 문자열",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "오라클: NULL",
+          "SQL 서버: 아님"
+        ]
+      },
+      "steps": [
+        {
+          "say": "숫자 0과 공백 문자는 NULL이 아니에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "빈 문자열은 DBMS마다 달라요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "오라클은 빈 문자열을 NULL로 봐요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "SQL 서버는 NULL과 구분해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "callout",
+      "section": "NULL의 의미",
+      "tone": "info",
+      "title": "엔터티 무결성",
+      "text": "PK 속성은 **NULL을 가질 수 없어요**.",
+      "steps": [
+        {
+          "say": "PK는 NULL을 가질 수 없어요. 엔터티 무결성이에요."
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "cards",
+      "section": "NULL 규칙",
+      "title": "NULL 규칙 한눈에",
+      "cols": 2,
+      "items": [
+        {
+          "title": "연산",
+          "desc": "결과도 NULL",
+          "icon": "shapes"
+        },
+        {
+          "title": "비교",
+          "desc": "UNKNOWN",
+          "icon": "help",
+          "tone": "warn"
+        },
+        {
+          "title": "집계",
+          "desc": "NULL은 제외",
+          "icon": "filter"
+        },
+        {
+          "title": "정렬",
+          "desc": "DBMS마다 다름",
+          "icon": "layers"
+        }
+      ],
+      "steps": [
+        {
+          "say": "NULL 규칙은 네 가지로 정리돼요."
+        },
+        {
+          "say": "연산하면 결과도 NULL이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "비교하면 언노운이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "집계 함수는 NULL을 빼고 계산해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "정렬 위치는 DBMS마다 달라요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "id": "s06",
+      "section": "NULL 규칙",
+      "type": "data",
+      "title": "연산하면 NULL",
+      "tables": [
+        "사원 3명"
+      ],
+      "steps": [
+        {
+          "say": "NULL은 모르는 값이에요.",
+          "t": {
+            "사원 3명": {
+              "cells": [
+                [
+                  1,
+                  "커미션"
+                ]
+              ],
+              "notes": [
+                [
+                  1,
+                  "커미션",
+                  "모르는 값"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "여기에 10을 더하면?",
+          "t": {
+            "사원 3명": {
+              "cols": [
+                "커미션"
+              ]
+            }
+          }
+        },
+        {
+          "say": "결과도 NULL이에요.",
+          "t": {
+            "사원 3명": {
+              "add": [
+                "커미션+10",
+                [
+                  "110",
+                  "NULL",
+                  "210"
+                ]
+              ],
+              "cells": [
+                [
+                  1,
+                  "커미션+10"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "NULL 곱하기 0도 NULL이에요.",
+          "t": {
+            "사원 3명": {
+              "add": [
+                "커미션*0",
+                [
+                  "0",
+                  "NULL",
+                  "0"
+                ]
+              ],
+              "cells": [
+                [
+                  1,
+                  "커미션*0"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "NULL 나누기 0도 오류 없이 NULL이에요.",
+          "t": {
+            "사원 3명": {
+              "rows": [
+                1
+              ],
+              "notes": [
+                [
+                  1,
+                  "커미션*0",
+                  "÷0도 NULL"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "NULL 규칙",
+      "tone": "info",
+      "title": "문자열 결합은 예외",
+      "text": "오라클 `'A' || NULL` 은 **'A'**. SQL 서버 `+` 결합은 기본 설정에서 NULL.",
+      "steps": [
+        {
+          "say": "문자열 결합은 예외예요."
+        },
+        {
+          "say": "오라클은 NULL을 빈 문자열처럼 붙여요."
+        },
+        {
+          "say": "SQL 서버는 기본 설정에서 NULL을 돌려줘요."
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "quiz",
+      "section": "NULL 규칙",
+      "question": "`NULL * 0`의 결과는?",
+      "choices": [
+        "NULL",
+        "0",
+        "오류",
+        "UNKNOWN"
+      ],
+      "answer": 1,
+      "explanation": "NULL과 연산하면 결과는 항상 NULL이에요. 언노운은 비교의 결과예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 널 곱하기 0의 결과는 무엇일까요?"
+        }
+      ],
+      "id": "s07q"
+    },
+    {
+      "type": "flow",
+      "section": "비교와 IS NULL",
+      "title": "WHERE는 TRUE만",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "TRUE",
+          "desc": "결과에 포함",
+          "icon": "check",
+          "tone": "good"
+        },
+        {
+          "title": "FALSE",
+          "desc": "제외",
+          "icon": "filter",
+          "tone": "bad"
+        },
+        {
+          "title": "UNKNOWN",
+          "desc": "역시 제외",
+          "icon": "help",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "NULL과 비교하면 참도 거짓도 아니에요."
+        },
+        {
+          "say": "WHERE 절은 참인 행만 돌려줘요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "거짓은 빠지고,",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "언노운도 빠져요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "compare",
+      "section": "비교와 IS NULL",
+      "title": "IS NULL로 찾기",
+      "left": {
+        "title": "= NULL",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "항상 UNKNOWN",
+          "결과 0건"
+        ]
+      },
+      "right": {
+        "title": "IS NULL",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "NULL 행을 찾음",
+          "IS NOT NULL도"
+        ]
+      },
+      "steps": [
+        {
+          "say": "이퀄 NULL로 찾으면 결과가 0건이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "NULL끼리 비교해도 언노운이기 때문이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "NULL은 반드시 IS NULL로 찾아요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "id": "s10",
+      "section": "비교와 IS NULL",
+      "type": "data",
+      "title": "NOT IN 함정",
+      "tables": [
+        "사원 4명"
+      ],
+      "code": "SELECT *\n  FROM 사원\n WHERE 부서코드 NOT IN (10, 20, NULL);\n-- 결과 0건",
+      "steps": [
+        {
+          "say": "NOT IN 목록에 NULL이 있으면 어떻게 될까요?",
+          "focus": [
+            3
+          ],
+          "t": {
+            "사원 4명": {
+              "cols": [
+                "부서코드"
+              ]
+            }
+          }
+        },
+        {
+          "say": "10과 20은 목록에 있으니 거짓이에요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "사원 4명": {
+              "add": [
+                "판정",
+                [
+                  "FALSE",
+                  "FALSE",
+                  "UNKNOWN",
+                  "UNKNOWN"
+                ]
+              ],
+              "rows": [
+                0,
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "30도 NULL과 다르다는 조건이 언노운이에요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "사원 4명": {
+              "cells": [
+                [
+                  2,
+                  "판정"
+                ]
+              ],
+              "notes": [
+                [
+                  2,
+                  "부서코드",
+                  "≠ NULL은 U"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "앤드로 묶이니 전체가 참이 될 수 없어요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "사원 4명": {
+              "cells": [
+                [
+                  2,
+                  "판정"
+                ],
+                [
+                  3,
+                  "판정"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "WHERE는 참인 행만 남기니 모두 빠져요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "사원 4명": {
+              "filter": []
+            }
+          }
+        },
+        {
+          "say": "그래서 결과는 0건이에요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "사원 4명": {
+              "result": {
+                "title": "결과 0건",
+                "columns": [
+                  "이름",
+                  "부서코드"
+                ],
+                "rows": []
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "비교와 IS NULL",
+      "question": "NOT IN 목록에 NULL이 하나 있으면 결과는?",
+      "choices": [
+        "NULL만 빼고 조회",
+        "전체 행 조회",
+        "결과 0건",
+        "문법 오류"
+      ],
+      "answer": 3,
+      "explanation": "NULL과의 비교가 언노운이라 앤드 전체가 참이 못 돼요. 결과는 0건이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. NOT IN 목록에 NULL이 하나 있으면 결과는?"
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "type": "cards",
+      "section": "3값 논리",
+      "title": "3값 논리 요령",
+      "cols": 3,
+      "items": [
+        {
+          "title": "AND",
+          "desc": "F 하나면 F",
+          "icon": "filter"
+        },
+        {
+          "title": "OR",
+          "desc": "T 하나면 T",
+          "icon": "branch"
+        },
+        {
+          "title": "NOT",
+          "desc": "NOT U는 U",
+          "icon": "help"
+        }
+      ],
+      "steps": [
+        {
+          "say": "참, 거짓, 언노운. 세 값의 논리예요."
+        },
+        {
+          "say": "앤드는 거짓이 하나라도 있으면 거짓이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "오어는 참이 하나라도 있으면 참이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "나머지는 언노운이 끼면 언노운이에요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "낫 언노운도 여전히 언노운이에요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "id": "s13",
+      "section": "집계 함수",
+      "type": "data",
+      "title": "커미션 집계",
+      "tables": [
+        "사원 3명"
+      ],
+      "steps": [
+        {
+          "say": "커미션이 100, NULL, 200인 세 행이에요.",
+          "t": {
+            "사원 3명": {
+              "cols": [
+                "커미션"
+              ]
+            }
+          }
+        },
+        {
+          "say": "카운트 별표는 행 수라서 3이에요.",
+          "t": {
+            "사원 3명": {
+              "rows": [
+                0,
+                1,
+                2
+              ],
+              "result": {
+                "title": "커미션 집계",
+                "columns": [
+                  "식",
+                  "결과"
+                ],
+                "rows": [
+                  [
+                    "COUNT(*)",
+                    "3"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "컬럼을 세면 NULL을 빼서 2예요.",
+          "t": {
+            "사원 3명": {
+              "cells": [
+                [
+                  0,
+                  "커미션"
+                ],
+                [
+                  2,
+                  "커미션"
+                ]
+              ],
+              "notes": [
+                [
+                  1,
+                  "커미션",
+                  "빠짐"
+                ]
+              ],
+              "result": {
+                "title": "커미션 집계",
+                "columns": [
+                  "식",
+                  "결과"
+                ],
+                "rows": [
+                  [
+                    "COUNT(*)",
+                    "3"
+                  ],
+                  [
+                    "COUNT(커미션)",
+                    "2"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "합계는 300이에요.",
+          "t": {
+            "사원 3명": {
+              "cells": [
+                [
+                  0,
+                  "커미션"
+                ],
+                [
+                  2,
+                  "커미션"
+                ]
+              ],
+              "result": {
+                "title": "커미션 집계",
+                "columns": [
+                  "식",
+                  "결과"
+                ],
+                "rows": [
+                  [
+                    "COUNT(*)",
+                    "3"
+                  ],
+                  [
+                    "COUNT(커미션)",
+                    "2"
+                  ],
+                  [
+                    "SUM(커미션)",
+                    "300"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "평균은 300 나누기 2, 150이에요.",
+          "t": {
+            "사원 3명": {
+              "rows": [
+                0,
+                2
+              ],
+              "notes": [
+                [
+                  1,
+                  "커미션",
+                  "분모 제외"
+                ]
+              ],
+              "result": {
+                "title": "커미션 집계",
+                "columns": [
+                  "식",
+                  "결과"
+                ],
+                "rows": [
+                  [
+                    "COUNT(*)",
+                    "3"
+                  ],
+                  [
+                    "COUNT(커미션)",
+                    "2"
+                  ],
+                  [
+                    "SUM(커미션)",
+                    "300"
+                  ],
+                  [
+                    "AVG(커미션)",
+                    "150"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "NULL을 0으로 바꾸면 3행이 다 들어가요.",
+          "t": {
+            "사원 3명": {
+              "add": [
+                "NVL(커미션,0)",
+                [
+                  "100",
+                  "0",
+                  "200"
+                ]
+              ],
+              "cols": [
+                "NVL(커미션,0)"
+              ]
+            }
+          }
+        },
+        {
+          "say": "300 나누기 3, 100이에요.",
+          "t": {
+            "사원 3명": {
+              "rows": [
+                0,
+                1,
+                2
+              ],
+              "result": {
+                "title": "커미션 집계",
+                "columns": [
+                  "식",
+                  "결과"
+                ],
+                "rows": [
+                  [
+                    "COUNT(*)",
+                    "3"
+                  ],
+                  [
+                    "COUNT(커미션)",
+                    "2"
+                  ],
+                  [
+                    "SUM(커미션)",
+                    "300"
+                  ],
+                  [
+                    "AVG(커미션)",
+                    "150"
+                  ],
+                  [
+                    "AVG(NVL(커미션,0))",
+                    "100"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "집계 함수",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "AVG는 NULL 행을 **분모에서도** 빼요. 0으로 보려면 **NVL**로 바꿔요.",
+      "steps": [
+        {
+          "say": "평균은 NULL 행을 분모에서도 빼요."
+        },
+        {
+          "say": "0으로 치려면 NVL로 먼저 바꿔야 해요."
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "id": "s15",
+      "section": "집계 함수",
+      "type": "data",
+      "title": "행 연산 vs 컬럼 합",
+      "tables": [
+        "T"
+      ],
+      "code": "SELECT SUM(A + B), SUM(A) + SUM(B)\n  FROM T;",
+      "steps": [
+        {
+          "say": "NULL이 있으면 두 결과가 다를 수 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "첫 행은 A가 10, B가 NULL이에요.",
+          "t": {
+            "T": {
+              "rows": [
+                0
+              ],
+              "cells": [
+                [
+                  0,
+                  "B"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "A 더하기 B는 NULL이에요.",
+          "t": {
+            "T": {
+              "add": [
+                "A+B",
+                [
+                  "NULL",
+                  "25"
+                ]
+              ],
+              "cells": [
+                [
+                  0,
+                  "A+B"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 그 행이 합계에서 통째로 빠져요. 25예요.",
+          "t": {
+            "T": {
+              "notes": [
+                [
+                  0,
+                  "A+B",
+                  "빠짐"
+                ]
+              ],
+              "result": {
+                "title": "두 결과",
+                "columns": [
+                  "SUM(A+B)",
+                  "SUM(A)+SUM(B)"
+                ],
+                "rows": [
+                  [
+                    "25",
+                    "?"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "컬럼별로 따로 더하면 A의 10은 남아요. 35예요.",
+          "t": {
+            "T": {
+              "cols": [
+                "A",
+                "B"
+              ],
+              "cells": [
+                [
+                  0,
+                  "A"
+                ]
+              ],
+              "result": {
+                "title": "두 결과",
+                "columns": [
+                  "SUM(A+B)",
+                  "SUM(A)+SUM(B)"
+                ],
+                "rows": [
+                  [
+                    "25",
+                    "35"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "참고로 대상이 0건이면 합계는 NULL, 카운트는 0이에요."
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "집계 함수",
+      "question": "커미션 100, NULL, 200일 때 AVG(커미션)은?",
+      "choices": [
+        "100",
+        "150",
+        "300",
+        "NULL"
+      ],
+      "answer": 2,
+      "explanation": "NULL을 빼고 300 나누기 2예요. 그래서 150이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 커미션이 100, NULL, 200이에요. 평균은 얼마일까요?"
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "compare",
+      "section": "정렬",
+      "title": "NULL의 정렬 위치",
+      "left": {
+        "title": "Oracle",
+        "icon": "database",
+        "items": [
+          "가장 큰 값 취급",
+          "오름차순 맨 뒤",
+          "내림차순 맨 앞"
+        ]
+      },
+      "right": {
+        "title": "SQL Server",
+        "icon": "database",
+        "items": [
+          "가장 작은 값 취급",
+          "오름차순 맨 앞",
+          "내림차순 맨 뒤"
+        ]
+      },
+      "steps": [
+        {
+          "say": "정렬에선 DBMS마다 정반대예요."
+        },
+        {
+          "say": "오라클은 NULL을 가장 큰 값으로 봐요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "오름차순이면 맨 뒤에 와요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL 서버는 가장 작은 값으로 봐요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "오름차순이면 맨 앞에 와요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "오라클은 NULLS FIRST나 LAST로 정해요.",
+          "focus": [
+            0
+          ]
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "quiz",
+      "section": "정렬",
+      "question": "오라클에서 ORDER BY 커미션 ASC 할 때 NULL의 위치는?",
+      "choices": [
+        "맨 뒤",
+        "맨 앞",
+        "중간",
+        "제외됨"
+      ],
+      "answer": 1,
+      "explanation": "오라클은 NULL을 가장 큰 값으로 봐요. 오름차순이면 맨 뒤예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 오라클에서 오름차순 정렬하면 NULL은 어디에 올까요?"
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "cards",
+      "section": "NULL 함수",
+      "title": "NULL 관련 함수",
+      "cols": 3,
+      "items": [
+        {
+          "title": "NVL",
+          "desc": "NULL이면 b",
+          "icon": "recycle"
+        },
+        {
+          "title": "ISNULL",
+          "desc": "SQL 서버판 NVL",
+          "icon": "recycle"
+        },
+        {
+          "title": "NVL2",
+          "desc": "아니면 b, NULL c",
+          "icon": "branch"
+        },
+        {
+          "title": "NULLIF",
+          "desc": "같으면 NULL",
+          "icon": "scale"
+        },
+        {
+          "title": "COALESCE",
+          "desc": "첫 번째 non-NULL",
+          "icon": "filter"
+        }
+      ],
+      "steps": [
+        {
+          "say": "NULL 함수 다섯 개를 볼게요."
+        },
+        {
+          "say": "NVL. a가 NULL이면 b를 줘요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "ISNULL. SQL 서버에서 같은 역할이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "NVL2. NULL이 아니면 b, NULL이면 c예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "NULLIF. 두 값이 같으면 NULL, 다르면 a예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "코얼레스. 왼쪽부터 처음 NULL 아닌 값이에요.",
+          "focus": [
+            4
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "quiz",
+      "section": "NULL 함수",
+      "question": "NULLIF(10, 10)의 결과는?",
+      "choices": [
+        "10",
+        "0",
+        "오류",
+        "NULL"
+      ],
+      "answer": 4,
+      "explanation": "두 값이 같으면 NULL이에요. 다르면 첫 값을 돌려줘요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 널이프 10, 10의 결과는?"
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "callout",
+      "section": "NULL 함수",
+      "tone": "warning",
+      "title": "0건은 NULL이 아니에요",
+      "text": "행이 0건이면 NVL도 **공집합**. `NVL(MAX(컬럼), 0)`처럼 집계로 감싸요.",
+      "steps": [
+        {
+          "say": "조건에 맞는 행이 없으면 NVL도 소용없어요."
+        },
+        {
+          "say": "NVL은 행이 있어야 동작하거든요."
+        },
+        {
+          "say": "맥스 같은 집계로 감싸서 한 행을 만들어요."
+        },
+        {
+          "say": "그다음 NVL을 쓰면 0이 나와요."
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "cards",
+      "section": "NULL 허용 설계",
+      "title": "NULL 줄이는 설계",
+      "cols": 2,
+      "items": [
+        {
+          "title": "NOT NULL",
+          "desc": "필수 속성에 선언",
+          "icon": "lock"
+        },
+        {
+          "title": "DEFAULT",
+          "desc": "기본값, 코드값",
+          "icon": "tag"
+        },
+        {
+          "title": "FK 선택성",
+          "desc": "필수, 선택 분명히",
+          "icon": "link"
+        },
+        {
+          "title": "서브타입",
+          "desc": "NULL 많으면 분리",
+          "icon": "layers"
+        }
+      ],
+      "steps": [
+        {
+          "say": "NULL이 많으면 결과를 예측하기 어려워요."
+        },
+        {
+          "say": "필수 속성은 NOT NULL로 선언해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "없음은 기본값이나 코드값으로 표현해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "FK가 NULL이면 이너 조인에서 빠져요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "NULL이 많은 속성은 서브타입 분리를 검토해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "오라클 B 트리 인덱스는 전부 NULL인 행을 안 담아요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "NULL은 0도 공백도 아님",
+        "연산은 NULL, 비교는 UNKNOWN",
+        "조건은 IS NULL, NOT IN 함정",
+        "COUNT(*) 외 집계는 NULL 제외",
+        "정렬: 오라클 최대, SQL 서버 최소",
+        "NULL 함수 인자 순서 구분"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "NULL은 0도 공백도 아니에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "연산은 NULL, 비교는 언노운이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "조건은 IS NULL로. NOT IN 함정도 기억해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "카운트 별표 말고는 NULL을 빼고 집계해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "오라클은 최대값, SQL 서버는 최소값이에요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "NULL 함수들의 인자 순서도 챙겨 두세요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s23"
+    }
+  ]
+}

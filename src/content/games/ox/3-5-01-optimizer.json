@@ -1,0 +1,21 @@
+[
+  { "text": "규칙기반 옵티마이저(RBO)는 데이터 양과 분포를 고려하지 않고 실행계획을 선택한다.", "answer": true, "explain": "RBO는 미리 정한 액세스 경로 우선순위 규칙에 따라 계획을 고른다." },
+  { "text": "비용기반 옵티마이저(CBO)는 액세스 경로별 우선순위 규칙에 따라 실행계획을 선택한다.", "answer": false, "explain": "CBO는 통계정보를 바탕으로 후보 계획의 예상 비용을 계산해 가장 낮은 계획을 고른다. 규칙에 따르는 것은 RBO다." },
+  { "text": "RBO의 액세스 경로 우선순위에서 Full Table Scan은 1순위이다.", "answer": false, "explain": "1순위는 ROWID에 의한 단일 행 액세스이고, Full Table Scan은 마지막 15순위다." },
+  { "text": "Oracle의 기본 옵티마이저 모드는 FIRST_ROWS이다.", "answer": false, "explain": "Oracle의 기본 옵티마이저 모드는 전체 처리량을 최적화하는 ALL_ROWS다." },
+  { "text": "FIRST_ROWS_n 모드는 처음 n건을 가장 빨리 반환하는 것을 목표로 하므로 OLTP 페이징 화면에 적합하다.", "answer": true, "explain": "응답 시간 최적화 모드로 인덱스와 NL 조인을 선호하는 경향이 있다." },
+  { "text": "FIRST_ROWS_n 모드로 최적화된 쿼리의 결과를 끝까지 Fetch하면 ALL_ROWS보다 느려질 수 있다.", "answer": true, "explain": "앞쪽 일부만 보고 멈출 것을 전제로 인덱스·NL 조인 위주 계획을 세우기 때문이다." },
+  { "text": "CBO는 Query Transformer, Estimator, Plan Generator 순서로 실행계획을 만든다.", "answer": true, "explain": "SQL을 변환하고, 통계로 비용을 추정하며, 후보 계획 중 최저 비용 계획을 고른다." },
+  { "text": "CBO에서 선택도·카디널리티·비용을 계산하는 구성 요소는 Plan Generator이다.", "answer": false, "explain": "선택도·카디널리티·비용 계산은 Estimator가 담당한다. Plan Generator는 후보 계획을 생성한다." },
+  { "text": "카디널리티는 총 레코드 수에 선택도를 곱해 구한다.", "answer": true, "explain": "카디널리티는 조건절에 의해 반환될 것으로 예상되는 레코드 수다." },
+  { "text": "히스토그램이 없으면 등치 조건의 선택도는 1/NUM_DISTINCT로 계산된다.", "answer": true, "explain": "히스토그램이 없으면 값이 균등하게 분포한다고 가정한다." },
+  { "text": "CBO는 여러 조건절의 선택도를 계산할 때 기본적으로 컬럼 간 상관관계를 반영한다.", "answer": false, "explain": "기본적으로 각 조건을 독립으로 보고 선택도를 곱하므로 연관된 조건은 카디널리티를 과소 추정한다." },
+  { "text": "히스토그램은 컬럼 값이 고르게 분포하지 않을 때 선택도를 정확히 계산하도록 보완해 준다.", "answer": true, "explain": "값별 분포를 저장해 고유값 개수만으로는 알 수 없는 편중을 반영한다." },
+  { "text": "클러스터링 팩터는 USER_TAB_COLUMNS에서 확인하는 컬럼 통계에 속한다.", "answer": false, "explain": "클러스터링 팩터는 인덱스 통계에 속하며 USER_INDEXES에서 확인한다." },
+  { "text": "시스템 통계는 CPU 속도와 Single Block I/O·Multiblock I/O 평균 시간 같은 하드웨어 특성을 담는다.", "answer": true, "explain": "DBMS_STATS.GATHER_SYSTEM_STATS로 수집한다." },
+  { "text": "실행계획에 표시되는 Cost는 SQL을 실제로 수행해 측정한 값이다.", "answer": false, "explain": "Cost는 수행에 드는 예상 일량 또는 시간이며 실제 수행 시간과 다를 수 있다." },
+  { "text": "바인드 변수를 사용하면 커서를 공유하지 못해 하드 파싱이 증가한다.", "answer": false, "explain": "바인드 변수를 쓰면 값만 다른 SQL이 하나의 공유 커서를 재사용하므로 하드 파싱이 줄어든다." },
+  { "text": "바인드 변수를 사용하면 옵티마이저가 컬럼 히스토그램을 활용하지 못한다는 단점이 있다.", "answer": true, "explain": "최적화 시점에 값을 알 수 없어 평균 분포를 가정한다." },
+  { "text": "바인드 변수 피킹은 실행할 때마다 바인드 값을 확인하여 새 실행계획을 만든다.", "answer": false, "explain": "하드 파싱 때 처음 들어온 값으로 계획을 만들고 이후에는 그 계획을 재사용한다." },
+  { "text": "적응적 커서 공유(ACS)는 바인드 값의 선택도 범위별로 다른 자식 커서를 만들 수 있다.", "answer": true, "explain": "Bind Sensitive 커서의 일량 차이가 크면 Bind Aware로 바꿔 값별로 다른 계획을 쓴다." }
+]

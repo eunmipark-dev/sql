@@ -1,0 +1,21 @@
+[
+  { "text": "UPDATE는 인덱스 입장에서 기존 엔트리 삭제와 새 엔트리 삽입, 두 번의 작업으로 처리된다.", "answer": true, "explain": "인덱스는 정렬 상태를 유지해야 하므로 UPDATE는 Delete + Insert로 처리된다." },
+  { "text": "UPDATE는 테이블의 모든 인덱스에 영향을 주지만, INSERT는 변경 컬럼을 포함한 인덱스에만 영향을 준다.", "answer": false, "explain": "반대다. INSERT·DELETE는 모든 인덱스에, UPDATE는 변경 컬럼을 포함한 인덱스에만 영향을 준다." },
+  { "text": "PK·FK 제약은 인덱스 탐색이나 다른 테이블 확인이 필요해 CHECK·NOT NULL 제약보다 DML 부하가 크다.", "answer": true, "explain": "PK는 Unique 인덱스 탐색, FK는 참조 테이블 확인이 필요해 부하가 더 크다." },
+  { "text": "커밋 시 서버 프로세스는 DBWR가 변경된 데이터 블록을 데이터 파일에 모두 기록할 때까지 대기한다.", "answer": false, "explain": "커밋 시에는 LGWR가 Redo 로그 버퍼를 기록할 때까지 대기하고, 데이터 블록은 DBWR가 나중에 기록한다." },
+  { "text": "대량 데이터를 처리하며 건마다 커밋하면 log file sync 대기가 건수만큼 발생해 성능이 크게 떨어진다.", "answer": true, "explain": "커밋마다 LGWR 기록을 기다리므로 대기 이벤트가 누적된다." },
+  { "text": "BULK COLLECT와 FORALL을 이용한 Array Processing은 DB Call 횟수와 컨텍스트 스위칭을 줄여 준다.", "answer": true, "explain": "여러 건을 한 번의 Call로 묶어 처리하므로 네트워크 왕복과 엔진 간 전환이 줄어든다." },
+  { "text": "Direct Path Insert는 Freelist를 통해 DELETE로 생긴 빈 공간을 찾아 재사용한다.", "answer": false, "explain": "Direct Path Insert는 Freelist를 쓰지 않고 HWM 위쪽 새 블록에 순차 기록하므로 빈 공간을 재사용하지 않는다." },
+  { "text": "Direct Path Insert는 버퍼 캐시를 거치지 않고 데이터 파일에 직접 기록한다.", "answer": true, "explain": "버퍼 캐시를 경유하지 않고 테이블 데이터에 대한 Undo도 생성하지 않는다." },
+  { "text": "INSERT /*+ APPEND */ ... VALUES 문은 Direct Path Insert로 처리된다.", "answer": false, "explain": "APPEND는 INSERT ... SELECT에서만 작동하며, VALUES 절은 APPEND_VALUES 힌트를 써야 한다." },
+  { "text": "실행계획에 LOAD AS SELECT가 나타나면 INSERT가 Direct Path 방식으로 수행된 것이다.", "answer": true, "explain": "LOAD AS SELECT는 Direct Path, LOAD TABLE CONVENTIONAL은 일반 INSERT를 의미한다." },
+  { "text": "Direct Path Insert 후 커밋하기 전에 같은 세션에서 해당 테이블을 조회하면 ORA-12838 에러가 발생한다.", "answer": true, "explain": "커밋 전에는 같은 세션도 그 테이블을 조회·변경할 수 없다." },
+  { "text": "테이블을 NOLOGGING 모드로 바꾸면 일반 UPDATE와 DELETE도 Redo를 생성하지 않는다.", "answer": false, "explain": "NOLOGGING은 Direct Path 작업에만 효과가 있고, 일반 INSERT·UPDATE·DELETE는 항상 Redo를 생성한다." },
+  { "text": "CTAS(CREATE TABLE ... AS SELECT)는 Direct Path 방식으로 데이터를 적재한다.", "answer": true, "explain": "CTAS, APPEND 힌트, 병렬 INSERT, SQL*Loader direct 옵션이 Direct Path로 동작한다." },
+  { "text": "수정 가능 조인 뷰에서는 키 보존 테이블이 아닌 테이블의 컬럼도 자유롭게 UPDATE할 수 있다.", "answer": false, "explain": "조인 뷰에서는 키 보존 테이블의 컬럼만 수정할 수 있으며, 그 외는 ORA-01779가 발생한다." },
+  { "text": "EMP와 DEPT 조인 뷰에서 EMP 컬럼을 수정하려면 DEPT의 조인 컬럼에 PK나 Unique 인덱스가 있어야 한다.", "answer": true, "explain": "조인 상대의 조인 컬럼이 유일해야 EMP가 키 보존 테이블로 인정된다." },
+  { "text": "MERGE문에서 ON 절에 사용한 컬럼은 WHEN MATCHED의 UPDATE SET 절에서 변경할 수 있다.", "answer": false, "explain": "ON 절에 사용한 컬럼은 UPDATE SET에서 변경할 수 없다(ORA-38104)." },
+  { "text": "MERGE문의 DELETE WHERE 절은 WHEN MATCHED 절에서 UPDATE된 행에 대해서만 평가된다.", "answer": true, "explain": "DELETE 절은 MATCHED로 갱신된 행 중 조건을 만족하는 행만 삭제한다." },
+  { "text": "PK 제약을 강제하는 Unique 인덱스를 Unusable 상태로 두면 DML을 정상 수행할 수 있다.", "answer": false, "explain": "제약을 강제하는 Unique 인덱스가 Unusable이면 DML이 에러를 내므로 제약을 비활성화해야 한다." },
+  { "text": "테이블의 대부분을 삭제할 때는 남길 데이터만 새 테이블로 옮기는 방식이 DELETE보다 빠를 수 있다.", "answer": true, "explain": "CTAS로 남길 데이터만 옮긴 뒤 교체하면 건별 인덱스 갱신과 Undo·Redo 부담을 피한다." }
+]

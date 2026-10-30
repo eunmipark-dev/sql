@@ -1,0 +1,1239 @@
+{
+  "slug": "set-operators",
+  "title": "집합 연산자",
+  "tables": {
+    "매장 A": {
+      "columns": [
+        "상품"
+      ],
+      "rows": [
+        [
+          "사과"
+        ],
+        [
+          "배"
+        ],
+        [
+          "포도"
+        ]
+      ]
+    },
+    "매장 B": {
+      "columns": [
+        "상품"
+      ],
+      "rows": [
+        [
+          "배"
+        ],
+        [
+          "포도"
+        ],
+        [
+          "귤"
+        ]
+      ]
+    },
+    "Q1": {
+      "columns": [
+        "C"
+      ],
+      "rows": [
+        [
+          "A"
+        ],
+        [
+          "NULL"
+        ]
+      ]
+    },
+    "Q2": {
+      "columns": [
+        "C"
+      ],
+      "rows": [
+        [
+          "NULL"
+        ],
+        [
+          "B"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "집합 연산자",
+      "subtitle": "결과를 위아래로 합치기",
+      "icon": "layers",
+      "steps": [
+        {
+          "say": "집합 연산자를 시작할게요."
+        },
+        {
+          "say": "여러 SELECT 결과를 하나로 합치는 방법이에요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "compare",
+      "section": "집합 연산자란",
+      "title": "조인과 무엇이 다를까?",
+      "left": {
+        "title": "조인",
+        "icon": "arrow-left-right",
+        "items": [
+          "컬럼을 옆으로",
+          "테이블을 연결"
+        ]
+      },
+      "right": {
+        "title": "집합 연산자",
+        "icon": "layers",
+        "items": [
+          "행을 위아래로",
+          "결과를 쌓음"
+        ]
+      },
+      "steps": [
+        {
+          "say": "조인은 컬럼을 옆으로 붙여요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "집합 연산자는 행을 위아래로 쌓아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "방향이 다르다고 기억하세요.",
+          "focus": [
+            0,
+            1
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "cards",
+      "section": "집합 연산자란",
+      "title": "네 가지 연산자",
+      "cols": 2,
+      "items": [
+        {
+          "title": "합집합",
+          "desc": "UNION, 중복 제거",
+          "icon": "copy"
+        },
+        {
+          "title": "합집합 전체",
+          "desc": "UNION ALL",
+          "icon": "layers"
+        },
+        {
+          "title": "교집합",
+          "desc": "INTERSECT",
+          "icon": "link"
+        },
+        {
+          "title": "차집합",
+          "desc": "MINUS, EXCEPT",
+          "icon": "filter"
+        }
+      ],
+      "steps": [
+        {
+          "say": "연산자는 네 가지예요."
+        },
+        {
+          "say": "UNION은 합집합이에요. 중복을 없애요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "UNION ALL도 합집합이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "다만 중복을 그대로 둬요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "INTERSECT는 교집합이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "MINUS는 차집합이에요. 앞에서 뒤를 빼요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "SQL 서버와 표준에서는 EXCEPT라고 해요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "callout",
+      "section": "집합 연산자란",
+      "tone": "info",
+      "title": "성능 관점",
+      "text": "중복 제거엔 **정렬이나 해시** 비용이 든다. 중복이 없거나 그대로 봐도 되면 **UNION ALL**.",
+      "steps": [
+        {
+          "say": "중복을 없애려면 정렬이나 해시가 필요해요."
+        },
+        {
+          "say": "그래서 UNION ALL보다 무거워요."
+        },
+        {
+          "say": "중복 제거가 필요 없으면 UNION ALL을 써요."
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "cards",
+      "section": "사용 조건",
+      "title": "지켜야 할 규칙",
+      "cols": 2,
+      "items": [
+        {
+          "title": "컬럼 수",
+          "desc": "모두 같아야 함",
+          "icon": "ruler"
+        },
+        {
+          "title": "타입 호환",
+          "desc": "같은 위치끼리",
+          "icon": "puzzle"
+        },
+        {
+          "title": "컬럼명",
+          "desc": "첫 SELECT 기준",
+          "icon": "tag"
+        },
+        {
+          "title": "ORDER BY",
+          "desc": "맨 끝에 한 번",
+          "icon": "checklist"
+        }
+      ],
+      "steps": [
+        {
+          "say": "사용 규칙은 네 가지예요."
+        },
+        {
+          "say": "첫째, SELECT마다 컬럼 수가 같아야 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 같은 위치끼리 타입이 맞아야 해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 결과 컬럼명은 첫 SELECT를 따라요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, ORDER BY는 맨 끝에 한 번만 써요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "개별 SELECT에 붙이면 오류예요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "code",
+      "section": "사용 조건",
+      "title": "별칭과 ORDER BY",
+      "code": "SELECT ENAME AS 이름, SAL\n  FROM EMP WHERE DEPTNO = 10\nUNION ALL\nSELECT ENAME, SAL\n  FROM EMP WHERE DEPTNO = 20\nORDER BY 이름;   -- 또는 ORDER BY 1",
+      "steps": [
+        {
+          "say": "첫 SELECT에 이름이라는 별칭을 붙였어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "결과 헤더는 이 별칭을 따라요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "정렬은 맨 마지막에 한 번 해요.",
+          "focus": [
+            6
+          ]
+        },
+        {
+          "say": "첫 SELECT의 별칭이나 위치 번호를 써요.",
+          "focus": [
+            6
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "callout",
+      "section": "사용 조건",
+      "tone": "warning",
+      "title": "시험 포인트",
+      "text": "두 번째 SELECT의 별칭은 헤더에 **반영되지 않는다**. ORDER BY에 쓰면 오류 가능.",
+      "steps": [
+        {
+          "say": "두 번째 SELECT 별칭은 헤더에 안 나와요."
+        },
+        {
+          "say": "그 별칭으로 정렬하면 오류가 날 수 있어요."
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "quiz",
+      "section": "사용 조건",
+      "question": "집합 연산 결과의 컬럼명은 어디를 따를까?",
+      "choices": [
+        "첫 번째 SELECT",
+        "마지막 SELECT",
+        "자동으로 생성",
+        "컬럼명이 없음"
+      ],
+      "answer": 1,
+      "explanation": "결과 컬럼명은 첫 번째 SELECT를 따라요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 결과 컬럼명은 어디를 따를까요?"
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "id": "s09",
+      "section": "UNION과 UNION ALL",
+      "type": "data",
+      "title": "두 매장의 상품",
+      "tables": [
+        "매장 A",
+        "매장 B"
+      ],
+      "steps": [
+        {
+          "say": "두 매장의 상품 목록으로 볼게요."
+        },
+        {
+          "say": "매장 A는 사과, 배, 포도예요.",
+          "t": {
+            "매장 A": {
+              "rows": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "매장 B는 배, 포도, 귤이에요.",
+          "t": {
+            "매장 B": {
+              "rows": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "배와 포도가 양쪽에 겹쳐요.",
+          "t": {
+            "매장 A": {
+              "tint": [
+                [
+                  1
+                ],
+                [
+                  2
+                ]
+              ]
+            },
+            "매장 B": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s10",
+      "section": "UNION과 UNION ALL",
+      "type": "data",
+      "title": "UNION ALL과 UNION",
+      "tables": [
+        "매장 A",
+        "매장 B"
+      ],
+      "steps": [
+        {
+          "say": "UNION ALL은 A와 B를 그대로 이어 붙여요.",
+          "t": {
+            "매장 A": {
+              "rows": [
+                0,
+                1,
+                2
+              ],
+              "result": {
+                "title": "UNION ALL",
+                "columns": [
+                  "상품"
+                ],
+                "rows": [
+                  [
+                    "사과"
+                  ],
+                  [
+                    "배"
+                  ],
+                  [
+                    "포도"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "A 아래에 B의 배, 포도, 귤이 붙어요.",
+          "t": {
+            "매장 A": {
+              "result": {
+                "title": "UNION ALL",
+                "columns": [
+                  "상품"
+                ],
+                "rows": [
+                  [
+                    "사과"
+                  ],
+                  [
+                    "배"
+                  ],
+                  [
+                    "포도"
+                  ],
+                  [
+                    "배"
+                  ],
+                  [
+                    "포도"
+                  ],
+                  [
+                    "귤"
+                  ]
+                ]
+              }
+            },
+            "매장 B": {
+              "rows": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "배와 포도가 두 번씩 나와요. 6행이에요.",
+          "t": {
+            "매장 A": {
+              "tint": [
+                [
+                  1
+                ],
+                [
+                  2
+                ]
+              ],
+              "result": {
+                "title": "UNION ALL 6행",
+                "columns": [
+                  "상품"
+                ],
+                "rows": [
+                  [
+                    "사과"
+                  ],
+                  [
+                    "배"
+                  ],
+                  [
+                    "포도"
+                  ],
+                  [
+                    "배"
+                  ],
+                  [
+                    "포도"
+                  ],
+                  [
+                    "귤"
+                  ]
+                ]
+              }
+            },
+            "매장 B": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "UNION은 중복을 하나만 남겨요. 4행이에요.",
+          "t": {
+            "매장 A": {
+              "tint": [
+                [
+                  1
+                ],
+                [
+                  2
+                ]
+              ],
+              "result": {
+                "title": "UNION 4행",
+                "columns": [
+                  "상품"
+                ],
+                "rows": [
+                  [
+                    "사과"
+                  ],
+                  [
+                    "배"
+                  ],
+                  [
+                    "포도"
+                  ],
+                  [
+                    "귤"
+                  ]
+                ]
+              }
+            },
+            "매장 B": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "한 테이블 안의 중복까지 없애요."
+        },
+        {
+          "say": "UNION 결과는 항상 중복이 없어요."
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "UNION과 UNION ALL",
+      "tone": "warning",
+      "title": "정렬은 보장 안 됨",
+      "text": "중복 제거 중 정렬된 듯 보여도 **순서는 보장되지 않는다**. 필요하면 ORDER BY 명시.",
+      "steps": [
+        {
+          "say": "UNION 결과가 정렬돼 보일 수 있어요."
+        },
+        {
+          "say": "하지만 순서는 보장되지 않아요."
+        },
+        {
+          "say": "원하는 순서는 ORDER BY로 정해요."
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "id": "s12",
+      "section": "INTERSECT와 MINUS",
+      "type": "data",
+      "title": "교집합과 차집합",
+      "tables": [
+        "매장 A",
+        "매장 B"
+      ],
+      "steps": [
+        {
+          "say": "매장 A는 사과, 배, 포도예요.",
+          "t": {
+            "매장 A": {
+              "rows": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "매장 B는 배, 포도, 귤이에요.",
+          "t": {
+            "매장 B": {
+              "rows": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "INTERSECT는 양쪽에 다 있는 것만 남겨요.",
+          "t": {
+            "매장 A": {
+              "tint": [
+                [
+                  1
+                ],
+                [
+                  2
+                ]
+              ]
+            },
+            "매장 B": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "배와 포도, 2행이에요.",
+          "t": {
+            "매장 A": {
+              "tint": [
+                [
+                  1
+                ],
+                [
+                  2
+                ]
+              ],
+              "result": {
+                "title": "A INTERSECT B",
+                "columns": [
+                  "상품"
+                ],
+                "rows": [
+                  [
+                    "배"
+                  ],
+                  [
+                    "포도"
+                  ]
+                ]
+              }
+            },
+            "매장 B": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "A 마이너스 B는 A에만 있는 사과예요.",
+          "t": {
+            "매장 A": {
+              "rows": [
+                0
+              ],
+              "notes": [
+                [
+                  1,
+                  "상품",
+                  "B에도 있음"
+                ],
+                [
+                  2,
+                  "상품",
+                  "B에도 있음"
+                ]
+              ],
+              "result": {
+                "title": "A MINUS B",
+                "columns": [
+                  "상품"
+                ],
+                "rows": [
+                  [
+                    "사과"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "순서를 바꾸면 B에만 있는 귤이 나와요.",
+          "t": {
+            "매장 A": {
+              "result": {
+                "title": "B MINUS A",
+                "columns": [
+                  "상품"
+                ],
+                "rows": [
+                  [
+                    "귤"
+                  ]
+                ]
+              }
+            },
+            "매장 B": {
+              "rows": [
+                2
+              ],
+              "notes": [
+                [
+                  0,
+                  "상품",
+                  "A에도 있음"
+                ],
+                [
+                  1,
+                  "상품",
+                  "A에도 있음"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "차집합은 순서가 중요해요."
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "section": "INTERSECT와 MINUS",
+      "title": "서브쿼리로 바꿔 쓰기",
+      "left": {
+        "title": "INTERSECT",
+        "icon": "link",
+        "items": [
+          "EXISTS나 IN으로"
+        ]
+      },
+      "right": {
+        "title": "MINUS",
+        "icon": "filter",
+        "items": [
+          "NOT EXISTS로"
+        ]
+      },
+      "steps": [
+        {
+          "say": "같은 결과를 서브쿼리로도 만들 수 있어요."
+        },
+        {
+          "say": "교집합은 EXISTS나 IN으로 바꿔요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "차집합은 NOT EXISTS로 바꿔요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "callout",
+      "section": "INTERSECT와 MINUS",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "UNION·INTERSECT는 순서를 바꿔도 같지만 **MINUS는 달라진다**. 표준은 **EXCEPT**.",
+      "steps": [
+        {
+          "say": "UNION과 INTERSECT는 순서를 바꿔도 같아요."
+        },
+        {
+          "say": "MINUS만 결과가 달라져요."
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "quiz",
+      "section": "INTERSECT와 MINUS",
+      "question": "매장 A는 사과, 배, 포도, 매장 B는 배, 포도, 귤이에요. `STORE_B MINUS STORE_A`의 결과는?",
+      "choices": [
+        "사과",
+        "귤",
+        "배, 포도",
+        "결과 없음"
+      ],
+      "answer": 2,
+      "explanation": "B에만 있는 상품은 귤이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. A는 사과, 배, 포도, B는 배, 포도, 귤."
+        },
+        {
+          "say": "매장 B 마이너스 매장 A의 결과는?"
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "compare",
+      "section": "집합 연산자와 NULL",
+      "title": "NULL끼리는 같을까?",
+      "left": {
+        "title": "WHERE 비교",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "NULL끼리 다름"
+        ]
+      },
+      "right": {
+        "title": "집합 연산자",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "NULL끼리 같음"
+        ]
+      },
+      "steps": [
+        {
+          "say": "WHERE의 같다 비교에서 NULL끼리는 같지 않아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "집합 연산자는 NULL끼리 같다고 봐요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래서 NULL도 중복으로 제거돼요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "id": "s17",
+      "section": "집합 연산자와 NULL",
+      "type": "data",
+      "title": "NULL 하나씩 합치면",
+      "tables": [
+        "Q1",
+        "Q2"
+      ],
+      "steps": [
+        {
+          "say": "양쪽에서 NULL 한 행씩 합쳐 볼게요.",
+          "t": {
+            "Q1": {
+              "tint": [
+                [
+                  1
+                ]
+              ]
+            },
+            "Q2": {
+              "tint": [
+                [
+                  0
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "UNION은 NULL끼리 같다고 봐요. NULL 1행이에요.",
+          "t": {
+            "Q1": {
+              "tint": [
+                [
+                  1
+                ]
+              ],
+              "result": {
+                "title": "UNION",
+                "columns": [
+                  "C"
+                ],
+                "rows": [
+                  [
+                    "A"
+                  ],
+                  [
+                    "NULL"
+                  ],
+                  [
+                    "B"
+                  ]
+                ]
+              }
+            },
+            "Q2": {
+              "tint": [
+                [
+                  0
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "UNION ALL은 그대로 붙여서 NULL 2행이에요.",
+          "t": {
+            "Q1": {
+              "result": {
+                "title": "UNION ALL",
+                "columns": [
+                  "C"
+                ],
+                "rows": [
+                  [
+                    "A"
+                  ],
+                  [
+                    "NULL"
+                  ],
+                  [
+                    "NULL"
+                  ],
+                  [
+                    "B"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "INTERSECT도 NULL 1행이에요.",
+          "t": {
+            "Q1": {
+              "tint": [
+                [
+                  1
+                ]
+              ],
+              "result": {
+                "title": "INTERSECT",
+                "columns": [
+                  "C"
+                ],
+                "rows": [
+                  [
+                    "NULL"
+                  ]
+                ]
+              }
+            },
+            "Q2": {
+              "tint": [
+                [
+                  0
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "집합 연산자와 NULL",
+      "question": "`SELECT NULL ... UNION SELECT NULL ...`의 행 수는?",
+      "choices": [
+        "0행",
+        "오류 발생",
+        "1행",
+        "2행"
+      ],
+      "answer": 3,
+      "explanation": "집합 연산자는 NULL끼리 같다고 봐요. 그래서 1행이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. NULL과 NULL을 UNION하면 몇 행일까요?"
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "flow",
+      "section": "여러 연산자 함께 쓰기",
+      "title": "Oracle 수행 순서",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "STORE_A",
+          "desc": "첫 번째 결과",
+          "icon": "table"
+        },
+        {
+          "title": "UNION STORE_B",
+          "desc": "합집합을 먼저",
+          "icon": "copy"
+        },
+        {
+          "title": "MINUS STORE_C",
+          "desc": "그 결과에서 빼기",
+          "icon": "filter"
+        }
+      ],
+      "steps": [
+        {
+          "say": "연산자를 여러 개 쓰면 순서가 중요해요."
+        },
+        {
+          "say": "먼저 매장 A 결과가 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "매장 B와 합집합을 만들어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그 결과에서 매장 C를 빼요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "compare",
+      "section": "여러 연산자 함께 쓰기",
+      "title": "우선순위",
+      "left": {
+        "title": "Oracle",
+        "icon": "database",
+        "items": [
+          "우선순위 모두 같음",
+          "위에서 아래로"
+        ]
+      },
+      "right": {
+        "title": "표준, SQL Server",
+        "icon": "database",
+        "items": [
+          "INTERSECT 먼저"
+        ]
+      },
+      "steps": [
+        {
+          "say": "오라클은 우선순위가 모두 같아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "위에서 아래로 차례대로 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "표준과 SQL 서버는 INTERSECT가 먼저예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "헷갈리지 않게 괄호로 순서를 밝혀요.",
+          "focus": [
+            0,
+            1
+          ]
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "callout",
+      "section": "여러 연산자 함께 쓰기",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "집합 결과 전체에 WHERE·GROUP BY를 걸려면 **인라인 뷰**로 감싼다.",
+      "steps": [
+        {
+          "say": "각 SELECT의 WHERE는 그 SELECT에만 걸려요."
+        },
+        {
+          "say": "전체에 조건을 걸려면 인라인 뷰로 감싸요."
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "quiz",
+      "section": "여러 연산자 함께 쓰기",
+      "question": "SQL 표준에서 우선순위가 가장 높은 것은?",
+      "choices": [
+        "UNION",
+        "UNION ALL",
+        "EXCEPT",
+        "INTERSECT"
+      ],
+      "answer": 4,
+      "explanation": "표준과 SQL Server에선 INTERSECT가 먼저예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 표준에서 가장 먼저 수행되는 연산자는?"
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "UNION ALL만 중복을 남긴다",
+        "컬럼 수 같고 타입 호환",
+        "컬럼명은 첫 SELECT 기준",
+        "ORDER BY는 맨 끝에 한 번",
+        "MINUS는 순서에 따라 결과 다름",
+        "NULL끼리는 같은 값으로 본다"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "UNION ALL만 중복을 남겨요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "컬럼 수가 같고 타입이 맞아야 해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "컬럼명은 첫 SELECT를 따라요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "정렬은 맨 끝에 한 번만 해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "MINUS는 순서가 바뀌면 결과도 바뀌어요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "집합 연산자는 NULL끼리 같다고 봐요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s23"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+[
+  {"text": "쿼리 변환은 옵티마이저가 SQL을 의미적으로 동일하면서 더 나은 성능이 기대되는 형태로 재작성하는 것이다.", "answer": true, "explain": "옵티마이저의 첫 단계인 Query Transformer가 담당한다."},
+  {"text": "휴리스틱 쿼리 변환은 변환 전후의 비용을 비교해 비용이 더 낮을 때만 수행된다.", "answer": false, "explain": "휴리스틱 변환은 규칙에 따라 무조건 수행된다. 비용을 비교하는 것은 비용기반 변환이다."},
+  {"text": "서브쿼리 Unnesting은 비용기반 쿼리 변환에 해당한다.", "answer": true, "explain": "복합 뷰 Merging, 조인 조건 Pushdown, OR-Expansion도 비용기반 변환이다."},
+  {"text": "단순 뷰 Merging은 비용을 비교한 뒤 유리할 때만 수행되는 비용기반 변환이다.", "answer": false, "explain": "단순 뷰 Merging은 휴리스틱 변환으로 특별한 제약이 없으면 항상 수행된다."},
+  {"text": "복합 뷰 Merging은 휴리스틱 변환이므로 GROUP BY를 포함한 뷰는 항상 Merging 된다.", "answer": false, "explain": "GROUP BY·DISTINCT를 포함한 복합 뷰 Merging은 비용기반으로 판단한다."},
+  {"text": "실행계획에 FILTER 오퍼레이션이 보이면 서브쿼리가 Unnesting 된 것이다.", "answer": false, "explain": "FILTER가 보이면 Unnesting되지 않고 메인 쿼리 행마다 서브쿼리를 반복 실행하는 필터 방식이다."},
+  {"text": "서브쿼리를 Unnesting하면 옵티마이저가 조인 순서와 조인 방식을 자유롭게 고를 수 있다.", "answer": true, "explain": "서브쿼리가 일반 조인처럼 바뀌어 더 다양한 실행계획을 검토할 수 있다."},
+  {"text": "UNION ALL 집합 연산자를 포함한 뷰는 뷰 Merging을 할 수 없다.", "answer": true, "explain": "집합 연산자, CONNECT BY, ROWNUM, GROUP BY 없는 집계 함수, 분석 함수가 있으면 Merging 불가다."},
+  {"text": "분석 함수를 포함한 인라인 뷰는 메인 쿼리와 Merging 할 수 있다.", "answer": false, "explain": "분석 함수(윈도우 함수)를 포함한 뷰는 Merging 할 수 없어 조건절 Pushing 같은 다른 변환을 시도한다."},
+  {"text": "실행계획에 VIEW 오퍼레이션이 나타나면 해당 뷰는 Merging되지 않은 것이다.", "answer": true, "explain": "NO_MERGE로 뷰를 독립적으로 처리하면 VIEW가 표시된다."},
+  {"text": "조건절 Pullup은 쿼리 블록 밖의 조건을 뷰 쿼리 블록 안으로 밀어 넣는 변환이다.", "answer": false, "explain": "그것은 조건절 Pushdown이다. Pullup은 블록 안의 조건을 밖으로 끌어내 다른 블록에 Pushdown하는 데 쓴다."},
+  {"text": "e.deptno = d.deptno AND e.deptno = 10 조건이 있으면 옵티마이저가 d.deptno = 10 조건을 추가할 수 있다.", "answer": true, "explain": "조건절 이행(Transitive Predicate Generation)으로 A=B, B=C에서 A=C 조건을 만든다."},
+  {"text": "OR-Expansion은 OR 조건을 UNION ALL 형태로 분기해 각 조건이 서로 다른 인덱스를 사용할 수 있게 한다.", "answer": true, "explain": "실행계획에 CONCATENATION 등 분기 형태가 나타난다."},
+  {"text": "OR-Expansion으로 분기된 두 번째 브랜치에는 중복 행을 제거하기 위해 LNNVL 함수가 사용된다.", "answer": true, "explain": "LNNVL은 조건이 FALSE 또는 UNKNOWN일 때 TRUE를 반환해 첫 브랜치와 겹치는 행을 제외한다."},
+  {"text": "불필요한 조인 제거는 1쪽 테이블의 컬럼을 SELECT 절에서 참조하더라도 적용된다.", "answer": false, "explain": "1쪽 테이블의 컬럼을 전혀 참조하지 않을 때만 그 조인을 생략할 수 있다."},
+  {"text": "공통 표현식 제거 변환은 여러 곳에 반복된 조건식을 한 번만 평가하도록 바꾼다.", "answer": true, "explain": "비교 횟수가 줄고 새로 드러난 공통 조건으로 인덱스를 사용할 수 있게 된다."},
+  {"text": "Outer 쪽 테이블에 (+)가 붙지 않은 필터 조건이 WHERE 절에 있으면 아우터 조인이 이너 조인으로 변환된다.", "answer": true, "explain": "NULL로 채워진 행은 어차피 그 필터에서 걸러지므로 결과가 이너 조인과 같다."},
+  {"text": "불필요한 조인 제거(Join Elimination)는 PK·FK 제약이 없어도 적용된다.", "answer": false, "explain": "이너 조인의 조인 제거는 PK·FK 제약이 있어야 결과 건수가 같음이 보장되어 적용된다."},
+  {"text": "Oracle 10g부터는 집합 연산을 조인으로 바꾸는 변환이 기본 비활성화되어 SET_TO_JOIN 힌트로 유도한다.", "answer": true, "explain": "INTERSECT·MINUS를 세미·안티 조인으로 바꾸는 변환은 SET_TO_JOIN 힌트로 유도한다."},
+  {"text": "NO_QUERY_TRANSFORMATION 힌트는 옵티마이저의 쿼리 변환을 억제한다.", "answer": true, "explain": "모든 쿼리 변환을 억제하는 힌트다."}
+]

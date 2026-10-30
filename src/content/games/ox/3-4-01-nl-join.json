@@ -1,0 +1,20 @@
+[
+  {"text": "NL 조인은 Outer 테이블의 레코드 한 건마다 Inner 테이블을 탐색하는 중첩 루프 구조의 조인이다.", "answer": true, "explain": "프로그래밍의 이중 반복문과 같은 구조로 동작한다."},
+  {"text": "NL 조인에서 Inner 테이블의 탐색 횟수는 Outer 테이블에서 조건을 통과한 레코드 수와 같다.", "answer": true, "explain": "Outer에서 조건을 통과한 건마다 Inner 탐색이 한 번씩 반복된다."},
+  {"text": "NL 조인의 드라이빙 테이블은 필터 조건 적용 전 테이블 전체 크기가 작은 쪽으로 정해야 한다.", "answer": false, "explain": "테이블 크기가 아니라 필터 조건 적용 후 건수가 적은 쪽을 드라이빙 테이블로 둔다."},
+  {"text": "NL 조인을 효율적으로 수행하려면 Outer 테이블의 조인 컬럼에 반드시 인덱스가 있어야 한다.", "answer": false, "explain": "인덱스가 반드시 필요한 쪽은 반복 탐색되는 Inner 테이블의 조인 컬럼이다."},
+  {"text": "NL 조인은 랜덤 액세스 위주의 조인 방식이므로 대량 데이터 조인에 불리하다.", "answer": true, "explain": "레코드 하나를 읽으려고 블록을 통째로 읽는 랜덤 액세스 방식이라 대량 처리에 불리하다."},
+  {"text": "NL 조인은 한 레코드씩 순차적으로 조인을 진행하므로 부분범위 처리에 유리하다.", "answer": true, "explain": "Outer 한 건씩 결과를 바로 만들 수 있어 필요한 만큼만 먼저 전송할 수 있다."},
+  {"text": "NL 조인은 등치 조인 조건에서만 사용할 수 있다.", "answer": false, "explain": "NL 조인은 등치, 비등치, LIKE 등 조인 조건의 연산자 종류와 관계없이 사용할 수 있다."},
+  {"text": "NL 조인은 다른 조인 방식보다 인덱스 구성에 따라 성능 차이가 크게 난다.", "answer": true, "explain": "조인 컬럼과 필터 컬럼의 인덱스 구성이 NL 조인 성능의 성패를 가른다."},
+  {"text": "실행계획에서 NESTED LOOPS 바로 아래 두 자식 중 아래쪽 자식이 Outer 테이블이다.", "answer": false, "explain": "NESTED LOOPS 아래 위쪽 자식이 Outer, 아래쪽 자식이 Inner다."},
+  {"text": "NL 조인에서는 Outer에서 한 건을 얻을 때마다 Inner 쪽 인덱스 탐색과 테이블 액세스가 반복된다.", "answer": true, "explain": "Outer 한 건마다 Inner를 탐색하는 중첩 루프 구조이기 때문이다."},
+  {"text": "ORDERED 힌트는 FROM 절에 나열한 테이블 순서대로 조인하도록 지시한다.", "answer": true, "explain": "LEADING은 괄호 안에 지정한 순서대로 조인하도록 지시한다."},
+  {"text": "LEADING 힌트는 FROM 절의 테이블 나열 순서를 따라야만 효과가 있다.", "answer": false, "explain": "LEADING은 FROM 절 순서와 무관하게 괄호 안에 지정한 순서대로 조인 순서를 정한다."},
+  {"text": "NL 조인 테이블 프리페치가 동작하면 Inner 테이블 액세스 오퍼레이션이 NESTED LOOPS 위쪽에 나타난다.", "answer": true, "explain": "프리페치 방식에서는 Inner 테이블의 TABLE ACCESS BY INDEX ROWID가 NESTED LOOPS 위로 올라간다."},
+  {"text": "Oracle 11g 이후 NL 조인 배치 I/O가 동작하면 실행계획에 HASH JOIN 오퍼레이션이 함께 나타난다.", "answer": false, "explain": "배치 I/O가 동작하면 실행계획에 NESTED LOOPS가 두 번 나타난다."},
+  {"text": "NL 조인 배치 I/O를 제어하는 힌트는 NLJ_BATCHING과 NO_NLJ_BATCHING이다.", "answer": true, "explain": "테이블 프리페치는 NLJ_PREFETCH와 NO_NLJ_PREFETCH 힌트로 제어한다."},
+  {"text": "NL 조인에서 프리페치나 배치 I/O가 동작해도 Inner 쪽 결과는 항상 인덱스 순서대로 출력된다.", "answer": false, "explain": "프리페치나 배치 I/O가 동작하면 인덱스 순서대로 나온다는 보장이 없으므로 정렬이 필요하면 ORDER BY를 명시해야 한다."},
+  {"text": "NL 조인에서 Outer 인덱스로 읽은 건 대부분이 테이블 필터 조건에서 버려진다면 필터 컬럼을 Outer 인덱스에 추가하는 것이 효과적이다.", "answer": true, "explain": "인덱스 단계에서 걸러내 테이블 랜덤 액세스를 줄일 수 있다."},
+  {"text": "NL 조인은 소량 데이터를 빠르게 처리해야 하는 OLTP 환경에 적합한 조인 방식이다.", "answer": true, "explain": "소량·OLTP와 부분범위 처리에 유리하며, 대량 조인은 해시 조인이나 소트 머지 조인을 고려한다."}
+]

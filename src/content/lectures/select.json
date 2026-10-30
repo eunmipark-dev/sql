@@ -1,0 +1,1291 @@
+{
+  "slug": "select",
+  "title": "SELECT 문",
+  "tables": {
+    "EMP": {
+      "columns": [
+        "DEPTNO",
+        "JOB"
+      ],
+      "rows": [
+        [
+          "10",
+          "CLERK"
+        ],
+        [
+          "10",
+          "CLERK"
+        ],
+        [
+          "10",
+          "MANAGER"
+        ],
+        [
+          "20",
+          "CLERK"
+        ]
+      ]
+    },
+    "사원 2명": {
+      "columns": [
+        "ENAME",
+        "SAL",
+        "COMM"
+      ],
+      "rows": [
+        [
+          "A",
+          "500",
+          "NULL"
+        ],
+        [
+          "B",
+          "300",
+          "100"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "SELECT 문",
+      "subtitle": "조회의 기본, 별칭, 실행 순서",
+      "icon": "search",
+      "steps": [
+        {
+          "say": "SELECT 문을 시작할게요."
+        },
+        {
+          "say": "시험엔 별칭 규칙과 실행 순서가 자주 나와요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "code",
+      "section": "기본 문법",
+      "title": "SELECT 기본 문법",
+      "code": "SELECT [DISTINCT] 컬럼 | *\nFROM   테이블\n[WHERE 조건]\n[GROUP BY 컬럼]\n[HAVING 그룹조건]\n[ORDER BY 컬럼 [ASC | DESC]];",
+      "steps": [
+        {
+          "say": "기본 모양부터 볼게요."
+        },
+        {
+          "say": "SELECT와 FROM은 꼭 있어야 해요. 오라클 기준이에요.",
+          "focus": [
+            1,
+            2
+          ]
+        },
+        {
+          "say": "SQL 서버는 FROM 없이도 실행돼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "나머지 절은 필요할 때만 써요.",
+          "focus": [
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "say": "별표를 쓰면 모든 컬럼을 정의된 순서로 보여줘요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "compare",
+      "section": "기본 문법",
+      "title": "대소문자 구분",
+      "left": {
+        "title": "키워드, 객체명",
+        "items": [
+          "구분 안 함",
+          "SELECT, select"
+        ],
+        "icon": "check",
+        "tone": "good"
+      },
+      "right": {
+        "title": "문자열 데이터",
+        "items": [
+          "구분함",
+          "SMITH ≠ smith"
+        ],
+        "icon": "warning",
+        "tone": "bad"
+      },
+      "steps": [
+        {
+          "say": "대소문자는 어떨까요?"
+        },
+        {
+          "say": "키워드와 테이블 이름은 구분하지 않아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "하지만 따옴표 안 문자열 데이터는 구분해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "대문자 SMITH와 소문자 smith는 달라요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "compare",
+      "section": "DISTINCT",
+      "title": "ALL과 DISTINCT",
+      "left": {
+        "title": "ALL",
+        "items": [
+          "중복도 모두 출력",
+          "기본값, 생략 가능"
+        ],
+        "icon": "copy"
+      },
+      "right": {
+        "title": "DISTINCT",
+        "items": [
+          "중복을 하나로",
+          "SELECT 바로 뒤"
+        ],
+        "icon": "filter"
+      },
+      "steps": [
+        {
+          "say": "SELECT 바로 뒤에 붙는 옵션이 두 개 있어요."
+        },
+        {
+          "say": "ALL은 중복까지 모두 보여줘요. 기본값이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "DISTINCT는 중복을 하나로 줄여요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "SELECT 바로 뒤에 한 번만 써요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "id": "s05",
+      "section": "DISTINCT",
+      "type": "data",
+      "title": "원본 4행",
+      "tables": [
+        "EMP"
+      ],
+      "steps": [
+        {
+          "say": "이런 네 행이 있다고 해 볼게요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2,
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "10번 CLERK가 두 번 나와요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1
+              ],
+              "notes": [
+                [
+                  1,
+                  "JOB",
+                  "똑같은 쌍"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "10번 MANAGER와 20번 CLERK도 있어요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                2,
+                3
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s06",
+      "section": "DISTINCT",
+      "type": "data",
+      "title": "조합 기준 중복 제거",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT DISTINCT DEPTNO FROM EMP;\nSELECT DISTINCT DEPTNO, JOB FROM EMP;",
+      "steps": [
+        {
+          "say": "원본은 10번 CLERK 둘, MANAGER 하나예요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "그리고 20번 CLERK 하나예요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "부서번호만 DISTINCT하면 10과 20, 두 행이에요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "EMP": {
+              "group": "DEPTNO",
+              "cols": [
+                "DEPTNO"
+              ],
+              "result": {
+                "title": "DISTINCT DEPTNO",
+                "columns": [
+                  "DEPTNO"
+                ],
+                "rows": [
+                  [
+                    "10"
+                  ],
+                  [
+                    "20"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "부서번호와 직무를 같이 쓰면 쌍으로 비교해요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "group": null,
+              "result": null,
+              "cols": [
+                "DEPTNO",
+                "JOB"
+              ],
+              "tint": [
+                [
+                  0,
+                  1
+                ],
+                [
+                  2
+                ],
+                [
+                  3
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "겹치는 쌍은 10번 CLERK뿐이라 세 행이에요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  0,
+                  1
+                ],
+                [
+                  2
+                ],
+                [
+                  3
+                ]
+              ],
+              "notes": [
+                [
+                  1,
+                  "JOB",
+                  "중복, 하나로"
+                ]
+              ],
+              "result": {
+                "title": "DISTINCT DEPTNO, JOB",
+                "columns": [
+                  "DEPTNO",
+                  "JOB"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "CLERK"
+                  ],
+                  [
+                    "10",
+                    "MANAGER"
+                  ],
+                  [
+                    "20",
+                    "CLERK"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "정리하면, DISTINCT는 모든 컬럼 조합 기준이에요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "DEPTNO",
+                "JOB"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "DISTINCT",
+      "tone": "warning",
+      "title": "DISTINCT 함정",
+      "text": "DISTINCT는 **컬럼 조합** 기준. 중간에 쓰면 **문법 오류**, NULL도 한 행으로 남아요.",
+      "steps": [
+        {
+          "say": "DISTINCT를 컬럼 중간에 쓰면 문법 오류예요."
+        },
+        {
+          "say": "NULL도 하나의 값처럼 한 행으로 남아요."
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "quiz",
+      "section": "DISTINCT",
+      "question": "(10, CLERK), (20, CLERK), (20, CLERK), (20, MANAGER) 4행에서 `SELECT DISTINCT DEPTNO, JOB`의 결과 행 수는?",
+      "choices": [
+        "1행",
+        "2행",
+        "3행",
+        "4행"
+      ],
+      "answer": 3,
+      "explanation": "DEPTNO와 JOB 쌍으로 비교해요. 20 CLERK 중복 하나가 빠져 3행이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 이 네 행을 쌍으로 DISTINCT하면 몇 행일까요?"
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "cards",
+      "section": "별칭",
+      "title": "컬럼 별칭 규칙",
+      "cols": 2,
+      "items": [
+        {
+          "title": "AS",
+          "desc": "생략 가능",
+          "icon": "tag"
+        },
+        {
+          "title": "큰따옴표",
+          "desc": "공백, 특수문자",
+          "icon": "check",
+          "tone": "good"
+        },
+        {
+          "title": "대소문자",
+          "desc": "구분은 큰따옴표",
+          "icon": "shapes"
+        },
+        {
+          "title": "작은따옴표",
+          "desc": "문자열이라 불가",
+          "icon": "warning",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "별칭은 결과 헤더에 다른 이름을 붙여요."
+        },
+        {
+          "say": "첫째, AS는 써도 되고 생략해도 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 공백이나 특수문자가 있으면 큰따옴표로 감싸요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 대소문자를 살릴 때도 큰따옴표예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "작은따옴표는 문자열이라 별칭으로 못 써요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "compare",
+      "section": "별칭",
+      "title": "테이블 별칭",
+      "left": {
+        "title": "Oracle",
+        "items": [
+          "AS 쓰면 오류",
+          "FROM EMP E"
+        ],
+        "icon": "warning",
+        "tone": "bad"
+      },
+      "right": {
+        "title": "SQL Server",
+        "items": [
+          "AS 사용 가능",
+          "FROM EMP AS E"
+        ],
+        "icon": "check",
+        "tone": "good"
+      },
+      "steps": [
+        {
+          "say": "테이블 별칭은 DBMS마다 달라요."
+        },
+        {
+          "say": "오라클은 테이블 별칭에 AS를 쓰면 오류예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL 서버는 AS를 써도 돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "별칭을 붙이면 그 SQL 안에선 별칭으로만 불러요.",
+          "focus": [
+            0,
+            1
+          ]
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "type": "quiz",
+      "section": "별칭",
+      "question": "Oracle에서 **오류가 나는** 것은?",
+      "choices": [
+        "ENAME AS 사원명",
+        "ENAME 사원명",
+        "SAL * 12 \"연 봉\"",
+        "FROM EMP AS E"
+      ],
+      "answer": 4,
+      "explanation": "오라클은 테이블 별칭에 AS를 못 써요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 오라클에서 오류가 나는 것은?"
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "type": "layers",
+      "section": "연산자",
+      "title": "산술 연산 우선순위",
+      "axis": {
+        "top": "먼저",
+        "bottom": "나중"
+      },
+      "layers": [
+        {
+          "title": "괄호",
+          "desc": "(10 + 2) * 3 = 36"
+        },
+        {
+          "title": "곱하기, 나누기",
+          "desc": "10 + 2 * 3 = 16"
+        },
+        {
+          "title": "더하기, 빼기"
+        }
+      ],
+      "steps": [
+        {
+          "say": "산술 연산은 이 순서로 계산해요."
+        },
+        {
+          "say": "괄호가 가장 먼저예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그다음 곱하기와 나누기예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "더하기와 빼기는 마지막이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "10 더하기 2 곱하기 3을 볼게요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "곱하기가 먼저라 2 곱하기 3은 6이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "10 더하기 6, 답은 16이에요.",
+          "focus": [
+            1,
+            2
+          ]
+        },
+        {
+          "say": "괄호로 묶으면 10 더하기 2가 먼저예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "12 곱하기 3, 답은 36이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "나머지는 오라클은 MOD 함수, SQL 서버는 퍼센트예요.",
+          "focus": [
+            0,
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "id": "s13",
+      "section": "연산자",
+      "type": "data",
+      "title": "NULL이 섞이면",
+      "tables": [
+        "사원 2명"
+      ],
+      "code": "SELECT SAL + COMM AS TOTAL FROM EMP;",
+      "steps": [
+        {
+          "say": "A 사원의 급여가 500이에요.",
+          "t": {
+            "사원 2명": {
+              "cells": [
+                [
+                  0,
+                  "SAL"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그런데 커미션은 NULL이에요.",
+          "t": {
+            "사원 2명": {
+              "cells": [
+                [
+                  0,
+                  "COMM"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "둘을 더하면 결과는 NULL이에요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "사원 2명": {
+              "add": [
+                "SAL+COMM",
+                [
+                  "NULL",
+                  "400"
+                ]
+              ],
+              "cells": [
+                [
+                  0,
+                  "SAL+COMM"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "SAL+COMM",
+                  "NULL!"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "NULL이 섞인 산술 연산은 항상 NULL이에요. B는 정상이에요.",
+          "t": {
+            "사원 2명": {
+              "cells": [
+                [
+                  1,
+                  "SAL+COMM"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "0으로 바꿔 계산하려면 NVL을 써요. A는 500이 돼요.",
+          "t": {
+            "사원 2명": {
+              "add": [
+                "SAL+NVL(COMM,0)",
+                [
+                  "500",
+                  "400"
+                ]
+              ],
+              "cells": [
+                [
+                  0,
+                  "SAL+NVL(COMM,0)"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "연산자",
+      "title": "문자열 연결",
+      "cols": 3,
+      "items": [
+        {
+          "title": "Oracle",
+          "desc": "파이프 두 개 ||",
+          "icon": "database"
+        },
+        {
+          "title": "SQL 서버",
+          "desc": "더하기 +",
+          "icon": "database"
+        },
+        {
+          "title": "공통",
+          "desc": "CONCAT, 인수 2개",
+          "icon": "link"
+        }
+      ],
+      "steps": [
+        {
+          "say": "문자열을 이어 붙이는 방법이에요."
+        },
+        {
+          "say": "오라클은 세로 막대 두 개를 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL 서버는 더하기 기호를 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "CONCAT 함수는 둘 다 돼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "단, CONCAT은 인수를 두 개만 받아요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "compare",
+      "section": "연산자",
+      "title": "NULL과 연결하면",
+      "left": {
+        "title": "Oracle ||",
+        "items": [
+          "'A' || NULL",
+          "결과 'A'"
+        ],
+        "tone": "good"
+      },
+      "right": {
+        "title": "SQL Server +",
+        "items": [
+          "'A' + NULL",
+          "결과 NULL"
+        ],
+        "tone": "bad"
+      },
+      "steps": [
+        {
+          "say": "NULL과 연결하면 결과가 달라요."
+        },
+        {
+          "say": "오라클은 NULL을 빈 문자처럼 무시해요. 결과는 A예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "산술 연산과 다르니 주의하세요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL 서버는 기본 설정에서 NULL이 돼요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "callout",
+      "section": "연산자",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "Oracle에서 '1' + '2'는 연결이 아니에요. **숫자로 바뀌어 더해져 3**이에요.",
+      "steps": [
+        {
+          "say": "오라클에서 문자 1 더하기 문자 2는 뭘까요?"
+        },
+        {
+          "say": "연결이 아니라 숫자로 바꿔 더해요. 결과는 3이에요."
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "quiz",
+      "section": "연산자",
+      "question": "Oracle에서 `'A' || NULL`의 결과는?",
+      "choices": [
+        "NULL",
+        "오류가 난다",
+        "빈 문자열",
+        "A"
+      ],
+      "answer": 4,
+      "explanation": "오라클은 문자열을 연결할 때 NULL을 무시해요. 그래서 결과는 A예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 오라클에서 A를 NULL과 연결하면 결과는?"
+        }
+      ],
+      "id": "s16q"
+    },
+    {
+      "type": "flow",
+      "section": "실행 순서",
+      "title": "논리적 실행 순서",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "FROM",
+          "desc": "대상 테이블",
+          "icon": "table"
+        },
+        {
+          "title": "WHERE",
+          "desc": "행 거르기",
+          "icon": "filter"
+        },
+        {
+          "title": "GROUP BY",
+          "desc": "그룹 만들기",
+          "icon": "layers"
+        },
+        {
+          "title": "HAVING",
+          "desc": "그룹 거르기",
+          "icon": "filter"
+        },
+        {
+          "title": "SELECT",
+          "desc": "출력 계산",
+          "icon": "eye"
+        },
+        {
+          "title": "ORDER BY",
+          "desc": "정렬",
+          "icon": "checklist"
+        }
+      ],
+      "steps": [
+        {
+          "say": "이제 가장 중요한 실행 순서예요."
+        },
+        {
+          "say": "첫째, FROM으로 테이블을 가져와요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, WHERE로 행을 걸러요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, GROUP BY로 묶어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, HAVING으로 그룹을 걸러요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "다섯째, SELECT로 출력할 값을 계산해요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "마지막으로 ORDER BY로 정렬해요.",
+          "focus": [
+            5
+          ]
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "compare",
+      "section": "실행 순서",
+      "title": "작성 순서와 실행 순서",
+      "left": {
+        "title": "작성 순서",
+        "items": [
+          "SELECT부터",
+          "사람이 읽기 좋게"
+        ],
+        "icon": "file"
+      },
+      "right": {
+        "title": "실행 순서",
+        "items": [
+          "FROM부터",
+          "SELECT는 거의 끝"
+        ],
+        "icon": "workflow",
+        "tone": "good"
+      },
+      "steps": [
+        {
+          "say": "쓰는 순서와 실행 순서는 달라요."
+        },
+        {
+          "say": "쓸 때는 SELECT부터 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "실행은 FROM부터 해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "SELECT는 거의 마지막에 계산돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "프롬, 웨어, 그룹바이, 해빙.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그리고 셀렉트, 오더바이. 꼭 외워 두세요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "quiz",
+      "section": "실행 순서",
+      "question": "논리적 실행 순서에서 **SELECT 바로 앞**은?",
+      "choices": [
+        "HAVING",
+        "WHERE",
+        "GROUP BY",
+        "ORDER BY"
+      ],
+      "answer": 1,
+      "explanation": "HAVING 다음에 SELECT, 마지막이 ORDER BY예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 실행 순서에서 SELECT 바로 앞은?"
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "cards",
+      "section": "별칭 사용 위치",
+      "title": "별칭은 어디서?",
+      "cols": 2,
+      "items": [
+        {
+          "title": "WHERE",
+          "desc": "SELECT보다 먼저",
+          "icon": "warning",
+          "tone": "bad"
+        },
+        {
+          "title": "GROUP BY",
+          "desc": "SELECT보다 먼저",
+          "icon": "warning",
+          "tone": "bad"
+        },
+        {
+          "title": "HAVING",
+          "desc": "SELECT보다 먼저",
+          "icon": "warning",
+          "tone": "bad"
+        },
+        {
+          "title": "ORDER BY",
+          "desc": "SELECT 다음, 가능",
+          "icon": "check",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "컬럼 별칭은 SELECT 절에서 생겨요."
+        },
+        {
+          "say": "WHERE는 SELECT보다 먼저라 별칭을 몰라요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "GROUP BY도 마찬가지예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "HAVING도 SELECT 전이라 안 돼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "ORDER BY만 SELECT 다음이라 쓸 수 있어요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "code",
+      "section": "별칭 사용 위치",
+      "title": "별칭 오류 예",
+      "code": "-- 오류\nSELECT SAL * 12 AS ANNUAL FROM EMP\nWHERE ANNUAL > 3000;\n-- 정상\nSELECT SAL * 12 AS ANNUAL FROM EMP\nORDER BY ANNUAL;",
+      "steps": [
+        {
+          "say": "연봉에 ANNUAL이라는 별칭을 붙였어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "이걸 WHERE에서 쓰면 오류예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "WHERE에선 SAL 곱하기 12를 그대로 써야 해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "ORDER BY에선 별칭을 써도 돼요.",
+          "focus": [
+            6
+          ]
+        },
+        {
+          "say": "테이블 별칭은 FROM에서 정해서 어디서든 써요."
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "quiz",
+      "section": "별칭 사용 위치",
+      "question": "SELECT 절의 **컬럼 별칭**을 쓸 수 있는 절은?",
+      "choices": [
+        "WHERE",
+        "ORDER BY",
+        "GROUP BY",
+        "HAVING"
+      ],
+      "answer": 2,
+      "explanation": "ORDER BY만 SELECT 다음에 실행돼요. 그래서 별칭을 알아요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 컬럼 별칭을 쓸 수 있는 절은?"
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "cards",
+      "section": "DUAL 테이블",
+      "title": "DUAL 테이블",
+      "cols": 3,
+      "items": [
+        {
+          "title": "1행 1열",
+          "desc": "DUMMY 값 'X'",
+          "icon": "table"
+        },
+        {
+          "title": "용도",
+          "desc": "계산 결과 확인",
+          "icon": "idea"
+        },
+        {
+          "title": "소유자",
+          "desc": "SYS, 누구나 사용",
+          "icon": "user"
+        }
+      ],
+      "steps": [
+        {
+          "say": "오라클에는 DUAL이라는 테이블이 있어요."
+        },
+        {
+          "say": "한 행 한 열짜리 더미 테이블이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "오라클은 FROM이 꼭 필요하잖아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래서 계산 결과만 볼 때 DUAL을 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "SYS 소유지만 모든 사용자가 쓸 수 있어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "SQL 서버는 FROM을 생략하면 돼요.",
+          "focus": [
+            0,
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s23"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "DISTINCT는 컬럼 조합 기준",
+        "Oracle 테이블 별칭에 AS 불가",
+        "NULL 산술은 NULL, || 연결은 무시",
+        "실행: FROM 먼저, SELECT 거의 끝",
+        "컬럼 별칭은 ORDER BY에서만",
+        "DUAL은 1행 1열 더미 테이블"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "DISTINCT는 모든 컬럼 조합으로 중복을 없애요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "오라클 테이블 별칭엔 AS를 못 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "NULL이 섞인 산술은 NULL이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "오라클 연결 연산은 NULL을 무시해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "실행은 FROM부터, SELECT는 거의 끝이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "컬럼 별칭은 ORDER BY에서만 써요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "DUAL은 한 행 한 열 더미 테이블이에요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s24"
+    }
+  ]
+}

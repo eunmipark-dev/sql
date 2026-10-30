@@ -1,0 +1,21 @@
+[
+  { "text": "Oracle은 소트를 SGA의 버퍼 캐시가 아니라 PGA의 Sort Area에서 수행한다.", "answer": true, "explain": "소트는 PGA Sort Area에서 수행되고, 공간이 부족하면 Temp 테이블스페이스를 사용한다." },
+  { "text": "Sort Area가 부족해 중간 결과를 Temp 테이블스페이스에 기록하며 정렬하는 것을 메모리 소트라고 한다.", "answer": false, "explain": "Temp를 사용하는 소트는 디스크 소트(To-Disk, External Sort)다." },
+  { "text": "디스크 소트 중 Temp에 쓰고 읽기를 여러 번 반복하는 Multi-pass 소트가 가장 느리다.", "answer": true, "explain": "Optimal은 메모리, One-pass는 한 번 쓰고 읽기, Multi-pass는 여러 번 반복해 가장 느리다." },
+  { "text": "소트 연산은 정렬이 끝나야 첫 행을 반환할 수 있으므로 부분범위 처리를 불가능하게 만든다.", "answer": true, "explain": "전체를 정렬해야 결과가 나오므로 OLTP 응답 속도에 불리하다." },
+  { "text": "GROUP BY 없이 SUM, MAX를 구할 때 나타나는 SORT AGGREGATE는 대상 데이터를 실제로 정렬한다.", "answer": false, "explain": "SORT AGGREGATE는 값을 읽으며 집계값만 갱신할 뿐 실제 정렬은 하지 않는다." },
+  { "text": "10gR2 이후 GROUP BY는 HASH GROUP BY로 처리될 수 있어 ORDER BY 없이는 결과의 정렬이 보장되지 않는다.", "answer": true, "explain": "해시 방식 그룹핑은 정렬하지 않으므로 정렬이 필요하면 ORDER BY를 명시해야 한다." },
+  { "text": "분석 함수의 PARTITION BY나 ORDER BY 처리를 위해 실행계획에 SORT JOIN 오퍼레이션이 나타난다.", "answer": false, "explain": "분석 함수는 WINDOW SORT로 나타나며, SORT JOIN은 소트 머지 조인에서 발생한다." },
+  { "text": "MINUS 연산은 중복 제거를 위해 SORT UNIQUE 또는 HASH UNIQUE 오퍼레이션을 발생시킬 수 있다.", "answer": true, "explain": "DISTINCT, UNION, MINUS, INTERSECT는 SORT(HASH) UNIQUE를 유발한다." },
+  { "text": "두 집합이 상호 배타적이라면 UNION을 UNION ALL로 바꿔 중복 제거 소트를 없앨 수 있다.", "answer": true, "explain": "배타적 집합은 중복이 없으므로 UNION ALL로 바꿔도 결과가 같고 소트가 사라진다." },
+  { "text": "UNION을 UNION ALL로 바꿀 때 NULL 허용 컬럼에 'col <> 값' 반대 조건만 추가하면 NULL 행도 결과에 포함된다.", "answer": false, "explain": "col <> 값은 NULL 행을 걸러내므로 col IS NULL을 추가하거나 LNNVL을 써야 한다." },
+  { "text": "존재 여부만 확인하는 DISTINCT 조인을 EXISTS 서브쿼리로 바꾸면 소트와 불필요한 I/O를 함께 줄일 수 있다.", "answer": true, "explain": "EXISTS는 조인 대상 1건을 찾는 순간 멈추고 중복 제거 소트도 필요 없다." },
+  { "text": "인덱스 (고객ID, 주문일자)에서 '고객ID = :id ORDER BY 주문일자' 조회는 SORT ORDER BY가 생략될 수 있다.", "answer": true, "explain": "선두 컬럼이 = 조건이고 ORDER BY가 다음 컬럼과 일치하면 인덱스 순서로 소트를 생략한다." },
+  { "text": "인덱스 (고객ID, 주문일자)에서 '고객ID IN (:a, :b) ORDER BY 주문일자' 조회는 소트가 생략된다.", "answer": false, "explain": "IN-List Iterator로 고객별로 따로 읽어 전체 순서가 보장되지 않으므로 소트가 발생한다." },
+  { "text": "SELECT 절에서 TO_CHAR로 가공한 컬럼의 별칭으로 ORDER BY하면 인덱스를 이용한 소트 생략이 불가능하다.", "answer": true, "explain": "별칭 기준 정렬은 가공된 값 기준 정렬이 되므로 인덱스 순서를 이용할 수 없다." },
+  { "text": "MAX(주문금액 + 0)처럼 MIN/MAX 대상 컬럼을 가공해도 First Row Stopkey가 작동해 한 건만 읽는다.", "answer": false, "explain": "MIN/MAX 대상 컬럼을 가공하면 First Row Stopkey가 작동하지 않아 범위 전체를 읽는다." },
+  { "text": "인덱스로 소트를 생략할 수 없는 Top N 쿼리는 SORT ORDER BY STOPKEY로 상위 N건만 Sort Area에 유지한다.", "answer": true, "explain": "Top N 소트 알고리즘은 전체 정렬보다 메모리 사용량이 매우 적다." },
+  { "text": "Sort Area에는 정렬 키 컬럼만 올라가므로 SELECT 절 컬럼 수는 소트 부하에 영향을 주지 않는다.", "answer": false, "explain": "Sort Area에는 SELECT 절 컬럼 전체가 올라가므로 필요한 컬럼만 정렬해야 한다." },
+  { "text": "문자열을 결합해 길게 가공한 값을 정렬하는 것보다 원래 컬럼으로 먼저 정렬한 뒤 가공하는 것이 소트 영역을 덜 사용한다.", "answer": true, "explain": "정렬 후 가공하면 Sort Area에 올라가는 레코드 크기가 작아진다." },
+  { "text": "페이징 쿼리에서 끝 번호 ROWNUM 조건을 빼고 가장 바깥에서 NO BETWEEN 조건만 쓰면 Top N 소트가 작동한다.", "answer": false, "explain": "COUNT STOPKEY가 없어 Top N 소트가 동작하지 않으므로 ROWNUM 조건을 정렬된 인라인 뷰 바로 바깥에 둔다." }
+]

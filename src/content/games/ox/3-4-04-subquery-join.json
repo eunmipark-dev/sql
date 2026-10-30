@@ -1,0 +1,21 @@
+[
+  {"text": "필터 오퍼레이션은 메인쿼리 한 건에 대해 서브쿼리에서 조건을 만족하는 첫 건을 찾으면 더 탐색하지 않는다.", "answer": true, "explain": "첫 매칭에서 멈추고 다음 메인쿼리 행으로 넘어가는 점이 NL 조인과 다르다."},
+  {"text": "필터 오퍼레이션 방식에서는 서브쿼리를 드라이빙 집합으로 하는 실행계획을 만들 수 있다.", "answer": false, "explain": "필터 오퍼레이션은 항상 메인쿼리가 드라이빙 집합이며 조인 순서가 고정된다."},
+  {"text": "필터 오퍼레이션은 서브쿼리 입력 값과 결과를 PGA 캐시에 저장해 같은 입력 값이 오면 재사용한다.", "answer": true, "explain": "같은 입력 값이 다시 오면 서브쿼리를 실행하지 않고 캐시 결과를 쓴다."},
+  {"text": "필터 오퍼레이션의 캐싱 효과는 서브쿼리 입력 값의 종류가 적을수록 크다.", "answer": true, "explain": "같은 입력 값이 자주 반복될수록 서브쿼리를 실행하지 않고 캐시 결과를 재사용할 수 있다."},
+  {"text": "서브쿼리 쪽 조인 컬럼에 PK나 Unique 제약이 있으면 중복 제거 없이 일반 조인으로 Unnesting 할 수 있다.", "answer": true, "explain": "1쪽 집합임이 보장되므로 조인해도 메인쿼리 결과 건수가 늘지 않는다."},
+  {"text": "Unnesting 된 NOT EXISTS 서브쿼리는 세미 조인으로 처리된다.", "answer": false, "explain": "NOT EXISTS·NOT IN은 안티 조인으로, EXISTS·IN은 세미 조인으로 처리된다."},
+  {"text": "HASH_AJ 힌트는 서브쿼리 안에 기술하여 해시 안티 조인 방식을 유도한다.", "answer": true, "explain": "세미 조인은 NL_SJ·HASH_SJ·MERGE_SJ, 안티 조인은 NL_AJ·HASH_AJ·MERGE_AJ 힌트를 쓴다."},
+  {"text": "세미 조인과 안티 조인은 기본적으로 서브쿼리 쪽 집합이 Outer가 된다.", "answer": false, "explain": "세미·안티 조인은 기본적으로 메인쿼리 쪽이 먼저(Outer)다."},
+  {"text": "HASH JOIN RIGHT SEMI는 서브쿼리 쪽 집합을 Build Input으로 바꾼 해시 세미 조인이다.", "answer": true, "explain": "10g 이상에서 서브쿼리 쪽을 Build Input으로 바꿀 때 RIGHT SEMI/RIGHT ANTI가 나타난다."},
+  {"text": "Unnesting 되지 않은 서브쿼리는 기본적으로 실행계획의 맨 마지막 단계에서 필터링된다.", "answer": true, "explain": "그래서 필터링 효과가 큰 서브쿼리는 PUSH_SUBQ로 앞 단계로 끌어올릴 수 있다."},
+  {"text": "PUSH_SUBQ 힌트는 UNNEST 힌트와 함께 서브쿼리 안에 사용해야 효과가 있다.", "answer": false, "explain": "Pushing은 Unnesting 되지 않은 서브쿼리에만 작동하므로 NO_UNNEST와 함께 쓴다."},
+  {"text": "복합 뷰를 Merging 하면 GROUP BY가 조인 이후로 미뤄져 조인 결과가 많을 때 오히려 느려질 수 있다.", "answer": true, "explain": "집계 대상이 늘어나므로, 뷰 안 조건이 선택적이면 NO_MERGE로 뷰를 먼저 처리하는 편이 낫다."},
+  {"text": "실행계획에 VIEW PUSHED PREDICATE가 나타나면 조인 조건 Pushdown이 작동한 것이다.", "answer": true, "explain": "메인 테이블에서 읽은 값을 뷰 안 조인 조건으로 건네 필요한 데이터만 처리한다."},
+  {"text": "SELECT 절의 스칼라 서브쿼리가 결과를 반환하지 않으면 해당 메인쿼리 행은 결과에서 제외된다.", "answer": false, "explain": "스칼라 서브쿼리는 결과가 없으면 NULL을 반환하므로 Outer 조인처럼 메인 행이 유지된다."},
+  {"text": "고객번호처럼 거의 유일한 값을 입력으로 받는 스칼라 서브쿼리는 캐싱 효과가 크다.", "answer": false, "explain": "입력 값 종류가 많으면 캐시 적중이 드물어 확인·저장 비용만 더해진다. 입력 값 종류가 적을수록 효과가 크다."},
+  {"text": "사용자 정의 함수를 스칼라 서브쿼리로 감싸 호출하면 캐싱 효과로 함수 실행 횟수를 줄일 수 있다.", "answer": true, "explain": "(SELECT 함수(값) FROM DUAL) 형태로 쓰면 입력 값 종류만큼만 함수가 실행된다."},
+  {"text": "스칼라 서브쿼리가 두 건 이상의 행을 반환하면 오류가 발생한다.", "answer": true, "explain": "스칼라 서브쿼리는 한 행·한 컬럼만 반환해야 하며 두 건 이상이면 ORA-01427 오류가 난다."},
+  {"text": "스칼라 서브쿼리를 수동으로 조인으로 바꿀 때는 Inner 조인을 사용해야 결과가 같다.", "answer": false, "explain": "Inner 조인으로 바꾸면 매칭이 없는 메인 행이 사라지므로 반드시 Outer 조인으로 바꿔야 한다."},
+  {"text": "Oracle 12c부터는 스칼라 서브쿼리도 Unnesting 하여 해시 조인 등으로 처리할 수 있다.", "answer": true, "explain": "옵티마이저가 Outer 조인으로 변환한 뒤 해시 조인 등을 선택할 수 있다."}
+]

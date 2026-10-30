@@ -1,0 +1,22 @@
+[
+  { "text": "조건만 다른 집계를 UNION ALL로 같은 테이블에서 여러 번 구하는 대신 CASE나 DECODE를 쓰면 테이블을 한 번만 읽을 수 있다.", "answer": true, "explain": "한 번 읽으면서 SUM(CASE ...)로 조건별 집계를 열로 펼칠 수 있다." },
+  { "text": "데이터 복제 기법은 복제용 테이블과의 카티션 곱을 이용해 같은 데이터를 여러 벌 만든다.", "answer": true, "explain": "조인 조건 없이 COPY_T의 NO <= n 행과 결합하면 각 행이 n벌로 복제된다." },
+  { "text": "SELECT LEVEL FROM DUAL CONNECT BY LEVEL <= 2는 1과 2 두 행을 반환해 데이터 복제용 집합으로 쓸 수 있다.", "answer": true, "explain": "CONNECT BY LEVEL로 별도 테이블 없이 복제용 숫자 집합을 즉석에서 만든다." },
+  { "text": "UNION ALL과 GROUP BY로 FULL OUTER JOIN을 대체하면 양쪽 집합 중 한쪽에만 있는 키는 결과에서 누락된다.", "answer": false, "explain": "양쪽을 각각 한 번 읽어 합친 뒤 GROUP BY하므로 한쪽에만 있는 키도 누락 없이 나온다." },
+  { "text": "부분범위 처리는 결과 집합 전체를 만들지 않고 클라이언트가 Fetch를 요청한 만큼만 먼저 전송하는 방식이다.", "answer": true, "explain": "Array Size 단위로 필요한 만큼만 전송하므로 첫 화면 응답이 빠르다." },
+  { "text": "해시 조인의 Build 과정은 부분범위 처리에 영향을 주지 않는다.", "answer": false, "explain": "SORT ORDER BY, 해시 조인의 Build 등은 부분범위 처리를 불가능하게 만든다." },
+  { "text": "ROWNUM 페이징에서 ORDER BY 컬럼이 인덱스와 맞으면 실행계획에 SORT ORDER BY 없이 COUNT STOPKEY가 나타난다.", "answer": true, "explain": "인덱스 순서로 읽으며 필요한 건수에서 멈추므로 소트가 생략된다." },
+  { "text": "다음 페이지 존재 여부만 확인하면 될 때도 매번 COUNT(*)로 전체 건수를 구하는 것이 효율적이다.", "answer": false, "explain": "COUNT(*)는 전체 범위를 다시 읽으므로 한 건 더 읽어 다음 페이지 존재 여부를 판단한다." },
+  { "text": "ROWNUM 기반 Offset 페이징은 뒤 페이지로 갈수록 앞 페이지 데이터를 읽고 버리는 양이 늘어 느려진다.", "answer": true, "explain": "뒤 페이지 성능 문제는 이전 페이지 마지막 키를 넘기는 키 기반 페이징으로 해결한다." },
+  { "text": "키 기반 페이징에서는 정렬 키가 유일하지 않아도 경계에서 행이 중복되거나 누락되지 않는다.", "answer": false, "explain": "정렬 키가 유일하지 않으면 경계에서 중복·누락이 생기므로 유일 컬럼을 정렬 키에 추가한다." },
+  { "text": "Oracle 12c의 OFFSET FETCH 구문은 OFFSET 만큼의 행을 읽지 않고 건너뛰므로 뒤 페이지도 앞 페이지만큼 빠르다.", "answer": false, "explain": "OFFSET 만큼의 행은 여전히 읽고 버리므로 뒤 페이지 성능 특성은 ROWNUM 방식과 같다." },
+  { "text": "부서별 최고 급여자를 구할 때 MAX() OVER (PARTITION BY DEPTNO)를 쓰면 상관 서브쿼리보다 EMP를 적게 읽는다.", "answer": true, "explain": "윈도우 함수는 테이블을 한 번 읽고 WINDOW SORT로 처리해 반복 액세스를 없앤다." },
+  { "text": "비등가 셀프 조인으로 누적합을 구하면 건수가 늘수록 처리량이 건수의 제곱에 비례해 증가한다.", "answer": true, "explain": "N건마다 최대 N건이 조인되므로 N²에 비례하며, SUM OVER로 대체하면 한 번 정렬로 끝난다." },
+  { "text": "WITH 절의 Materialize 방식은 서브쿼리를 참조 위치에 인라인 뷰처럼 풀어 넣어 처리한다.", "answer": false, "explain": "Materialize는 결과를 임시 테이블에 저장해 반복 참조하며, 인라인으로 풀어 넣는 것은 Inline 방식이다." },
+  { "text": "WITH 절이 Materialize되면 실행계획에 TEMP TABLE TRANSFORMATION 오퍼레이션이 나타난다.", "answer": true, "explain": "LOAD AS SELECT로 SYS_TEMP 임시 테이블에 적재한 뒤 이를 읽는다." },
+  { "text": "WITH 절로 Materialize된 임시 테이블에는 원본 테이블의 인덱스가 함께 생성되어 인덱스 액세스가 가능하다.", "answer": false, "explain": "임시 테이블에는 인덱스가 없으며, 쓰기·읽기 I/O가 추가로 발생한다." },
+  { "text": "SQL 안에서 호출하는 사용자 정의 함수 내부에 SELECT문이 있으면 함수 호출 횟수만큼 Recursive Call이 발생한다.", "answer": true, "explain": "100만 건에 대해 호출하면 내부 SQL도 100만 번 실행된다." },
+  { "text": "사용자 정의 함수 안의 SQL은 메인 쿼리 시작 시점의 스냅샷을 공유하므로 읽기 일관성이 보장된다.", "answer": false, "explain": "함수 안 SQL은 호출 시점마다 별도 스냅샷을 보므로 메인 쿼리와 다른 데이터를 읽을 수 있다." },
+  { "text": "함수를 (SELECT fn(x) FROM DUAL)처럼 스칼라 서브쿼리로 감싸면 같은 입력값에 대해 캐싱 효과를 얻을 수 있다.", "answer": true, "explain": "스칼라 서브쿼리 캐싱으로 결과를 재사용하며, 입력값 종류가 적을수록 효과가 크다." },
+  { "text": "SELECT 절에 사용한 사용자 정의 함수는 Fetch된 결과 건수와 무관하게 쿼리당 한 번만 호출된다.", "answer": false, "explain": "SELECT 절의 함수는 Fetch된 결과 건수만큼 호출된다." }
+]

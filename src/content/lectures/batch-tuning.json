@@ -1,0 +1,1108 @@
+{
+  "slug": "batch-tuning",
+  "title": "대용량 배치와 병렬 처리",
+  "tables": {
+    "주문": {
+      "columns": [
+        "번호",
+        "지역",
+        "금액"
+      ],
+      "rows": [
+        [
+          "1",
+          "서울",
+          "30"
+        ],
+        [
+          "2",
+          "부산",
+          "20"
+        ],
+        [
+          "3",
+          "대구",
+          "10"
+        ],
+        [
+          "4",
+          "서울",
+          "40"
+        ],
+        [
+          "5",
+          "부산",
+          "50"
+        ],
+        [
+          "6",
+          "서울",
+          "10"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "대용량 배치와 병렬",
+      "subtitle": "한 번에, 여럿이 나눠서",
+      "icon": "users",
+      "steps": [
+        {
+          "say": "대용량 배치와 병렬 처리를 시작할게요."
+        },
+        {
+          "say": "많은 데이터를 빨리 끝내는 방법이에요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "compare",
+      "section": "배치 튜닝 개요",
+      "title": "OLTP와 배치",
+      "left": {
+        "title": "OLTP",
+        "icon": "user",
+        "items": [
+          "첫 행 응답 속도",
+          "인덱스 액세스"
+        ]
+      },
+      "right": {
+        "title": "배치",
+        "icon": "briefcase",
+        "items": [
+          "전체 처리 시간",
+          "Full Scan, 해시",
+          "병렬 처리"
+        ]
+      },
+      "steps": [
+        {
+          "say": "OLTP는 첫 행이 빨리 나오는 게 중요해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "배치는 전체가 빨리 끝나는 게 목표예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래서 Full Scan, 해시 조인, 병렬을 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "옵티마이저 모드는 ALL_ROWS가 맞아요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "cards",
+      "section": "배치 튜닝 개요",
+      "title": "절차형이 느린 이유",
+      "cols": 2,
+      "items": [
+        {
+          "title": "반복 Call",
+          "desc": "건마다 SQL 실행",
+          "icon": "recycle",
+          "tone": "bad"
+        },
+        {
+          "title": "랜덤 I/O",
+          "desc": "건마다 인덱스",
+          "icon": "search",
+          "tone": "bad"
+        },
+        {
+          "title": "잦은 커밋",
+          "desc": "sync 대기 누적",
+          "icon": "disk",
+          "tone": "bad"
+        },
+        {
+          "title": "최적화 불가",
+          "desc": "순서가 고정됨",
+          "icon": "lock",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "커서로 한 건씩 처리하는 방식을 절차형이라 해요."
+        },
+        {
+          "say": "이게 느린 이유는 네 가지예요."
+        },
+        {
+          "say": "첫째, 건마다 SQL을 실행해 Call이 쌓여요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 건마다 인덱스로 랜덤 액세스해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 건마다 커밋하면 대기가 쌓여요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 옵티마이저가 끼어들 틈이 없어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "해시 조인이나 병렬을 쓸 수 없죠.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "flow",
+      "section": "배치 튜닝 개요",
+      "title": "One SQL로 바꾸기",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "절차형 루프",
+          "desc": "건별 처리",
+          "icon": "recycle",
+          "tone": "bad"
+        },
+        {
+          "title": "집합적 사고",
+          "desc": "한 문장으로",
+          "icon": "idea"
+        },
+        {
+          "title": "One SQL",
+          "desc": "옵티마이저가 최적화",
+          "icon": "check",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "해결책은 One SQL이에요."
+        },
+        {
+          "say": "한 건씩 도는 루프 대신,",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "집합으로 생각해서 한 문장으로 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그럼 옵티마이저가 대량 처리 방식을 골라요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "cards",
+      "section": "배치 튜닝 개요",
+      "title": "One SQL 도구",
+      "cols": 3,
+      "items": [
+        {
+          "title": "CASE",
+          "desc": "분기를 한 번에",
+          "icon": "branch"
+        },
+        {
+          "title": "MERGE",
+          "desc": "갱신과 입력",
+          "icon": "workflow"
+        },
+        {
+          "title": "다중 삽입",
+          "desc": "INSERT ALL",
+          "icon": "copy"
+        },
+        {
+          "title": "조인 뷰",
+          "desc": "조인 결과 수정",
+          "icon": "link"
+        },
+        {
+          "title": "분석 함수",
+          "desc": "셀프 조인 대체",
+          "icon": "table"
+        },
+        {
+          "title": "WITH 절",
+          "desc": "중간 집합 재사용",
+          "icon": "layers"
+        }
+      ],
+      "steps": [
+        {
+          "say": "One SQL을 만드는 도구들이에요."
+        },
+        {
+          "say": "CASE로 조건 분기를 한 번에 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "MERGE로 갱신과 입력을 함께 해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "다중 INSERT로 한 번 읽어 여러 곳에 넣어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "조인 뷰로 조인 결과를 바로 고쳐요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "분석 함수로 셀프 조인을 없애요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "WITH 절로 중간 결과를 재사용해요.",
+          "focus": [
+            5
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "quiz",
+      "section": "배치 튜닝 개요",
+      "question": "절차형 처리가 느린 이유가 **아닌** 것은?",
+      "choices": [
+        "반복 DB Call",
+        "건별 랜덤 I/O",
+        "잦은 커밋",
+        "Full Scan 사용"
+      ],
+      "answer": 4,
+      "explanation": "Full Scan과 해시 조인은 One SQL에서 쓰는 대량 처리 방식이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 절차형이 느린 이유가 아닌 것은?"
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "callout",
+      "section": "병렬 처리 기본",
+      "tone": "warning",
+      "title": "PARALLEL 힌트",
+      "text": "PARALLEL은 **병렬도만** 지정해요. Full Scan을 원하면 **FULL 힌트를 함께**!",
+      "steps": [
+        {
+          "say": "병렬도는 PARALLEL 힌트로 정해요. DOP라고 해요."
+        },
+        {
+          "say": "그런데 이 힌트는 액세스 경로를 강제하지 않아요."
+        },
+        {
+          "say": "Full Scan을 원하면 FULL 힌트를 같이 써요."
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "flow",
+      "section": "병렬 처리 기본",
+      "title": "QC와 병렬 서버",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "QC",
+          "desc": "사용자 세션",
+          "icon": "user"
+        },
+        {
+          "title": "작업 분배",
+          "desc": "Granule 단위",
+          "icon": "workflow"
+        },
+        {
+          "title": "병렬 서버",
+          "desc": "P000, P001…",
+          "icon": "users"
+        },
+        {
+          "title": "QC가 취합",
+          "desc": "최종 결과 전달",
+          "icon": "check"
+        }
+      ],
+      "steps": [
+        {
+          "say": "병렬 SQL을 실행한 세션이 QC예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "QC가 작업을 잘게 나눠 줘요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그 단위를 Granule이라고 해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "병렬 서버들이 실제로 데이터를 읽어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "결과는 QC가 모아서 돌려줘요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "직렬로만 되는 일도 QC가 맡아요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "id": "s09",
+      "section": "병렬 처리 기본",
+      "type": "data",
+      "title": "생산자와 소비자",
+      "tables": [
+        "주문"
+      ],
+      "code": "SELECT /*+ FULL(o) PARALLEL(o 2) */\n       지역, SUM(금액)\nFROM   주문 o\nGROUP  BY 지역;",
+      "steps": [
+        {
+          "say": "단계가 둘 이상이면 서버 집합 둘이 일해요. 지역별 합계로 볼게요.",
+          "focus": [
+            1,
+            4
+          ],
+          "t": {
+            "주문": {
+              "rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            }
+          }
+        },
+        {
+          "say": "Producer 둘이 주문을 나눠 읽어 넘겨요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "주문": {
+              "add": [
+                "읽기",
+                [
+                  "P000",
+                  "P000",
+                  "P000",
+                  "P001",
+                  "P001",
+                  "P001"
+                ]
+              ],
+              "tint": [
+                [
+                  0,
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4,
+                  5
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "같은 지역은 같은 Consumer로 보내요. 해시로 재분배해요.",
+          "t": {
+            "주문": {
+              "add": [
+                "받기",
+                [
+                  "P002",
+                  "P003",
+                  "P002",
+                  "P002",
+                  "P003",
+                  "P002"
+                ]
+              ],
+              "group": "받기"
+            }
+          }
+        },
+        {
+          "say": "Consumer가 받은 행으로 그룹핑을 해요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "주문": {
+              "cols": [
+                "지역"
+              ],
+              "result": {
+                "title": "지역별 합계",
+                "columns": [
+                  "지역",
+                  "SUM(금액)"
+                ],
+                "rows": [
+                  [
+                    "서울",
+                    "80"
+                  ],
+                  [
+                    "대구",
+                    "10"
+                  ],
+                  [
+                    "부산",
+                    "70"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "DOP는 2인데 서버는 네 개가 일했어요. 그 사이에 재분배가 있었죠.",
+          "t": {
+            "주문": {
+              "cols": [
+                "읽기",
+                "받기"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "section": "병렬 처리 기본",
+      "title": "Intra와 Inter",
+      "left": {
+        "title": "Intra",
+        "icon": "users",
+        "items": [
+          "한 오퍼레이션",
+          "서버끼리 통신 X",
+          "서버 수 DOP"
+        ]
+      },
+      "right": {
+        "title": "Inter",
+        "icon": "arrow-left-right",
+        "items": [
+          "오퍼레이션 사이",
+          "집합 간 재분배",
+          "서버 수 DOP 2배"
+        ]
+      },
+      "steps": [
+        {
+          "say": "Intra는 한 작업을 여럿이 나눠요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "서버끼리는 통신하지 않아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Inter는 다른 작업을 두 집합이 나눠요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래서 서버는 DOP의 두 배가 필요해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "type": "cards",
+      "section": "병렬 실행계획",
+      "title": "IN-OUT 읽기",
+      "cols": 2,
+      "items": [
+        {
+          "title": "P->P",
+          "desc": "집합 간 재분배",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "P->S",
+          "desc": "QC로 결과 전송",
+          "icon": "user"
+        },
+        {
+          "title": "PCWP",
+          "desc": "PCWC도 같은 집합",
+          "icon": "link"
+        },
+        {
+          "title": "S->P",
+          "desc": "직렬 병목 신호",
+          "icon": "warning",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "실행계획의 IN-OUT 칸을 읽어 볼게요."
+        },
+        {
+          "say": "병렬에서 병렬. 집합 사이 재분배예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "이때 서버는 DOP의 두 배가 쓰여요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "병렬에서 직렬. QC에게 보내는 거예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "PCWP와 PCWC는 같은 집합이 이어서 처리해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "직렬에서 병렬. 병목이 될 수 있어요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "type": "quiz",
+      "section": "병렬 실행계획",
+      "question": "DOP 4로 GROUP BY 병렬 처리 시 P->P가 보였다. 병렬 서버 수는?",
+      "choices": [
+        "8개",
+        "4개",
+        "5개",
+        "16개"
+      ],
+      "answer": 1,
+      "explanation": "P->P는 두 서버 집합 사이 재분배예요. 그래서 4 곱하기 2, 8개예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. DOP 4에 재분배가 있으면 서버는 몇 개일까요?"
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "cards",
+      "section": "분배 방식",
+      "title": "데이터 분배 방식",
+      "cols": 2,
+      "items": [
+        {
+          "title": "RANGE",
+          "desc": "ORDER BY",
+          "icon": "ruler"
+        },
+        {
+          "title": "HASH",
+          "desc": "GROUP BY, 조인",
+          "icon": "shapes"
+        },
+        {
+          "title": "복제",
+          "desc": "BROADCAST",
+          "icon": "copy"
+        },
+        {
+          "title": "KEY",
+          "desc": "파티션 키 기준",
+          "icon": "tag"
+        }
+      ],
+      "steps": [
+        {
+          "say": "Producer가 데이터를 나눠 주는 방식이에요."
+        },
+        {
+          "say": "RANGE. 정렬 키 범위로 나눠요. 정렬할 때 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "HASH. 해시 값으로 나눠요. 그룹핑에 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "BROADCAST. 작은 쪽을 모든 서버에 복제해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "KEY. 파티션 키 기준이에요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "layers",
+      "section": "분배 방식",
+      "title": "병렬 조인 분배",
+      "axis": {
+        "top": "재분배 적음",
+        "bottom": "재분배 많음"
+      },
+      "layers": [
+        {
+          "title": "NONE NONE",
+          "desc": "Full Partition-Wise",
+          "icon": "check"
+        },
+        {
+          "title": "PARTITION NONE",
+          "desc": "Partial, 한쪽만 재분배",
+          "icon": "layers"
+        },
+        {
+          "title": "BROADCAST",
+          "desc": "작은 쪽을 복제",
+          "icon": "copy"
+        },
+        {
+          "title": "HASH HASH",
+          "desc": "양쪽 모두 재분배",
+          "icon": "shapes"
+        }
+      ],
+      "steps": [
+        {
+          "say": "PQ_DISTRIBUTE 힌트로 조인 분배를 정해요."
+        },
+        {
+          "say": "힌트 안 테이블은 Inner 쪽이에요."
+        },
+        {
+          "say": "NONE NONE. 같은 키로 파티셔닝된 경우예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "재분배 없이 서버 집합 하나로 끝나요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "한쪽만 맞으면 다른 쪽만 재분배해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "한쪽이 아주 작으면 BROADCAST예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "둘 다 크고 안 맞으면 HASH HASH예요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "callout",
+      "section": "분배 방식",
+      "tone": "warning",
+      "title": "BROADCAST 주의",
+      "text": "큰 집합을 BROADCAST하면 **DOP배만큼 복제**돼 오히려 느려져요.",
+      "steps": [
+        {
+          "say": "옵티마이저가 큰 테이블을 복제할 때가 있어요."
+        },
+        {
+          "say": "그럼 DOP배만큼 복제돼서 느려져요."
+        },
+        {
+          "say": "이때 PQ_DISTRIBUTE로 직접 바로잡아요."
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "quiz",
+      "section": "분배 방식",
+      "question": "두 테이블이 **조인 키로 똑같이 파티셔닝**됐다. 가장 효율적인 분배는?",
+      "choices": [
+        "HASH HASH",
+        "BROADCAST NONE",
+        "NONE NONE",
+        "NONE BROADCAST"
+      ],
+      "answer": 3,
+      "explanation": "NONE NONE은 Full Partition-Wise 조인이에요. 재분배 없이 파티션끼리 조인해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 같은 키로 파티셔닝됐다면 어떤 분배가 좋을까요?"
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "compare",
+      "section": "병렬 DML",
+      "title": "병렬 DML 켜기",
+      "left": {
+        "title": "힌트만",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "SELECT만 병렬",
+          "DML은 QC가 직렬",
+          "PX COORD 위"
+        ]
+      },
+      "right": {
+        "title": "세션 활성화",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "ALTER SESSION",
+          "DML도 병렬",
+          "PX COORD 아래"
+        ]
+      },
+      "steps": [
+        {
+          "say": "병렬 힌트만 주면 SELECT만 병렬이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "DML은 QC가 혼자 직렬로 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "세션에서 병렬 DML을 켜야 해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "12c부터는 문장 힌트로도 켤 수 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "DML이 PX COORDINATOR 아래 있으면 병렬이에요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "cards",
+      "section": "병렬 DML",
+      "title": "병렬 DML 특징",
+      "cols": 3,
+      "items": [
+        {
+          "title": "Direct",
+          "desc": "병렬 INSERT",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "배타 Lock",
+          "desc": "다른 DML 차단",
+          "icon": "lock",
+          "tone": "bad"
+        },
+        {
+          "title": "조회 불가",
+          "desc": "커밋 전엔 에러",
+          "icon": "warning",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "병렬 DML의 특징 세 가지예요."
+        },
+        {
+          "say": "병렬 INSERT는 Direct Path로 동작해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "테이블에 배타적 Lock이 걸려요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "커밋 전엔 같은 세션도 조회할 수 없어요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "quiz",
+      "section": "병렬 DML",
+      "question": "병렬 처리 설명으로 **틀린** 것은?",
+      "choices": [
+        "PARALLEL만으론 Full X",
+        "힌트만으로 DML 병렬",
+        "S->P는 병목 가능",
+        "병렬 속성 되돌리기"
+      ],
+      "answer": 2,
+      "explanation": "힌트만 주면 DML은 QC가 직렬로 해요. 병렬 DML을 켜야 해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 병렬 처리 설명으로 틀린 것은?"
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "cards",
+      "section": "병렬 주의점",
+      "title": "병렬, 이럴 땐 조심",
+      "cols": 2,
+      "items": [
+        {
+          "title": "OLTP 소량",
+          "desc": "비용이 이득보다 큼",
+          "icon": "warning",
+          "tone": "warn"
+        },
+        {
+          "title": "남은 속성",
+          "desc": "NOPARALLEL 복구",
+          "icon": "recycle",
+          "tone": "warn"
+        },
+        {
+          "title": "커밋 누락",
+          "desc": "Lock이 유지됨",
+          "icon": "lock",
+          "tone": "warn"
+        },
+        {
+          "title": "인덱스 범위",
+          "desc": "비파티션은 병렬 X",
+          "icon": "search",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "병렬 처리가 늘 좋은 건 아니에요."
+        },
+        {
+          "say": "첫째, OLTP 소량 조회엔 오히려 손해예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 작업 뒤 병렬 속성을 꼭 되돌려요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "안 그러면 일반 SQL까지 병렬로 돌아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 병렬 DML 뒤 커밋을 잊지 마세요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 비파티션 인덱스 범위 스캔은 병렬이 안 돼요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "DOP도 클수록 좋은 게 아니에요."
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "배치는 건별 대신 One SQL",
+        "PARALLEL엔 FULL 힌트를 함께",
+        "P->P면 서버는 DOP 2배",
+        "S->P는 직렬 병목 신호",
+        "같은 파티셔닝은 NONE NONE",
+        "병렬 DML은 세션에서 활성화"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "배치는 건별 처리 대신 One SQL이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "PARALLEL 힌트엔 FULL 힌트를 함께 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "재분배가 있으면 서버는 DOP의 두 배예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "직렬에서 병렬은 병목 신호예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "같은 키 파티셔닝이면 NONE NONE이에요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "병렬 DML은 세션에서 켜야 해요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s21"
+    }
+  ]
+}

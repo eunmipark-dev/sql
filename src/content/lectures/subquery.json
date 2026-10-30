@@ -1,0 +1,2034 @@
+{
+  "slug": "subquery",
+  "title": "서브쿼리",
+  "tables": {
+    "EMP": {
+      "columns": [
+        "ENAME",
+        "DEPTNO",
+        "SAL"
+      ],
+      "rows": [
+        [
+          "김철수",
+          "10",
+          "500"
+        ],
+        [
+          "이영희",
+          "10",
+          "300"
+        ],
+        [
+          "박민수",
+          "20",
+          "300"
+        ],
+        [
+          "최지은",
+          "20",
+          "100"
+        ],
+        [
+          "정우성",
+          "30",
+          "300"
+        ],
+        [
+          "한가인",
+          "30",
+          "300"
+        ]
+      ]
+    },
+    "DEPT": {
+      "columns": [
+        "DEPTNO",
+        "DNAME"
+      ],
+      "rows": [
+        [
+          "10",
+          "기획"
+        ],
+        [
+          "20",
+          "개발"
+        ],
+        [
+          "30",
+          "영업"
+        ],
+        [
+          "40",
+          "인사"
+        ]
+      ]
+    },
+    "사원 4명": {
+      "columns": [
+        "EMPNO",
+        "ENAME",
+        "MGR"
+      ],
+      "rows": [
+        [
+          "1",
+          "김철수",
+          "NULL"
+        ],
+        [
+          "2",
+          "이영희",
+          "1"
+        ],
+        [
+          "3",
+          "박민수",
+          "1"
+        ],
+        [
+          "4",
+          "최지은",
+          "3"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "서브쿼리",
+      "subtitle": "쿼리 안에 들어간 쿼리",
+      "icon": "layers",
+      "steps": [
+        {
+          "say": "서브쿼리를 시작할게요."
+        },
+        {
+          "say": "쿼리 안에 들어간 또 다른 쿼리예요."
+        },
+        {
+          "say": "바깥 쪽 쿼리는 메인쿼리라고 불러요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "cards",
+      "section": "서브쿼리란",
+      "title": "세 가지 분류 기준",
+      "cols": 3,
+      "items": [
+        {
+          "title": "위치",
+          "desc": "어디에 쓰였나",
+          "icon": "map"
+        },
+        {
+          "title": "반환 형태",
+          "desc": "몇 행, 몇 컬럼",
+          "icon": "table"
+        },
+        {
+          "title": "연관 여부",
+          "desc": "메인 컬럼 참조",
+          "icon": "link"
+        }
+      ],
+      "steps": [
+        {
+          "say": "서브쿼리는 세 가지 기준으로 나눠요."
+        },
+        {
+          "say": "첫째, 어디에 쓰였는지예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 몇 행을 돌려주는지예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 메인쿼리 컬럼을 참조하는지예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "위치, 반환 형태, 연관 여부. 이 순서로 볼게요.",
+          "focus": [
+            0,
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "cards",
+      "section": "서브쿼리란",
+      "title": "기본 규칙",
+      "cols": 2,
+      "items": [
+        {
+          "title": "괄호 필수",
+          "desc": "항상 괄호로 감싸기",
+          "icon": "lock"
+        },
+        {
+          "title": "단일행 연산",
+          "desc": "결과 1건 이하만",
+          "icon": "target",
+          "tone": "warn"
+        },
+        {
+          "title": "다중행 연산",
+          "desc": "건수 제한 없음",
+          "icon": "layers"
+        },
+        {
+          "title": "ORDER BY",
+          "desc": "WHERE 안엔 불가",
+          "icon": "warning",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "기본 규칙 네 가지예요."
+        },
+        {
+          "say": "첫째, 서브쿼리는 꼭 괄호로 감싸요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 같다나 크다 같은 단일행 연산자예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "이때 결과는 1건 이하여야 해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "2건 이상이 나오면 실행 중에 오류가 나요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, IN, ANY, ALL, EXISTS는 달라요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "결과 건수에 제한이 없어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, WHERE나 HAVING 안에는 정렬을 못 써요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "compare",
+      "section": "서브쿼리란",
+      "title": "조인과 다른 점",
+      "left": {
+        "title": "조인",
+        "icon": "link",
+        "items": [
+          "1대다면 행이 늘어남"
+        ]
+      },
+      "right": {
+        "title": "서브쿼리",
+        "icon": "layers",
+        "tone": "good",
+        "items": [
+          "메인 행 수 유지"
+        ]
+      },
+      "steps": [
+        {
+          "say": "조인은 1대다 관계면 행이 늘어날 수 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "서브쿼리는 메인쿼리 행 수를 늘리지 않아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "메인쿼리 집합의 레벨을 그대로 지켜요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "quiz",
+      "section": "서브쿼리란",
+      "question": "`WHERE SAL = (서브쿼리)`에서 서브쿼리가 **2건**을 반환하면?",
+      "choices": [
+        "첫 행만 비교한다",
+        "실행 중 오류가 난다",
+        "0건이 반환된다",
+        "IN처럼 비교한다"
+      ],
+      "answer": 2,
+      "explanation": "단일행 연산자는 결과가 1건 이하여야 해요. 2건 이상이면 실행 중 오류가 나요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 같다 연산자 서브쿼리가 두 건을 돌려주면?"
+        }
+      ],
+      "id": "s04q"
+    },
+    {
+      "type": "layers",
+      "section": "위치에 따른 분류",
+      "title": "어디에 쓰였나",
+      "layers": [
+        {
+          "title": "SELECT 절",
+          "desc": "스칼라 서브쿼리",
+          "icon": "tag"
+        },
+        {
+          "title": "FROM 절",
+          "desc": "인라인 뷰",
+          "icon": "table"
+        },
+        {
+          "title": "WHERE · HAVING 절",
+          "desc": "중첩 서브쿼리",
+          "icon": "filter"
+        }
+      ],
+      "steps": [
+        {
+          "say": "위치마다 이름이 달라요."
+        },
+        {
+          "say": "SELECT 절에 쓰면 스칼라 서브쿼리예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "FROM 절에 쓰면 인라인 뷰예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "WHERE나 HAVING 절이면 중첩 서브쿼리예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "정리하면 스칼라, 인라인 뷰, 중첩이에요.",
+          "focus": [
+            0,
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "cards",
+      "section": "위치에 따른 분류",
+      "title": "스칼라 서브쿼리",
+      "cols": 3,
+      "items": [
+        {
+          "title": "1행 1컬럼",
+          "desc": "값 하나처럼",
+          "icon": "check",
+          "tone": "good"
+        },
+        {
+          "title": "2행 이상",
+          "desc": "오류 발생",
+          "icon": "warning",
+          "tone": "bad"
+        },
+        {
+          "title": "0행",
+          "desc": "NULL 반환",
+          "icon": "help",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "스칼라 서브쿼리는 값 하나를 돌려줘요."
+        },
+        {
+          "say": "한 행, 한 컬럼만 돌려줘야 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "2행 이상이 나오면 오류예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "0행이면 NULL이 돼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "그래서 OUTER JOIN과 비슷한 효과를 내요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "cards",
+      "section": "위치에 따른 분류",
+      "title": "인라인 뷰",
+      "cols": 3,
+      "items": [
+        {
+          "title": "테이블처럼",
+          "desc": "FROM 절에서 사용",
+          "icon": "table"
+        },
+        {
+          "title": "컬럼 참조",
+          "desc": "별칭도 자유롭게",
+          "icon": "tag"
+        },
+        {
+          "title": "일회성",
+          "desc": "사전에 저장 안 됨",
+          "icon": "recycle"
+        }
+      ],
+      "steps": [
+        {
+          "say": "인라인 뷰는 FROM 절의 서브쿼리예요."
+        },
+        {
+          "say": "결과를 테이블처럼 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "안에서 만든 컬럼은 밖에서 참조할 수 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "별칭을 붙인 컬럼도 마찬가지예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "한 번 쓰고 끝나서 데이터 사전에 남지 않아요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "callout",
+      "section": "위치에 따른 분류",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "서브쿼리의 ORDER BY는 **FROM 절 인라인 뷰**에서만. WHERE·HAVING 서브쿼리엔 **불가**.",
+      "steps": [
+        {
+          "say": "정렬은 인라인 뷰에서만 쓸 수 있어요."
+        },
+        {
+          "say": "WHERE나 HAVING 서브쿼리에는 못 써요."
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "quiz",
+      "section": "위치에 따른 분류",
+      "question": "서브쿼리 안에 ORDER BY를 쓸 수 있는 곳은?",
+      "choices": [
+        "SELECT 절 스칼라",
+        "FROM 절 인라인 뷰",
+        "WHERE 절 중첩",
+        "HAVING 절 중첩"
+      ],
+      "answer": 2,
+      "explanation": "ORDER BY는 인라인 뷰에서만 쓸 수 있어요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 서브쿼리 안에 ORDER BY를 쓸 수 있는 곳은?"
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "cards",
+      "section": "반환 형태",
+      "title": "몇 행을 돌려주나",
+      "cols": 3,
+      "items": [
+        {
+          "title": "단일행",
+          "desc": "=, >, < 와 함께",
+          "icon": "target"
+        },
+        {
+          "title": "다중행",
+          "desc": "IN, ANY, ALL",
+          "icon": "layers"
+        },
+        {
+          "title": "다중컬럼",
+          "desc": "컬럼 쌍으로 비교",
+          "icon": "copy"
+        }
+      ],
+      "steps": [
+        {
+          "say": "반환 형태로도 세 가지예요."
+        },
+        {
+          "say": "단일행. 결과가 항상 1건 이하예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "같다, 크다, 작다 같은 연산자와 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "다중행. 결과가 여러 건일 수 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "IN, ANY, ALL, EXISTS를 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "다중컬럼. 여러 컬럼을 쌍으로 비교해요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "id": "s11",
+      "section": "반환 형태",
+      "type": "data",
+      "title": "단일행 예시",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT ENAME, SAL\nFROM   EMP\nWHERE  SAL > (SELECT AVG(SAL) FROM EMP);",
+      "steps": [
+        {
+          "say": "평균보다 급여가 많은 사원을 찾아요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "사원 여섯 명의 급여예요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "SAL"
+              ]
+            }
+          }
+        },
+        {
+          "say": "서브쿼리가 먼저 전체 평균 300을 구해요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "cols": [
+                "SAL"
+              ],
+              "result": {
+                "title": "서브쿼리 결과",
+                "columns": [
+                  "AVG(SAL)"
+                ],
+                "rows": [
+                  [
+                    "300"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "메인쿼리는 300보다 큰 사원만 남겨요. 같으면 빠져요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "filter": [
+                0
+              ],
+              "notes": [
+                [
+                  1,
+                  "SAL",
+                  "같음, 빠짐"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "급여 500인 김철수 한 명만 나와요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0
+              ],
+              "result": {
+                "title": "결과 1행",
+                "columns": [
+                  "ENAME",
+                  "SAL"
+                ],
+                "rows": [
+                  [
+                    "김철수",
+                    "500"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s12",
+      "section": "반환 형태",
+      "type": "data",
+      "title": "ANY와 ALL",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT ENAME FROM EMP\nWHERE SAL > ANY (SELECT SAL FROM EMP\n                 WHERE DEPTNO = 20);\n-- ALL이면 SAL > ALL (...)",
+      "steps": [
+        {
+          "say": "서브쿼리 결과는 20번 부서 급여, 300과 100이에요.",
+          "focus": [
+            2,
+            3
+          ],
+          "t": {
+            "EMP": {
+              "rows": [
+                2,
+                3
+              ],
+              "cells": [
+                [
+                  2,
+                  "SAL"
+                ],
+                [
+                  3,
+                  "SAL"
+                ]
+              ],
+              "result": {
+                "title": "서브쿼리 결과",
+                "columns": [
+                  "SAL"
+                ],
+                "rows": [
+                  [
+                    "300"
+                  ],
+                  [
+                    "100"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "크다 ANY는 하나라도 넘으면 참이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "가장 작은 100만 넘으면 돼요. 최지은만 탈락해요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "filter": [
+                0,
+                1,
+                2,
+                4,
+                5
+              ],
+              "notes": [
+                [
+                  3,
+                  "SAL",
+                  "초과 아님"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 급여 300인 사원도 통과해요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                1,
+                2,
+                4,
+                5
+              ],
+              "result": {
+                "title": "> ANY 결과 5행",
+                "columns": [
+                  "ENAME"
+                ],
+                "rows": [
+                  [
+                    "김철수"
+                  ],
+                  [
+                    "이영희"
+                  ],
+                  [
+                    "박민수"
+                  ],
+                  [
+                    "정우성"
+                  ],
+                  [
+                    "한가인"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "크다 ALL은 전부 넘어야 참이에요. 가장 큰 300을 넘어야 해요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP": {
+              "cols": [
+                "SAL"
+              ]
+            }
+          }
+        },
+        {
+          "say": "300은 탈락, 500인 김철수만 통과해요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP": {
+              "filter": [
+                0
+              ],
+              "result": {
+                "title": "> ALL 결과 1행",
+                "columns": [
+                  "ENAME"
+                ],
+                "rows": [
+                  [
+                    "김철수"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "정리하면 ANY는 최솟값, ALL은 최댓값 기준이에요."
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "반환 형태",
+      "tone": "warning",
+      "title": "함정",
+      "text": "서브쿼리 결과가 **0건**이면 ALL 조건은 **항상 참**, ANY 조건은 **항상 거짓**.",
+      "steps": [
+        {
+          "say": "결과가 0건일 때도 자주 나와요."
+        },
+        {
+          "say": "ALL은 항상 참, ANY는 항상 거짓이에요."
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "quiz",
+      "section": "반환 형태",
+      "question": "`> ALL (서브쿼리)`와 같은 뜻은?",
+      "choices": [
+        "> MAX(결과)",
+        "> MIN(결과)",
+        "< MIN(결과)",
+        "= ANY(결과)"
+      ],
+      "answer": 1,
+      "explanation": "전부 넘어야 하니 최댓값보다 커야 해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 크다 ALL과 같은 뜻은 무엇일까요?"
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "id": "s15a",
+      "section": "반환 형태",
+      "type": "data",
+      "title": "부서별 최고 급여자",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT ENAME, DEPTNO, SAL FROM EMP\nWHERE (DEPTNO, SAL) IN (SELECT DEPTNO, MAX(SAL)\n                        FROM EMP GROUP BY DEPTNO);",
+      "steps": [
+        {
+          "say": "다중컬럼은 컬럼 쌍으로 비교해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "서브쿼리가 부서별 최고 급여를 구해요.",
+          "focus": [
+            2,
+            3
+          ],
+          "t": {
+            "EMP": {
+              "group": "DEPTNO",
+              "result": {
+                "title": "서브쿼리 결과",
+                "columns": [
+                  "DEPTNO",
+                  "MAX(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "500"
+                  ],
+                  [
+                    "20",
+                    "300"
+                  ],
+                  [
+                    "30",
+                    "300"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "부서와 급여가 한 쌍으로 같아야 남아요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "cells": [
+                [
+                  0,
+                  "DEPTNO"
+                ],
+                [
+                  0,
+                  "SAL"
+                ],
+                [
+                  2,
+                  "DEPTNO"
+                ],
+                [
+                  2,
+                  "SAL"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "이영희는 300이지만 10번 부서 최고가 아니라 빠져요.",
+          "t": {
+            "EMP": {
+              "filter": [
+                0,
+                2,
+                4,
+                5
+              ],
+              "notes": [
+                [
+                  1,
+                  "SAL",
+                  "10번은 500"
+                ],
+                [
+                  3,
+                  "SAL",
+                  "20번은 300"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "부서별 최고 급여자가 나와요. 30번은 동점이라 둘이에요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                4,
+                5
+              ],
+              "result": {
+                "title": "결과 4행",
+                "columns": [
+                  "ENAME",
+                  "DEPTNO",
+                  "SAL"
+                ],
+                "rows": [
+                  [
+                    "김철수",
+                    "10",
+                    "500"
+                  ],
+                  [
+                    "박민수",
+                    "20",
+                    "300"
+                  ],
+                  [
+                    "정우성",
+                    "30",
+                    "300"
+                  ],
+                  [
+                    "한가인",
+                    "30",
+                    "300"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "section": "반환 형태",
+      "title": "다중컬럼 비교",
+      "left": {
+        "title": "Oracle",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "컬럼 쌍 IN 지원"
+        ]
+      },
+      "right": {
+        "title": "SQL Server",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "지원 안 함",
+          "EXISTS나 조인으로"
+        ]
+      },
+      "steps": [
+        {
+          "say": "다중컬럼 비교는 DBMS마다 달라요."
+        },
+        {
+          "say": "오라클은 이 문법을 지원해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL 서버는 지원하지 않아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "EXISTS나 조인으로 바꿔 써야 해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "compare",
+      "section": "연관 서브쿼리",
+      "title": "비연관과 연관",
+      "left": {
+        "title": "비연관",
+        "icon": "box",
+        "items": [
+          "메인 참조 안 함",
+          "먼저 한 번 실행",
+          "상수 값 제공"
+        ]
+      },
+      "right": {
+        "title": "연관",
+        "icon": "link",
+        "items": [
+          "메인 컬럼 참조",
+          "행마다 실행",
+          "행별 조건 판단"
+        ]
+      },
+      "steps": [
+        {
+          "say": "이번엔 연관 여부예요."
+        },
+        {
+          "say": "비연관은 메인쿼리 컬럼을 보지 않아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "먼저 한 번 실행해서 값을 넘겨줘요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "연관은 메인쿼리 컬럼을 참조해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "메인쿼리 행마다 다시 평가돼요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "flow",
+      "section": "연관 서브쿼리",
+      "title": "연관 서브쿼리 흐름",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "행 하나 읽기",
+          "desc": "메인쿼리 EMP",
+          "icon": "table"
+        },
+        {
+          "title": "부서번호 전달",
+          "desc": "서브쿼리로",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "부서 평균 계산",
+          "desc": "서브쿼리 실행",
+          "icon": "search"
+        },
+        {
+          "title": "급여 비교",
+          "desc": "크면 결과에 포함",
+          "icon": "filter"
+        }
+      ],
+      "steps": [
+        {
+          "say": "부서 평균보다 많이 받는 사원을 찾아요."
+        },
+        {
+          "say": "메인쿼리가 사원 한 명을 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그 사원의 부서번호를 넘겨요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "서브쿼리가 그 부서 평균을 구해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "급여가 평균보다 크면 결과에 넣어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "이걸 행마다 반복해요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "id": "s18",
+      "section": "연관 서브쿼리",
+      "type": "data",
+      "title": "부서 평균보다 높은 사원",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT ENAME, SAL FROM EMP A\nWHERE SAL > (SELECT AVG(SAL) FROM EMP B\n             WHERE B.DEPTNO = A.DEPTNO);",
+      "steps": [
+        {
+          "say": "결과를 볼게요. 부서마다 평균이 따로 계산돼요.",
+          "focus": [
+            2,
+            3
+          ],
+          "t": {
+            "EMP": {
+              "group": "DEPTNO",
+              "add": [
+                "부서 평균",
+                [
+                  "400",
+                  "400",
+                  "200",
+                  "200",
+                  "300",
+                  "300"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "김철수는 부서 평균 400보다 많아요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0
+              ],
+              "cells": [
+                [
+                  0,
+                  "SAL"
+                ],
+                [
+                  0,
+                  "부서 평균"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "박민수는 부서 평균 200보다 많아요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                2
+              ],
+              "cells": [
+                [
+                  2,
+                  "SAL"
+                ],
+                [
+                  2,
+                  "부서 평균"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "정우성은 평균 300과 같아요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                4
+              ],
+              "cells": [
+                [
+                  4,
+                  "SAL"
+                ],
+                [
+                  4,
+                  "부서 평균"
+                ]
+              ],
+              "notes": [
+                [
+                  4,
+                  "SAL",
+                  "같음"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "크다 조건이라 같으면 빠져요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "filter": [
+                0,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "결과는 김철수와 박민수, 두 명이에요.",
+          "t": {
+            "EMP": {
+              "result": {
+                "title": "결과 2행",
+                "columns": [
+                  "ENAME",
+                  "SAL"
+                ],
+                "rows": [
+                  [
+                    "김철수",
+                    "500"
+                  ],
+                  [
+                    "박민수",
+                    "300"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "연관 서브쿼리",
+      "question": "연관 서브쿼리에 대한 설명으로 옳은 것은?",
+      "choices": [
+        "항상 한 번만 실행",
+        "FROM 절에만 쓴다",
+        "메인 컬럼을 참조한다",
+        "메인 행 수를 늘린다"
+      ],
+      "answer": 3,
+      "explanation": "연관 서브쿼리는 메인쿼리 컬럼을 참조해요. 그래서 행마다 평가돼요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 연관 서브쿼리 설명으로 옳은 것은?"
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "cards",
+      "section": "EXISTS와 NOT IN",
+      "title": "EXISTS",
+      "cols": 3,
+      "items": [
+        {
+          "title": "존재 여부",
+          "desc": "참 거짓만 판단",
+          "icon": "check"
+        },
+        {
+          "title": "바로 멈춤",
+          "desc": "하나 찾으면 끝",
+          "icon": "target"
+        },
+        {
+          "title": "SELECT 1",
+          "desc": "목록은 1이나 X",
+          "icon": "tag"
+        }
+      ],
+      "steps": [
+        {
+          "say": "EXISTS는 있는지 없는지만 봐요."
+        },
+        {
+          "say": "결과는 참 아니면 거짓이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "맞는 행을 하나 찾으면 더 찾지 않아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래서 SELECT 목록엔 보통 1을 써요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "주로 연관 서브쿼리로 써요.",
+          "focus": [
+            0,
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "id": "s21",
+      "section": "EXISTS와 NOT IN",
+      "type": "data",
+      "title": "사원이 있는 부서는?",
+      "tables": [
+        "DEPT",
+        "EMP"
+      ],
+      "code": "SELECT DNAME FROM DEPT D\nWHERE EXISTS (SELECT 1 FROM EMP E\n              WHERE E.DEPTNO = D.DEPTNO);",
+      "steps": [
+        {
+          "say": "사원이 한 명이라도 있는 부서를 찾아요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "부서마다 같은 부서 사원이 있는지 봐요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ],
+                [
+                  2
+                ]
+              ]
+            },
+            "EMP": {
+              "tint": [
+                [
+                  0,
+                  1
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  4,
+                  5
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "40번 인사부는 사원이 없어요.",
+          "t": {
+            "DEPT": {
+              "rows": [
+                3
+              ],
+              "notes": [
+                [
+                  3,
+                  "DNAME",
+                  "사원 없음"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "EXISTS면 기획, 개발, 영업이 나와요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "DEPT": {
+              "rows": [
+                0,
+                1,
+                2
+              ],
+              "result": {
+                "title": "EXISTS",
+                "columns": [
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "기획"
+                  ],
+                  [
+                    "개발"
+                  ],
+                  [
+                    "영업"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "NOT EXISTS면 사원 없는 인사부만 나와요.",
+          "t": {
+            "DEPT": {
+              "rows": [
+                3
+              ],
+              "result": {
+                "title": "NOT EXISTS",
+                "columns": [
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "인사"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s22",
+      "section": "EXISTS와 NOT IN",
+      "type": "data",
+      "title": "NOT IN과 NULL 함정",
+      "tables": [
+        "사원 4명"
+      ],
+      "code": "SELECT ENAME FROM EMP\nWHERE EMPNO NOT IN (SELECT MGR FROM EMP);",
+      "steps": [
+        {
+          "say": "관리자가 아닌 사원을 찾으려 해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "관리자 목록에 NULL이 섞여 있어요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "사원 4명": {
+              "cols": [
+                "MGR"
+              ],
+              "notes": [
+                [
+                  0,
+                  "MGR",
+                  "NULL!"
+                ]
+              ],
+              "result": {
+                "title": "서브쿼리 결과",
+                "columns": [
+                  "MGR"
+                ],
+                "rows": [
+                  [
+                    "NULL"
+                  ],
+                  [
+                    "1"
+                  ],
+                  [
+                    "1"
+                  ],
+                  [
+                    "3"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "NOT IN은 같지 않다를 AND로 이어요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "사원 4명": {
+              "rows": [
+                1
+              ],
+              "notes": [
+                [
+                  1,
+                  "EMPNO",
+                  "≠1 AND ≠3"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "NULL과 비교하면 UNKNOWN이에요.",
+          "t": {
+            "사원 4명": {
+              "rows": [
+                1
+              ],
+              "notes": [
+                [
+                  1,
+                  "EMPNO",
+                  "≠NULL은 ?"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 모든 행이 빠져요. 결과는 0건이에요.",
+          "t": {
+            "사원 4명": {
+              "filter": [],
+              "result": {
+                "title": "결과 0건",
+                "columns": [
+                  "ENAME"
+                ],
+                "rows": []
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s23",
+      "section": "EXISTS와 NOT IN",
+      "type": "data",
+      "title": "해결 방법",
+      "tables": [
+        "사원 4명"
+      ],
+      "code": "SELECT ENAME FROM EMP\nWHERE EMPNO NOT IN (SELECT MGR FROM EMP\n                    WHERE MGR IS NOT NULL);",
+      "steps": [
+        {
+          "say": "해결 방법은 두 가지예요. 첫째, 서브쿼리에서 NULL을 빼요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "사원 4명": {
+              "notes": [
+                [
+                  0,
+                  "MGR",
+                  "제외"
+                ]
+              ],
+              "result": {
+                "title": "서브쿼리 결과",
+                "columns": [
+                  "MGR"
+                ],
+                "rows": [
+                  [
+                    "1"
+                  ],
+                  [
+                    "1"
+                  ],
+                  [
+                    "3"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "이제 관리자 번호는 1과 3뿐이에요.",
+          "t": {
+            "사원 4명": {
+              "cells": [
+                [
+                  0,
+                  "EMPNO"
+                ],
+                [
+                  2,
+                  "EMPNO"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "EMPNO",
+                  "관리자"
+                ],
+                [
+                  2,
+                  "EMPNO",
+                  "관리자"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "관리자 두 명이 빠지고 두 명이 남아요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "사원 4명": {
+              "filter": [
+                1,
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "관리자 아닌 이영희와 최지은이 제대로 나와요.",
+          "t": {
+            "사원 4명": {
+              "result": {
+                "title": "결과 2행",
+                "columns": [
+                  "ENAME"
+                ],
+                "rows": [
+                  [
+                    "이영희"
+                  ],
+                  [
+                    "최지은"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "둘째, NOT EXISTS로 바꿔도 같은 결과예요."
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "EXISTS와 NOT IN",
+      "tone": "warning",
+      "title": "시험 포인트",
+      "text": "NOT IN 결과에 NULL이 있으면 **항상 0건**. IN은 NULL 무시, **NOT EXISTS는 안전**.",
+      "steps": [
+        {
+          "say": "NOT IN 목록에 NULL이 있으면 항상 0건이에요."
+        },
+        {
+          "say": "IN의 NULL은 무시되는 것처럼 동작해요."
+        },
+        {
+          "say": "NOT EXISTS는 NULL 영향을 받지 않아요."
+        }
+      ],
+      "id": "s24"
+    },
+    {
+      "type": "quiz",
+      "section": "EXISTS와 NOT IN",
+      "question": "NOT IN 서브쿼리 결과에 NULL이 있으면?",
+      "choices": [
+        "전체 행이 나온다",
+        "NULL 행만 나온다",
+        "오류가 난다",
+        "0건이 나온다"
+      ],
+      "answer": 4,
+      "explanation": "NULL과의 비교가 UNKNOWN이라 결과는 0건이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. NOT IN 결과에 NULL이 있으면 어떻게 될까요?"
+        }
+      ],
+      "id": "s25"
+    },
+    {
+      "type": "flow",
+      "section": "뷰",
+      "title": "뷰란?",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "SELECT 문",
+          "desc": "자주 쓰는 쿼리",
+          "icon": "file"
+        },
+        {
+          "title": "이름 붙여 저장",
+          "desc": "CREATE VIEW",
+          "icon": "tag"
+        },
+        {
+          "title": "가상 테이블",
+          "desc": "조회 때 실행",
+          "icon": "table"
+        }
+      ],
+      "steps": [
+        {
+          "say": "뷰는 SELECT 문에 이름을 붙인 거예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "정의만 저장해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "조회할 때 그 쿼리가 실행돼요. 가상 테이블이죠.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s26"
+    },
+    {
+      "type": "cards",
+      "section": "뷰",
+      "title": "뷰의 장점",
+      "cols": 3,
+      "items": [
+        {
+          "title": "독립성",
+          "desc": "구조 변경에 강함",
+          "icon": "layers"
+        },
+        {
+          "title": "편리성",
+          "desc": "복잡한 쿼리 재사용",
+          "icon": "recycle"
+        },
+        {
+          "title": "보안성",
+          "desc": "민감 컬럼 숨김",
+          "icon": "shield"
+        }
+      ],
+      "steps": [
+        {
+          "say": "뷰의 장점은 세 가지예요."
+        },
+        {
+          "say": "독립성. 테이블이 바뀌면 뷰 정의만 고쳐요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "편리성. 복잡한 조인을 이름 하나로 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "보안성. 숨길 컬럼을 빼고 뷰만 열어 줘요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "독립성, 편리성, 보안성. 꼭 외워 두세요.",
+          "focus": [
+            0,
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s27"
+    },
+    {
+      "type": "compare",
+      "section": "뷰",
+      "title": "뷰는 데이터를 저장할까?",
+      "left": {
+        "title": "일반 뷰",
+        "icon": "eye",
+        "items": [
+          "정의만 저장",
+          "데이터 저장 안 함"
+        ]
+      },
+      "right": {
+        "title": "구체화 뷰",
+        "icon": "disk",
+        "items": [
+          "데이터 실제 저장",
+          "Materialized"
+        ]
+      },
+      "steps": [
+        {
+          "say": "일반 뷰는 데이터를 저장하지 않아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "저장 공간을 차지한다는 보기는 오답이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "실제로 저장하는 건 따로 불러요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "오라클은 구체화 뷰, SQL 서버는 인덱스 뷰예요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s28"
+    },
+    {
+      "type": "cards",
+      "section": "뷰",
+      "title": "뷰 참고 사항",
+      "cols": 3,
+      "items": [
+        {
+          "title": "뷰 위에 뷰",
+          "desc": "중첩 정의 가능",
+          "icon": "layers"
+        },
+        {
+          "title": "수정",
+          "desc": "OR REPLACE로",
+          "icon": "recycle"
+        },
+        {
+          "title": "인라인 뷰",
+          "desc": "이름 없는 일회용",
+          "icon": "table"
+        }
+      ],
+      "steps": [
+        {
+          "say": "몇 가지만 더 볼게요."
+        },
+        {
+          "say": "뷰를 바탕으로 또 뷰를 만들 수 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "오라클은 ALTER로 뷰를 못 고쳐요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "CREATE OR REPLACE로 다시 만들어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "인라인 뷰는 이름 없는 일회용 뷰예요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s29"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "SELECT 스칼라 · FROM 인라인 뷰",
+        "스칼라 2행 이상 오류, 0행 NULL",
+        "> ANY 최솟값, > ALL 최댓값",
+        "연관은 메인 컬럼 참조, 행마다",
+        "NOT IN에 NULL 있으면 0건",
+        "뷰 장점: 독립 · 편리 · 보안"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "SELECT 절은 스칼라, FROM 절은 인라인 뷰예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "스칼라는 2행이면 오류, 0행이면 NULL이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "ANY는 최솟값, ALL은 최댓값 기준이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "연관 서브쿼리는 행마다 평가돼요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "NOT IN에 NULL이 있으면 0건이에요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "뷰는 독립성, 편리성, 보안성이에요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s30"
+    }
+  ]
+}

@@ -1,0 +1,514 @@
+/* ───────────────────────────────────────────────
+   이론 문서 본문 (.prose-doc)
+   마크다운 렌더 결과 + 커스텀 블록(markdown-blocks.ts) 스타일
+   ─────────────────────────────────────────────── */
+
+:root {
+  --code-bg: oklch(0.985 0.002 264);
+  --hl: oklch(0.9 0.12 90 / 55%); /* 형광펜 */
+  --c-tip: oklch(0.75 0.16 75);
+  --c-info: oklch(0.62 0.17 255);
+  --c-warning: oklch(0.63 0.21 25);
+  --c-example: oklch(0.65 0.14 160);
+}
+.dark {
+  --code-bg: oklch(0.19 0.005 264);
+  --hl: oklch(0.75 0.14 85 / 28%);
+}
+
+.prose-doc {
+  font-size: 16px;
+  line-height: 1.8;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.prose-doc > :first-child { margin-top: 0; }
+
+/* 제목 */
+.prose-doc h2 {
+  position: relative;
+  margin: 4rem 0 1.25rem;
+  padding-left: 0.9rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+}
+.prose-doc h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.2em;
+  bottom: 0.2em;
+  width: 4px;
+  border-radius: 9999px;
+  background: var(--primary);
+}
+.prose-doc h3 {
+  margin: 2.5rem 0 0.75rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.prose-doc h2 + h3 { margin-top: 1.5rem; }
+
+/* 본문 */
+.prose-doc p { margin: 0.9rem 0; }
+.prose-doc a {
+  color: var(--primary);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--primary) 35%, transparent);
+  text-underline-offset: 4px;
+}
+.prose-doc a:hover { text-decoration-color: var(--primary); }
+.prose-doc strong {
+  font-weight: 700;
+  background: linear-gradient(transparent 60%, var(--hl) 60%);
+  padding: 0 1px;
+}
+.prose-doc hr { margin: 3rem 0; border-color: var(--border); }
+
+/* 목록 */
+.prose-doc ul, .prose-doc ol { margin: 0.9rem 0; padding-left: 1.4rem; }
+.prose-doc ul { list-style: none; }
+.prose-doc ul > li { position: relative; }
+.prose-doc ul > li::before {
+  content: '';
+  position: absolute;
+  left: -1rem;
+  top: 0.75em;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: color-mix(in oklch, var(--primary) 70%, transparent);
+}
+.prose-doc ul ul > li::before { background: transparent; border: 1.5px solid var(--muted-foreground); width: 5px; height: 5px; }
+.prose-doc ol { list-style: decimal; }
+.prose-doc ol > li::marker { color: var(--primary); font-weight: 700; }
+.prose-doc li { margin: 0.35rem 0; }
+.prose-doc li > p { margin: 0.25rem 0; }
+
+/* 인라인 코드 */
+.prose-doc :not(pre) > code {
+  border-radius: 6px;
+  background: var(--muted);
+  border: 1px solid var(--border);
+  padding: 0.1em 0.4em;
+  font-family: ui-monospace, 'JetBrains Mono', Consolas, monospace;
+  font-size: 0.86em;
+}
+
+/* 일반 인용구 (업무 담당자 말 등) */
+.prose-doc blockquote {
+  margin: 1.5rem 0;
+  padding: 0.9rem 1.2rem;
+  border-left: 3px solid var(--border);
+  color: var(--muted-foreground);
+  font-style: italic;
+}
+.prose-doc blockquote > :first-child { margin-top: 0; }
+.prose-doc blockquote > :last-child { margin-bottom: 0; }
+
+/* ── 예시 문장 ("예: …" 자동 분리) ── */
+.prose-doc .md-ex {
+  display: block;
+  margin: 0.5rem 0 0.15rem;
+  padding: 0.4rem 0.75rem;
+  border-left: 3px solid var(--c-example);
+  border-radius: 0 8px 8px 0;
+  background: color-mix(in oklch, var(--c-example) 8%, transparent);
+  font-size: 0.93em;
+  line-height: 1.65;
+}
+.prose-doc .md-ex-label {
+  display: inline-block;
+  margin-right: 0.5rem;
+  padding: 0 0.45em;
+  border-radius: 4px;
+  background: color-mix(in oklch, var(--c-example) 18%, transparent);
+  color: color-mix(in oklch, var(--c-example) 70%, var(--foreground));
+  font-size: 0.78em;
+  font-weight: 700;
+  vertical-align: 0.08em;
+}
+/* 문단 맨 앞이 예시인 경우 위 여백 제거 */
+.prose-doc :is(p, li) > .md-ex:first-child { margin-top: 0.15rem; }
+/* "- 예: …" 목록 항목은 불릿 대신 예시 표시만 */
+.prose-doc ul > li:has(> .md-ex:first-child)::before { display: none; }
+/* 카드·비교 안에서는 상자를 겹치지 않게 구분선만 */
+.prose-doc :is(.md-cards, .md-compare, .md-flow) .md-ex {
+  margin-top: 0.6rem;
+  padding: 0.5rem 0 0;
+  border-left: 0;
+  border-top: 1px dashed var(--border);
+  border-radius: 0;
+  background: none;
+}
+
+/* ── "라벨: 내용" 정리 (라벨 강조 + 나열은 칩) ── */
+.prose-doc .md-lead {
+  margin-right: 0.5rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+.prose-doc .md-chips {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  vertical-align: 0.1em;
+}
+.prose-doc .md-chip {
+  display: inline-block;
+  padding: 0.05rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card);
+  font-size: 0.88em;
+  line-height: 1.6;
+}
+/* 순서(→) 칩: 칩 사이 화살표 */
+.prose-doc .md-seq { align-items: center; }
+.prose-doc .md-arrow { color: var(--muted-foreground); font-size: 0.85em; }
+.prose-doc li:has(> .md-lead) { margin: 0.55rem 0; }
+
+/* ── 약어 풀이 (페이지에서 처음 나올 때만) ── */
+.prose-doc abbr.md-abbr {
+  text-decoration: underline dotted;
+  text-decoration-color: color-mix(in oklch, var(--primary) 60%, transparent);
+  text-underline-offset: 3px;
+  cursor: help;
+}
+.prose-doc .md-abbr-gloss {
+  display: inline-block;
+  margin: 0 0.15em 0 0.3em;
+  padding: 0 0.45em;
+  border-radius: 9999px;
+  background: color-mix(in oklch, var(--primary) 9%, transparent);
+  color: color-mix(in oklch, var(--primary) 75%, var(--muted-foreground));
+  font-size: 0.72em;
+  font-weight: 500;
+  line-height: 1.6;
+  vertical-align: 0.12em;
+  font-style: normal;
+}
+/* 굵은 글씨/카드 제목 안에서는 형광펜·굵기 영향 받지 않게 */
+.prose-doc strong .md-abbr-gloss { font-weight: 500; }
+
+/* ── 표 ── */
+.prose-doc .md-table {
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+}
+.prose-doc table { width: 100%; border-collapse: collapse; font-size: 0.92rem; line-height: 1.6; }
+.prose-doc th {
+  background: var(--muted);
+  padding: 0.7rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+.prose-doc td { padding: 0.7rem 1rem; border-top: 1px solid var(--border); vertical-align: top; }
+.prose-doc tbody tr:first-child td { border-top: 0; }
+.prose-doc tbody tr:hover td { background: color-mix(in oklch, var(--muted) 50%, transparent); }
+.prose-doc td:first-child { font-weight: 600; white-space: nowrap; }
+.prose-doc td strong { background: none; color: var(--primary); }
+
+/* ── 코드 블록 ── */
+.prose-doc .md-code {
+  margin: 1.5rem 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  background: var(--code-bg);
+}
+.prose-doc .md-code-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.6rem 0.4rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+}
+.prose-doc .md-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  letter-spacing: 0;
+  color: var(--muted-foreground);
+  transition: background 0.15s, color 0.15s;
+}
+.prose-doc .md-copy:hover { background: var(--accent); color: var(--foreground); }
+.prose-doc .md-copy[data-copied] { color: var(--success); }
+.prose-doc .md-code pre,
+.dark .prose-doc .md-code pre.shiki {
+  margin: 0;
+  padding: 1rem 1.2rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  background: transparent !important;
+}
+.prose-doc .md-code-plain pre { font-family: ui-monospace, 'JetBrains Mono', Consolas, monospace; }
+
+/* ── 콜아웃 (::: tip / info / warning / example, > 시험 포인트:) ── */
+.prose-doc .md-callout {
+  --c: var(--c-info);
+  margin: 1.5rem 0;
+  padding: 1rem 1.2rem;
+  border: 1px solid color-mix(in oklch, var(--c) 35%, transparent);
+  border-radius: calc(var(--radius) + 4px);
+  background: color-mix(in oklch, var(--c) 8%, var(--background));
+}
+.prose-doc .md-callout-tip { --c: var(--c-tip); }
+.prose-doc .md-callout-warning { --c: var(--c-warning); }
+.prose-doc .md-callout-example { --c: var(--c-example); }
+.prose-doc .md-callout-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: color-mix(in oklch, var(--c) 80%, var(--foreground));
+}
+.prose-doc .md-callout-body { font-size: 0.95rem; }
+.prose-doc .md-callout-body > :first-child { margin-top: 0; }
+.prose-doc .md-callout-body > :last-child { margin-bottom: 0; }
+.prose-doc .md-callout .md-table,
+.prose-doc .md-callout .md-code { background: var(--background); }
+
+/* ── 카드 그리드 (::: cards [n]) ── */
+.prose-doc .md-cards > ul {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+  padding: 0;
+}
+@media (max-width: 640px) {
+  .prose-doc .md-cards > ul { grid-template-columns: 1fr; }
+}
+.prose-doc .md-cards > ul > li {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  background: var(--card);
+  font-size: 0.93rem;
+  line-height: 1.65;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.prose-doc .md-cards > ul > li:hover { border-color: color-mix(in oklch, var(--primary) 50%, transparent); }
+.prose-doc .md-cards > ul > li::before { display: none; }
+.prose-doc .md-cards > ul > li > strong:first-child,
+.prose-doc .md-cards > ul > li > p:first-child > strong:first-child {
+  display: block;
+  margin-bottom: 0.35rem;
+  background: none;
+  padding: 0;
+  font-size: 1.02rem;
+  color: var(--primary);
+}
+.prose-doc .md-cards > ul > li > ul { margin: 0.4rem 0 0; }
+
+/* ── 비교 (::: compare) ── */
+.prose-doc .md-compare > ul {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+  padding: 0;
+}
+.prose-doc .md-compare > ul::after {
+  content: 'VS';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 9999px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+@media (max-width: 640px) {
+  .prose-doc .md-compare > ul { grid-template-columns: 1fr; }
+  .prose-doc .md-compare > ul::after { display: none; }
+}
+.prose-doc .md-compare > ul > li {
+  margin: 0;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  background: var(--card);
+  font-size: 0.93rem;
+}
+.prose-doc .md-compare > ul > li:first-child { border-top: 3px solid var(--c-info); }
+.prose-doc .md-compare > ul > li:last-child { border-top: 3px solid var(--c-tip); }
+.prose-doc .md-compare > ul > li::before { display: none; }
+.prose-doc .md-compare > ul > li > strong:first-child,
+.prose-doc .md-compare > ul > li > p:first-child > strong:first-child {
+  display: block;
+  margin-bottom: 0.4rem;
+  background: none;
+  padding: 0;
+  font-size: 1.05rem;
+}
+
+/* ── 단계 (::: steps) ── */
+.prose-doc .md-steps > ol {
+  counter-reset: step;
+  list-style: none;
+  margin: 1.5rem 0;
+  padding: 0;
+}
+.prose-doc .md-steps > ol > li {
+  counter-increment: step;
+  position: relative;
+  margin: 0;
+  padding: 0 0 1.4rem 3rem;
+  min-height: 2.2rem;
+}
+.prose-doc .md-steps > ol > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.prose-doc .md-steps > ol > li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: calc(1rem - 1px);
+  top: 2.3rem;
+  bottom: 0.2rem;
+  width: 2px;
+  background: var(--border);
+}
+.prose-doc .md-steps > ol > li > strong:first-child,
+.prose-doc .md-steps > ol > li > p:first-child > strong:first-child {
+  display: block;
+  padding-top: 0.2rem;
+  background: none;
+}
+
+/* ── 흐름 (::: flow) ── */
+.prose-doc .md-flow > ul,
+.prose-doc .md-flow > ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0.5rem 2rem;
+  margin: 1.5rem 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: flow;
+}
+.prose-doc .md-flow li {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 7.5rem;
+  margin: 0;
+  padding: 0.8rem 1rem;
+  border: 1px solid color-mix(in oklch, var(--primary) 30%, var(--border));
+  border-radius: var(--radius);
+  background: color-mix(in oklch, var(--primary) 6%, var(--background));
+  text-align: center;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.prose-doc .md-flow li::before { display: none; }
+.prose-doc .md-flow li:not(:last-child)::after {
+  content: '→';
+  position: absolute;
+  right: -1.45rem;
+  top: 50%;
+  translate: 0 -50%;
+  color: var(--muted-foreground);
+  font-weight: 700;
+}
+.prose-doc .md-flow li > strong:first-child,
+.prose-doc .md-flow li > p:first-child > strong:first-child {
+  display: block;
+  background: none;
+  padding: 0;
+  font-size: 0.98rem;
+  color: var(--primary);
+}
+@media (max-width: 640px) {
+  .prose-doc .md-flow > ul, .prose-doc .md-flow > ol { flex-direction: column; gap: 1.6rem; }
+  .prose-doc .md-flow li:not(:last-child)::after { content: '↓'; right: auto; left: 50%; top: auto; bottom: -1.45rem; translate: -50% 0; }
+}
+
+/* ── 핵심 요약 카드 (자동) ── */
+.prose-doc .md-summary {
+  position: relative;
+  margin: 4rem 0 1rem;
+  padding: 1.5rem 1.6rem 1.2rem;
+  border-radius: calc(var(--radius) + 4px);
+  background: linear-gradient(135deg, color-mix(in oklch, var(--primary) 10%, var(--background)), color-mix(in oklch, var(--primary) 3%, var(--background)));
+  border: 1px solid color-mix(in oklch, var(--primary) 25%, transparent);
+}
+.prose-doc .md-summary h2 { margin: 0 0 0.75rem; padding-left: 2.2rem; font-size: 1.25rem; }
+.prose-doc .md-summary h2::before { display: none; }
+.prose-doc .md-summary-icon {
+  position: absolute;
+  left: 1.6rem;
+  top: 1.65rem;
+  color: var(--primary);
+}
+.prose-doc .md-summary ul { margin-bottom: 0; }
+.prose-doc .md-summary li { margin: 0.5rem 0; }
+
+/* ── 다이어그램 (```mermaid) ── */
+.prose-doc .md-mermaid {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  background: var(--card);
+  text-align: center;
+}
+.prose-doc .md-mermaid svg { max-width: 100%; height: auto; margin: 0 auto; }
+.prose-doc .md-mermaid-loading { padding: 2rem 0; font-size: 0.85rem; color: var(--muted-foreground); }
+.prose-doc .md-mermaid-error { text-align: left; font-size: 0.8rem; color: var(--destructive); white-space: pre-wrap; }
+
+/* ── 그림 (인라인 SVG figure) ── */
+.prose-doc figure.md-figure {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  background: var(--card);
+}
+.prose-doc figure.md-figure svg { display: block; width: 100%; height: auto; }
+.prose-doc figure.md-figure figcaption {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+}

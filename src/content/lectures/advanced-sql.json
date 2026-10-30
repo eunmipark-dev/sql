@@ -1,0 +1,1302 @@
+{
+  "slug": "advanced-sql",
+  "title": "고급 SQL 활용",
+  "tables": {
+    "월별요금": {
+      "columns": [
+        "사용월",
+        "요금구분",
+        "사용량"
+      ],
+      "rows": [
+        [
+          "202410",
+          "A",
+          "10"
+        ],
+        [
+          "202410",
+          "B",
+          "20"
+        ],
+        [
+          "202410",
+          "A",
+          "30"
+        ],
+        [
+          "202410",
+          "C",
+          "40"
+        ],
+        [
+          "202409",
+          "A",
+          "50"
+        ],
+        [
+          "202410",
+          "B",
+          "60"
+        ]
+      ]
+    },
+    "EMP": {
+      "columns": [
+        "DEPTNO",
+        "EMPNO",
+        "SAL"
+      ],
+      "rows": [
+        [
+          "10",
+          "101",
+          "100"
+        ],
+        [
+          "10",
+          "102",
+          "200"
+        ],
+        [
+          "20",
+          "201",
+          "300"
+        ],
+        [
+          "20",
+          "202",
+          "100"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "고급 SQL 활용",
+      "subtitle": "같은 데이터를 두 번 읽지 않기",
+      "icon": "idea",
+      "steps": [
+        {
+          "say": "고급 SQL 활용을 시작할게요."
+        },
+        {
+          "say": "같은 결과라도 읽는 횟수로 성능이 갈려요."
+        },
+        {
+          "say": "반복해서 읽지 않는 법을 배워 봐요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "compare",
+      "section": "CASE로 한 번에",
+      "title": "반복 조회 줄이기",
+      "left": {
+        "title": "UNION ALL 3번",
+        "icon": "copy",
+        "tone": "bad",
+        "items": [
+          "A 구분 합계",
+          "B 구분 합계",
+          "C 구분 합계"
+        ]
+      },
+      "right": {
+        "title": "CASE 한 번",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "한 번만 읽고",
+          "조건별로 나눠 집계"
+        ]
+      },
+      "steps": [
+        {
+          "say": "구분별 합계를 구한다고 해 볼게요."
+        },
+        {
+          "say": "UNION ALL로 하면 테이블을 세 번 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "CASE나 DECODE를 쓰면 한 번만 읽어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "읽으면서 조건별로 나눠 더해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "UPDATE도 CASE로 한 문장에 합칠 수 있어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "id": "s03",
+      "section": "CASE로 한 번에",
+      "type": "data",
+      "title": "CASE로 펼치기",
+      "tables": [
+        "월별요금"
+      ],
+      "code": "SELECT\n SUM(CASE WHEN 요금구분='A'\n          THEN 사용량 END) A_사용량,\n SUM(CASE WHEN 요금구분='B'\n          THEN 사용량 END) B_사용량,\n SUM(DECODE(요금구분,'C',사용량)) C_사용량\nFROM  월별요금\nWHERE 사용월 = '202410';",
+      "steps": [
+        {
+          "say": "월별요금은 딱 한 번만 읽어요.",
+          "focus": [
+            7,
+            8
+          ],
+          "t": {
+            "월별요금": {
+              "rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            }
+          }
+        },
+        {
+          "say": "WHERE로 다른 달 행은 빠져요.",
+          "focus": [
+            8
+          ],
+          "t": {
+            "월별요금": {
+              "filter": [
+                0,
+                1,
+                2,
+                3,
+                5
+              ],
+              "cells": [
+                [
+                  4,
+                  "사용월"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "A 구분은 CASE로 골라 더해요.",
+          "focus": [
+            2,
+            3
+          ],
+          "t": {
+            "월별요금": {
+              "rows": [
+                0,
+                2
+              ],
+              "add": [
+                "A만",
+                [
+                  "10",
+                  "NULL",
+                  "30",
+                  "NULL",
+                  "50",
+                  "NULL"
+                ]
+              ],
+              "result": {
+                "title": "한 번 읽고 펼치기",
+                "columns": [
+                  "A_사용량",
+                  "B_사용량",
+                  "C_사용량"
+                ],
+                "rows": [
+                  [
+                    "40",
+                    "",
+                    ""
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "B 구분도 똑같아요.",
+          "focus": [
+            4,
+            5
+          ],
+          "t": {
+            "월별요금": {
+              "rows": [
+                1,
+                5
+              ],
+              "result": {
+                "title": "한 번 읽고 펼치기",
+                "columns": [
+                  "A_사용량",
+                  "B_사용량",
+                  "C_사용량"
+                ],
+                "rows": [
+                  [
+                    "40",
+                    "80",
+                    ""
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "DECODE로도 같은 일을 할 수 있어요.",
+          "focus": [
+            6
+          ],
+          "t": {
+            "월별요금": {
+              "rows": [
+                3
+              ],
+              "result": {
+                "title": "한 번 읽고 펼치기",
+                "columns": [
+                  "A_사용량",
+                  "B_사용량",
+                  "C_사용량"
+                ],
+                "rows": [
+                  [
+                    "40",
+                    "80",
+                    "40"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "SUM은 NULL을 무시하니 결과가 같아요.",
+          "focus": [
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "t": {
+            "월별요금": {
+              "cols": [
+                "A만"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "flow",
+      "section": "데이터 복제",
+      "title": "데이터 복제 원리",
+      "direction": "right",
+      "edges": [
+        "카티션 곱",
+        "결과"
+      ],
+      "nodes": [
+        {
+          "title": "EMP 10건",
+          "desc": "원본",
+          "icon": "table"
+        },
+        {
+          "title": "복제 집합 2건",
+          "desc": "CONNECT BY LEVEL",
+          "icon": "copy"
+        },
+        {
+          "title": "결과 20건",
+          "desc": "10 × 2",
+          "icon": "layers"
+        }
+      ],
+      "steps": [
+        {
+          "say": "같은 데이터를 두 벌 쓸 때가 있어요."
+        },
+        {
+          "say": "원본 테이블에,",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "1과 2만 가진 작은 집합을 만들어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "조인 조건 없이 붙이면 카티션 곱이에요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "10건 곱하기 2, 20건이 돼요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "compare",
+      "section": "데이터 복제",
+      "title": "복제 집합 만들기",
+      "left": {
+        "title": "복제용 테이블",
+        "icon": "table",
+        "items": [
+          "COPY_T 미리 생성",
+          "1부터 31까지"
+        ]
+      },
+      "right": {
+        "title": "CONNECT BY",
+        "icon": "branch",
+        "tone": "good",
+        "items": [
+          "DUAL로 즉석 생성",
+          "9i 이후 가능"
+        ]
+      },
+      "steps": [
+        {
+          "say": "복제 집합은 두 가지로 만들어요."
+        },
+        {
+          "say": "숫자를 담은 복제용 테이블을 미리 만들거나,",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "DUAL과 CONNECT BY로 즉석에서 만들어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "id": "s06",
+      "section": "데이터 복제",
+      "type": "data",
+      "title": "활용: 소계 행 붙이기",
+      "tables": [
+        "EMP"
+      ],
+      "steps": [
+        {
+          "say": "부서별 소계 행을 붙이는 예예요.",
+          "t": {
+            "EMP": {
+              "group": "DEPTNO"
+            }
+          }
+        },
+        {
+          "say": "데이터를 두 벌로 복제해요.",
+          "t": {
+            "EMP": {
+              "result": {
+                "title": "2벌 복제: 8행",
+                "columns": [
+                  "NO",
+                  "DEPTNO",
+                  "EMPNO",
+                  "SAL"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "10",
+                    "101",
+                    "100"
+                  ],
+                  [
+                    "1",
+                    "10",
+                    "102",
+                    "200"
+                  ],
+                  [
+                    "1",
+                    "20",
+                    "201",
+                    "300"
+                  ],
+                  [
+                    "1",
+                    "20",
+                    "202",
+                    "100"
+                  ],
+                  [
+                    "2",
+                    "10",
+                    "101",
+                    "100"
+                  ],
+                  [
+                    "2",
+                    "10",
+                    "102",
+                    "200"
+                  ],
+                  [
+                    "2",
+                    "20",
+                    "201",
+                    "300"
+                  ],
+                  [
+                    "2",
+                    "20",
+                    "202",
+                    "100"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "1번 벌은 사원별 상세 행으로 써요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "result": {
+                "title": "결과",
+                "columns": [
+                  "DEPTNO",
+                  "사원번호",
+                  "급여합"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "101",
+                    "100"
+                  ],
+                  [
+                    "10",
+                    "102",
+                    "200"
+                  ],
+                  [
+                    "20",
+                    "201",
+                    "300"
+                  ],
+                  [
+                    "20",
+                    "202",
+                    "100"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "2번 벌은 부서 합계 행으로 묶어요.",
+          "t": {
+            "EMP": {
+              "result": {
+                "title": "결과",
+                "columns": [
+                  "DEPTNO",
+                  "사원번호",
+                  "급여합"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "101",
+                    "100"
+                  ],
+                  [
+                    "10",
+                    "102",
+                    "200"
+                  ],
+                  [
+                    "10",
+                    "부서계",
+                    "300"
+                  ],
+                  [
+                    "20",
+                    "201",
+                    "300"
+                  ],
+                  [
+                    "20",
+                    "202",
+                    "100"
+                  ],
+                  [
+                    "20",
+                    "부서계",
+                    "400"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "ROLLUP으로도 같은 결과를 낼 수 있어요."
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "데이터 복제",
+      "question": "EMP 10건과 LEVEL 2까지의 집합을 조건 없이 조인하면?",
+      "choices": [
+        "20건",
+        "10건",
+        "12건",
+        "2건"
+      ],
+      "answer": 1,
+      "explanation": "조건이 없으니 카티션 곱이에요. 10 곱하기 2, 20건이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. EMP 10건을 두 벌로 복제하면 몇 건일까요?"
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "compare",
+      "section": "UNION ALL 활용",
+      "title": "외부 조인 대체",
+      "left": {
+        "title": "FULL OUTER",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "옛 방식은 반복 액세스",
+          "외부 조인과 Anti"
+        ]
+      },
+      "right": {
+        "title": "UNION ALL",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "각각 한 번만 읽고",
+          "GROUP BY로 합침",
+          "한쪽 키도 누락 X"
+        ]
+      },
+      "steps": [
+        {
+          "say": "계획과 실적을 합친다고 해 볼게요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "예전 FULL OUTER JOIN은 반복해 읽었어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "UNION ALL로 위아래로 붙여요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "각 테이블을 한 번만 읽어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "GROUP BY로 합치면 한쪽에만 있는 키도 나와요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "flow",
+      "section": "페이징 튜닝",
+      "title": "빠른 페이징 원리",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "인덱스 순서로",
+          "desc": "소트 생략",
+          "icon": "search",
+          "tone": "good"
+        },
+        {
+          "title": "COUNT STOPKEY",
+          "desc": "필요한 만큼에서 멈춤",
+          "icon": "target",
+          "tone": "good"
+        },
+        {
+          "title": "바깥에서 자르기",
+          "desc": "시작 번호 이후만",
+          "icon": "filter"
+        }
+      ],
+      "steps": [
+        {
+          "say": "페이징의 핵심은 필요한 만큼만 읽는 거예요."
+        },
+        {
+          "say": "인덱스 순서대로 읽어 정렬을 생략해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "끝 번호에서 COUNT STOPKEY로 멈춰요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "끝 번호 조건은 정렬 뷰 바로 바깥이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그리고 바깥에서 시작 번호 이후만 남겨요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "cards",
+      "section": "페이징 튜닝",
+      "title": "페이징 함정",
+      "cols": 3,
+      "items": [
+        {
+          "title": "ROWNUM",
+          "desc": "빠지면 끝까지",
+          "icon": "warning",
+          "tone": "bad"
+        },
+        {
+          "title": "정렬 불가",
+          "desc": "전체 읽고 소트",
+          "icon": "filter",
+          "tone": "warn"
+        },
+        {
+          "title": "COUNT(*)",
+          "desc": "매번 전체 재조회",
+          "icon": "search",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "페이징 함정 세 가지예요."
+        },
+        {
+          "say": "첫째, 끝 번호 ROWNUM 조건이 빠지면 끝까지 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 인덱스로 정렬을 못 하면 전부 읽어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "소트 부하는 줄어도 읽는 양은 그대로예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 매번 전체 건수를 세면 전부 다시 읽어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "다음 페이지 여부는 한 건 더 읽어 판단해요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "type": "compare",
+      "section": "페이징 튜닝",
+      "title": "뒤 페이지가 느릴 때",
+      "left": {
+        "title": "Offset 방식",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "앞 페이지 읽고 버림",
+          "뒤로 갈수록 느림"
+        ]
+      },
+      "right": {
+        "title": "키 기반 방식",
+        "icon": "tag",
+        "tone": "good",
+        "items": [
+          "마지막 키 다음부터",
+          "어느 페이지든 일정"
+        ]
+      },
+      "steps": [
+        {
+          "say": "ROWNUM 방식은 앞 페이지를 다 읽고 버려요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그래서 뒤로 갈수록 느려져요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "키 기반 페이징은 마지막 키를 넘겨요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그 다음부터 읽으니 속도가 일정해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "정렬 키엔 유일 컬럼을 꼭 넣어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "안 그러면 경계에서 중복이나 누락이 생겨요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "type": "callout",
+      "section": "페이징 튜닝",
+      "tone": "warning",
+      "title": "OFFSET FETCH",
+      "text": "12c 문법은 간단하지만 **OFFSET 행을 읽고 버리는 건** ROWNUM 방식과 같아요.",
+      "steps": [
+        {
+          "say": "12c부터 OFFSET FETCH 문법이 생겼어요."
+        },
+        {
+          "say": "간단하지만 OFFSET만큼 읽고 버리는 건 같아요."
+        },
+        {
+          "say": "뒤 페이지 성능은 ROWNUM 방식과 같아요."
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "quiz",
+      "section": "페이징 튜닝",
+      "question": "뒤 페이지로 갈수록 느려지는 문제의 해결책은?",
+      "choices": [
+        "OFFSET FETCH로 변경",
+        "키 기반 페이징",
+        "바깥에서만 BETWEEN",
+        "매번 COUNT(*)"
+      ],
+      "answer": 2,
+      "explanation": "키 기반 페이징은 앞 페이지를 읽지 않아요. 그래서 속도가 일정해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 뒤 페이지가 느릴 때 해결책은?"
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "cards",
+      "section": "윈도우 함수",
+      "title": "셀프 조인 대신",
+      "cols": 3,
+      "items": [
+        {
+          "title": "그룹 최대",
+          "desc": "MAX OVER",
+          "icon": "target",
+          "tone": "good"
+        },
+        {
+          "title": "이전 값",
+          "desc": "LAG",
+          "icon": "arrow-left-right",
+          "tone": "good"
+        },
+        {
+          "title": "누적합",
+          "desc": "SUM OVER",
+          "icon": "layers",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "셀프 조인은 같은 테이블을 또 읽어요."
+        },
+        {
+          "say": "윈도우 함수는 한 번 읽고 정렬해서 끝내요."
+        },
+        {
+          "say": "부서 최고 급여는 MAX OVER로 구해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "이전 상태값은 LAG로 가져와요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "누적 매출은 SUM OVER로 구해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "비등가 셀프 조인은 처리량이 제곱으로 늘어요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "compare",
+      "section": "WITH 절",
+      "title": "WITH 절 처리 방식",
+      "left": {
+        "title": "Materialize",
+        "icon": "disk",
+        "items": [
+          "임시 테이블에 저장",
+          "여러 번 재사용",
+          "TEMP TABLE 변환"
+        ]
+      },
+      "right": {
+        "title": "Inline",
+        "icon": "file",
+        "items": [
+          "인라인 뷰처럼",
+          "참조 위치에 풀기"
+        ]
+      },
+      "steps": [
+        {
+          "say": "WITH 절은 두 가지 방식으로 처리돼요."
+        },
+        {
+          "say": "Materialize. 결과를 임시 테이블에 저장해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "실행계획엔 TEMP TABLE 변환이 보여요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Inline. 인라인 뷰처럼 그 자리에 풀어 넣어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "compare",
+      "section": "WITH 절",
+      "title": "Materialize 장단점",
+      "left": {
+        "title": "장점",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "작은 결과 재사용",
+          "원본 반복 액세스 X"
+        ]
+      },
+      "right": {
+        "title": "단점",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "임시 테이블 I/O",
+          "인덱스 없음",
+          "조건 Pushing 불가"
+        ]
+      },
+      "steps": [
+        {
+          "say": "집계한 작은 결과를 여러 번 쓸 때 유리해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "임시 테이블을 쓰고 읽는 비용이 들어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "임시 테이블엔 인덱스도 없어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "메인 조건이 안으로 못 들어가기도 해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "결과가 크거나 한 번만 쓰면 Inline이 나아요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "quiz",
+      "section": "WITH 절",
+      "question": "Materialize 설명으로 **틀린** 것은?",
+      "choices": [
+        "임시 테이블에 저장",
+        "TEMP TABLE 변환",
+        "인덱스 자동 생성",
+        "조건 Pushing 불가"
+      ],
+      "answer": 3,
+      "explanation": "Materialize된 임시 테이블엔 인덱스가 없어요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. Materialize 설명으로 틀린 것은?"
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "cards",
+      "section": "사용자 정의 함수",
+      "title": "함수 호출의 문제",
+      "cols": 2,
+      "items": [
+        {
+          "title": "가상머신",
+          "desc": "SQL보다 느림",
+          "icon": "box",
+          "tone": "bad"
+        },
+        {
+          "title": "엔진 전환",
+          "desc": "호출마다 스위칭",
+          "icon": "arrow-left-right",
+          "tone": "bad"
+        },
+        {
+          "title": "재귀 호출",
+          "desc": "건마다 SQL 실행",
+          "icon": "recycle",
+          "tone": "bad"
+        },
+        {
+          "title": "일관성",
+          "desc": "시점이 달라짐",
+          "icon": "warning",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "SQL 안에서 함수를 부르면 문제가 커요."
+        },
+        {
+          "say": "첫째, PL SQL 가상머신에서 돌아 느려요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 호출마다 엔진 전환이 일어나요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 함수 안 SQL이 건마다 실행돼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "백만 건이면 백만 번이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 호출마다 다른 시점을 볼 수 있어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "읽기 일관성이 보장되지 않아요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "cards",
+      "section": "사용자 정의 함수",
+      "title": "부하 줄이는 법",
+      "cols": 2,
+      "items": [
+        {
+          "title": "조인 변경",
+          "desc": "근본 해결",
+          "icon": "link",
+          "tone": "good"
+        },
+        {
+          "title": "서브쿼리",
+          "desc": "DUAL로 감싸 캐싱",
+          "icon": "box",
+          "tone": "good"
+        },
+        {
+          "title": "결정적 함수",
+          "desc": "DETERMINISTIC",
+          "icon": "check",
+          "tone": "good"
+        },
+        {
+          "title": "결과 캐시",
+          "desc": "RESULT_CACHE",
+          "icon": "database",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "부하를 줄이는 방법 네 가지예요."
+        },
+        {
+          "say": "첫째, 조인으로 바꿔요. 가장 근본적이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 스칼라 서브쿼리로 감싸 캐싱해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "입력값 종류가 적을수록 효과가 커요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, DETERMINISTIC으로 선언해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "정말 결정적일 때만 써야 해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, RESULT_CACHE로 세션 간 공유해요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "quiz",
+      "section": "사용자 정의 함수",
+      "question": "SQL 속 사용자 정의 함수의 문제로 **보기 어려운** 것은?",
+      "choices": [
+        "Recursive Call",
+        "컨텍스트 스위칭",
+        "호출 수만큼 부하",
+        "항상 같은 시점 읽기"
+      ],
+      "answer": 4,
+      "explanation": "함수 안 SQL은 호출마다 다른 시점을 봐요. 읽기 일관성이 보장되지 않아요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 함수 호출의 문제로 보기 어려운 것은?"
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "반복 조회는 CASE로 한 번에",
+        "복제는 CONNECT BY 카티션 곱",
+        "FULL OUTER는 UNION ALL로",
+        "뒤 페이지는 키 기반 페이징",
+        "셀프 조인은 윈도우 함수로",
+        "함수는 조인이나 캐싱으로"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "반복 조회는 CASE로 한 번에 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "복제는 카티션 곱을 이용해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "FULL OUTER JOIN은 UNION ALL로 대체해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "뒤 페이지 문제는 키 기반 페이징이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "셀프 조인은 윈도우 함수로 바꿔요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "함수 호출은 조인이나 캐싱으로 줄여요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s21"
+    }
+  ]
+}

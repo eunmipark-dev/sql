@@ -1,0 +1,21 @@
+[
+  { "text": "ROLLUP(A, B)는 (A, B), (A), () 세 가지 그룹 수준의 집계를 만든다.", "answer": true, "explain": "ROLLUP은 오른쪽 컬럼부터 하나씩 제거하며 계층적 소계를 만든다." },
+  { "text": "CUBE(A, B)는 (A, B), (A), () 세 가지 그룹 수준만 만든다.", "answer": false, "explain": "CUBE(A, B)는 (A, B), (A), (B), () 네 가지 모든 조합을 만든다." },
+  { "text": "ROLLUP은 인수의 순서를 바꾸면 결과가 달라진다.", "answer": true, "explain": "ROLLUP은 인수 순서가 계층 구조를 결정한다." },
+  { "text": "CUBE는 인수의 순서를 바꾸면 결과 집합의 행 구성이 달라진다.", "answer": false, "explain": "CUBE와 GROUPING SETS는 인수 순서를 바꿔도 결과 집합의 구성이 같다." },
+  { "text": "GROUPING SETS(A, B)의 결과에는 전체 합계 행이 자동으로 포함된다.", "answer": false, "explain": "전체 합계가 필요하면 GROUPING SETS(A, B, ())처럼 빈 괄호를 추가해야 한다." },
+  { "text": "GROUPING SETS(A, B)는 A별 집계와 B별 집계를 UNION ALL 한 것과 같은 결과를 낸다.", "answer": true, "explain": "GROUPING SETS는 나열한 그룹 수준만 각각 집계해 합친다." },
+  { "text": "인수가 n개인 ROLLUP이 만드는 그룹 수준의 수는 2의 n제곱이다.", "answer": false, "explain": "ROLLUP은 n + 1개 수준을 만든다. 2의 n제곱은 CUBE다." },
+  { "text": "인수가 n개인 CUBE가 만드는 그룹 수준의 수는 2의 n제곱이다.", "answer": true, "explain": "CUBE는 가능한 모든 조합을 만들므로 2의 n제곱 수준이 생긴다." },
+  { "text": "GROUPING 함수는 소계 계산으로 집계되어 NULL이 된 행에서 1을 반환한다.", "answer": true, "explain": "그 외의 행에서는 0을 반환하므로 CASE·DECODE로 소계 라벨을 붙인다." },
+  { "text": "원본 데이터의 NULL 값으로 이루어진 일반 그룹 행에서 GROUPING 함수는 1을 반환한다.", "answer": false, "explain": "원본 NULL이라도 일반 그룹 행이면 GROUPING 값은 0이다. 1은 소계·총계 행에서만 나온다." },
+  { "text": "ROLLUP, CUBE, GROUPING SETS 중 모든 조합을 계산해 시스템 부하가 가장 큰 것은 ROLLUP이다.", "answer": false, "explain": "모든 조합을 계산하는 CUBE의 부하가 가장 크다." },
+  { "text": "GROUP BY DEPTNO, ROLLUP(JOB)은 전체 합계 행을 만들지 않는다.", "answer": true, "explain": "(DEPTNO, JOB)과 (DEPTNO) 수준만 만드는 부분 ROLLUP이다." },
+  { "text": "ROLLUP((DEPTNO, JOB))은 (DEPTNO, JOB), (DEPTNO), () 세 수준을 만든다.", "answer": false, "explain": "괄호로 묶은 컬럼은 한 단위로 취급되어 (DEPTNO, JOB)과 () 두 수준만 만든다." },
+  { "text": "CUBE(A, B)는 GROUPING SETS((A, B), (A), (B), ())와 같은 결과를 만든다.", "answer": true, "explain": "CUBE는 모든 조합을 GROUPING SETS로 나열한 것과 같다." },
+  { "text": "ROLLUP을 사용하면 결과가 그룹 컬럼 순서대로 정렬되는 것이 보장된다.", "answer": false, "explain": "그룹 함수 결과의 순서는 보장되지 않으므로 ORDER BY를 명시해야 한다." },
+  { "text": "SQL Server는 GROUP BY DEPTNO, JOB WITH ROLLUP 형태의 문법도 지원한다.", "answer": true, "explain": "SQL Server는 예전 방식인 WITH ROLLUP, WITH CUBE 문법도 지원한다." },
+  { "text": "ROLLUP, CUBE, GROUPING SETS는 Oracle에서만 지원하며 SQL Server는 지원하지 않는다.", "answer": false, "explain": "Oracle과 SQL Server 모두 GROUP BY ROLLUP, CUBE, GROUPING SETS 문법을 지원한다." },
+  { "text": "데이터에 존재하지 않는 컬럼 값 조합에 대해서는 ROLLUP 결과 행이 만들어지지 않는다.", "answer": true, "explain": "행 수는 수준별로 데이터에 실제 있는 그룹 개수를 더해 계산한다." },
+  { "text": "같은 소계를 UNION ALL로 작성하면 테이블을 한 번만 읽어 그룹 함수보다 효율적이다.", "answer": false, "explain": "UNION ALL 방식은 테이블을 여러 번 읽으므로 그룹 함수를 쓰는 편이 효율적이다." }
+]

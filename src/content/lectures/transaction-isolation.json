@@ -1,0 +1,1447 @@
+{
+  "slug": "transaction-isolation",
+  "title": "트랜잭션 격리성",
+  "tables": {
+    "T1": {
+      "columns": [
+        "계좌",
+        "잔고"
+      ],
+      "rows": [
+        [
+          "A",
+          "5만"
+        ]
+      ]
+    },
+    "T2": {
+      "columns": [
+        "계좌",
+        "잔고"
+      ],
+      "rows": [
+        [
+          "A",
+          "5만"
+        ]
+      ]
+    },
+    "고객": {
+      "columns": [
+        "이름",
+        "지역",
+        "연령대"
+      ],
+      "rows": [
+        [
+          "김",
+          "서울",
+          "20대"
+        ],
+        [
+          "이",
+          "서울",
+          "30대"
+        ],
+        [
+          "박",
+          "부산",
+          "20대"
+        ]
+      ]
+    },
+    "T2 신규": {
+      "columns": [
+        "이름",
+        "지역",
+        "연령대"
+      ],
+      "rows": [
+        [
+          "최",
+          "부산",
+          "30대"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "트랜잭션 격리성",
+      "subtitle": "서로의 작업에 얼마나 섞일까",
+      "icon": "shield",
+      "steps": [
+        {
+          "say": "트랜잭션 격리성을 시작할게요."
+        },
+        {
+          "say": "다른 트랜잭션의 영향을 얼마나 막을지의 문제예요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "cards",
+      "section": "ACID",
+      "title": "트랜잭션의 ACID",
+      "cols": 2,
+      "items": [
+        {
+          "title": "원자성",
+          "desc": "전부 아니면 전무",
+          "icon": "box"
+        },
+        {
+          "title": "일관성",
+          "desc": "모순 없는 상태",
+          "icon": "check"
+        },
+        {
+          "title": "격리성",
+          "desc": "중간 결과 차단",
+          "icon": "shield"
+        },
+        {
+          "title": "영속성",
+          "desc": "결과 영구 보존",
+          "icon": "disk"
+        }
+      ],
+      "steps": [
+        {
+          "say": "트랜잭션에는 네 가지 특징이 있어요."
+        },
+        {
+          "say": "원자성. 전부 하거나 전혀 안 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "일관성. 끝나도 모순 없는 상태예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "격리성. 중간 결과를 남이 못 봐요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "영속성. 성공한 결과는 장애에도 남아요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "앞 글자를 따서 ACID라고 해요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "compare",
+      "section": "ACID",
+      "title": "격리성과 동시성",
+      "left": {
+        "title": "격리성 높임",
+        "icon": "lock",
+        "items": [
+          "일관성 좋아짐",
+          "Lock 대기 증가",
+          "동시성 하락"
+        ]
+      },
+      "right": {
+        "title": "격리성 낮춤",
+        "icon": "users",
+        "items": [
+          "동시성 좋아짐",
+          "이상 현상 허용"
+        ]
+      },
+      "steps": [
+        {
+          "say": "격리성을 완벽히 하려면 줄 세워 하나씩 해야 해요."
+        },
+        {
+          "say": "격리성을 높이면 일관성은 좋아져요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "대신 대기가 늘어 동시성이 떨어져요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그래서 현실에선 격리성을 조금 낮춰요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그 대가로 이상 현상을 일부 허용해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "quiz",
+      "section": "ACID",
+      "question": "ACID 중 **격리성(Isolation)** 설명은?",
+      "choices": [
+        "전부 하거나 전혀 안 함",
+        "끝나도 모순 없는 상태",
+        "중간 결과를 남이 못 봄",
+        "성공 결과는 장애에도 유지"
+      ],
+      "answer": 3,
+      "explanation": "격리성은 실행 중인 중간 결과를 다른 트랜잭션이 못 보게 해요. 전부 아니면 전무는 원자성이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. ACID 중 격리성의 설명은 무엇일까요?"
+        }
+      ],
+      "id": "s03q"
+    },
+    {
+      "id": "s04",
+      "section": "이상 현상",
+      "type": "data",
+      "title": "Dirty Read",
+      "tables": [
+        "T1",
+        "T2"
+      ],
+      "steps": [
+        {
+          "say": "첫째, 더티 리드예요. 둘 다 잔고 5만을 봐요.",
+          "t": {
+            "T1": {
+              "cols": [
+                "잔고"
+              ]
+            },
+            "T2": {
+              "cols": [
+                "잔고"
+              ]
+            }
+          }
+        },
+        {
+          "say": "T1이 잔고를 5만에서 3만으로 바꿔요.",
+          "t": {
+            "T1": {
+              "set": [
+                [
+                  0,
+                  "잔고",
+                  "3만"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "아직 커밋은 안 했어요.",
+          "t": {
+            "T1": {
+              "notes": [
+                [
+                  0,
+                  "잔고",
+                  "미커밋"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "T2가 그 3만을 읽어요.",
+          "t": {
+            "T2": {
+              "set": [
+                [
+                  0,
+                  "잔고",
+                  "3만"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "잔고",
+                  "더티 리드"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그런데 T1이 롤백해요.",
+          "t": {
+            "T1": {
+              "set": [
+                [
+                  0,
+                  "잔고",
+                  "5만"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "잔고",
+                  "롤백"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "T2는 존재한 적 없는 값으로 일한 셈이에요.",
+          "t": {
+            "T2": {
+              "cells": [
+                [
+                  0,
+                  "잔고"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "잔고",
+                  "없던 값"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s05",
+      "section": "이상 현상",
+      "type": "data",
+      "title": "Non-Repeatable",
+      "tables": [
+        "T1",
+        "T2"
+      ],
+      "steps": [
+        {
+          "say": "둘째, 반복 불가능한 읽기예요.",
+          "t": {
+            "T1": {
+              "cols": [
+                "잔고"
+              ]
+            }
+          }
+        },
+        {
+          "say": "T1이 잔고를 읽어요. 5만이에요.",
+          "t": {
+            "T1": {
+              "cells": [
+                [
+                  0,
+                  "잔고"
+                ]
+              ],
+              "result": {
+                "title": "T1 조회",
+                "columns": [
+                  "시점",
+                  "잔고"
+                ],
+                "rows": [
+                  [
+                    "첫 조회",
+                    "5만"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "그 사이 T2가 1만으로 바꾸고 커밋해요.",
+          "t": {
+            "T2": {
+              "set": [
+                [
+                  0,
+                  "잔고",
+                  "1만"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "잔고",
+                  "커밋"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "T1이 같은 쿼리를 또 해요. 이번엔 1만이에요.",
+          "t": {
+            "T1": {
+              "set": [
+                [
+                  0,
+                  "잔고",
+                  "1만"
+                ]
+              ],
+              "result": {
+                "title": "T1 조회",
+                "columns": [
+                  "시점",
+                  "잔고"
+                ],
+                "rows": [
+                  [
+                    "첫 조회",
+                    "5만"
+                  ],
+                  [
+                    "다시 조회",
+                    "1만"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "같은 쿼리인데 결과가 달라요.",
+          "t": {
+            "T1": {
+              "notes": [
+                [
+                  0,
+                  "잔고",
+                  "값이 바뀜"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s06",
+      "section": "이상 현상",
+      "type": "data",
+      "title": "Phantom Read",
+      "tables": [
+        "고객",
+        "T2 신규"
+      ],
+      "steps": [
+        {
+          "say": "셋째, 팬텀 리드예요. 고객이 세 명 있어요.",
+          "t": {
+            "고객": {
+              "rows": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "T1이 지역별 고객 수를 집계해요.",
+          "t": {
+            "고객": {
+              "group": "지역",
+              "result": {
+                "title": "지역별",
+                "columns": [
+                  "지역",
+                  "고객 수"
+                ],
+                "rows": [
+                  [
+                    "서울",
+                    "2"
+                  ],
+                  [
+                    "부산",
+                    "1"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "그 사이 T2가 새 고객을 넣고 커밋해요.",
+          "t": {
+            "T2 신규": {
+              "rows": [
+                0
+              ],
+              "notes": [
+                [
+                  0,
+                  "이름",
+                  "커밋"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "T1이 연령대별로 다시 집계해요.",
+          "t": {
+            "고객": {
+              "group": "연령대",
+              "result": {
+                "title": "연령대별",
+                "columns": [
+                  "연령대",
+                  "고객 수"
+                ],
+                "rows": [
+                  [
+                    "20대",
+                    "2"
+                  ],
+                  [
+                    "30대",
+                    "2"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "없던 행이 유령처럼 나타나요.",
+          "t": {
+            "T2 신규": {
+              "rows": [
+                0
+              ],
+              "notes": [
+                [
+                  0,
+                  "이름",
+                  "유령 행"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "두 집계의 합계가 서로 안 맞아요.",
+          "t": {
+            "고객": {
+              "group": null,
+              "result": {
+                "title": "합계 비교",
+                "columns": [
+                  "집계",
+                  "합계"
+                ],
+                "rows": [
+                  [
+                    "지역별",
+                    "3"
+                  ],
+                  [
+                    "연령대별",
+                    "4"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "이상 현상",
+      "title": "세 현상의 원인",
+      "cols": 3,
+      "items": [
+        {
+          "title": "Dirty",
+          "desc": "미커밋 값 읽기",
+          "icon": "eye",
+          "tone": "bad"
+        },
+        {
+          "title": "Non-Rep.",
+          "desc": "수정·삭제 커밋",
+          "icon": "file",
+          "tone": "warn"
+        },
+        {
+          "title": "Phantom",
+          "desc": "새 행 삽입 커밋",
+          "icon": "copy",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "원인을 한 번에 정리할게요."
+        },
+        {
+          "say": "더티 리드는 커밋 안 된 값을 읽어서예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "반복 불가능한 읽기는 기존 행 수정, 삭제예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "팬텀 리드는 새 행 삽입이에요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "callout",
+      "section": "이상 현상",
+      "tone": "tip",
+      "title": "시험 함정",
+      "text": "Non-Repeatable은 **수정·삭제**, Phantom은 **삽입**. 원인을 바꿔 내는 함정!",
+      "steps": [
+        {
+          "say": "시험에선 원인을 바꿔서 내요."
+        },
+        {
+          "say": "수정이나 삭제면 반복 불가능한 읽기예요."
+        },
+        {
+          "say": "삽입이면 팬텀 리드예요."
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "quiz",
+      "section": "이상 현상",
+      "question": "두 번 조회한 사이 다른 트랜잭션이 **INSERT 후 커밋**해 없던 행이 나타났다. 이 현상은?",
+      "choices": [
+        "Dirty Read",
+        "Phantom Read",
+        "Lost Update",
+        "Non-Repeatable Read"
+      ],
+      "answer": 2,
+      "explanation": "새 행 삽입으로 없던 행이 생기면 Phantom Read예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 삽입 때문에 없던 행이 나타났어요. 어떤 현상일까요?"
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "layers",
+      "section": "격리성 수준 4단계",
+      "title": "격리성 수준 4단계",
+      "axis": {
+        "top": "격리성 낮음",
+        "bottom": "격리성 높음"
+      },
+      "layers": [
+        {
+          "title": "READ UNCOMMITTED",
+          "desc": "레벨 0 · 셋 다 발생",
+          "icon": "warning"
+        },
+        {
+          "title": "READ COMMITTED",
+          "desc": "레벨 1 · Dirty만 방지",
+          "icon": "check"
+        },
+        {
+          "title": "REPEATABLE READ",
+          "desc": "레벨 2 · Phantom만 발생",
+          "icon": "lock"
+        },
+        {
+          "title": "SERIALIZABLE",
+          "desc": "레벨 3 · 셋 다 방지",
+          "icon": "shield"
+        }
+      ],
+      "steps": [
+        {
+          "say": "표준 격리성 수준은 네 단계예요."
+        },
+        {
+          "say": "READ UNCOMMITTED. 커밋 안 된 것도 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "세 현상이 모두 생겨요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "READ COMMITTED. 커밋된 것만 읽어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "더티 리드만 막아요. 대부분 DBMS 기본값이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "REPEATABLE READ. 읽은 행은 남이 못 바꿔요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "하지만 새 행 삽입은 못 막아요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "SERIALIZABLE. 셋을 모두 막아요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "순서대로 실행한 것과 같은 결과예요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "type": "quiz",
+      "section": "격리성 수준 4단계",
+      "question": "표준 **REPEATABLE READ**에서 발생할 수 있는 현상은?",
+      "choices": [
+        "Dirty Read",
+        "Non-Repeatable Read",
+        "Phantom Read",
+        "셋 다 안 생김"
+      ],
+      "answer": 3,
+      "explanation": "REPEATABLE READ는 새 행 삽입을 못 막아요. 그래서 Phantom Read가 생겨요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. REPEATABLE READ에서 생길 수 있는 현상은?"
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "type": "layers",
+      "section": "격리성 수준 4단계",
+      "title": "Lock 기반 구현",
+      "axis": {
+        "top": "짧고 좁게",
+        "bottom": "길고 넓게"
+      },
+      "layers": [
+        {
+          "title": "READ UNCOMMITTED",
+          "desc": "공유 Lock 안 걸음"
+        },
+        {
+          "title": "READ COMMITTED",
+          "desc": "읽는 순간만, 곧 해제"
+        },
+        {
+          "title": "REPEATABLE READ",
+          "desc": "읽은 행을 끝까지"
+        },
+        {
+          "title": "SERIALIZABLE",
+          "desc": "읽은 범위를 끝까지"
+        }
+      ],
+      "steps": [
+        {
+          "say": "SQL Server는 Lock으로 격리성을 구현해요."
+        },
+        {
+          "say": "READ UNCOMMITTED는 공유 Lock을 안 걸어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "READ COMMITTED는 읽는 순간만 걸어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "REPEATABLE READ는 읽은 행을 끝까지 잠가요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "SERIALIZABLE은 읽은 범위까지 잠가요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "수준이 높을수록 Lock이 길고 넓어요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "id": "s13",
+      "section": "Oracle의 격리성",
+      "type": "data",
+      "title": "Oracle의 두 수준",
+      "tables": [
+        "T1",
+        "T2"
+      ],
+      "steps": [
+        {
+          "say": "Oracle은 Lock이 아니라 다중버전으로 구현해요.",
+          "t": {
+            "T1": {
+              "cols": [
+                "잔고"
+              ]
+            },
+            "T2": {
+              "cols": [
+                "잔고"
+              ]
+            }
+          }
+        },
+        {
+          "say": "T1이 잔고 5만을 읽었어요.",
+          "t": {
+            "T1": {
+              "cells": [
+                [
+                  0,
+                  "잔고"
+                ]
+              ],
+              "result": {
+                "title": "T1 조회",
+                "columns": [
+                  "시점",
+                  "잔고"
+                ],
+                "rows": [
+                  [
+                    "첫 조회",
+                    "5만"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "그 사이 T2가 1만으로 바꾸고 커밋해요.",
+          "t": {
+            "T2": {
+              "set": [
+                [
+                  0,
+                  "잔고",
+                  "1만"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "잔고",
+                  "커밋"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "기본인 READ COMMITTED는 문장 시작 시점 기준이에요. 다음 문장은 1만을 봐요.",
+          "t": {
+            "T1": {
+              "result": {
+                "title": "T1 조회",
+                "columns": [
+                  "시점",
+                  "잔고"
+                ],
+                "rows": [
+                  [
+                    "첫 조회",
+                    "5만"
+                  ],
+                  [
+                    "RC 다음 문장",
+                    "1만"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "SERIALIZABLE은 트랜잭션 시작 시점 기준이에요. 계속 5만을 봐요.",
+          "t": {
+            "T1": {
+              "result": {
+                "title": "T1 조회",
+                "columns": [
+                  "시점",
+                  "잔고"
+                ],
+                "rows": [
+                  [
+                    "첫 조회",
+                    "5만"
+                  ],
+                  [
+                    "RC 다음 문장",
+                    "1만"
+                  ],
+                  [
+                    "SER 다음 문장",
+                    "5만"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "그 뒤 남이 커밋한 행을 바꾸면 오류가 나요.",
+          "t": {
+            "T1": {
+              "notes": [
+                [
+                  0,
+                  "잔고",
+                  "ORA-08177"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "ORA 공팔일칠칠 오류예요.",
+          "t": {
+            "T1": {
+              "cells": [
+                [
+                  0,
+                  "잔고"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "code",
+      "section": "Oracle의 격리성",
+      "title": "Oracle 설정 방법",
+      "code": "-- 트랜잭션 단위 (첫 문장)\nSET TRANSACTION ISOLATION LEVEL\n    SERIALIZABLE;\n-- 세션 단위\nALTER SESSION SET\n    ISOLATION_LEVEL = SERIALIZABLE;\n-- 읽기 전용: DML 불가\nSET TRANSACTION READ ONLY;",
+      "steps": [
+        {
+          "say": "설정 방법은 세 가지예요."
+        },
+        {
+          "say": "트랜잭션 단위로 정할 수 있어요.",
+          "focus": [
+            2,
+            3
+          ]
+        },
+        {
+          "say": "트랜잭션의 첫 문장이어야 해요.",
+          "focus": [
+            2,
+            3
+          ]
+        },
+        {
+          "say": "세션 단위로도 정할 수 있어요.",
+          "focus": [
+            5,
+            6
+          ]
+        },
+        {
+          "say": "읽기 전용 트랜잭션도 있어요.",
+          "focus": [
+            8
+          ]
+        },
+        {
+          "say": "시작 시점 기준으로 읽고, DML은 못 해요.",
+          "focus": [
+            8
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "cards",
+      "section": "Oracle의 격리성",
+      "title": "Oracle 혼동 포인트",
+      "cols": 2,
+      "items": [
+        {
+          "title": "RU·RR 없음",
+          "desc": "지원 안 함",
+          "icon": "warning",
+          "tone": "bad"
+        },
+        {
+          "title": "Dirty 없음",
+          "desc": "절대 안 생김",
+          "icon": "check",
+          "tone": "good"
+        },
+        {
+          "title": "블로킹 없음",
+          "desc": "충돌 시 재시도",
+          "icon": "recycle",
+          "tone": "warn"
+        },
+        {
+          "title": "스냅샷 격리",
+          "desc": "Skew 못 막음",
+          "icon": "eye",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "Oracle에서 헷갈리는 점 네 가지예요."
+        },
+        {
+          "say": "READ UNCOMMITTED는 없어요. REPEATABLE READ도요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그래서 더티 리드는 절대 안 생겨요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "SERIALIZABLE이어도 읽기로 막히진 않아요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "대신 충돌 오류가 나니 재시도 로직이 필요해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "엄밀히는 스냅샷 격리에 가까워요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "Write Skew까지는 못 막아요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "callout",
+      "section": "Oracle의 격리성",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "기본값은 **READ COMMITTED**. Oracle은 RC와 SERIALIZABLE만 지원!",
+      "steps": [
+        {
+          "say": "시험 포인트예요."
+        },
+        {
+          "say": "두 DBMS 기본값은 READ COMMITTED예요."
+        },
+        {
+          "say": "Oracle은 두 수준만 지원해요."
+        },
+        {
+          "say": "READ COMMITTED와 SERIALIZABLE이에요."
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "quiz",
+      "section": "Oracle의 격리성",
+      "question": "Oracle **SERIALIZABLE**은 어느 시점 기준으로 읽을까?",
+      "choices": [
+        "트랜잭션 시작 시점",
+        "문장 시작 시점",
+        "커밋 시점",
+        "읽을 때마다 최신"
+      ],
+      "answer": 1,
+      "explanation": "SERIALIZABLE은 트랜잭션 시작 시점 기준이에요. 문장 시작 기준은 READ COMMITTED예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. Oracle SERIALIZABLE의 기준 시점은?"
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "compare",
+      "section": "격리성과 동시성",
+      "title": "격리성을 높이면",
+      "left": {
+        "title": "Lock 기반",
+        "icon": "lock",
+        "items": [
+          "공유 Lock 오래·넓게",
+          "갱신 대기 증가",
+          "교착상태 증가"
+        ]
+      },
+      "right": {
+        "title": "MVCC Oracle",
+        "icon": "layers",
+        "items": [
+          "블로킹은 그대로",
+          "ORA-08177 증가",
+          "Undo 부담 증가"
+        ]
+      },
+      "steps": [
+        {
+          "say": "격리성을 높이면 비용이 따라요."
+        },
+        {
+          "say": "Lock 기반은 공유 Lock을 오래 잡아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "대기와 교착상태가 늘어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Oracle은 블로킹은 늘지 않아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "대신 충돌 오류와 Undo 부담이 커져요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래서 기본은 READ COMMITTED로 둬요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "필요한 곳만 FOR UPDATE 등으로 보완해요.",
+          "focus": [
+            0,
+            1
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "cards",
+      "section": "트랜잭션 설계",
+      "title": "트랜잭션 설계 5원칙",
+      "cols": 3,
+      "items": [
+        {
+          "title": "짧게",
+          "desc": "최소 단위로",
+          "icon": "target"
+        },
+        {
+          "title": "대기 제외",
+          "desc": "사용자 입력 X",
+          "icon": "user",
+          "tone": "warn"
+        },
+        {
+          "title": "필요한 만큼",
+          "desc": "격리성 최소",
+          "icon": "scale"
+        },
+        {
+          "title": "원자성 유지",
+          "desc": "함께할 건 묶기",
+          "icon": "box"
+        },
+        {
+          "title": "같은 순서",
+          "desc": "교착상태 예방",
+          "icon": "arrow-left-right"
+        }
+      ],
+      "steps": [
+        {
+          "say": "트랜잭션 설계 원칙 다섯 가지예요."
+        },
+        {
+          "say": "첫째, 트랜잭션은 짧게 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 사용자 대기를 넣지 않아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "자리를 비우면 Lock이 계속 남아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 격리성은 필요한 만큼만 높여요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 너무 잘게 커밋하진 마세요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "함께 성공할 작업은 한 트랜잭션이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "다섯째, 같은 순서로 자원에 접근해요.",
+          "focus": [
+            4
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "compare",
+      "section": "트랜잭션 설계",
+      "title": "배치의 커밋 주기",
+      "left": {
+        "title": "너무 자주",
+        "icon": "recycle",
+        "tone": "bad",
+        "items": [
+          "Redo·로그 부하",
+          "Snapshot 위험"
+        ]
+      },
+      "right": {
+        "title": "너무 드물게",
+        "icon": "lock",
+        "tone": "bad",
+        "items": [
+          "Undo 공간 부족",
+          "Lock 오래 보유"
+        ]
+      },
+      "steps": [
+        {
+          "say": "대량 배치는 커밋 주기가 중요해요."
+        },
+        {
+          "say": "루프마다 커밋하면 로그 부하가 커요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "스냅샷 투 올드 위험도 커져요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "너무 안 하면 Undo와 Lock이 문제예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "업무 단위에 맞게 적절히 정해요.",
+          "focus": [
+            0,
+            1
+          ]
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "quiz",
+      "section": "트랜잭션 설계",
+      "question": "트랜잭션 설계 원칙으로 **옳지 않은** 것은?",
+      "choices": [
+        "트랜잭션은 짧게",
+        "같은 순서로 접근",
+        "필요한 만큼만 격리",
+        "사용자 확인까지 묶기"
+      ],
+      "answer": 4,
+      "explanation": "사용자 대기를 트랜잭션에 넣으면 Lock이 계속 남아요. 조회와 저장은 분리해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 트랜잭션 설계 원칙으로 옳지 않은 것은?"
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "ACID: 원자 · 일관 · 격리 · 영속",
+        "Dirty: 미커밋 값 읽기",
+        "NR은 수정·삭제, Phantom은 삽입",
+        "RC < RR < SERIALIZABLE",
+        "기본값은 READ COMMITTED",
+        "Oracle은 RC · SERIALIZABLE만"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "ACID는 원자성, 일관성, 격리성, 영속성이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "더티 리드는 커밋 안 된 값을 읽는 거예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "수정, 삭제는 반복 불가, 삽입은 팬텀이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "수준이 올라갈수록 막는 현상이 늘어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "기본값은 READ COMMITTED예요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "Oracle은 두 수준만 지원해요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s22"
+    }
+  ]
+}

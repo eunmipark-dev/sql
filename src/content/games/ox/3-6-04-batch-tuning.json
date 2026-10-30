@@ -1,0 +1,21 @@
+[
+  { "text": "배치 프로그램은 첫 행 응답 속도보다 전체 처리 시간 단축을 목표로 하므로 ALL_ROWS 옵티마이저 모드가 적합하다.", "answer": true, "explain": "배치는 Throughput이 중요하므로 전체 처리 속도를 최적화하는 ALL_ROWS가 맞다." },
+  { "text": "절차형 배치는 건마다 SQL을 실행해 반복적인 DB Call과 랜덤 I/O가 누적되므로 대량 처리에 비효율적이다.", "answer": true, "explain": "반복 Call, 랜덤 I/O, 잦은 커밋, 옵티마이저 활용 불가가 절차형 처리의 문제점이다." },
+  { "text": "절차형 Row-by-Row 처리는 옵티마이저가 해시 조인이나 병렬 처리 같은 집합 처리 방식을 자유롭게 선택할 수 있게 해 준다.", "answer": false, "explain": "처리 순서가 프로그램 로직에 고정되어 옵티마이저가 집합 처리 방식을 쓸 수 없다." },
+  { "text": "PARALLEL 힌트는 병렬도만 지정하므로 Full Scan을 확실히 하려면 FULL 힌트를 함께 쓴다.", "answer": true, "explain": "PARALLEL 힌트는 액세스 경로를 강제하지 않는다." },
+  { "text": "병렬 처리에서 QC(Query Coordinator)는 병렬 SQL을 실행한 사용자 세션과 별개로 새로 생성되는 백그라운드 프로세스다.", "answer": false, "explain": "QC는 병렬 SQL을 실행한 사용자 세션의 서버 프로세스이며 작업 분배와 결과 취합, 직렬 연산을 맡는다." },
+  { "text": "병렬 서버에 나눠 주는 작업 단위인 Granule은 블록 범위 단위 또는 파티션 단위로 나뉜다.", "answer": true, "explain": "블록 범위는 PX BLOCK ITERATOR, 파티션 단위는 PX PARTITION RANGE ALL로 나타난다." },
+  { "text": "Producer와 Consumer 두 서버 집합이 데이터를 재분배하는 Inter-Operation Parallelism에서는 DOP의 2배만큼 병렬 서버가 사용된다.", "answer": true, "explain": "두 서버 집합이 동시에 일하므로 DOP × 2개의 서버가 필요하다." },
+  { "text": "Intra-Operation Parallelism에서는 같은 서버 집합의 서버들이 서로 데이터를 재분배하며 통신한다.", "answer": false, "explain": "Intra-Operation은 한 오퍼레이션을 나눠 처리하며 서버끼리 통신하지 않는다. 재분배는 Inter-Operation에서 일어난다." },
+  { "text": "병렬 실행계획 IN-OUT 항목의 P->S는 병렬 서버가 처리 결과를 QC에게 전송한다는 의미다.", "answer": true, "explain": "P->S는 Parallel to Serial로 병렬 서버에서 QC로의 전송을 뜻한다." },
+  { "text": "병렬 실행계획에 S->P가 나타나는 것은 서버 집합 간 재분배가 효율적으로 이루어진다는 신호다.", "answer": false, "explain": "S->P는 QC가 직렬 처리한 결과를 병렬 서버에 분배하는 것으로 병목이 될 수 있다." },
+  { "text": "병렬 ORDER BY 처리 시 Producer는 주로 정렬 키 값의 범위(RANGE) 방식으로 Consumer에게 데이터를 분배한다.", "answer": true, "explain": "ORDER BY는 RANGE, GROUP BY와 해시 조인은 HASH 분배를 주로 사용한다." },
+  { "text": "PQ_DISTRIBUTE(B NONE NONE)은 양쪽 테이블을 조인 키 해시 값으로 재분배하는 동적 파티셔닝 방식이다.", "answer": false, "explain": "NONE NONE은 재분배 없이 파티션끼리 조인하는 Full Partition-Wise 조인이며, 해시 재분배는 HASH HASH다." },
+  { "text": "Full Partition-Wise 조인은 두 테이블이 조인 키로 같게 파티셔닝되어 있어 재분배 없이 서버 집합 하나로 처리된다.", "answer": true, "explain": "재분배가 없어 가장 효율적인 병렬 조인 방식이다." },
+  { "text": "병렬 조인에서 큰 테이블을 Broadcast 방식으로 분배하면 재분배 비용이 줄어 성능이 좋아진다.", "answer": false, "explain": "Broadcast는 작은 집합에만 유리하며 큰 집합을 Broadcast하면 DOP배만큼 복제되어 느려진다." },
+  { "text": "ALTER SESSION ENABLE PARALLEL DML 없이 PARALLEL 힌트만 주면 INSERT 자체는 QC가 직렬로 수행한다.", "answer": true, "explain": "병렬 DML을 활성화하지 않으면 SELECT 부분만 병렬로 처리된다." },
+  { "text": "병렬 DML이 활성화되면 실행계획에서 LOAD AS SELECT가 PX COORDINATOR 위쪽에 나타난다.", "answer": false, "explain": "병렬 DML이 활성화되면 DML 오퍼레이션이 PX COORDINATOR 아래에 나타나 병렬 서버가 수행한다." },
+  { "text": "병렬 INSERT는 Direct Path Insert로 동작하므로 대상 테이블에 Exclusive 모드 테이블 Lock이 걸린다.", "answer": true, "explain": "커밋 전까지 다른 트랜잭션의 DML이 막히고 같은 세션도 조회할 수 없다." },
+  { "text": "인덱스를 PARALLEL 옵션으로 생성한 뒤 병렬 속성을 그대로 두어도 이후 일반 SQL 실행에는 영향이 없다.", "answer": false, "explain": "남은 병렬 속성 때문에 일반 SQL까지 병렬로 수행될 수 있으므로 NOPARALLEL로 되돌린다." },
+  { "text": "비파티션 인덱스에 대한 Index Range Scan은 병렬로 처리되지 않는다.", "answer": true, "explain": "PARALLEL_INDEX로 Range Scan을 병렬화하려면 파티션 인덱스여야 한다." }
+]

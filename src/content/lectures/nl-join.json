@@ -1,0 +1,1389 @@
+{
+  "slug": "nl-join",
+  "title": "NL 조인",
+  "tables": {
+    "DEPT": {
+      "columns": [
+        "DEPTNO",
+        "LOC"
+      ],
+      "rows": [
+        [
+          "10",
+          "서울"
+        ],
+        [
+          "20",
+          "부산"
+        ],
+        [
+          "30",
+          "서울"
+        ],
+        [
+          "40",
+          "대구"
+        ]
+      ]
+    },
+    "EMP": {
+      "columns": [
+        "ENAME",
+        "DEPTNO"
+      ],
+      "rows": [
+        [
+          "SMITH",
+          "20"
+        ],
+        [
+          "KING",
+          "10"
+        ],
+        [
+          "CLARK",
+          "10"
+        ],
+        [
+          "ALLEN",
+          "30"
+        ],
+        [
+          "WARD",
+          "30"
+        ],
+        [
+          "FORD",
+          "20"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "NL 조인",
+      "subtitle": "한 건씩, 인덱스로 짝 찾기",
+      "icon": "link",
+      "steps": [
+        {
+          "say": "NL 조인을 시작할게요."
+        },
+        {
+          "say": "Nested Loop, 중첩 루프 조인이에요."
+        },
+        {
+          "say": "소량을 빠르게 처리하는 OLTP의 기본 조인이에요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "id": "s02",
+      "section": "기본 메커니즘",
+      "type": "data",
+      "title": "중첩 반복문 구조",
+      "tables": [
+        "DEPT",
+        "EMP"
+      ],
+      "code": "SELECT D.DEPTNO, E.ENAME\nFROM   DEPT D, EMP E\nWHERE  D.LOC = '서울'\nAND    E.DEPTNO = D.DEPTNO;",
+      "steps": [
+        {
+          "say": "NL 조인은 이중 반복문과 똑같아요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "DEPT": {
+              "cols": [
+                "DEPTNO"
+              ]
+            },
+            "EMP": {
+              "cols": [
+                "DEPTNO"
+              ]
+            }
+          }
+        },
+        {
+          "say": "Outer 테이블 DEPT를 먼저 읽어요. 드라이빙 테이블이에요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "DEPT": {
+              "rows": [
+                0,
+                1,
+                2,
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "서울 조건으로 두 건만 통과해요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "DEPT": {
+              "filter": [
+                0,
+                2
+              ],
+              "cols": [
+                "LOC"
+              ]
+            }
+          }
+        },
+        {
+          "say": "한 건을 읽으면 그 조인 키 10을 들고,",
+          "focus": [
+            4
+          ],
+          "t": {
+            "DEPT": {
+              "rows": [
+                0
+              ],
+              "cells": [
+                [
+                  0,
+                  "DEPTNO"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "DEPTNO",
+                  "키 10"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "Inner 쪽 인덱스로 짝을 찾아가요. EMP가 드리븐 테이블이에요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ]
+              ]
+            },
+            "EMP": {
+              "tint": [
+                [
+                  1,
+                  2
+                ]
+              ],
+              "rows": [
+                1,
+                2
+              ],
+              "result": {
+                "title": "결과",
+                "columns": [
+                  "DEPTNO",
+                  "ENAME"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "KING"
+                  ],
+                  [
+                    "10",
+                    "CLARK"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "다음 건 30도 똑같이 EMP를 다시 찾아요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  2
+                ]
+              ],
+              "rows": [
+                2
+              ]
+            },
+            "EMP": {
+              "tint": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4
+                ]
+              ],
+              "rows": [
+                3,
+                4
+              ],
+              "result": {
+                "title": "결과 4행",
+                "columns": [
+                  "DEPTNO",
+                  "ENAME"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "KING"
+                  ],
+                  [
+                    "10",
+                    "CLARK"
+                  ],
+                  [
+                    "30",
+                    "ALLEN"
+                  ],
+                  [
+                    "30",
+                    "WARD"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "Outer 한 건마다 Inner를 탐색해요. 두 건이면 두 번이에요.",
+          "t": {
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  2
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "DEPTNO",
+                  "탐색 1번"
+                ],
+                [
+                  2,
+                  "DEPTNO",
+                  "탐색 2번"
+                ]
+              ]
+            },
+            "EMP": {
+              "tint": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "기본 메커니즘",
+      "tone": "warning",
+      "title": "Inner 인덱스가 핵심",
+      "text": "Inner 조인 컬럼에 인덱스가 없으면 Outer 건수만큼 Inner를 **Full Scan**!",
+      "steps": [
+        {
+          "say": "Inner 쪽 인덱스가 핵심이에요."
+        },
+        {
+          "say": "인덱스가 없으면 어떻게 될까요?"
+        },
+        {
+          "say": "Outer가 1만 건이면 Inner를 1만 번 풀 스캔해요."
+        },
+        {
+          "say": "그래서 옵티마이저는 이럴 때 NL 조인을 거의 안 골라요."
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "compare",
+      "section": "드라이빙 테이블",
+      "title": "누구를 먼저 읽을까",
+      "left": {
+        "title": "DEPT 먼저",
+        "icon": "table",
+        "tone": "good",
+        "items": [
+          "10건 통과",
+          "Inner 탐색 10회",
+          "랜덤 액세스 작음"
+        ]
+      },
+      "right": {
+        "title": "EMP 먼저",
+        "icon": "table",
+        "tone": "bad",
+        "items": [
+          "1만 건 통과",
+          "Inner 탐색 1만 회",
+          "랜덤 액세스 큼"
+        ]
+      },
+      "steps": [
+        {
+          "say": "성능은 누구를 먼저 읽느냐에 달려 있어요."
+        },
+        {
+          "say": "DEPT를 먼저 읽으면 10건이 통과해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그럼 Inner 탐색도 10번이면 끝나요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "EMP를 먼저 읽으면 1만 건이 통과해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Inner 탐색이 1만 번이나 일어나요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "callout",
+      "section": "드라이빙 테이블",
+      "tone": "tip",
+      "title": "드라이빙 기준",
+      "text": "기준은 **테이블 크기**가 아니라 **필터 후 건수**. Inner 탐색 횟수 = Outer 통과 건수.",
+      "steps": [
+        {
+          "say": "드라이빙 기준은 테이블 크기가 아니에요."
+        },
+        {
+          "say": "조건을 적용한 뒤 남은 건수예요."
+        },
+        {
+          "say": "큰 테이블도 조건이 좁으면 드라이빙이 돼요."
+        },
+        {
+          "say": "Inner 탐색 횟수는 Outer 통과 건수와 같아요."
+        },
+        {
+          "say": "드라이빙 집합을 줄이는 게 첫 번째 튜닝이에요."
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "quiz",
+      "section": "드라이빙 테이블",
+      "question": "NL 조인에서 **Inner 인덱스 탐색 횟수**를 결정하는 것은?",
+      "choices": [
+        "Inner 전체 건수",
+        "Outer 조건 통과 건수",
+        "Outer 전체 건수",
+        "최종 결과 건수"
+      ],
+      "answer": 2,
+      "explanation": "Inner 탐색은 Outer에서 조건을 통과한 건수만큼 일어나요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. Inner 탐색 횟수를 정하는 건 뭘까요?"
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "flow",
+      "section": "수행 과정",
+      "title": "수행 과정 6단계",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "사원_X1",
+          "desc": "입사일자 범위 스캔",
+          "icon": "search"
+        },
+        {
+          "title": "사원 액세스",
+          "desc": "ROWID로 랜덤",
+          "icon": "table"
+        },
+        {
+          "title": "사원 필터",
+          "desc": "부서코드 확인",
+          "icon": "filter"
+        },
+        {
+          "title": "고객_X1",
+          "desc": "관리사원번호 탐색",
+          "icon": "search"
+        },
+        {
+          "title": "고객 액세스",
+          "desc": "ROWID로 랜덤",
+          "icon": "table"
+        },
+        {
+          "title": "고객 필터",
+          "desc": "최종주문금액 확인",
+          "icon": "filter"
+        }
+      ],
+      "steps": [
+        {
+          "say": "사원과 고객을 NL 조인하는 예예요."
+        },
+        {
+          "say": "첫째, 사원 X1 인덱스로 입사일자를 스캔해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, ROWID로 사원 테이블을 읽어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 부서코드 조건으로 걸러요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 통과한 사원번호로 고객 X1을 찾아요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "다섯째, 고객 테이블을 읽어요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "여섯째, 최종주문금액으로 걸러 결과를 보내요.",
+          "focus": [
+            5
+          ]
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "cards",
+      "section": "수행 과정",
+      "title": "단계별 튜닝 포인트",
+      "cols": 3,
+      "items": [
+        {
+          "title": "사원 필터",
+          "desc": "인덱스에 부서코드",
+          "icon": "filter",
+          "tone": "warn"
+        },
+        {
+          "title": "고객 탐색",
+          "desc": "사원 통과 수만큼",
+          "icon": "search"
+        },
+        {
+          "title": "고객 필터",
+          "desc": "인덱스에 주문금액",
+          "icon": "filter",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "각 단계의 건수가 곧 튜닝 포인트예요."
+        },
+        {
+          "say": "사원 테이블을 읽고 대부분 버린다면,",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "부서코드를 인덱스에 추가해요. 읽기 전에 걸러져요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "고객 X1 탐색 횟수는 통과한 사원 수예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "조인 순서를 바꾸는 게 나은지 검토해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "고객을 읽고 대부분 버린다면,",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "고객 X1에 최종주문금액을 추가해요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "code",
+      "section": "실행계획",
+      "title": "NL 조인 실행계획",
+      "code": "NESTED LOOPS\n  TABLE ACCESS BY INDEX ROWID DEPT\n    INDEX RANGE SCAN DEPT_LOC_IDX\n  TABLE ACCESS BY INDEX ROWID EMP\n    INDEX RANGE SCAN EMP_DEPTNO_IDX",
+      "steps": [
+        {
+          "say": "실행계획에서 NESTED LOOPS 밑에 테이블이 두 개 나와요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "먼저 나오는 DEPT가 Outer예요.",
+          "focus": [
+            2,
+            3
+          ]
+        },
+        {
+          "say": "나중에 나오는 EMP가 Inner예요.",
+          "focus": [
+            4,
+            5
+          ]
+        },
+        {
+          "say": "DEPT 한 건마다 EMP 쪽이 반복돼요.",
+          "focus": [
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "cards",
+      "section": "NL 조인 힌트",
+      "title": "NL 조인 힌트",
+      "cols": 2,
+      "items": [
+        {
+          "title": "ORDERED",
+          "desc": "FROM 절 순서대로",
+          "icon": "workflow"
+        },
+        {
+          "title": "LEADING",
+          "desc": "지정한 순서대로",
+          "icon": "target"
+        },
+        {
+          "title": "USE_NL(T)",
+          "desc": "T를 Inner로 NL",
+          "icon": "link"
+        },
+        {
+          "title": "INDEX",
+          "desc": "Inner 탐색 인덱스",
+          "icon": "search"
+        }
+      ],
+      "steps": [
+        {
+          "say": "NL 조인 힌트는 네 가지예요."
+        },
+        {
+          "say": "ORDERED는 FROM 절 순서대로 조인해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "LEADING은 괄호 안 순서대로 조인해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "LEADING이 ORDERED보다 우선이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "USE NL은 그 테이블을 Inner로 NL 조인해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "INDEX는 Inner 탐색 인덱스를 정해요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "type": "compare",
+      "section": "NL 조인 힌트",
+      "title": "USE_NL(E)의 뜻",
+      "left": {
+        "title": "오해",
+        "icon": "help",
+        "tone": "bad",
+        "items": [
+          "E를 NL 조인",
+          "순서도 정해짐"
+        ]
+      },
+      "right": {
+        "title": "정답",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "E를 Inner로 NL",
+          "순서는 LEADING"
+        ]
+      },
+      "steps": [
+        {
+          "say": "USE NL E를 자주 오해해요."
+        },
+        {
+          "say": "E를 NL 조인하라는 뜻이 아니에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "E를 Inner로 NL 조인하라는 뜻이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "순서는 ORDERED나 LEADING으로 정해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "안 정하면 E가 Outer가 될 수도 있어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "type": "quiz",
+      "section": "NL 조인 힌트",
+      "question": "`USE_NL(E)` 힌트의 정확한 의미는?",
+      "choices": [
+        "E를 Outer로 NL 조인",
+        "FROM 순서로 조인",
+        "E를 Inner로 NL 조인",
+        "E 인덱스 사용 금지"
+      ],
+      "answer": 3,
+      "explanation": "E를 Inner로 NL 조인하라는 뜻이에요. 순서는 LEADING으로 정해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. USE NL E 힌트의 정확한 의미는?"
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "cards",
+      "section": "NL 조인의 특징",
+      "title": "NL 조인의 3가지 특징",
+      "cols": 3,
+      "items": [
+        {
+          "title": "랜덤 액세스",
+          "desc": "블록 단위 랜덤 I/O",
+          "icon": "disk"
+        },
+        {
+          "title": "한 건씩",
+          "desc": "첫 결과가 빠름",
+          "icon": "workflow"
+        },
+        {
+          "title": "인덱스 중요",
+          "desc": "구성이 성패 좌우",
+          "icon": "search"
+        }
+      ],
+      "steps": [
+        {
+          "say": "NL 조인의 특징은 세 가지예요."
+        },
+        {
+          "say": "첫째, 랜덤 액세스 위주예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "캐시 히트율이 낮으면 대량 처리에 불리해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 한 레코드씩 순차로 진행해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래서 첫 결과가 아주 빨라요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 인덱스 구성 전략이 성패를 갈라요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "이 세 가지가 보기로 그대로 나와요.",
+          "focus": [
+            0,
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "compare",
+      "section": "NL 조인의 특징",
+      "title": "어디에 유리할까",
+      "left": {
+        "title": "유리",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "소량 데이터",
+          "OLTP",
+          "부분범위 처리"
+        ]
+      },
+      "right": {
+        "title": "불리",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "대량 데이터 조인",
+          "캐시 히트율 낮음"
+        ]
+      },
+      "steps": [
+        {
+          "say": "NL 조인은 소량, OLTP에 유리해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "부분범위 처리에도 잘 맞아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "대량 조인에는 불리해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "대량이면 해시나 소트 머지 조인을 고려해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "callout",
+      "section": "NL 조인의 특징",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "NL 조인은 등치 · 비등치 · LIKE 등 **조건 종류와 무관**. 대량에 유리하다는 보기는 **오답**.",
+      "steps": [
+        {
+          "say": "NL 조인은 조인 조건을 가리지 않아요."
+        },
+        {
+          "say": "같다 조건이든, 범위 조건이든 다 돼요."
+        },
+        {
+          "say": "대량에 유리하다는 보기는 오답이에요."
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "quiz",
+      "section": "NL 조인의 특징",
+      "question": "NL 조인의 특징이 **아닌** 것은?",
+      "choices": [
+        "대량 데이터에 유리",
+        "랜덤 액세스 위주",
+        "한 레코드씩 순차 진행",
+        "인덱스 구성이 중요"
+      ],
+      "answer": 1,
+      "explanation": "NL 조인은 소량에 유리해요. 대량은 해시 조인을 고려해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. NL 조인의 특징이 아닌 것은?"
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "flow",
+      "section": "부분범위 처리",
+      "title": "게시판 첫 페이지",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "정렬 순 인덱스",
+          "desc": "Outer를 순서대로",
+          "icon": "search"
+        },
+        {
+          "title": "NL 조인",
+          "desc": "Inner를 한 건씩",
+          "icon": "link"
+        },
+        {
+          "title": "STOPKEY",
+          "desc": "10건 찾으면 멈춤",
+          "icon": "target"
+        }
+      ],
+      "steps": [
+        {
+          "say": "게시판 첫 페이지를 떠올려 보세요."
+        },
+        {
+          "say": "최근 글 10건만 있으면 돼요."
+        },
+        {
+          "say": "Outer를 등록일시 역순 인덱스로 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그러면 정렬 작업이 생략돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Inner는 NL 조인으로 한 건씩 붙여요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "10건을 찾으면 바로 멈춰요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "compare",
+      "section": "부분범위 처리",
+      "title": "첫 결과까지의 시간",
+      "left": {
+        "title": "NL 조인",
+        "icon": "link",
+        "tone": "good",
+        "items": [
+          "읽는 즉시 결과",
+          "필요한 만큼만"
+        ]
+      },
+      "right": {
+        "title": "해시 · 소트 머지",
+        "icon": "layers",
+        "tone": "bad",
+        "items": [
+          "한쪽을 다 읽고 시작",
+          "첫 결과가 늦음"
+        ]
+      },
+      "steps": [
+        {
+          "say": "NL 조인은 읽자마자 결과를 만들어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "해시와 소트 머지는 달라요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "한쪽 집합을 다 읽어야 조인을 시작해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래서 부분범위 처리 이점이 약해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "cards",
+      "section": "프리페치와 배치 I/O",
+      "title": "같은 NL, 세 가지 모양",
+      "cols": 3,
+      "items": [
+        {
+          "title": "전통 방식",
+          "desc": "기본 모양",
+          "icon": "table"
+        },
+        {
+          "title": "프리페치",
+          "desc": "Inner 액세스 위로",
+          "icon": "copy"
+        },
+        {
+          "title": "배치 I/O",
+          "desc": "LOOPS가 두 번",
+          "icon": "layers"
+        }
+      ],
+      "steps": [
+        {
+          "say": "같은 NL 조인이 세 가지 모양으로 보여요."
+        },
+        {
+          "say": "첫째, 전통적인 기본 모양이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 9i부터 나온 테이블 프리페치예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Inner 테이블 액세스가 위로 올라가요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 11g부터 나온 배치 아이오예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "NESTED LOOPS가 두 번 나타나요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "code",
+      "section": "프리페치와 배치 I/O",
+      "title": "배치 I/O 실행계획",
+      "code": "NESTED LOOPS\n  NESTED LOOPS\n    TABLE ACCESS BY INDEX ROWID DEPT\n      INDEX RANGE SCAN DEPT_LOC_IDX\n    INDEX RANGE SCAN EMP_DEPTNO_IDX\n  TABLE ACCESS BY INDEX ROWID EMP",
+      "steps": [
+        {
+          "say": "배치 아이오의 실행계획이에요."
+        },
+        {
+          "say": "NESTED LOOPS가 두 번 보이죠.",
+          "focus": [
+            1,
+            2
+          ]
+        },
+        {
+          "say": "Inner 테이블 액세스는 맨 아래에 따로 있어요.",
+          "focus": [
+            6
+          ]
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "compare",
+      "section": "프리페치와 배치 I/O",
+      "title": "프리페치와 배치 I/O",
+      "left": {
+        "title": "프리페치",
+        "icon": "copy",
+        "items": [
+          "곧 읽을 블록 미리",
+          "NLJ_PREFETCH"
+        ]
+      },
+      "right": {
+        "title": "배치 I/O",
+        "icon": "layers",
+        "items": [
+          "없는 블록 모아 처리",
+          "NLJ_BATCHING"
+        ]
+      },
+      "steps": [
+        {
+          "say": "프리페치는 곧 읽을 블록을 미리 읽어 둬요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "힌트는 NLJ PREFETCH예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "배치 아이오는 캐시에 없는 블록을 모아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그리고 한 번에 처리해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "힌트는 NLJ BATCHING이에요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "callout",
+      "section": "프리페치와 배치 I/O",
+      "tone": "warning",
+      "title": "정렬 순서 주의",
+      "text": "프리페치 · 배치 I/O면 인덱스 순서 **보장 안 됨**. 정렬이 필요하면 꼭 **ORDER BY**.",
+      "steps": [
+        {
+          "say": "주의할 점이 있어요."
+        },
+        {
+          "say": "결과가 인덱스 순서로 안 나올 수 있어요."
+        },
+        {
+          "say": "정렬이 필요하면 꼭 ORDER BY를 쓰세요."
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "quiz",
+      "section": "프리페치와 배치 I/O",
+      "question": "**NESTED LOOPS가 두 번** 나타나는 실행계획은?",
+      "choices": [
+        "전통적 NL 조인",
+        "테이블 프리페치",
+        "해시 조인",
+        "배치 I/O"
+      ],
+      "answer": 4,
+      "explanation": "배치 I/O는 NESTED LOOPS가 두 번 나타나요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. NESTED LOOPS가 두 번 나타나는 실행계획은?"
+        }
+      ],
+      "id": "s23"
+    },
+    {
+      "type": "code",
+      "section": "튜닝 실습",
+      "title": "실행 통계 읽기",
+      "code": "Rows  Row Source Operation\n   5  NESTED LOOPS\n   3   TABLE ACCESS BY INDEX ROWID 사원\n 300    INDEX RANGE SCAN 사원_X1\n   5   TABLE ACCESS BY INDEX ROWID 고객\n   8    INDEX RANGE SCAN 고객_X1",
+      "steps": [
+        {
+          "say": "실행 통계를 보고 문제를 찾아봐요."
+        },
+        {
+          "say": "사원 X1 인덱스에서 300건을 읽었어요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "그런데 사원 테이블에선 3건만 남았어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "테이블을 읽고 대부분 버린 거예요.",
+          "focus": [
+            3,
+            4
+          ]
+        },
+        {
+          "say": "고객 쪽은 8건에서 5건이라 괜찮아요.",
+          "focus": [
+            5,
+            6
+          ]
+        },
+        {
+          "say": "Inner 탐색이 3번뿐이라 순서도 적절해요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s24"
+    },
+    {
+      "type": "flow",
+      "section": "튜닝 실습",
+      "title": "튜닝 순서",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "Outer 필터율",
+          "desc": "읽고 버리는 비율",
+          "icon": "filter"
+        },
+        {
+          "title": "Inner 탐색 수",
+          "desc": "Outer 통과 건수",
+          "icon": "search"
+        },
+        {
+          "title": "Inner 인덱스",
+          "desc": "구성과 필터율",
+          "icon": "search"
+        },
+        {
+          "title": "순서 · 방식",
+          "desc": "해시 조인 검토",
+          "icon": "recycle"
+        }
+      ],
+      "steps": [
+        {
+          "say": "튜닝은 이 순서로 봐요."
+        },
+        {
+          "say": "첫째, Outer에서 버려지는 비율을 봐요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "필터 컬럼을 Outer 인덱스에 추가해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, Inner 탐색 횟수를 봐요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, Inner 인덱스 구성을 봐요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "마지막으로 조인 순서나 방식을 바꿔 봐요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s25"
+    },
+    {
+      "type": "quiz",
+      "section": "튜닝 실습",
+      "question": "사원_X1에서 **300건**을 읽고 사원 테이블에서 **3건**만 남았다. 개선책은?",
+      "choices": [
+        "Inner 인덱스 삭제",
+        "부서코드를 X1에 추가",
+        "조인 순서 바꾸기",
+        "ORDER BY 추가"
+      ],
+      "answer": 2,
+      "explanation": "필터 컬럼을 인덱스에 넣으면 테이블 읽기 전에 걸러져요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 300건을 읽고 3건만 남았어요. 어떻게 고칠까요?"
+        }
+      ],
+      "id": "s26"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "Outer 한 건마다 Inner를 인덱스 탐색",
+        "Inner 탐색 횟수 = Outer 통과 건수",
+        "랜덤 액세스 · 한 건씩 · 인덱스 중요",
+        "USE_NL(T)는 T를 Inner로",
+        "소량 · OLTP · 부분범위 처리에 유리",
+        "프리페치 · 배치 I/O는 순서 보장 없음"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "Outer 한 건마다 Inner를 인덱스로 찾아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Inner 탐색 횟수는 Outer 통과 건수예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "특징은 랜덤 액세스, 한 건씩, 인덱스 중요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "USE NL은 그 테이블을 Inner로 정해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "소량과 OLTP, 부분범위 처리에 유리해요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "프리페치와 배치 아이오는 순서 보장이 없어요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s27"
+    }
+  ]
+}

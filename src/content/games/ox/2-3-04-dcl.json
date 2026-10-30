@@ -1,0 +1,20 @@
+[
+  { "text": "Oracle에서 CREATE USER로 막 생성한 사용자는 CREATE SESSION 권한이 없으면 접속할 수 없다.", "answer": true, "explain": "새 사용자는 아무 권한이 없으므로 최소한 CREATE SESSION 권한을 받아야 접속할 수 있다." },
+  { "text": "객체의 소유자는 자기 객체에 대한 모든 권한을 가진다.", "answer": true, "explain": "소유자는 별도 부여 없이 자기 객체의 모든 권한을 가지며 다른 사용자에게 부여할 수 있다." },
+  { "text": "SQL Server는 서버 접속용 로그인과 데이터베이스 사용용 사용자를 구분하지 않고 하나의 계정으로 관리한다.", "answer": false, "explain": "SQL Server는 로그인(LOGIN)과 사용자(USER)를 구분해 두 단계로 만든다." },
+  { "text": "CREATE TABLE, CREATE VIEW는 오브젝트 권한에 속한다.", "answer": false, "explain": "CREATE TABLE, CREATE VIEW는 시스템 권한이다. 오브젝트 권한은 특정 객체에 대한 SELECT, INSERT 등이다." },
+  { "text": "오브젝트 권한은 객체 소유자 또는 GRANT OPTION을 가진 사용자가 부여할 수 있다.", "answer": true, "explain": "오브젝트 권한의 부여자는 객체 소유자나 WITH GRANT OPTION으로 권한을 받은 사용자다." },
+  { "text": "EXECUTE 권한은 프로시저에 부여하는 오브젝트 권한이다.", "answer": true, "explain": "EXECUTE는 프로시저 실행 권한이며 테이블, 뷰, 시퀀스에는 해당하지 않는다." },
+  { "text": "REFERENCES 권한은 해당 테이블을 참조하는 FK 제약조건을 만들 수 있게 해 주는 권한이다.", "answer": true, "explain": "REFERENCES는 다른 사용자의 테이블을 참조하는 외래키를 생성할 때 필요한 오브젝트 권한이다." },
+  { "text": "INSERT 권한은 시퀀스에 부여할 수 있는 오브젝트 권한이다.", "answer": false, "explain": "시퀀스에 부여할 수 있는 오브젝트 권한은 SELECT와 ALTER다." },
+  { "text": "권한을 회수하는 REVOKE 문은 REVOKE 권한 ON 객체 TO 사용자 형식으로 작성한다.", "answer": false, "explain": "REVOKE는 FROM을 사용한다. 올바른 형식은 REVOKE 권한 ON 객체 FROM 사용자다." },
+  { "text": "GRANT 문에서 PUBLIC에게 권한을 부여하면 모든 사용자에게 부여된다.", "answer": true, "explain": "PUBLIC은 데이터베이스의 모든 사용자를 의미한다." },
+  { "text": "UPDATE 오브젝트 권한은 GRANT UPDATE (sal) ON emp TO kim처럼 특정 컬럼에만 부여할 수 있다.", "answer": true, "explain": "UPDATE 권한은 컬럼 목록을 지정해 특정 컬럼에만 부여할 수 있다." },
+  { "text": "Oracle에서 GRANT와 REVOKE는 실행 후 별도의 COMMIT을 해야 확정된다.", "answer": false, "explain": "Oracle에서 DCL은 실행 시 자동 커밋되므로 별도의 COMMIT이 필요 없다." },
+  { "text": "WITH GRANT OPTION으로 받은 오브젝트 권한을 회수하면 그 사용자가 재부여한 권한도 연쇄 회수된다.", "answer": true, "explain": "오브젝트 권한은 회수 시 연쇄 회수되어 재부여받은 사용자도 권한을 잃는다." },
+  { "text": "WITH ADMIN OPTION으로 받은 시스템 권한을 회수하면 그 사용자가 다른 사용자에게 재부여한 권한도 함께 회수된다.", "answer": false, "explain": "ADMIN OPTION으로 재부여된 시스템 권한은 회수되지 않고 유지된다." },
+  { "text": "WITH ADMIN OPTION은 시스템 권한과 롤을 부여할 때 사용하는 재부여 옵션이다.", "answer": true, "explain": "시스템 권한·롤은 WITH ADMIN OPTION, 오브젝트 권한은 WITH GRANT OPTION을 사용한다." },
+  { "text": "롤(ROLE)에서 권한을 회수하면 그 롤을 부여받은 모든 사용자에게 변경이 반영된다.", "answer": true, "explain": "롤의 권한을 변경하면 롤을 받은 모든 사용자에게 한 번에 반영되는 것이 롤의 장점이다." },
+  { "text": "롤(ROLE)에는 시스템 권한만 담을 수 있고 오브젝트 권한은 담을 수 없다.", "answer": false, "explain": "롤에는 시스템 권한과 오브젝트 권한을 함께 담을 수 있으며 다른 롤도 포함할 수 있다." },
+  { "text": "Oracle의 기본 롤 중 RESOURCE는 접속 권한인 CREATE SESSION을 주된 내용으로 하는 롤이다.", "answer": false, "explain": "CREATE SESSION을 주로 담은 롤은 CONNECT다. RESOURCE는 테이블, 시퀀스 등 객체 생성 권한을 담는다." }
+]

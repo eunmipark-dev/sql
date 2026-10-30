@@ -1,0 +1,22 @@
+[
+  { "text": "WHERE 절에서는 조건 결과가 TRUE인 행만 남고 FALSE나 UNKNOWN인 행은 걸러진다.", "answer": true, "explain": "NULL 비교로 생기는 UNKNOWN도 FALSE처럼 걸러진다." },
+  { "text": "BETWEEN a AND b 조건은 양 끝 값인 a와 b를 포함하지 않는다.", "answer": false, "explain": "BETWEEN은 a 이상 b 이하로 양 끝을 포함한다." },
+  { "text": "WHERE SAL BETWEEN 2450 AND 1250처럼 큰 값을 앞에 쓰면 결과가 0건이 된다.", "answer": true, "explain": "SAL >= 2450 AND SAL <= 1250을 만족하는 값이 없어 오류 없이 0건이다." },
+  { "text": "JOB IN ('MANAGER', 'CLERK')은 JOB = 'MANAGER' AND JOB = 'CLERK'과 같은 의미다.", "answer": false, "explain": "IN은 OR로 연결한 조건과 같다. JOB = 'MANAGER' OR JOB = 'CLERK'이다." },
+  { "text": "LIKE 연산자에서 _는 정확히 1개의 임의 문자를 의미한다.", "answer": true, "explain": "%는 0개 이상, _는 정확히 1개의 문자를 의미한다." },
+  { "text": "LIKE 연산자에서 %는 1개 이상의 임의 문자와 일치하며 빈 문자열과는 일치하지 않는다.", "answer": false, "explain": "%는 0개 이상의 임의 문자와 일치한다." },
+  { "text": "ENAME LIKE '__A%'는 세 번째 글자가 A인 이름과 일치한다.", "answer": true, "explain": "_ 두 개가 앞 두 글자를 차지하므로 세 번째 글자가 A여야 한다." },
+  { "text": "와일드카드 문자 %나 _ 자체를 검색하려면 LIKE와 함께 ESCAPE 문자를 지정한다.", "answer": true, "explain": "ESCAPE로 지정한 문자 바로 뒤 한 글자를 일반 문자로 취급한다." },
+  { "text": "WHERE COMM = NULL 조건을 사용하면 문법 오류가 발생한다.", "answer": false, "explain": "오류가 아니라 비교 결과가 UNKNOWN이 되어 항상 0건을 반환한다." },
+  { "text": "논리 연산자의 우선순위는 NOT, AND, OR 순이다.", "answer": true, "explain": "NOT이 가장 먼저, OR가 가장 나중에 계산된다." },
+  { "text": "괄호가 없을 때 OR 조건은 AND 조건보다 먼저 계산된다.", "answer": false, "explain": "AND가 OR보다 먼저 계산된다." },
+  { "text": "WHERE DEPTNO = 10 OR DEPTNO = 20 AND SAL >= 2500에서 10번 부서 사원은 급여와 관계없이 조회된다.", "answer": true, "explain": "DEPTNO = 10 OR (DEPTNO = 20 AND SAL >= 2500)으로 해석된다." },
+  { "text": "부정 비교 연산자 중 ANSI 표준은 !=이다.", "answer": false, "explain": "ANSI 표준 부정 비교 연산자는 <>이다." },
+  { "text": "NOT BETWEEN a AND b 조건은 a와 b 값을 결과에 포함한다.", "answer": false, "explain": "NOT BETWEEN은 a와 b 사이가 아닌 값이므로 양 끝 값은 포함되지 않는다." },
+  { "text": "NOT IN 목록에 NULL이 하나라도 포함되면 결과는 0건이 된다.", "answer": true, "explain": "컬럼 <> NULL이 UNKNOWN이 되어 AND 결과가 TRUE가 될 수 없다." },
+  { "text": "DEPTNO IN (10, NULL) 조건을 사용하면 결과는 항상 0건이 된다.", "answer": false, "explain": "IN 목록의 NULL은 무시되는 효과라 10번 부서 행은 조회된다." },
+  { "text": "FALSE AND UNKNOWN의 결과는 UNKNOWN이다.", "answer": false, "explain": "FALSE AND UNKNOWN은 FALSE다. TRUE AND UNKNOWN이 UNKNOWN이다." },
+  { "text": "CHAR 타입끼리 비교할 때는 짧은 쪽 뒤에 공백을 채워 길이를 맞춘 후 비교한다.", "answer": true, "explain": "그래서 CHAR끼리 'AB'와 'AB  '는 같다." },
+  { "text": "VARCHAR2 타입이 포함된 비교에서 'AB'와 'AB '(뒤 공백 포함)는 같은 값으로 판단된다.", "answer": false, "explain": "한쪽이라도 VARCHAR2면 공백을 채우지 않고 그대로 비교하므로 다르다." },
+  { "text": "Oracle에서는 ^=도 같지 않다는 부정 비교 연산자로 사용할 수 있다.", "answer": true, "explain": "Oracle은 !=, ^=, <>를 지원한다." }
+]

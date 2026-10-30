@@ -1,0 +1,22 @@
+[
+  { "text": "SELECT 절에 사용하는 서브쿼리를 스칼라 서브쿼리라고 한다.", "answer": true, "explain": "SELECT 절은 스칼라 서브쿼리, FROM 절은 인라인 뷰, WHERE·HAVING 절은 중첩 서브쿼리다." },
+  { "text": "FROM 절에 사용하는 서브쿼리를 중첩 서브쿼리라고 한다.", "answer": false, "explain": "FROM 절의 서브쿼리는 인라인 뷰다. 중첩 서브쿼리는 WHERE·HAVING 절에 쓰인다." },
+  { "text": "스칼라 서브쿼리가 0행을 반환하면 실행 시 오류가 발생한다.", "answer": false, "explain": "0행이면 NULL을 반환한다. 2행 이상을 반환할 때 오류가 발생한다." },
+  { "text": "스칼라 서브쿼리는 일치하는 행이 없을 때 NULL을 반환하므로 OUTER JOIN과 비슷한 효과를 낸다.", "answer": true, "explain": "일치하는 행이 없어도 메인쿼리 행은 유지되고 값만 NULL이 된다." },
+  { "text": "단일행 비교 연산자 =와 함께 쓴 서브쿼리가 2건 이상을 반환하면 실행 시 오류가 발생한다.", "answer": true, "explain": "단일행 연산자(=, <, > 등)와 쓰는 서브쿼리 결과는 1건 이하여야 한다." },
+  { "text": "Oracle에서 WHERE 절 서브쿼리 안에는 ORDER BY를 사용할 수 있다.", "answer": false, "explain": "서브쿼리에서 ORDER BY를 쓸 수 있는 곳은 FROM 절의 인라인 뷰뿐이다." },
+  { "text": "> ANY (서브쿼리) 조건은 서브쿼리 결과의 최솟값보다 크면 참이다.", "answer": true, "explain": "하나라도 넘으면 참이므로 > MIN(결과)과 같다." },
+  { "text": "> ALL (서브쿼리) 조건은 서브쿼리 결과의 최솟값보다 크면 참이다.", "answer": false, "explain": "> ALL은 모든 값보다 커야 하므로 최댓값보다 커야 참이다(> MAX)." },
+  { "text": "IN (서브쿼리)는 = ANY (서브쿼리)와 같은 의미이다.", "answer": true, "explain": "IN은 결과 중 하나와 같으면 참이므로 = ANY와 동치다." },
+  { "text": "서브쿼리 결과가 0건이면 > ALL 조건은 항상 거짓이 된다.", "answer": false, "explain": "결과가 0건이면 ALL 조건은 항상 참, ANY 조건은 항상 거짓이다." },
+  { "text": "연관 서브쿼리는 서브쿼리 안에서 메인쿼리의 컬럼을 참조한다.", "answer": true, "explain": "메인쿼리 행마다 값을 받아 서브쿼리를 평가한다." },
+  { "text": "비연관 서브쿼리는 메인쿼리의 행마다 반복해서 평가된다.", "answer": false, "explain": "비연관 서브쿼리는 먼저 한 번 수행해 결과를 메인쿼리에 제공한다. 행마다 평가되는 것은 연관 서브쿼리다." },
+  { "text": "NOT IN 서브쿼리 결과에 NULL이 포함되어도 NULL은 무시되고 나머지 값으로만 비교된다.", "answer": false, "explain": "NULL과의 <> 비교가 UNKNOWN이 되어 NOT IN 조건 결과는 0건이 된다." },
+  { "text": "NOT EXISTS는 서브쿼리 결과에 포함된 NULL의 영향을 받지 않는다.", "answer": true, "explain": "EXISTS는 존재 여부만 판단하므로 NOT IN의 NULL 함정을 피할 수 있다." },
+  { "text": "서브쿼리는 조인처럼 1:M 관계에서 메인쿼리 결과 행 수를 늘릴 수 있다.", "answer": false, "explain": "서브쿼리는 메인쿼리 집합의 레벨을 유지하므로 결과 행 수를 늘리지 않는다." },
+  { "text": "SQL Server에서는 (DEPTNO, SAL) IN (서브쿼리) 형태의 다중컬럼 비교를 사용할 수 있다.", "answer": false, "explain": "다중컬럼 IN 비교는 Oracle에서 지원하고 SQL Server는 지원하지 않아 EXISTS나 조인으로 바꿔 쓴다." },
+  { "text": "일반 뷰는 실제 데이터를 저장하지 않고 정의만 저장한다.", "answer": true, "explain": "뷰는 가상 테이블로, 조회 시점에 정의된 쿼리가 실행된다." },
+  { "text": "Oracle에서는 ALTER VIEW 문으로 뷰의 SELECT 정의를 변경한다.", "answer": false, "explain": "Oracle은 뷰 정의를 ALTER로 바꾸지 못하므로 CREATE OR REPLACE VIEW로 다시 만든다." },
+  { "text": "인라인 뷰는 데이터 사전에 저장되지 않는 일회성 뷰이다.", "answer": true, "explain": "인라인 뷰는 이름 없이 FROM 절에서 한 번만 쓰는 동적 뷰다." },
+  { "text": "EXISTS 조건은 서브쿼리에서 조건에 맞는 행을 하나 찾으면 더 이상 탐색하지 않는다.", "answer": true, "explain": "EXISTS는 존재 여부만 확인하므로 SELECT 목록에는 보통 1이나 'X'를 쓴다." }
+]

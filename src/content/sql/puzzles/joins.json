@@ -1,0 +1,416 @@
+[
+  {
+    "id": "jn-full-null-key",
+    "topic": "FULL OUTER JOIN",
+    "sql": "SELECT a.c1, b.c1\nFROM t1 a\nFULL OUTER JOIN t2 b\n  ON a.c1 = b.c1",
+    "ask": "rows",
+    "expect": "7",
+    "explain": "짝이 맞는 3행(2, 2, 3) + t1 에만 남은 1 과 NULL 2행 + t2 에만 남은 4 와 NULL 2행 = 7행이에요. 두 NULL 은 서로 짝이 안 돼 따로 나와요."
+  },
+  {
+    "id": "jn-full-where-null",
+    "topic": "FULL OUTER JOIN",
+    "sql": "SELECT COUNT(*)\nFROM t1 a\nFULL OUTER JOIN t2 b\n  ON a.c1 = b.c1\nWHERE a.c1 IS NULL",
+    "ask": "value",
+    "distractors": ["2", "1", "4"],
+    "expect": "3",
+    "explain": "a.c1 이 NULL 인 행은 t2 에만 있는 4 와 NULL 2행, 그리고 t1 의 원래 NULL 행까지 3행이에요. IS NULL 로는 '짝이 없어 생긴 NULL'과 '원래 NULL'을 구분하지 못해요."
+  },
+  {
+    "id": "jn-left-on-left-cond",
+    "topic": "OUTER JOIN 의 ON 조건",
+    "sql": "SELECT d.deptno, e.ename\nFROM dept d\nLEFT OUTER JOIN emp e\n  ON e.deptno = d.deptno\n AND d.deptno = 10",
+    "ask": "rows",
+    "expect": "6",
+    "explain": "ON 에 둔 조건은 왼쪽 테이블을 거르지 않고 짝 찾기에만 쓰여요. 10번은 사원 3명과 이어지고, 20·30·40번은 짝 없이 한 행씩 남아 6행이에요."
+  },
+  {
+    "id": "jn-anti-join",
+    "topic": "OUTER JOIN 으로 찾는 짝 없는 행",
+    "sql": "SELECT d.dname\nFROM dept d\nLEFT OUTER JOIN emp e\n  ON e.deptno = d.deptno\nWHERE e.empno IS NULL",
+    "ask": "value",
+    "distractors": ["NULL", "ACCOUNTING", "SALES"],
+    "expect": "OPERATIONS",
+    "explain": "LEFT JOIN 뒤에 오른쪽 키가 NULL 인 행만 남기면 짝이 없는 부서만 나와요. 사원이 없는 40번 OPERATIONS 예요."
+  },
+  {
+    "id": "jn-left-then-inner",
+    "topic": "여러 테이블 조인",
+    "sql": "SELECT d.dname, e.ename, m.ename AS manager\nFROM dept d\nLEFT OUTER JOIN emp e\n  ON e.deptno = d.deptno\nJOIN emp m\n  ON e.mgr = m.empno",
+    "ask": "rows",
+    "expect": "13",
+    "explain": "LEFT JOIN 으로 살린 40번 부서 행은 e.mgr 이 NULL 이라 뒤의 INNER JOIN 에서 빠져요. 관리자가 없는 KING 도 빠져 13행이에요."
+  },
+  {
+    "id": "jn-self-left-king",
+    "topic": "SELF JOIN",
+    "sql": "SELECT m.ename\nFROM emp e\nLEFT OUTER JOIN emp m\n  ON e.mgr = m.empno\nWHERE e.ename = 'KING'",
+    "ask": "value",
+    "distractors": ["KING", "0", "에러"],
+    "expect": "NULL",
+    "explain": "KING 은 mgr 이 NULL 이라 짝이 없지만 LEFT JOIN 이라 행은 남아요. 관리자 이름 자리는 NULL 이에요. INNER JOIN 이었다면 행이 없었을 거예요."
+  },
+  {
+    "id": "jn-self-managers",
+    "topic": "SELF JOIN",
+    "sql": "SELECT DISTINCT m.ename\nFROM emp e\nJOIN emp m\n  ON e.mgr = m.empno",
+    "ask": "rows",
+    "expect": "6",
+    "explain": "부하가 있는 사람만 m 쪽에 나와요. KING, JONES, BLAKE, CLARK, SCOTT, FORD 6명이에요. SCOTT 과 FORD 도 각각 ADAMS, SMITH 의 관리자예요."
+  },
+  {
+    "id": "jn-self-no-distinct",
+    "topic": "SELF JOIN",
+    "sql": "SELECT m.ename\nFROM emp e\nJOIN emp m\n  ON e.mgr = m.empno\nWHERE m.job = 'MANAGER'",
+    "ask": "rows",
+    "expect": "8",
+    "explain": "부하 한 명마다 관리자 이름이 한 번씩 나와요. JONES 부하 2명, BLAKE 부하 5명, CLARK 부하 1명으로 8행이에요. 관리자 3명이 아니에요."
+  },
+  {
+    "id": "jn-self-pairs",
+    "topic": "SELF JOIN",
+    "sql": "SELECT COUNT(*)\nFROM emp a\nJOIN emp b\n  ON a.sal = b.sal\n AND a.empno < b.empno",
+    "ask": "value",
+    "distractors": ["4", "18", "0"],
+    "expect": "2",
+    "explain": "급여가 같은 쌍은 SCOTT·FORD(3000), WARD·MARTIN(1250)이에요. a.empno < b.empno 로 자기 자신과 (B, A) 순서를 빼서 2쌍이에요. <> 였다면 4예요."
+  },
+  {
+    "id": "jn-self-null-key",
+    "topic": "조인 키와 NULL",
+    "sql": "SELECT COUNT(*)\nFROM emp a\nJOIN emp b\n  ON a.comm = b.comm",
+    "ask": "value",
+    "distractors": ["14", "104", "16"],
+    "expect": "4",
+    "explain": "comm 이 있는 4명만 자기 자신과 이어져요(값이 모두 달라요). comm 이 NULL 인 10명은 NULL = NULL 이 참이 아니라 서로도, 자기 자신과도 조인되지 않아요."
+  },
+  {
+    "id": "jn-natural-self",
+    "topic": "NATURAL JOIN",
+    "sql": "SELECT COUNT(*)\nFROM emp a\nNATURAL JOIN emp b",
+    "ask": "value",
+    "distractors": ["14", "196", "0"],
+    "expect": "4",
+    "explain": "NATURAL JOIN 은 이름이 같은 모든 컬럼으로 조인해요. mgr, comm 도 포함돼서 둘 중 하나라도 NULL 인 행은 짝을 못 찾아요. 둘 다 있는 영업사원 4명만 남아요."
+  },
+  {
+    "id": "jn-using-full",
+    "topic": "USING 과 FULL OUTER JOIN",
+    "sql": "SELECT COUNT(c1)\nFROM t1\nFULL OUTER JOIN t2\n  USING (c1)",
+    "ask": "value",
+    "distractors": ["7", "3", "4"],
+    "expect": "5",
+    "explain": "결과는 7행이고, USING 컬럼 c1 은 양쪽 중 NULL 이 아닌 값을 가져요. 1, 2, 2, 3, 4 는 값이 있고 두 NULL 행만 NULL 이라 COUNT(c1) 은 5예요."
+  },
+  {
+    "id": "jn-comma-no-cond",
+    "topic": "카티션 곱",
+    "sql": "SELECT e.ename, d.dname\nFROM emp e, dept d\nWHERE e.deptno = 10",
+    "ask": "rows",
+    "expect": "12",
+    "explain": "조인 조건이 없으면 모든 조합(카티션 곱)이 나와요. 10번 부서 3명 × 부서 4개 = 12행이에요."
+  },
+  {
+    "id": "jn-cross-empty",
+    "topic": "CROSS JOIN",
+    "sql": "SELECT COUNT(*)\nFROM dept d\nCROSS JOIN (\n  SELECT * FROM emp WHERE deptno = 40\n) x",
+    "ask": "value",
+    "distractors": ["4", "1", "56"],
+    "expect": "0",
+    "explain": "CROSS JOIN 은 행 수의 곱이에요. 오른쪽이 0행이라 4 × 0 = 0 이에요. 한쪽이 비면 다른 쪽이 아무리 많아도 결과가 없어요."
+  },
+  {
+    "id": "jn-nonequi-grade",
+    "topic": "비등가 조인",
+    "sql": "SELECT COUNT(*)\nFROM emp e\nJOIN (\n  SELECT 1 AS grade, 700 AS losal, 1200 AS hisal FROM dual\n  UNION ALL SELECT 2, 1201, 1400 FROM dual\n  UNION ALL SELECT 3, 1401, 2000 FROM dual\n  UNION ALL SELECT 4, 2001, 3000 FROM dual\n  UNION ALL SELECT 5, 3001, 9999 FROM dual\n) s\n  ON e.sal BETWEEN s.losal AND s.hisal\nWHERE s.grade = 2",
+    "ask": "value",
+    "distractors": ["2", "4", "5"],
+    "expect": "3",
+    "explain": "2등급은 1201~1400 이에요. WARD 1250, MARTIN 1250, MILLER 1300 으로 3명이에요. 비등가 조인은 = 대신 BETWEEN 같은 범위 조건으로 이어요."
+  },
+  {
+    "id": "jn-nonequi-gap",
+    "topic": "비등가 조인",
+    "sql": "SELECT e.ename, s.grade\nFROM emp e\nJOIN (\n  SELECT 1 AS grade, 1000 AS losal, 1999 AS hisal FROM dual\n  UNION ALL SELECT 2, 2000, 2999 FROM dual\n  UNION ALL SELECT 3, 3000, 3999 FROM dual\n) s\n  ON e.sal BETWEEN s.losal AND s.hisal",
+    "ask": "rows",
+    "expect": "11",
+    "explain": "어느 구간에도 안 들어가는 SMITH 800, JAMES 950, KING 5000 은 짝이 없어 INNER JOIN 에서 빠져요. 14 - 3 = 11행이에요."
+  },
+  {
+    "id": "jn-nonequi-overlap",
+    "topic": "비등가 조인",
+    "sql": "SELECT e.ename, s.grade\nFROM emp e\nJOIN (\n  SELECT 'LOW' AS grade, 0 AS losal, 1500 AS hisal FROM dual\n  UNION ALL SELECT 'HIGH', 1500, 9999 FROM dual\n) s\n  ON e.sal BETWEEN s.losal AND s.hisal",
+    "ask": "rows",
+    "expect": "15",
+    "explain": "BETWEEN 은 양 끝을 포함해서 1500 이 두 구간에 모두 들어가요. TURNER(1500)가 두 번 나와 14 + 1 = 15행이에요. 구간이 겹치면 행이 늘어나요."
+  },
+  {
+    "id": "jn-mgr-dept",
+    "topic": "여러 테이블 조인",
+    "sql": "SELECT COUNT(*)\nFROM emp e\nJOIN emp m\n  ON e.mgr = m.empno\nJOIN dept d\n  ON m.deptno = d.deptno\nWHERE d.dname = 'ACCOUNTING'",
+    "ask": "value",
+    "distractors": ["3", "2", "1"],
+    "expect": "4",
+    "explain": "dept 는 관리자(m)의 부서와 이어져 있어요. 관리자가 10번인 사람은 KING 의 부하 JONES·BLAKE·CLARK 와 CLARK 의 부하 MILLER 로 4명이에요."
+  },
+  {
+    "id": "jn-full-on-cond",
+    "topic": "FULL OUTER JOIN",
+    "sql": "SELECT COUNT(*)\nFROM emp e\nFULL OUTER JOIN dept d\n  ON e.deptno = d.deptno\n AND e.sal > 2500",
+    "ask": "value",
+    "distractors": ["14", "6", "18"],
+    "expect": "15",
+    "explain": "급여 2500 초과 5명은 부서와 짝지어지고, 나머지 9명은 짝 없이 남아요. 부서 중 짝이 없는 건 40번뿐이라 5 + 9 + 1 = 15예요."
+  },
+  {
+    "id": "jn-inner-on-where",
+    "topic": "INNER JOIN 의 ON 조건",
+    "sql": "SELECT COUNT(*)\nFROM dept d\nJOIN emp e\n  ON e.deptno = d.deptno\n AND e.sal > 2000",
+    "ask": "value",
+    "distractors": ["7", "14", "4"],
+    "expect": "6",
+    "explain": "INNER JOIN 에서는 조건을 ON 에 두든 WHERE 에 두든 결과가 같아요. 급여 2000 초과인 6명이에요. ON 과 WHERE 의 차이는 OUTER JOIN 에서만 생겨요."
+  },
+  {
+    "id": "jn-left-where-or-null",
+    "topic": "OUTER JOIN 의 WHERE 조건",
+    "sql": "SELECT d.dname, e.ename\nFROM dept d\nLEFT OUTER JOIN emp e\n  ON e.deptno = d.deptno\nWHERE e.job = 'ANALYST'\n   OR e.job IS NULL",
+    "ask": "rows",
+    "expect": "3",
+    "explain": "WHERE 는 조인 뒤에 걸러요. 10·30번 부서는 이미 다른 직무 사원과 이어져서 job 이 NULL 인 행이 없어요. SCOTT, FORD 와 40번 부서 1행으로 3행이에요. ON 에 썼다면 5행이에요."
+  },
+  {
+    "id": "jn-left-inline-null",
+    "topic": "OUTER JOIN 과 인라인 뷰",
+    "sql": "SELECT COUNT(*)\nFROM dept d\nLEFT OUTER JOIN (\n  SELECT deptno, COUNT(*) AS cnt\n  FROM emp\n  GROUP BY deptno\n) c\n  ON c.deptno = d.deptno\nWHERE c.cnt < 4",
+    "ask": "value",
+    "distractors": ["2", "0", "4"],
+    "expect": "1",
+    "explain": "부서별 인원은 10번 3, 20번 5, 30번 6 이에요. 40번은 cnt 가 0 이 아니라 NULL 이라 NULL < 4 가 알 수 없음이 돼 빠져요. 10번 하나만 남아요."
+  },
+  {
+    "id": "jn-left-self-dup",
+    "topic": "조인과 행 증가",
+    "sql": "SELECT COUNT(*)\nFROM t1 a\nLEFT OUTER JOIN t1 b\n  ON a.c1 = b.c1",
+    "ask": "value",
+    "distractors": ["5", "9", "6"],
+    "expect": "7",
+    "explain": "2 가 양쪽에 두 개씩이라 2 × 2 = 4행이 돼요. 1·3 은 1행씩, NULL 은 짝이 없지만 LEFT JOIN 이라 1행이 남아 4 + 1 + 1 + 1 = 7이에요."
+  },
+  {
+    "id": "jn-sub-empty",
+    "topic": "단일행 서브쿼리",
+    "sql": "SELECT ename\nFROM emp\nWHERE sal > (\n  SELECT sal FROM emp WHERE ename = 'HONG'\n)",
+    "ask": "rows",
+    "expect": "0",
+    "explain": "서브쿼리가 0행이면 에러가 아니라 NULL 로 취급돼요. sal > NULL 은 알 수 없음이라 어떤 행도 나오지 않아요."
+  },
+  {
+    "id": "jn-scalar-empty",
+    "topic": "스칼라 서브쿼리",
+    "sql": "SELECT (SELECT ename FROM emp WHERE deptno = 40)\nFROM dual",
+    "ask": "value",
+    "distractors": ["에러", "OPERATIONS", "0"],
+    "expect": "NULL",
+    "explain": "SELECT 절의 스칼라 서브쿼리가 0행을 돌려주면 에러가 아니라 NULL 이 돼요. 바깥 행(DUAL 1행)은 그대로 남아요."
+  },
+  {
+    "id": "jn-scalar-count",
+    "topic": "스칼라 서브쿼리",
+    "sql": "SELECT (\n  SELECT COUNT(*) FROM emp e\n  WHERE e.deptno = d.deptno\n)\nFROM dept d\nWHERE d.deptno = 40",
+    "ask": "value",
+    "distractors": ["NULL", "1", "14"],
+    "expect": "0",
+    "explain": "서브쿼리 안이 GROUP BY 없는 COUNT 라서 사원이 없어도 한 행, 값 0 을 돌려줘요. 0행이 아니니 NULL 이 아니에요."
+  },
+  {
+    "id": "jn-gt-any",
+    "topic": "다중행 서브쿼리 ANY",
+    "sql": "SELECT COUNT(*)\nFROM emp\nWHERE sal > ANY (\n  SELECT sal FROM emp WHERE deptno = 30\n)",
+    "ask": "value",
+    "distractors": ["4", "13", "6"],
+    "expect": "12",
+    "explain": "> ANY 는 '하나라도 보다 크면' 이라 최솟값보다 크면 돼요. 30번 최소 급여는 950 이라 SMITH 800, JAMES 950 만 빠져 12명이에요."
+  },
+  {
+    "id": "jn-all-empty",
+    "topic": "ALL 과 빈 집합",
+    "sql": "SELECT ename\nFROM emp\nWHERE sal > ALL (\n  SELECT sal FROM emp WHERE deptno = 40\n)",
+    "ask": "rows",
+    "expect": "14",
+    "explain": "서브쿼리가 0행이면 ALL 은 항상 참이에요. 비교할 대상이 없으니 '모두보다 크다'를 어길 값도 없어서 14명이 모두 나와요."
+  },
+  {
+    "id": "jn-all-null",
+    "topic": "ALL 과 NULL",
+    "sql": "SELECT ename\nFROM emp\nWHERE sal > ALL (\n  SELECT comm FROM emp WHERE deptno = 30\n)",
+    "ask": "rows",
+    "expect": "0",
+    "explain": "30번 comm 에는 BLAKE, JAMES 의 NULL 이 섞여 있어요. sal > NULL 이 알 수 없음이라 ALL 은 절대 참이 될 수 없어 0행이에요."
+  },
+  {
+    "id": "jn-any-null",
+    "topic": "ANY 와 NULL",
+    "sql": "SELECT ename\nFROM emp\nWHERE sal < ANY (\n  SELECT comm FROM emp\n)",
+    "ask": "rows",
+    "expect": "6",
+    "explain": "ANY 는 하나라도 참이면 참이라 NULL 이 섞여도 괜찮아요. 최대 comm 1400 보다 적은 SMITH, JAMES, ADAMS, WARD, MARTIN, MILLER 6명이에요."
+  },
+  {
+    "id": "jn-ne-any",
+    "topic": "<> ANY",
+    "sql": "SELECT COUNT(*)\nFROM dept\nWHERE deptno <> ANY (\n  SELECT deptno FROM emp\n)",
+    "ask": "value",
+    "distractors": ["1", "0", "3"],
+    "expect": "4",
+    "explain": "<> ANY 는 '어느 하나와라도 다르면' 참이에요. 서브쿼리에 10, 20, 30 이 섞여 있어 어떤 부서번호든 다른 값이 있어서 4개 모두예요. NOT IN 은 <> ALL 이에요."
+  },
+  {
+    "id": "jn-in-mgr",
+    "topic": "IN 서브쿼리",
+    "sql": "SELECT COUNT(*)\nFROM emp\nWHERE empno IN (\n  SELECT mgr FROM emp\n)",
+    "ask": "value",
+    "distractors": ["13", "14", "0"],
+    "expect": "6",
+    "explain": "IN 은 = 비교를 OR 로 묶은 것이라 서브쿼리의 NULL 은 무시돼요. 누군가의 관리자인 KING, JONES, BLAKE, CLARK, SCOTT, FORD 6명이에요."
+  },
+  {
+    "id": "jn-not-in-mgr",
+    "topic": "NOT IN 과 NULL",
+    "sql": "SELECT COUNT(*)\nFROM emp\nWHERE empno NOT IN (\n  SELECT mgr FROM emp\n)",
+    "ask": "value",
+    "distractors": ["8", "14", "6"],
+    "expect": "0",
+    "explain": "KING 의 mgr 이 NULL 이라 서브쿼리 결과에 NULL 이 섞여요. empno <> NULL 이 알 수 없음이 돼 NOT IN 은 아무 행도 참이 못 돼요. 부하 없는 8명을 기대하면 틀려요."
+  },
+  {
+    "id": "jn-not-exists-mgr",
+    "topic": "NOT EXISTS",
+    "sql": "SELECT e.ename\nFROM emp e\nWHERE NOT EXISTS (\n  SELECT 1 FROM emp s\n  WHERE s.mgr = e.empno\n)",
+    "ask": "rows",
+    "expect": "8",
+    "explain": "NOT EXISTS 는 NULL 에 흔들리지 않아요. 부하가 한 명도 없는 사원 8명이 나와요. 같은 뜻의 NOT IN (SELECT mgr ...) 은 NULL 때문에 0행이에요."
+  },
+  {
+    "id": "jn-not-in-outer-null",
+    "topic": "NOT IN 과 NULL",
+    "sql": "SELECT COUNT(*)\nFROM t2\nWHERE c1 NOT IN (\n  SELECT c1 FROM t1 WHERE c1 IS NOT NULL\n)",
+    "ask": "value",
+    "distractors": ["2", "0", "3"],
+    "expect": "1",
+    "explain": "서브쿼리의 NULL 은 걸렀지만, 바깥 t2 의 NULL 행은 NULL <> 1 이 알 수 없음이라 여전히 빠져요. 4 하나만 남아요."
+  },
+  {
+    "id": "jn-exists-null",
+    "topic": "EXISTS",
+    "sql": "SELECT dname\nFROM dept\nWHERE EXISTS (\n  SELECT NULL FROM dual\n)",
+    "ask": "rows",
+    "expect": "4",
+    "explain": "EXISTS 는 값이 아니라 행이 있는지만 봐요. SELECT NULL 이어도 DUAL 에 한 행이 있으니 참이고, 상관 조건도 없어서 부서 4개가 모두 나와요."
+  },
+  {
+    "id": "jn-exists-correlated",
+    "topic": "상관 서브쿼리",
+    "sql": "SELECT e.ename\nFROM emp e\nWHERE EXISTS (\n  SELECT 1 FROM emp s\n  WHERE s.mgr = e.empno\n    AND s.sal > e.sal\n)",
+    "ask": "value",
+    "distractors": ["KING", "SCOTT", "BLAKE"],
+    "expect": "JONES",
+    "explain": "자기보다 급여가 많은 부하가 있는 관리자를 찾아요. JONES(2975)의 부하 SCOTT, FORD 가 3000 이라 JONES 한 명이에요. EXISTS 라 부하가 둘이어도 한 번만 나와요."
+  },
+  {
+    "id": "jn-in-vs-join",
+    "topic": "IN 과 JOIN 의 차이",
+    "sql": "SELECT COUNT(*)\nFROM dept\nWHERE deptno IN (\n  SELECT deptno FROM emp\n)",
+    "ask": "value",
+    "distractors": ["14", "4", "1"],
+    "expect": "3",
+    "explain": "IN 은 바깥 행을 늘리지 않아요. 사원이 있는 부서 10·20·30 이 한 번씩만 나와 3이에요. 같은 뜻으로 JOIN 하면 사원 수만큼 14행이 돼요."
+  },
+  {
+    "id": "jn-having-sub",
+    "topic": "HAVING 서브쿼리",
+    "sql": "SELECT COUNT(*)\nFROM (\n  SELECT deptno\n  FROM emp\n  GROUP BY deptno\n  HAVING AVG(sal) > (SELECT AVG(sal) FROM emp)\n) x",
+    "ask": "value",
+    "distractors": ["1", "3", "6"],
+    "expect": "2",
+    "explain": "전체 평균은 약 2073 이에요. 부서 평균은 10번 약 2917, 20번 2175, 30번 약 1567 이라 10·20번 2개 부서예요. 사원 수가 아니라 그룹 수를 세요."
+  },
+  {
+    "id": "jn-inline-max-ties",
+    "topic": "인라인 뷰 조인",
+    "sql": "SELECT e.ename\nFROM emp e\nJOIN (\n  SELECT deptno, MAX(sal) AS max_sal\n  FROM emp\n  GROUP BY deptno\n) m\n  ON e.deptno = m.deptno\n AND e.sal = m.max_sal",
+    "ask": "rows",
+    "expect": "4",
+    "explain": "부서별 최고 급여자는 10번 KING, 30번 BLAKE, 20번은 SCOTT 과 FORD 가 3000 으로 공동이에요. 공동 최고가 모두 나와 부서 수(3)보다 많은 4행이에요."
+  },
+  {
+    "id": "jn-union-dedupe-self",
+    "topic": "UNION",
+    "sql": "SELECT deptno FROM emp\nUNION\nSELECT deptno FROM dept WHERE deptno = 40",
+    "ask": "rows",
+    "expect": "4",
+    "explain": "UNION 은 두 결과 사이의 중복만이 아니라 첫 번째 쿼리 안의 중복도 없애요. emp 의 14행이 10, 20, 30 으로 줄고 40 이 더해져 4행이에요."
+  },
+  {
+    "id": "jn-union-null",
+    "topic": "UNION 과 NULL",
+    "sql": "SELECT comm FROM emp WHERE deptno = 30\nUNION\nSELECT comm FROM emp WHERE deptno = 10",
+    "ask": "rows",
+    "expect": "5",
+    "explain": "30번 comm 은 300, 500, 1400, 0, NULL, NULL 이고 10번은 모두 NULL 이에요. 집합 연산은 NULL 끼리 같다고 봐서 NULL 은 하나만 남아 5행이에요."
+  },
+  {
+    "id": "jn-intersect-mgr",
+    "topic": "INTERSECT 와 NULL",
+    "sql": "SELECT mgr FROM emp\nINTERSECT\nSELECT empno FROM emp",
+    "ask": "rows",
+    "expect": "6",
+    "explain": "mgr 값 중 empno 에도 있는 것은 관리자 6명의 번호예요. KING 의 NULL 은 empno 쪽에 NULL 이 없어서 빠지고, 중복도 없어져 6행이에요."
+  },
+  {
+    "id": "jn-except-jobs",
+    "topic": "EXCEPT(MINUS)",
+    "sql": "SELECT job FROM emp WHERE deptno = 20\nEXCEPT\nSELECT job FROM emp WHERE deptno = 30",
+    "ask": "value",
+    "distractors": ["SALESMAN", "MANAGER", "CLERK"],
+    "expect": "ANALYST",
+    "note": "Oracle 의 MINUS 를 이 엔진(PostgreSQL)에서는 EXCEPT 로 써요.",
+    "explain": "20번 직무 MANAGER, ANALYST, CLERK 에서 30번에도 있는 MANAGER, CLERK 를 빼면 ANALYST 만 남아요. SALESMAN 은 30번에만 있어 결과에 나오지 않아요."
+  },
+  {
+    "id": "jn-except-dedupe",
+    "topic": "EXCEPT(MINUS)",
+    "sql": "SELECT deptno FROM emp\nEXCEPT\nSELECT deptno FROM dept WHERE deptno = 10",
+    "ask": "rows",
+    "expect": "2",
+    "note": "Oracle 의 MINUS 를 이 엔진(PostgreSQL)에서는 EXCEPT 로 써요.",
+    "explain": "10번 사원 3명을 뺀 11행이 아니에요. EXCEPT 는 결과의 중복도 없애서 20, 30 두 행만 남아요."
+  },
+  {
+    "id": "jn-union-all-count",
+    "topic": "UNION ALL",
+    "sql": "SELECT COUNT(c1)\nFROM (\n  SELECT c1 FROM t1\n  UNION ALL\n  SELECT c1 FROM t2\n) u",
+    "ask": "value",
+    "distractors": ["9", "5", "4"],
+    "expect": "7",
+    "explain": "UNION ALL 은 9행을 그대로 이어 붙여요. 그중 NULL 이 t1, t2 에 하나씩 있어서 COUNT(c1) 은 7이에요."
+  },
+  {
+    "id": "jn-union-colname",
+    "topic": "집합 연산의 컬럼 이름",
+    "sql": "SELECT MAX(a)\nFROM (\n  SELECT sal AS a FROM emp WHERE deptno = 10\n  UNION\n  SELECT comm AS b FROM emp WHERE deptno = 30\n) u",
+    "ask": "value",
+    "distractors": ["1400", "에러", "NULL"],
+    "expect": "5000",
+    "explain": "집합 연산 결과의 컬럼 이름은 첫 번째 쿼리를 따라요. 그래서 a 로 부를 수 있고, 두 결과를 합친 값 중 최댓값은 KING 의 5000 이에요."
+  },
+  {
+    "id": "jn-union-order",
+    "topic": "집합 연산과 ORDER BY",
+    "sql": "SELECT dname FROM dept\nUNION ALL\nSELECT ename FROM emp WHERE deptno = 10\nORDER BY 1 DESC\nFETCH FIRST 1 ROWS ONLY",
+    "ask": "value",
+    "distractors": ["MILLER", "OPERATIONS", "KING"],
+    "expect": "SALES",
+    "explain": "맨 끝의 ORDER BY 는 마지막 쿼리가 아니라 합친 결과 전체를 정렬해요. 부서명과 사원명을 모아 내림차순으로 보면 SALES 가 가장 앞이에요."
+  }
+]

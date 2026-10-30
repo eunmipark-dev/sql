@@ -1,0 +1,473 @@
+[
+  {
+    "id": "erd-drawing",
+    "cert": "sqld",
+    "title": "ERD 작성 순서",
+    "prompt": "ERD 를 그리는 작업을 순서대로 놓으세요.",
+    "items": [
+      "엔터티를 그린다",
+      "엔터티를 적절히 배치한다",
+      "엔터티 간 관계를 설정한다",
+      "관계명을 기술한다",
+      "관계차수를 기술한다",
+      "관계 선택사양을 기술한다"
+    ],
+    "explain": "엔터티를 그리고 배치한 뒤 관계를 잇고, 관계명 → 관계차수 → 선택사양(필수/선택) 순으로 적어요. 가장 중요한 엔터티는 왼쪽 상단에 둬요.",
+    "theory": "1-1-01-data-model"
+  },
+  {
+    "id": "relationship-reading",
+    "cert": "sqld",
+    "title": "관계를 문장으로 읽는 순서",
+    "prompt": "ERD 의 관계를 문장으로 읽을 때 읽는 순서대로 놓으세요.",
+    "items": [
+      "기준 엔터티 (한/각)",
+      "관계차수 (하나/여러)",
+      "관계선택사양 (항상/때때로)",
+      "관계명"
+    ],
+    "explain": "\"각 사원은 하나의 부서에 항상 소속된다\"처럼 기준 엔터티 → 관계차수 → 선택사양 → 관계명 순으로 읽어요.",
+    "theory": "1-1-04-relationship"
+  },
+  {
+    "id": "entity-occurrence",
+    "cert": "sqld",
+    "title": "발생 시점에 따른 엔터티",
+    "prompt": "엔터티를 발생 시점이 이른 것부터 순서대로 놓으세요.",
+    "items": [
+      "기본 엔터티 (고객, 상품)",
+      "중심 엔터티 (주문)",
+      "행위 엔터티 (주문상품)"
+    ],
+    "explain": "고객·상품은 원래 존재하는 기본 엔터티, 주문은 기본 엔터티로부터 생기는 중심 엔터티, 주문상품은 주문과 상품 두 부모로부터 생기는 행위 엔터티예요.",
+    "theory": "1-1-02-entity"
+  },
+  {
+    "id": "logical-op-precedence",
+    "cert": "sqld",
+    "title": "논리 연산자 우선순위",
+    "prompt": "WHERE 절에서 먼저 계산되는 것부터 순서대로 놓으세요.",
+    "code": "WHERE NOT 부서 = 10 OR 직무 = 'CLERK' AND (급여 > 1000 OR 수당 IS NULL)",
+    "items": [
+      "괄호 ( )",
+      "NOT",
+      "AND",
+      "OR"
+    ],
+    "explain": "괄호가 가장 먼저이고, 논리 연산자끼리는 NOT > AND > OR 순이에요. 그래서 AND 로 묶인 조건이 OR 보다 먼저 계산돼요. 헷갈리면 괄호로 의도를 밝히는 게 좋아요.",
+    "theory": "2-1-04-where"
+  },
+  {
+    "id": "join-on-exec",
+    "cert": "sqld",
+    "title": "JOIN … ON 이 있을 때",
+    "prompt": "아래 SQL 이 논리적으로 처리되는 순서대로 놓으세요.",
+    "code": "SELECT D.부서명, COUNT(*) AS 인원\nFROM 사원 E\nJOIN 부서 D ON E.부서번호 = D.부서번호\nWHERE E.입사년도 >= 2020\nGROUP BY D.부서명\nORDER BY 인원 DESC",
+    "items": [
+      "FROM 사원 E",
+      "JOIN 부서 D ON …",
+      "WHERE",
+      "GROUP BY",
+      "SELECT",
+      "ORDER BY"
+    ],
+    "explain": "JOIN … ON 은 FROM 단계에서 두 테이블을 결합하는 부분이라 WHERE 보다 먼저 적용돼요. 별칭 '인원'은 SELECT 뒤에 정해지므로 ORDER BY 에서 쓸 수 있어요.",
+    "theory": "2-1-08-standard-join"
+  },
+  {
+    "id": "window-exec",
+    "cert": "sqld",
+    "title": "윈도우 함수가 계산되는 시점",
+    "prompt": "아래 SQL 이 논리적으로 처리되는 순서대로 놓으세요.",
+    "code": "SELECT 부서, SUM(급여) AS 합계,\n       RANK() OVER (ORDER BY SUM(급여) DESC) AS 순위\nFROM 사원\nWHERE 재직 = 'Y'\nGROUP BY 부서\nHAVING COUNT(*) >= 2\nORDER BY 순위",
+    "items": [
+      "FROM",
+      "WHERE",
+      "GROUP BY",
+      "HAVING",
+      "SELECT (RANK() OVER 계산)",
+      "ORDER BY"
+    ],
+    "explain": "윈도우 함수는 HAVING 까지 끝난 결과를 대상으로 SELECT 단계에서 계산돼요. 그래서 WHERE·GROUP BY·HAVING 에서는 쓸 수 없고 SELECT 와 ORDER BY 에서만 쓸 수 있어요.",
+    "theory": "2-2-04-window-functions"
+  },
+  {
+    "id": "rownum-order-trap",
+    "cert": "sqld",
+    "title": "ROWNUM 과 ORDER BY 를 함께 쓰면",
+    "prompt": "아래 SQL 이 논리적으로 처리되는 순서대로 놓으세요.",
+    "code": "SELECT ENAME, SAL\nFROM EMP\nWHERE ROWNUM <= 3\nORDER BY SAL DESC",
+    "items": [
+      "FROM EMP",
+      "WHERE ROWNUM <= 3",
+      "SELECT",
+      "ORDER BY SAL DESC"
+    ],
+    "explain": "ROWNUM 은 WHERE 단계에서 행을 읽으며 붙고, ORDER BY 는 가장 나중이에요. 그래서 먼저 읽힌 아무 3건을 고른 뒤 정렬할 뿐, 급여 상위 3명이 되지 않아요.",
+    "theory": "2-2-05-top-n"
+  },
+  {
+    "id": "rownum-paging",
+    "cert": "sqld",
+    "title": "ROWNUM 으로 3~4위 구하기",
+    "prompt": "아래 페이징 SQL 이 처리되는 순서대로 놓으세요.",
+    "code": "SELECT ENAME, SAL\nFROM (SELECT ROWNUM AS RN, A.*\n      FROM (SELECT ENAME, SAL FROM EMP\n            ORDER BY SAL DESC) A\n      WHERE ROWNUM <= 4)\nWHERE RN >= 3",
+    "items": [
+      "SAL 내림차순으로 정렬",
+      "정렬된 행에 ROWNUM 을 붙이며 4건까지",
+      "RN >= 3 인 행만 남기기"
+    ],
+    "explain": "가장 안쪽에서 먼저 정렬하고, 그 결과에 ROWNUM 을 붙여 끝 번호까지 자른 뒤, 바깥에서 별칭 RN 으로 시작 번호를 걸러요. ROWNUM >= 3 을 직접 쓰면 결과가 0건이 돼요.",
+    "theory": "2-2-05-top-n"
+  },
+  {
+    "id": "fetch-first-exec",
+    "cert": "sqld",
+    "title": "OFFSET … FETCH 가 있을 때",
+    "prompt": "아래 SQL 이 논리적으로 처리되는 순서대로 놓으세요.",
+    "code": "SELECT 이름, 점수\nFROM 응시\nWHERE 과목 = 'SQL'\nORDER BY 점수 DESC\nOFFSET 5 ROWS FETCH NEXT 5 ROWS ONLY",
+    "items": [
+      "FROM",
+      "WHERE",
+      "SELECT",
+      "ORDER BY",
+      "OFFSET … FETCH"
+    ],
+    "explain": "OFFSET·FETCH 는 ORDER BY 로 정렬된 결과에 적용돼요. 그래서 ROWNUM 과 달리 인라인 뷰 없이 정렬 후 6~10위를 바로 가져올 수 있어요.",
+    "theory": "2-2-05-top-n"
+  },
+  {
+    "id": "orderby-null-asc",
+    "cert": "sqld",
+    "title": "Oracle 의 NULL 정렬 위치",
+    "prompt": "Oracle 에서 아래 SQL 의 결과 행 순서대로 놓으세요.",
+    "code": "-- 사원(이름, 수당)\n-- 김(300), 이(NULL), 박(100), 최(500)\nSELECT 이름 FROM 사원\nORDER BY 수당",
+    "items": [
+      "박",
+      "김",
+      "최",
+      "이"
+    ],
+    "explain": "Oracle 은 NULL 을 가장 큰 값으로 보므로 오름차순에서는 맨 뒤에 와요. SQL Server 는 반대로 가장 작은 값으로 봐서 맨 앞에 와요.",
+    "theory": "2-1-06-order-by"
+  },
+  {
+    "id": "orderby-multi-key",
+    "cert": "sqld",
+    "title": "정렬 기준이 둘일 때",
+    "prompt": "Oracle 에서 아래 SQL 의 결과 행 순서대로 놓으세요.",
+    "code": "-- 사원(이름, 부서, 급여)\n-- 김(10, 300), 이(20, 500), 박(10, 500)\n-- 최(20, 200), 정(10, NULL)\nSELECT 이름 FROM 사원\nORDER BY 부서, 급여 DESC",
+    "items": [
+      "정",
+      "박",
+      "김",
+      "이",
+      "최"
+    ],
+    "explain": "먼저 부서 오름차순으로 10번, 20번 묶음을 정하고, 같은 부서 안에서 급여 내림차순으로 정렬해요. Oracle 은 NULL 을 가장 큰 값으로 보므로 DESC 에서는 맨 앞에 와요.",
+    "theory": "2-1-06-order-by"
+  },
+  {
+    "id": "hier-output",
+    "cert": "sqld",
+    "title": "계층형 질의 결과 순서",
+    "prompt": "아래 SQL 의 결과 행 순서대로 놓으세요.",
+    "code": "-- 조직(이름, 상사): 한대표(NULL), 윤부장(한대표),\n-- 강부장(한대표), 조과장(강부장),\n-- 서과장(윤부장), 문대리(조과장)\nSELECT 이름 FROM 조직\nSTART WITH 상사 IS NULL\nCONNECT BY PRIOR 이름 = 상사\nORDER SIBLINGS BY 이름",
+    "items": [
+      "한대표",
+      "강부장",
+      "조과장",
+      "문대리",
+      "윤부장",
+      "서과장"
+    ],
+    "explain": "순방향 전개는 깊이 우선이라 한 가지를 끝까지 내려간 뒤 다음 형제로 넘어가요. ORDER SIBLINGS BY 이름 으로 형제끼리는 이름순(강부장 → 윤부장)이에요.",
+    "theory": "2-2-06-hierarchical-query"
+  },
+  {
+    "id": "recursive-with",
+    "cert": "sqld",
+    "title": "재귀 WITH 의 처리 과정",
+    "prompt": "재귀 공통 테이블 식(Recursive WITH)이 처리되는 순서대로 놓으세요.",
+    "items": [
+      "앵커 멤버로 루트 행 만들기",
+      "재귀 멤버로 직전 결과와 조인해 하위 행 찾기",
+      "새 행이 없으면 반복 종료"
+    ],
+    "explain": "앵커 멤버가 시작 행을 만들고, 재귀 멤버가 직전 결과와 조인하며 한 단계씩 내려가요. 두 부분은 UNION ALL 로 잇고, 재귀 멤버가 더 이상 행을 내지 않으면 끝나요.",
+    "theory": "2-2-06-hierarchical-query"
+  },
+  {
+    "id": "rollup-levels",
+    "cert": "sqld",
+    "title": "ROLLUP 의 그룹 수준",
+    "prompt": "ROLLUP(지역, 부서, 직무)이 만드는 그룹 수준을 가장 세밀한 것부터 놓으세요.",
+    "items": [
+      "(지역, 부서, 직무)",
+      "(지역, 부서)",
+      "(지역)",
+      "( ) 전체"
+    ],
+    "explain": "ROLLUP 은 오른쪽 컬럼부터 하나씩 빼면서 소계를 만들어요. 인자가 n개면 n+1 개 수준이 생기고, 인자 순서를 바꾸면 결과가 달라져요.",
+    "theory": "2-2-03-group-functions"
+  },
+  {
+    "id": "setop-oracle",
+    "cert": "sqld",
+    "title": "집합 연산자 수행 순서 (Oracle)",
+    "prompt": "Oracle 에서 아래 집합 연산이 수행되는 순서대로 놓으세요.",
+    "code": "SELECT 상품 FROM 매장A\nUNION\nSELECT 상품 FROM 매장B\nMINUS\nSELECT 상품 FROM 매장C\nINTERSECT\nSELECT 상품 FROM 매장D",
+    "items": [
+      "UNION 매장B",
+      "MINUS 매장C",
+      "INTERSECT 매장D"
+    ],
+    "explain": "Oracle 은 집합 연산자의 우선순위가 모두 같아서 위에서 아래로 차례대로 수행해요. SQL 표준과 SQL Server 는 INTERSECT 를 먼저 하니, 의도를 밝히려면 괄호를 쓰세요.",
+    "theory": "2-2-02-set-operators"
+  },
+  {
+    "id": "delete-truncate-drop",
+    "cert": "sqld",
+    "title": "지우는 범위",
+    "prompt": "지우는 범위가 좁은 것부터 넓은 것 순서로 놓으세요.",
+    "items": [
+      "DELETE",
+      "TRUNCATE",
+      "DROP"
+    ],
+    "explain": "DELETE 는 조건에 맞는 행만(롤백 가능), TRUNCATE 는 모든 행을 비우고 구조는 남겨요. DROP 은 데이터와 테이블 구조까지 없애요.",
+    "theory": "2-3-01-dml"
+  },
+  {
+    "id": "tm-lock-modes",
+    "cert": "sqlp",
+    "title": "테이블 Lock 모드",
+    "prompt": "Oracle 테이블 Lock(TM) 모드를 모드 번호가 작은 것부터 놓으세요.",
+    "items": [
+      "RS (Row Share)",
+      "RX (Row Exclusive)",
+      "S (Share)",
+      "SRX (Share Row Exclusive)",
+      "X (Exclusive)"
+    ],
+    "explain": "RS(2) → RX(3) → S(4) → SRX(5) → X(6) 순이에요. 일반 DML 은 RX 모드라 서로 호환되고, X 모드는 어떤 모드와도 호환되지 않아 DDL 과 충돌해요.",
+    "theory": "3-7-01-lock"
+  },
+  {
+    "id": "storage-units",
+    "cert": "sqlp",
+    "title": "Oracle 저장 구조 단위",
+    "prompt": "Oracle 논리 저장 구조를 작은 단위부터 놓으세요.",
+    "items": [
+      "데이터 블록",
+      "익스텐트",
+      "세그먼트",
+      "테이블스페이스"
+    ],
+    "explain": "블록이 I/O 최소 단위이고, 연속된 블록 묶음이 익스텐트, 익스텐트 여러 개가 세그먼트(테이블·인덱스 등), 세그먼트를 담는 컨테이너가 테이블스페이스예요.",
+    "theory": "3-1-01-db-architecture"
+  },
+  {
+    "id": "rowid-parts",
+    "cert": "sqlp",
+    "title": "ROWID 의 구성",
+    "prompt": "Oracle 확장 ROWID 를 이루는 정보를 앞에서부터 순서대로 놓으세요.",
+    "items": [
+      "데이터 오브젝트 번호",
+      "데이터 파일 번호",
+      "블록 번호",
+      "로우 번호"
+    ],
+    "explain": "세그먼트 → 파일 → 파일 안의 블록 → 블록 안의 행 순서로 위치를 좁혀 가요. 그래서 ROWID 를 '데이터 블록 주소(DBA) + 로우 번호'로 요약해요.",
+    "theory": "3-3-01-index-structure"
+  },
+  {
+    "id": "dml-block-change",
+    "cert": "sqlp",
+    "title": "DML 이 블록을 바꾸는 과정",
+    "prompt": "UPDATE 가 데이터 블록을 변경할 때 일어나는 일을 순서대로 놓으세요.",
+    "items": [
+      "변경할 블록을 버퍼 캐시에 적재",
+      "변경 전 이미지를 Undo 에 기록",
+      "변경 내역을 리두 로그 버퍼에 기록",
+      "버퍼 캐시의 블록 변경 (더티 블록)"
+    ],
+    "explain": "블록을 캐시에 올린 뒤 되돌리기용 Undo 와 재실행용 Redo 를 먼저 남기고 블록을 바꿔요. 더티 블록은 커밋과 무관하게 나중에 DBWn 이 기록해요.",
+    "theory": "3-1-01-db-architecture"
+  },
+  {
+    "id": "buffer-cache-lookup",
+    "cert": "sqlp",
+    "title": "버퍼 캐시에서 블록 찾기",
+    "prompt": "버퍼 캐시에서 블록을 찾아 읽는 순서대로 놓으세요.",
+    "items": [
+      "블록 주소(DBA)를 해시 함수에 입력",
+      "해시 버킷 찾기",
+      "해시 체인에서 버퍼 헤더 찾기",
+      "버퍼 블록 읽기"
+    ],
+    "explain": "같은 블록 주소는 항상 같은 해시 체인에 연결돼요. 체인에서 버퍼 헤더를 못 찾으면 디스크에서 읽어 체인에 연결해요. 체인을 탐색할 때는 래치로 직렬화해요.",
+    "theory": "3-1-03-io-mechanism"
+  },
+  {
+    "id": "disk-sort",
+    "cert": "sqlp",
+    "title": "디스크 소트 과정",
+    "prompt": "Sort Area 가 부족할 때 정렬이 처리되는 순서대로 놓으세요.",
+    "items": [
+      "정렬할 데이터 읽기",
+      "PGA Sort Area 에서 정렬",
+      "정렬된 Sort Run 을 Temp 에 기록",
+      "Temp 의 Run 들을 읽어 병합",
+      "결과 반환"
+    ],
+    "explain": "메모리에 다 들어가면 Sort Area 안에서 끝나는 메모리 소트예요. 넘치면 Run 을 Temp 에 쓰고 다시 읽어 병합하는 디스크 소트가 되어 I/O 가 늘어요.",
+    "theory": "3-6-01-sort-tuning"
+  },
+  {
+    "id": "sort-passes",
+    "cert": "sqlp",
+    "title": "소트 방식별 속도",
+    "prompt": "빠른 소트 방식부터 느린 방식 순서로 놓으세요.",
+    "items": [
+      "Optimal 소트",
+      "One-pass 소트",
+      "Multi-pass 소트"
+    ],
+    "explain": "Optimal 은 메모리 안에서 끝나요. One-pass 는 Temp 에 한 번 쓰고 한 번 읽고, Multi-pass 는 쓰고 읽기를 여러 번 반복해서 가장 느려요.",
+    "theory": "3-6-01-sort-tuning"
+  },
+  {
+    "id": "plan-read-hash",
+    "cert": "sqlp",
+    "title": "실행계획 읽기: 해시 조인",
+    "prompt": "아래 실행계획에서 오퍼레이션이 실행되는 순서대로 놓으세요.",
+    "code": "Id  Operation\n 0  SELECT STATEMENT\n 1   SORT ORDER BY\n 2    HASH JOIN\n 3     TABLE ACCESS FULL DEPT\n 4     TABLE ACCESS BY INDEX ROWID EMP\n 5      INDEX RANGE SCAN EMP_X1",
+    "items": [
+      "Id 3 DEPT 전체 스캔",
+      "Id 5 EMP_X1 범위 스캔",
+      "Id 4 EMP 테이블 액세스",
+      "Id 2 해시 조인",
+      "Id 1 정렬"
+    ],
+    "explain": "같은 레벨이면 위쪽이 먼저라 DEPT 가 Build Input 이에요. EMP 쪽은 자식인 인덱스 스캔이 먼저, 테이블 액세스가 다음이에요. 자식이 끝나야 부모(조인 → 정렬)가 처리돼요.",
+    "theory": "3-2-01-execution-plan"
+  },
+  {
+    "id": "plan-read-filter",
+    "cert": "sqlp",
+    "title": "실행계획 읽기: FILTER 서브쿼리",
+    "prompt": "아래 실행계획에서 오퍼레이션이 실행되는 순서대로 놓으세요.",
+    "code": "Id  Operation\n 0  SELECT STATEMENT\n 1   FILTER\n 2    TABLE ACCESS BY INDEX ROWID 고객\n 3     INDEX RANGE SCAN 고객_X01\n 4    INDEX RANGE SCAN 거래_X01",
+    "items": [
+      "Id 3 고객_X01 범위 스캔",
+      "Id 2 고객 테이블 액세스",
+      "Id 4 거래_X01 범위 스캔",
+      "Id 1 FILTER"
+    ],
+    "explain": "메인쿼리(고객)를 먼저 읽고, 한 건마다 서브쿼리(거래_X01)를 확인해요. FILTER 는 항상 메인쿼리가 드라이빙 집합이고, 서브쿼리 결과를 캐싱해요.",
+    "theory": "3-4-04-subquery-join"
+  },
+  {
+    "id": "nl-join-steps",
+    "cert": "sqlp",
+    "title": "NL 조인 한 건의 처리",
+    "prompt": "아래 SQL 이 NL 조인으로 처리될 때의 순서대로 놓으세요. (인덱스: 사원_X1(입사일자), 고객_X1(관리사원번호))",
+    "code": "SELECT /*+ ORDERED USE_NL(C) */\n       E.사원명, C.고객명\nFROM   사원 E, 고객 C\nWHERE  E.입사일자 >= '19960101'\nAND    E.부서코드 = 'Z123'\nAND    C.관리사원번호 = E.사원번호\nAND    C.최종주문금액 >= 20000",
+    "items": [
+      "사원_X1 인덱스 범위 스캔",
+      "사원 테이블 ROWID 액세스",
+      "부서코드 = 'Z123' 필터",
+      "고객_X1 인덱스 범위 스캔",
+      "고객 테이블 ROWID 액세스",
+      "최종주문금액 >= 20000 필터"
+    ],
+    "explain": "ORDERED 로 사원이 Outer 예요. 사원을 인덱스로 찾고 테이블에서 부서코드를 걸러낸 뒤, 통과한 사원번호로 고객_X1 을 탐색해 고객 행을 읽고 금액 조건을 확인해요.",
+    "theory": "3-4-01-nl-join"
+  },
+  {
+    "id": "optimizer-components",
+    "cert": "sqlp",
+    "title": "옵티마이저 구성 요소",
+    "prompt": "파싱된 SQL 이 옵티마이저 안에서 거치는 구성 요소를 순서대로 놓으세요.",
+    "items": [
+      "Query Transformer",
+      "Estimator",
+      "Plan Generator"
+    ],
+    "explain": "Query Transformer 가 SQL 을 의미가 같은 더 나은 형태로 바꾸고, Estimator 가 선택도·카디널리티·비용을 계산해요. Plan Generator 는 후보 계획마다 Estimator 에 비용을 물어 가장 싼 것을 골라요.",
+    "theory": "3-5-01-optimizer"
+  },
+  {
+    "id": "read-consistency",
+    "cert": "sqlp",
+    "title": "읽기 일관성 (MVCC)",
+    "prompt": "Oracle 이 쿼리 시작 시점 기준으로 블록을 읽는 과정을 순서대로 놓으세요.",
+    "items": [
+      "쿼리 시작 시점의 SCN 기억",
+      "읽을 블록의 SCN 과 비교",
+      "더 최근 변경이면 Undo 로 CR 블록 만들기",
+      "CR 블록을 읽기"
+    ],
+    "explain": "블록 SCN 이 쿼리 SCN 보다 크면 쿼리 시작 후 바뀐 블록이라 Undo 로 되돌린 복사본(CR 블록)을 만들어 읽어요. 필요한 Undo 가 사라지면 Snapshot too old 가 나요.",
+    "theory": "3-7-03-concurrency-control"
+  },
+  {
+    "id": "optimistic-cc",
+    "cert": "sqlp",
+    "title": "낙관적 동시성 제어",
+    "prompt": "낙관적 동시성 제어로 데이터를 변경하는 순서대로 놓으세요.",
+    "items": [
+      "Lock 없이 값을 조회",
+      "읽은 값이 그대로인지 WHERE 로 비교하며 UPDATE",
+      "0건이면 ROLLBACK 후 재처리 안내"
+    ],
+    "explain": "읽을 때 Lock 을 거는 비관적 방식(SELECT FOR UPDATE)과 달리, 변경할 때 읽었던 값·변경일시·버전을 비교해요. 0건이 갱신됐다면 그 사이 누가 바꾼 거예요.",
+    "theory": "3-7-03-concurrency-control"
+  },
+  {
+    "id": "partition-exchange",
+    "cert": "sqlp",
+    "title": "파티션 Exchange 로 대량 삭제",
+    "prompt": "파티션의 일부 데이터를 빠르게 지우는 Exchange 방식의 순서대로 놓으세요.",
+    "items": [
+      "남길 데이터로 임시 테이블 생성",
+      "임시 테이블에 인덱스 생성",
+      "EXCHANGE PARTITION 으로 교체",
+      "임시 테이블 DROP"
+    ],
+    "explain": "남길 데이터만 NOLOGGING CTAS 로 담고, 로컬 인덱스와 같은 구조의 인덱스를 만든 뒤 세그먼트를 맞바꿔요. Exchange 는 데이터를 복사하지 않아 순식간에 끝나요.",
+    "theory": "3-6-03-partitioning"
+  },
+  {
+    "id": "sql-trace-flow",
+    "cert": "sqlp",
+    "title": "SQL 트레이스 분석 절차",
+    "prompt": "SQL 트레이스로 실제 수행 통계를 확인하는 순서대로 놓으세요.",
+    "items": [
+      "ALTER SESSION SET SQL_TRACE = TRUE",
+      "분석할 SQL 실행",
+      "ALTER SESSION SET SQL_TRACE = FALSE",
+      "tkprof 로 트레이스 파일 포맷팅",
+      "리포트에서 Call 별 통계 확인"
+    ],
+    "explain": "트레이스를 켠 채 SQL 을 실행하면 트레이스 파일이 생겨요. 그대로는 읽기 어려워 TKPROF 로 포맷팅한 뒤 Parse·Execute·Fetch 별 disk·query·current 를 봐요.",
+    "theory": "3-2-02-sql-trace"
+  },
+  {
+    "id": "parallel-group-by",
+    "cert": "sqlp",
+    "title": "병렬 GROUP BY 의 데이터 흐름",
+    "prompt": "아래 SQL 을 병렬로 처리할 때 데이터가 흐르는 순서대로 놓으세요.",
+    "code": "SELECT /*+ FULL(O) PARALLEL(O 4) */\n       고객번호, SUM(금액)\nFROM   주문 O\nGROUP BY 고객번호",
+    "items": [
+      "Producer 가 주문을 블록 단위로 나눠 읽기",
+      "고객번호 해시값으로 재분배 (P->P)",
+      "Consumer 가 HASH GROUP BY",
+      "Consumer 가 QC 로 결과 전송 (P->S)",
+      "QC 가 사용자에게 결과 반환"
+    ],
+    "explain": "두 서버 집합이 일하는 Inter-Operation 병렬이라 서버가 DOP×2 개 쓰여요. 읽기 집합(Producer)이 해시로 재분배하면 받는 집합(Consumer)이 그룹핑해 QC 에 넘겨요.",
+    "theory": "3-6-04-batch-tuning"
+  }
+]

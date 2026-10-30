@@ -1,0 +1,19 @@
+[
+  { "text": "소트 머지 조인은 두 집합을 조인 컬럼 기준으로 정렬한 뒤 정렬된 순서를 따라 병합하는 조인이다.", "answer": true, "explain": "소트 단계와 머지 단계 두 단계로 진행된다." },
+  { "text": "소트 머지 조인의 정렬 작업은 SGA의 버퍼 캐시에서 수행된다.", "answer": false, "explain": "정렬은 PGA의 Sort Area에서 수행하며, 공간이 부족하면 Temp 테이블스페이스를 사용한다." },
+  { "text": "소트 머지 조인에서 Sort Area가 부족하면 Temp 테이블스페이스를 사용하므로 성능이 크게 떨어진다.", "answer": true, "explain": "Temp를 쓰면 디스크 I/O가 늘어나 성능이 저하된다." },
+  { "text": "소트 머지 조인의 머지 단계는 Inner 집합을 PGA에 정렬된 집합에서 찾으므로 래치 획득 과정이 없다.", "answer": true, "explain": "PGA는 프로세스 전용 메모리라 버퍼 캐시처럼 래치를 획득할 필요가 없다." },
+  { "text": "소트 머지 조인의 머지 단계에서는 Outer 한 건마다 Inner 정렬 집합을 처음부터 다시 스캔한다.", "answer": false, "explain": "Inner가 정렬되어 있으므로 직전에 멈춘 위치부터 이어서 스캔하면 된다." },
+  { "text": "소트 머지 조인은 항상 양쪽 집합을 모두 정렬해야 한다.", "answer": false, "explain": "Outer 쪽은 조인 컬럼 인덱스를 순서대로 읽어 소트를 생략할 수 있다." },
+  { "text": "Oracle 소트 머지 조인에서 Inner 쪽은 조인 컬럼에 인덱스가 있어도 SORT JOIN 오퍼레이션이 나타난다.", "answer": true, "explain": "Inner 집합은 머지 단계에서 반복 탐색하므로 PGA에 정렬해 둔다." },
+  { "text": "소트 머지 조인은 조인 컬럼에 인덱스가 없어도 사용할 수 있다.", "answer": true, "explain": "각 집합을 Full Scan으로 독립적으로 읽어 정렬하므로 인덱스 의존도가 낮다." },
+  { "text": "소트 머지 조인은 Outer에서 읽은 조인 컬럼 값을 Inner에 넘겨 Inner를 읽는 범위를 줄인다.", "answer": false, "explain": "각 집합을 자체 필터 조건으로 독립적으로 읽으므로 조인 컬럼 값으로 Inner 범위를 좁힐 수 없다. 이는 NL 조인의 특징이다." },
+  { "text": "소트 머지 조인은 BETWEEN 같은 비등치 조건의 대량 데이터 조인에 사용할 수 있다.", "answer": true, "explain": "해시 조인은 등치 조인만 가능하므로 비등치 대량 조인에서 소트 머지 조인이 대안이 된다." },
+  { "text": "<> 조건으로 조인하는 경우 소트 머지 조인을 사용할 수 있다.", "answer": false, "explain": "부정형 조인 조건은 정렬 순서로 범위를 좁힐 수 없어 소트 머지 조인이 불가하고 NL 조인만 가능하다." },
+  { "text": "소트 머지 조인은 정렬이 끝나야 머지를 시작할 수 있으므로 기본적으로 전체범위 처리 성격을 가진다.", "answer": true, "explain": "첫 결과가 늦게 나오며, Outer 소트를 인덱스로 생략할 때만 일부 부분범위 처리가 가능하다." },
+  { "text": "실행계획에서 MERGE JOIN 아래 위쪽 자식이 Inner(Second) 집합이다.", "answer": false, "explain": "MERGE JOIN 아래 위쪽 자식이 Outer(First), 아래쪽 자식이 Inner(Second)다." },
+  { "text": "소트 머지 조인을 유도하는 힌트는 USE_MERGE이다.", "answer": true, "explain": "USE_MERGE만으로는 순서가 고정되지 않으므로 LEADING이나 ORDERED와 함께 쓴다." },
+  { "text": "일반적인 대량 등치 조인에서는 소트 머지 조인이 해시 조인보다 빠른 경우가 많다.", "answer": false, "explain": "일반적인 대량 등치 조인은 정렬 부담이 없는 해시 조인이 더 빠른 경우가 많다." },
+  { "text": "소트 머지 조인에서 Inner 쪽에 자체 필터 조건이 있으면 정렬 대상이 줄어 유리하다.", "answer": true, "explain": "각 집합을 독립적으로 읽으므로 자체 필터 조건이 정렬 대상 크기를 줄여 준다." },
+  { "text": "소트 머지 조인 실행계획에서 비등치 조인의 나머지 범위 조건은 FILTER 오퍼레이션으로 확인된다.", "answer": true, "explain": "한쪽 범위 조건으로 머지를 진행하고 나머지 범위 조건은 FILTER로 확인한다." }
+]

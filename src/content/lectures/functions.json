@@ -1,0 +1,1859 @@
+{
+  "slug": "functions",
+  "title": "함수",
+  "tables": {
+    "이름 3개": {
+      "columns": [
+        "ENAME"
+      ],
+      "rows": [
+        [
+          "smith"
+        ],
+        [
+          "allen"
+        ],
+        [
+          "jones"
+        ]
+      ]
+    },
+    "숫자 3개": {
+      "columns": [
+        "N",
+        "자릿수"
+      ],
+      "rows": [
+        [
+          "3.47",
+          "1"
+        ],
+        [
+          "3.6",
+          "생략"
+        ],
+        [
+          "150",
+          "-2"
+        ]
+      ]
+    },
+    "EMP": {
+      "columns": [
+        "ENAME",
+        "SAL"
+      ],
+      "rows": [
+        [
+          "A",
+          "400"
+        ],
+        [
+          "B",
+          "300"
+        ],
+        [
+          "C",
+          "150"
+        ],
+        [
+          "D",
+          "50"
+        ]
+      ]
+    },
+    "사원 3명": {
+      "columns": [
+        "ENAME",
+        "COMM"
+      ],
+      "rows": [
+        [
+          "A",
+          "NULL"
+        ],
+        [
+          "B",
+          "300"
+        ],
+        [
+          "C",
+          "0"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "함수",
+      "subtitle": "결과값을 직접 계산해 봐요",
+      "icon": "puzzle",
+      "steps": [
+        {
+          "say": "SQL 함수를 시작할게요."
+        },
+        {
+          "say": "결과값 계산 문제와 DBMS별 이름 차이가 자주 나와요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "compare",
+      "section": "함수의 종류",
+      "title": "단일행과 다중행",
+      "left": {
+        "title": "단일행 함수",
+        "items": [
+          "행마다 결과 하나",
+          "행 수 그대로",
+          "중첩 가능"
+        ],
+        "icon": "arrow-left-right"
+      },
+      "right": {
+        "title": "다중행 함수",
+        "items": [
+          "여러 행을 하나로",
+          "집계, 윈도우",
+          "SELECT, HAVING"
+        ],
+        "icon": "layers"
+      },
+      "steps": [
+        {
+          "say": "함수는 크게 두 종류예요."
+        },
+        {
+          "say": "단일행 함수는 행마다 결과를 하나씩 돌려줘요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그래서 행 수가 변하지 않아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "다중행 함수는 여러 행을 묶어 하나로 만들어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "집계 함수나 윈도우 함수가 여기에 속해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "오늘은 단일행 함수를 다뤄요.",
+          "focus": [
+            0
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "id": "s03",
+      "section": "함수의 종류",
+      "type": "data",
+      "title": "함수 중첩",
+      "tables": [
+        "이름 3개"
+      ],
+      "code": "SELECT UPPER(SUBSTR(ENAME, 1, 3))\nFROM EMP;",
+      "steps": [
+        {
+          "say": "단일행 함수는 겹쳐 쓸 수 있어요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "이름 3개": {
+              "rows": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "안쪽부터 계산해요. 먼저 앞 세 글자를 잘라요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "이름 3개": {
+              "add": [
+                "SUBSTR",
+                [
+                  "smi",
+                  "all",
+                  "jon"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그다음 대문자로 바꿔요. smith는 대문자 SMI예요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "이름 3개": {
+              "add": [
+                "UPPER",
+                [
+                  "SMI",
+                  "ALL",
+                  "JON"
+                ]
+              ],
+              "cells": [
+                [
+                  0,
+                  "ENAME"
+                ],
+                [
+                  0,
+                  "UPPER"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "세 행이 들어가서 결과도 세 행이에요.",
+          "t": {
+            "이름 3개": {
+              "cols": [
+                "UPPER"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "함수의 종류",
+      "title": "단일행 함수 6갈래",
+      "cols": 3,
+      "items": [
+        {
+          "title": "문자",
+          "desc": "SUBSTR, TRIM",
+          "icon": "tag"
+        },
+        {
+          "title": "숫자",
+          "desc": "ROUND, TRUNC",
+          "icon": "ruler"
+        },
+        {
+          "title": "날짜",
+          "desc": "SYSDATE",
+          "icon": "map"
+        },
+        {
+          "title": "변환",
+          "desc": "TO_CHAR, CAST",
+          "icon": "recycle"
+        },
+        {
+          "title": "조건 분기",
+          "desc": "CASE, DECODE",
+          "icon": "branch"
+        },
+        {
+          "title": "NULL",
+          "desc": "NVL, COALESCE",
+          "icon": "help"
+        }
+      ],
+      "steps": [
+        {
+          "say": "단일행 함수는 여섯 갈래예요."
+        },
+        {
+          "say": "문자, 숫자, 날짜 함수.",
+          "focus": [
+            0,
+            1,
+            2
+          ]
+        },
+        {
+          "say": "변환 함수, CASE와 DECODE.",
+          "focus": [
+            3,
+            4
+          ]
+        },
+        {
+          "say": "그리고 NULL 관련 함수예요. 하나씩 볼게요.",
+          "focus": [
+            5
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "quiz",
+      "section": "함수의 종류",
+      "question": "`UPPER(SUBSTR('smith', 1, 3))`의 결과는?",
+      "choices": [
+        "SMITH",
+        "smi",
+        "ITH",
+        "SMI"
+      ],
+      "answer": 4,
+      "explanation": "안쪽 함수부터 계산해요. 앞 세 글자 smi를 대문자로 바꿔요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. smith의 앞 세 글자를 잘라 대문자로 바꾸면?"
+        }
+      ],
+      "id": "s04q"
+    },
+    {
+      "type": "cards",
+      "section": "문자 함수",
+      "title": "기본 문자 함수",
+      "cols": 2,
+      "items": [
+        {
+          "title": "UPPER",
+          "desc": "모두 대문자",
+          "icon": "tag"
+        },
+        {
+          "title": "LOWER",
+          "desc": "모두 소문자",
+          "icon": "tag"
+        },
+        {
+          "title": "INITCAP",
+          "desc": "첫 글자만 대문자",
+          "icon": "tag"
+        },
+        {
+          "title": "LENGTH",
+          "desc": "'SQL Expert'는 10",
+          "icon": "ruler"
+        }
+      ],
+      "steps": [
+        {
+          "say": "기본 문자 함수 네 개예요."
+        },
+        {
+          "say": "UPPER는 모두 대문자로 바꿔요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "LOWER는 모두 소문자로 바꿔요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "INITCAP은 단어 첫 글자만 대문자예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "LENGTH는 길이예요. 공백도 한 글자로 세요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "SQL Expert는 공백 포함 10글자예요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "cards",
+      "section": "문자 함수",
+      "title": "SUBSTR 세 가지",
+      "cols": 3,
+      "items": [
+        {
+          "title": "5, 3",
+          "desc": "'Exp'",
+          "icon": "filter"
+        },
+        {
+          "title": "5",
+          "desc": "'Expert'",
+          "icon": "filter"
+        },
+        {
+          "title": "-3",
+          "desc": "'ert'",
+          "icon": "filter"
+        }
+      ],
+      "steps": [
+        {
+          "say": "SUBSTR은 문자열을 잘라요. 예시는 SQL Expert예요."
+        },
+        {
+          "say": "5번째부터 3글자면 Exp예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "길이를 빼면 끝까지 잘라요. Expert예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "시작이 음수면 뒤에서부터 세요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "마이너스 3이면 뒤 세 글자, ert예요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "compare",
+      "section": "문자 함수",
+      "title": "TRIM 계열",
+      "left": {
+        "title": "LTRIM, RTRIM",
+        "items": [
+          "연속된 동안만 제거",
+          "다른 문자면 멈춤"
+        ],
+        "icon": "filter"
+      },
+      "right": {
+        "title": "TRIM",
+        "items": [
+          "기본은 양쪽 공백",
+          "방향 지정 가능",
+          "한 글자만 지정"
+        ],
+        "icon": "filter"
+      },
+      "steps": [
+        {
+          "say": "이번엔 문자를 깎아내는 함수예요."
+        },
+        {
+          "say": "LTRIM은 왼쪽, RTRIM은 오른쪽을 깎아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "지정 문자가 이어지는 동안만 지워요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "다른 문자를 만나면 바로 멈춰요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "TRIM은 기본으로 양쪽 공백을 지워요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "오라클 TRIM은 지울 문자를 한 글자만 정해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "cards",
+      "section": "문자 함수",
+      "title": "채우기와 바꾸기",
+      "cols": 3,
+      "items": [
+        {
+          "title": "LPAD",
+          "desc": "6자, ***SQL",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "RPAD",
+          "desc": "6자, SQL***",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "REPLACE",
+          "desc": "생략하면 삭제",
+          "icon": "recycle"
+        }
+      ],
+      "steps": [
+        {
+          "say": "LPAD는 왼쪽을 채워 길이를 맞춰요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "RPAD는 오른쪽을 채워요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "지정 길이가 더 짧으면 잘려요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "SQLD를 2로 LPAD하면 SQ예요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "REPLACE는 문자열을 바꿔요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "바꿀 값을 생략하면 그냥 지워요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "flow",
+      "section": "문자 함수",
+      "title": "INSTR 따라가기",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "OR 위치",
+          "desc": "2, 5, 14번째",
+          "icon": "search"
+        },
+        {
+          "title": "3부터 찾기",
+          "desc": "5가 첫 번째",
+          "icon": "filter"
+        },
+        {
+          "title": "두 번째",
+          "desc": "결과 14",
+          "icon": "target",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "INSTR은 찾는 값의 위치를 돌려줘요."
+        },
+        {
+          "say": "예시는 CORPORATE FLOOR예요."
+        },
+        {
+          "say": "OR은 2, 5, 14번째에 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "3번째 자리부터 찾으면 5가 첫 번째예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "두 번째로 찾은 건 14예요. 결과는 14예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "못 찾으면 0을 돌려줘요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "callout",
+      "section": "문자 함수",
+      "tone": "tip",
+      "title": "SQL Server 차이",
+      "text": "SQL Server는 **SUBSTRING, LEN**. LEN은 **뒤쪽 공백을 빼고** 세요.",
+      "steps": [
+        {
+          "say": "SQL 서버는 이름이 달라요."
+        },
+        {
+          "say": "SUBSTRING과 LEN을 써요."
+        },
+        {
+          "say": "LEN은 뒤쪽 공백을 빼고 세요."
+        },
+        {
+          "say": "SUBSTRING은 길이를 생략할 수 없어요."
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "type": "quiz",
+      "section": "문자 함수",
+      "question": "`SUBSTR('SQL Expert', -3)`의 결과는?",
+      "choices": [
+        "SQL",
+        "Exp",
+        "ert",
+        "Expert"
+      ],
+      "answer": 3,
+      "explanation": "음수면 뒤에서부터 세요. 뒤 세 글자 ert예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. SQL Expert를 마이너스 3부터 자르면?"
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "id": "s12",
+      "section": "숫자 함수",
+      "type": "data",
+      "title": "ROUND와 TRUNC",
+      "tables": [
+        "숫자 3개"
+      ],
+      "steps": [
+        {
+          "say": "ROUND는 반올림, TRUNC는 버림이에요.",
+          "t": {
+            "숫자 3개": {
+              "cols": [
+                "N"
+              ]
+            }
+          }
+        },
+        {
+          "say": "소수 첫째 자리로 반올림하면 3.5예요.",
+          "t": {
+            "숫자 3개": {
+              "add": [
+                "ROUND",
+                [
+                  "3.5",
+                  "?",
+                  "?"
+                ]
+              ],
+              "cells": [
+                [
+                  0,
+                  "ROUND"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "버림하면 3.4예요.",
+          "t": {
+            "숫자 3개": {
+              "add": [
+                "TRUNC",
+                [
+                  "3.4",
+                  "?",
+                  "?"
+                ]
+              ],
+              "cells": [
+                [
+                  0,
+                  "TRUNC"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "자릿수를 생략하면 정수로 만들어요. 4와 3이에요.",
+          "t": {
+            "숫자 3개": {
+              "set": [
+                [
+                  1,
+                  "ROUND",
+                  "4"
+                ],
+                [
+                  1,
+                  "TRUNC",
+                  "3"
+                ]
+              ],
+              "rows": [
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "자릿수가 음수면 정수 자리에서 처리해요.",
+          "t": {
+            "숫자 3개": {
+              "rows": [
+                2
+              ],
+              "cells": [
+                [
+                  2,
+                  "자릿수"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "마이너스 2면 백 단위로 맞춰요. 200과 100이에요.",
+          "t": {
+            "숫자 3개": {
+              "set": [
+                [
+                  2,
+                  "ROUND",
+                  "200"
+                ],
+                [
+                  2,
+                  "TRUNC",
+                  "100"
+                ]
+              ],
+              "rows": [
+                2
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "section": "숫자 함수",
+      "title": "CEIL과 FLOOR",
+      "left": {
+        "title": "CEIL",
+        "items": [
+          "오른쪽 정수로",
+          "3.2 → 4",
+          "-3.2 → -3"
+        ],
+        "icon": "arrow-left-right"
+      },
+      "right": {
+        "title": "FLOOR",
+        "items": [
+          "왼쪽 정수로",
+          "3.2 → 3",
+          "-3.2 → -4"
+        ],
+        "icon": "arrow-left-right"
+      },
+      "steps": [
+        {
+          "say": "수직선을 떠올려 보세요."
+        },
+        {
+          "say": "CEIL은 항상 오른쪽 정수로 가요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "3.2는 4예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "FLOOR는 항상 왼쪽 정수로 가요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "3.2는 3이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "음수도 방향은 같아요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "마이너스 3.2의 FLOOR는 마이너스 4예요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "quiz",
+      "section": "숫자 함수",
+      "question": "`FLOOR(-3.2)`의 결과는?",
+      "choices": [
+        "-4",
+        "-3",
+        "3",
+        "4"
+      ],
+      "answer": 1,
+      "explanation": "FLOOR는 항상 왼쪽 정수로 가요. 그래서 -4예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 마이너스 3.2의 FLOOR는?"
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "cards",
+      "section": "숫자 함수",
+      "title": "MOD, ABS, SIGN",
+      "cols": 3,
+      "items": [
+        {
+          "title": "MOD",
+          "desc": "7, 3 → 1",
+          "icon": "puzzle"
+        },
+        {
+          "title": "ABS",
+          "desc": "-15 → 15",
+          "icon": "ruler"
+        },
+        {
+          "title": "SIGN",
+          "desc": "-1, 0, 1",
+          "icon": "scale"
+        }
+      ],
+      "steps": [
+        {
+          "say": "MOD는 나머지예요. 7을 3으로 나누면 1이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "부호는 앞의 값을 따라요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "마이너스 7과 3이면 마이너스 1이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "ABS는 절댓값이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "SIGN은 부호예요. 음수면 마이너스 1이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "0이면 0, 양수면 1이에요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "callout",
+      "section": "숫자 함수",
+      "tone": "info",
+      "title": "SQL Server 숫자",
+      "text": "SQL Server는 **CEILING**, 나머지는 **% 연산자**. TRUNC 대신 **ROUND(n, d, 1)**.",
+      "steps": [
+        {
+          "say": "SQL 서버는 CEIL 대신 CEILING이에요."
+        },
+        {
+          "say": "나머지는 퍼센트 연산자를 써요."
+        },
+        {
+          "say": "TRUNC가 없어서 ROUND에 세 번째 인수 1을 줘요."
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "cards",
+      "section": "날짜 함수",
+      "title": "날짜 함수",
+      "cols": 2,
+      "items": [
+        {
+          "title": "월 더하기",
+          "desc": "1월 31일 → 2월 29일",
+          "icon": "map"
+        },
+        {
+          "title": "개월 차이",
+          "desc": "MONTHS_BETWEEN",
+          "icon": "ruler"
+        },
+        {
+          "title": "월말 날짜",
+          "desc": "LAST_DAY",
+          "icon": "target"
+        },
+        {
+          "title": "일부 추출",
+          "desc": "EXTRACT",
+          "icon": "filter"
+        }
+      ],
+      "steps": [
+        {
+          "say": "날짜 함수 네 개예요."
+        },
+        {
+          "say": "ADD MONTHS는 개월 수를 더해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "2024년 1월 31일에 한 달을 더하면?",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "2월 31일은 없어서 말일인 29일이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "MONTHS BETWEEN은 늦은 날짜를 앞에 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "반대로 쓰면 음수가 나와요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "LAST DAY는 그 달의 마지막 날이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "EXTRACT는 연도나 월만 뽑아요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "cards",
+      "section": "날짜 함수",
+      "title": "날짜 연산 규칙",
+      "cols": 3,
+      "items": [
+        {
+          "title": "날짜+숫자",
+          "desc": "날짜",
+          "icon": "check",
+          "tone": "good"
+        },
+        {
+          "title": "날짜-숫자",
+          "desc": "날짜",
+          "icon": "check",
+          "tone": "good"
+        },
+        {
+          "title": "날짜-날짜",
+          "desc": "숫자, 일수",
+          "icon": "check",
+          "tone": "good"
+        },
+        {
+          "title": "+ 1/24",
+          "desc": "1시간 뒤",
+          "icon": "idea"
+        },
+        {
+          "title": "날짜+날짜",
+          "desc": "오류",
+          "icon": "warning",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "오라클에서 숫자 1은 하루예요."
+        },
+        {
+          "say": "날짜에 숫자를 더하면 날짜예요. 1이면 내일이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "숫자를 빼도 날짜예요. 7이면 일주일 전이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "날짜에서 날짜를 빼면 일수, 숫자가 나와요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "24분의 1을 더하면 1시간 뒤예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "날짜끼리 더하는 건 오류예요.",
+          "focus": [
+            4
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "quiz",
+      "section": "날짜 함수",
+      "question": "Oracle에서 **오류가 나는** 날짜 연산은?",
+      "choices": [
+        "SYSDATE + 1",
+        "SYSDATE + 날짜",
+        "SYSDATE - 7",
+        "날짜 - 날짜"
+      ],
+      "answer": 2,
+      "explanation": "날짜끼리 더하는 건 허용되지 않아요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 오류가 나는 날짜 연산은?"
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "callout",
+      "section": "날짜 함수",
+      "tone": "info",
+      "title": "SQL Server 날짜",
+      "text": "SQL Server는 **GETDATE**로 현재 시각. **DATEADD, DATEDIFF, DATEPART**도 써요.",
+      "steps": [
+        {
+          "say": "SQL 서버는 현재 시각을 GETDATE로 구해요."
+        },
+        {
+          "say": "DATEADD, DATEDIFF, DATEPART를 써요."
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "compare",
+      "section": "변환 함수",
+      "title": "명시적과 암시적",
+      "left": {
+        "title": "명시적 변환",
+        "items": [
+          "함수로 직접 변환",
+          "권장"
+        ],
+        "icon": "check",
+        "tone": "good"
+      },
+      "right": {
+        "title": "암시적 변환",
+        "items": [
+          "DBMS가 자동 변환",
+          "인덱스 못 탈 수도"
+        ],
+        "icon": "warning",
+        "tone": "bad"
+      },
+      "steps": [
+        {
+          "say": "타입 변환은 두 가지예요."
+        },
+        {
+          "say": "명시적 변환은 함수로 직접 바꿔요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "암시적 변환은 DBMS가 알아서 바꿔요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "숫자 컬럼을 문자 10과 비교하면 자동 변환돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "오류나 성능 저하가 생길 수 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래서 명시적 변환을 권장해요.",
+          "focus": [
+            0
+          ]
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "cards",
+      "section": "변환 함수",
+      "title": "Oracle 변환 함수",
+      "cols": 2,
+      "items": [
+        {
+          "title": "문자로",
+          "desc": "TO_CHAR",
+          "icon": "tag"
+        },
+        {
+          "title": "숫자로",
+          "desc": "TO_NUMBER",
+          "icon": "ruler"
+        },
+        {
+          "title": "날짜로",
+          "desc": "TO_DATE",
+          "icon": "map"
+        },
+        {
+          "title": "표준 변환",
+          "desc": "CAST",
+          "icon": "recycle"
+        }
+      ],
+      "steps": [
+        {
+          "say": "오라클 변환 함수예요."
+        },
+        {
+          "say": "TO CHAR는 날짜나 숫자를 문자로 바꿔요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "TO NUMBER는 문자를 숫자로 바꿔요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "TO DATE는 문자를 날짜로 바꿔요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "CAST는 ANSI 표준이라 둘 다 써요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "SQL 서버는 CAST와 CONVERT를 써요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "id": "s23",
+      "section": "CASE와 DECODE",
+      "type": "data",
+      "title": "검색 CASE",
+      "tables": [
+        "EMP"
+      ],
+      "code": "CASE WHEN SAL >= 300 THEN 'HIGH'\n     WHEN SAL >= 100 THEN 'MID'\n     ELSE 'LOW'\nEND",
+      "steps": [
+        {
+          "say": "CASE는 조건에 따라 다른 값을 돌려줘요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "SAL"
+              ]
+            }
+          }
+        },
+        {
+          "say": "급여가 300 이상이면 HIGH예요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "EMP": {
+              "add": [
+                "CASE",
+                [
+                  "HIGH",
+                  "HIGH",
+                  "?",
+                  "?"
+                ]
+              ],
+              "rows": [
+                0,
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "아니면 다음 조건, 100 이상이면 MID예요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "add": [
+                "CASE",
+                [
+                  "HIGH",
+                  "HIGH",
+                  "MID",
+                  "?"
+                ]
+              ],
+              "rows": [
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "둘 다 아니면 ELSE, LOW예요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "add": [
+                "CASE",
+                [
+                  "HIGH",
+                  "HIGH",
+                  "MID",
+                  "LOW"
+                ]
+              ],
+              "rows": [
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "위에서부터 보고, 처음 맞으면 바로 끝나요.",
+          "focus": [
+            1,
+            2
+          ]
+        },
+        {
+          "say": "그래서 400은 첫 줄에서 HIGH예요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "EMP": {
+              "cells": [
+                [
+                  0,
+                  "SAL"
+                ],
+                [
+                  0,
+                  "CASE"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "CASE",
+                  "첫 줄에서 끝"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "ELSE를 빼고 아무것도 안 맞으면 NULL이에요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "set": [
+                [
+                  3,
+                  "CASE",
+                  "NULL"
+                ]
+              ],
+              "notes": [
+                [
+                  3,
+                  "CASE",
+                  "ELSE 없으면"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "section": "CASE와 DECODE",
+      "title": "CASE와 DECODE",
+      "left": {
+        "title": "CASE",
+        "items": [
+          "ANSI 표준",
+          "모든 조건 가능",
+          "WHEN NULL은 거짓"
+        ],
+        "icon": "check"
+      },
+      "right": {
+        "title": "DECODE",
+        "items": [
+          "Oracle 전용",
+          "같다 비교만",
+          "NULL끼리 같음"
+        ],
+        "icon": "database"
+      },
+      "steps": [
+        {
+          "say": "DECODE는 CASE와 비슷한 오라클 함수예요."
+        },
+        {
+          "say": "CASE는 표준이라 어디서나 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "검색 CASE는 범위나 IS NULL도 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "단순 CASE의 WHEN NULL은 절대 참이 안 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "DECODE는 오라클 전용, 같다 비교만 돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "대신 NULL과 NULL을 같다고 봐요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "둘 다 기본값이 없으면 NULL이에요.",
+          "focus": [
+            0,
+            1
+          ]
+        }
+      ],
+      "id": "s24"
+    },
+    {
+      "type": "quiz",
+      "section": "CASE와 DECODE",
+      "question": "`CASE WHEN SAL >= 300 THEN 'HIGH' WHEN SAL >= 100 THEN 'MID' END`에서 SAL이 **50**이면?",
+      "choices": [
+        "'HIGH'",
+        "'MID'",
+        "'LOW'",
+        "NULL"
+      ],
+      "answer": 4,
+      "explanation": "맞는 조건이 없고 ELSE도 없어요. 그래서 NULL이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. ELSE가 없을 때 급여 50은 뭐가 될까요?"
+        }
+      ],
+      "id": "s25"
+    },
+    {
+      "type": "cards",
+      "section": "NULL 관련 함수",
+      "title": "NULL 관련 함수",
+      "cols": 3,
+      "items": [
+        {
+          "title": "NVL",
+          "desc": "NULL이면 b",
+          "icon": "help"
+        },
+        {
+          "title": "NVL2",
+          "desc": "a 있으면 b 없으면 c",
+          "icon": "branch"
+        },
+        {
+          "title": "NULLIF",
+          "desc": "같으면 NULL",
+          "icon": "scale"
+        },
+        {
+          "title": "COALESCE",
+          "desc": "첫 NOT NULL",
+          "icon": "filter"
+        },
+        {
+          "title": "ISNULL",
+          "desc": "SQL 서버의 NVL",
+          "icon": "database"
+        }
+      ],
+      "steps": [
+        {
+          "say": "NULL을 다루는 함수 다섯 개예요."
+        },
+        {
+          "say": "NVL은 a가 NULL이면 b를 줘요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "NVL2는 a가 NULL이 아니면 b예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "a가 NULL이면 c예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "NULLIF는 두 값이 같으면 NULL, 다르면 a예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "COALESCE는 NULL 아닌 첫 값을 줘요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "모두 NULL이면 NULL이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "ISNULL은 SQL 서버판 NVL이에요.",
+          "focus": [
+            4
+          ]
+        }
+      ],
+      "id": "s26"
+    },
+    {
+      "id": "s27",
+      "section": "NULL 관련 함수",
+      "type": "data",
+      "title": "NVL2 순서 주의",
+      "tables": [
+        "사원 3명"
+      ],
+      "code": "NVL2(COMM, 'Y', 'N')\nNULLIF(COMM, 0)",
+      "steps": [
+        {
+          "say": "NVL2 순서를 자주 헷갈려요. 직접 넣어 볼게요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "사원 3명": {
+              "cols": [
+                "COMM"
+              ]
+            }
+          }
+        },
+        {
+          "say": "NULL이 아닐 때 값이 두 번째 인자예요. B와 C는 Y예요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "사원 3명": {
+              "add": [
+                "NVL2",
+                [
+                  "N",
+                  "Y",
+                  "Y"
+                ]
+              ],
+              "rows": [
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "C의 0도 NULL이 아니라서 Y예요.",
+          "t": {
+            "사원 3명": {
+              "cells": [
+                [
+                  2,
+                  "COMM"
+                ],
+                [
+                  2,
+                  "NVL2"
+                ]
+              ],
+              "notes": [
+                [
+                  2,
+                  "COMM",
+                  "NULL 아님"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "COMM이 NULL인 A만 세 번째 인자, N이에요.",
+          "t": {
+            "사원 3명": {
+              "cells": [
+                [
+                  0,
+                  "COMM"
+                ],
+                [
+                  0,
+                  "NVL2"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "NULLIF는 같을 때 NULL이에요. C는 0과 같아서 NULL이에요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "사원 3명": {
+              "add": [
+                "NULLIF",
+                [
+                  "NULL",
+                  "300",
+                  "NULL"
+                ]
+              ],
+              "cells": [
+                [
+                  2,
+                  "NULLIF"
+                ]
+              ],
+              "notes": [
+                [
+                  2,
+                  "NULLIF",
+                  "같아서 NULL"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "다를 때가 아니에요. B는 그대로 300이에요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "사원 3명": {
+              "cells": [
+                [
+                  1,
+                  "NULLIF"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "NULL 관련 함수",
+      "question": "`NVL2(COMM, 'Y', 'N')`에서 COMM이 **300**이면?",
+      "choices": [
+        "'Y'",
+        "'N'",
+        "300",
+        "NULL"
+      ],
+      "answer": 1,
+      "explanation": "COMM이 NULL이 아니니 두 번째 인자 Y예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 커미션이 300일 때 NVL2 결과는?"
+        }
+      ],
+      "id": "s28"
+    },
+    {
+      "type": "compare",
+      "section": "DBMS 비교",
+      "title": "오라클과 SQL 서버",
+      "left": {
+        "title": "Oracle",
+        "items": [
+          "LENGTH, SUBSTR",
+          "SYSDATE NVL",
+          "DECODE 있음"
+        ],
+        "icon": "database"
+      },
+      "right": {
+        "title": "SQL Server",
+        "items": [
+          "LEN, SUBSTRING",
+          "GETDATE ISNULL",
+          "DECODE 없음"
+        ],
+        "icon": "database"
+      },
+      "steps": [
+        {
+          "say": "마지막으로 이름 차이를 모아 볼게요."
+        },
+        {
+          "say": "오라클 LENGTH는 SQL 서버에서 LEN이에요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "SUBSTR은 SUBSTRING이에요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "SYSDATE는 GETDATE예요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "NVL은 ISNULL이에요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "DECODE는 SQL 서버에 없어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s29"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "SUBSTR 음수는 뒤에서부터",
+        "CEIL은 오른쪽, FLOOR는 왼쪽 정수",
+        "날짜-날짜=일수, 날짜+날짜=오류",
+        "CASE에 ELSE 없으면 NULL",
+        "NVL2(a, 아님, NULL임)",
+        "SQL 서버: LEN, ISNULL"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "SUBSTR 음수는 뒤에서 세요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "CEIL은 오른쪽, FLOOR는 왼쪽 정수예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "날짜끼리 빼면 일수, 더하면 오류예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "CASE에 ELSE가 없으면 NULL이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "NVL2는 NULL이 아닐 때 값이 먼저예요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "SQL 서버는 LEN, CEILING, ISNULL이에요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s30"
+    }
+  ]
+}

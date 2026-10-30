@@ -1,0 +1,21 @@
+[
+  { "text": "DBMS는 레코드 하나만 읽을 때에도 그 레코드가 속한 블록 전체를 읽는다.", "answer": true, "explain": "I/O 단위가 블록이므로 SQL 성능은 읽은 레코드 수보다 읽은 블록 수로 결정된다." },
+  { "text": "인덱스는 테이블과 달리 블록 단위가 아니라 레코드 단위로 읽고 쓴다.", "answer": false, "explain": "인덱스도 테이블과 마찬가지로 블록 단위로 읽고 쓴다." },
+  { "text": "인덱스 ROWID로 테이블 블록을 하나씩 찾아가는 액세스는 랜덤 액세스에 해당한다.", "answer": true, "explain": "레코드 하나를 읽기 위해 블록 하나씩 접근하므로 랜덤 액세스다." },
+  { "text": "논리적 I/O는 SQL 처리 중 디스크에서 읽은 블록 수를 의미한다.", "answer": false, "explain": "논리적 I/O는 버퍼 캐시에서 읽은 블록 수다. 디스크에서 읽은 블록 수는 물리적 I/O다." },
+  { "text": "같은 SQL을 같은 조건으로 반복 수행하면 논리적 I/O는 거의 같지만 물리적 I/O는 캐시 상태에 따라 달라진다.", "answer": true, "explain": "물리적 I/O는 블록이 버퍼 캐시에 있느냐에 따라 매번 달라진다." },
+  { "text": "SQL 트레이스에서 논리적 I/O는 query와 current 항목의 합으로 구한다.", "answer": true, "explain": "query는 Consistent 모드, current는 Current 모드 읽기이며 disk는 물리적 I/O다." },
+  { "text": "DML로 블록을 변경할 때 그 시점의 현재 블록을 읽는 방식은 Consistent 모드 읽기다.", "answer": false, "explain": "현재 블록을 읽는 것은 Current 모드(db block gets)다. Consistent 모드는 쿼리 시작 시점 기준으로 읽는다." },
+  { "text": "query가 9,000, current가 1,000, disk가 2,000이면 버퍼캐시 히트율은 80%다.", "answer": true, "explain": "논리적 I/O 10,000 중 물리적 I/O가 2,000이므로 (1 - 2,000/10,000) × 100 = 80%다." },
+  { "text": "같은 블록을 비효율적으로 반복해서 읽으면 버퍼캐시 히트율은 낮아진다.", "answer": false, "explain": "반복해서 읽는 블록은 캐시에 있으므로 히트율은 오히려 높아진다. BCHR보다 논리적 I/O 절대량을 봐야 한다." },
+  { "text": "개별 SQL 튜닝으로 직접 통제할 수 있는 것은 논리적 I/O이며 이를 줄이면 물리적 I/O도 함께 줄어든다.", "answer": true, "explain": "물리적 I/O = 논리적 I/O × (100% - BCHR)이고 BCHR은 시스템 상황에 따라 정해진다." },
+  { "text": "db file sequential read 대기 이벤트는 Multiblock I/O에서 발생한다.", "answer": false, "explain": "db file sequential read는 Single Block I/O, db file scattered read가 Multiblock I/O 대기 이벤트다." },
+  { "text": "Index Range Scan은 리프 블록을 순서대로 읽더라도 Single Block I/O 방식으로 읽는다.", "answer": true, "explain": "인덱스 루트·브랜치·리프 블록과 ROWID 테이블 액세스는 기본적으로 Single Block I/O다." },
+  { "text": "Index Fast Full Scan은 Multiblock I/O 방식으로 블록을 읽는다.", "answer": true, "explain": "Table Full Scan과 Index Fast Full Scan이 대표적인 Multiblock I/O 오퍼레이션이다." },
+  { "text": "Multiblock I/O는 한 번의 I/O Call로 익스텐트 경계를 넘어 다음 익스텐트의 블록까지 읽을 수 있다.", "answer": false, "explain": "Multiblock I/O는 익스텐트 경계를 넘지 못한다." },
+  { "text": "Multiblock I/O에서 한 번의 I/O Call로 읽는 블록 수는 db_file_multiblock_read_count 파라미터로 정한다.", "answer": true, "explain": "단, 이미 캐시에 있는 블록은 건너뛰므로 실제 읽는 수는 이보다 작을 수 있다." },
+  { "text": "Table Full Scan의 성능은 읽을 데이터의 양보다 테이블 전체 크기에 좌우된다.", "answer": true, "explain": "Full Scan은 테이블 전체를 읽으므로 크기에 비례하고, Index Range Scan은 읽을 건수(선택도)에 좌우된다." },
+  { "text": "읽을 데이터가 많을수록 Index Range Scan을 통한 테이블 액세스가 Table Full Scan보다 유리해진다.", "answer": false, "explain": "인덱스 손익분기점을 넘는 대량 데이터는 랜덤 액세스 부하 때문에 Table Full Scan이 유리하다." },
+  { "text": "버퍼 캐시의 해시 체인을 스캔하기 전에는 캐시버퍼 체인 래치를 획득해야 한다.", "answer": true, "explain": "여러 프로세스가 동시에 체인을 변경하지 못하도록 직렬화하는 장치다. 하나의 래치가 여러 체인을 보호한다." },
+  { "text": "Oracle은 Full Scan으로 읽은 블록을 LRU 리스트에서 가장 오래 남는 쪽에 두어 캐시에 오래 유지한다.", "answer": false, "explain": "Full Scan 블록은 LRU 리스트의 끝(밀려나기 쉬운 쪽)에 두어 자주 쓰이는 블록을 밀어내지 않게 한다." }
+]

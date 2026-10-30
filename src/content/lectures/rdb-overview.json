@@ -1,0 +1,1458 @@
+{
+  "slug": "rdb-overview",
+  "title": "관계형 데이터베이스 개요",
+  "tables": {
+    "EMP": {
+      "columns": [
+        "ENAME",
+        "DEPTNO",
+        "SAL"
+      ],
+      "rows": [
+        [
+          "김",
+          "10",
+          "300"
+        ],
+        [
+          "이",
+          "20",
+          "250"
+        ],
+        [
+          "박",
+          "10",
+          "400"
+        ],
+        [
+          "최",
+          "30",
+          "200"
+        ]
+      ]
+    },
+    "DEPT": {
+      "columns": [
+        "DEPTNO",
+        "DNAME"
+      ],
+      "rows": [
+        [
+          "10",
+          "영업"
+        ],
+        [
+          "20",
+          "개발"
+        ],
+        [
+          "30",
+          "인사"
+        ]
+      ]
+    },
+    "넣을 사원": {
+      "columns": [
+        "ENAME",
+        "DEPTNO"
+      ],
+      "rows": [
+        [
+          "정",
+          "20"
+        ],
+        [
+          "강",
+          "NULL"
+        ],
+        [
+          "윤",
+          "50"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "관계형 DB 개요",
+      "subtitle": "표로 저장하고 키로 잇기",
+      "icon": "database",
+      "steps": [
+        {
+          "say": "관계형 데이터베이스 개요를 시작할게요."
+        },
+        {
+          "say": "2과목의 출발점이에요. 명령어 분류는 매번 나와요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "cards",
+      "section": "DB와 DBMS",
+      "title": "DB와 DBMS",
+      "cols": 2,
+      "items": [
+        {
+          "title": "데이터베이스",
+          "desc": "함께 쓰는 데이터 집합",
+          "icon": "database"
+        },
+        {
+          "title": "DBMS",
+          "desc": "DB를 다루는 프로그램",
+          "icon": "box"
+        }
+      ],
+      "steps": [
+        {
+          "say": "먼저 두 단어를 구분해 볼게요."
+        },
+        {
+          "say": "데이터베이스는 여럿이 함께 쓰는 데이터 모음이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "중복은 줄이고, 일관성을 지키도록 정리돼 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "DBMS는 그 데이터베이스를 다루는 소프트웨어예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "오라클, SQL 서버, MySQL 같은 것들이에요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "cards",
+      "section": "DB와 DBMS",
+      "title": "DBMS의 5가지 기능",
+      "cols": 3,
+      "items": [
+        {
+          "title": "정의",
+          "desc": "구조를 정해요",
+          "icon": "ruler"
+        },
+        {
+          "title": "조작",
+          "desc": "조회와 변경",
+          "icon": "search"
+        },
+        {
+          "title": "제어",
+          "desc": "권한·동시성·회복",
+          "icon": "workflow"
+        },
+        {
+          "title": "무결성",
+          "desc": "잘못된 입력 차단",
+          "icon": "shield"
+        },
+        {
+          "title": "보안",
+          "desc": "접근 권한 통제",
+          "icon": "lock"
+        }
+      ],
+      "steps": [
+        {
+          "say": "DBMS가 하는 일은 다섯 가지예요."
+        },
+        {
+          "say": "첫째, 정의. 테이블과 컬럼 구조를 정해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 조작. 조회하고 넣고 고치고 지워요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 제어. 권한, 동시성, 회복을 맡아요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 무결성. 제약조건으로 잘못된 값을 막아요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "다섯째, 보안. 사용자별 접근을 통제해요.",
+          "focus": [
+            4
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "flow",
+      "section": "DB와 DBMS",
+      "title": "DB의 발전 과정",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "파일 시스템",
+          "desc": "프로그램마다 따로",
+          "icon": "file"
+        },
+        {
+          "title": "계층형 DB",
+          "desc": "트리 구조",
+          "icon": "branch"
+        },
+        {
+          "title": "망형 DB",
+          "desc": "그래프 구조",
+          "icon": "network"
+        },
+        {
+          "title": "관계형 DB",
+          "desc": "2차원 표와 키",
+          "icon": "table"
+        },
+        {
+          "title": "객체관계형 DB",
+          "desc": "객체 개념 추가",
+          "icon": "shapes"
+        }
+      ],
+      "steps": [
+        {
+          "say": "데이터베이스는 이렇게 발전해 왔어요."
+        },
+        {
+          "say": "처음엔 프로그램마다 파일로 따로 저장했어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "다음은 트리 모양의 계층형이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그다음은 그래프 모양의 망형이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "그리고 표와 키로 잇는 관계형이 나왔어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "1970년 코드 박사가 관계형 모델을 제안했어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "지금은 객체 개념을 더한 객체관계형까지 왔어요.",
+          "focus": [
+            4
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "quiz",
+      "section": "DB와 DBMS",
+      "question": "DBMS 기능 중 **동시성 제어와 회복**을 맡는 기능은?",
+      "choices": [
+        "정의 기능",
+        "제어 기능",
+        "조작 기능",
+        "무결성 기능"
+      ],
+      "answer": 2,
+      "explanation": "제어 기능이 권한과 동시성, 회복을 맡아요. 정의는 구조, 조작은 데이터 처리예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 동시성 제어와 회복을 맡는 DBMS 기능은?"
+        }
+      ],
+      "id": "s04q"
+    },
+    {
+      "type": "cards",
+      "section": "관계형 DB의 특징",
+      "title": "관계형 DB의 특징",
+      "cols": 2,
+      "items": [
+        {
+          "title": "중복 감소",
+          "desc": "정규화로 줄여요",
+          "icon": "copy"
+        },
+        {
+          "title": "집합·관계 연산",
+          "desc": "합집합, 조인 등",
+          "icon": "puzzle"
+        },
+        {
+          "title": "동시성 관리",
+          "desc": "여럿이 안전하게",
+          "icon": "users"
+        },
+        {
+          "title": "무결성 보장",
+          "desc": "PK, FK, CHECK",
+          "icon": "shield"
+        }
+      ],
+      "steps": [
+        {
+          "say": "관계형 DB는 데이터를 2차원 표로 저장해요."
+        },
+        {
+          "say": "표와 표 사이는 키 값으로 이어요."
+        },
+        {
+          "say": "첫째, 정규화로 중복과 이상현상을 줄여요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 집합 연산과 관계 연산으로 데이터를 다뤄요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 여러 사용자가 동시에 안전하게 써요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 제약조건으로 데이터 품질을 지켜요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "cards",
+      "section": "관계형 DB의 특징",
+      "title": "집합 연산",
+      "cols": 2,
+      "items": [
+        {
+          "title": "합집합",
+          "desc": "UNION"
+        },
+        {
+          "title": "차집합",
+          "desc": "MINUS, EXCEPT"
+        },
+        {
+          "title": "교집합",
+          "desc": "INTERSECT"
+        },
+        {
+          "title": "곱집합",
+          "desc": "CROSS JOIN"
+        }
+      ],
+      "steps": [
+        {
+          "say": "집합 연산은 네 가지예요. SQL 짝과 같이 볼게요."
+        },
+        {
+          "say": "합집합은 UNION이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "차집합은 MINUS 또는 EXCEPT예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "교집합은 INTERSECT예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "곱집합은 모든 조합, CROSS JOIN이에요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "cards",
+      "section": "관계형 DB의 특징",
+      "title": "관계 연산",
+      "cols": 2,
+      "items": [
+        {
+          "title": "선택",
+          "desc": "행 고르기, WHERE",
+          "icon": "filter"
+        },
+        {
+          "title": "투영",
+          "desc": "열 고르기, SELECT",
+          "icon": "eye"
+        },
+        {
+          "title": "조인",
+          "desc": "공통 속성 결합",
+          "icon": "link"
+        },
+        {
+          "title": "나누기",
+          "desc": "직접 대응 없음",
+          "icon": "puzzle"
+        }
+      ],
+      "steps": [
+        {
+          "say": "관계 연산도 네 가지예요."
+        },
+        {
+          "say": "선택은 조건에 맞는 행을 골라요. WHERE 절이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "투영은 필요한 열만 골라요. SELECT 절이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "조인은 공통 속성으로 표를 합쳐요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "나누기는 SQL에 바로 대응하는 게 없어요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "id": "s08",
+      "section": "관계형 DB의 특징",
+      "type": "data",
+      "title": "선택과 투영",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT ENAME\nFROM EMP\nWHERE DEPTNO = 10;",
+      "steps": [
+        {
+          "say": "두 개를 같은 사원 표로 볼게요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2,
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "선택은 가로 줄, 행을 골라요. WHERE 절이에요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "filter": [
+                0,
+                2
+              ],
+              "cells": [
+                [
+                  0,
+                  "DEPTNO"
+                ],
+                [
+                  2,
+                  "DEPTNO"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "10번 부서인 두 행만 남아요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "투영은 세로 줄, 열을 골라요. SELECT 절이에요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "EMP": {
+              "cols": [
+                "ENAME"
+              ],
+              "result": {
+                "title": "결과",
+                "columns": [
+                  "ENAME"
+                ],
+                "rows": [
+                  [
+                    "김"
+                  ],
+                  [
+                    "박"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "관계형 DB의 특징",
+      "tone": "warning",
+      "title": "이름 함정",
+      "text": "관계 연산의 **선택은 WHERE 절**. SQL의 SELECT 절은 **투영**이에요.",
+      "steps": [
+        {
+          "say": "여기서 함정이 나와요."
+        },
+        {
+          "say": "선택이라는 이름 때문에 SELECT로 착각하기 쉬워요."
+        },
+        {
+          "say": "선택은 WHERE, 투영은 SELECT. 꼭 기억하세요."
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "quiz",
+      "section": "관계형 DB의 특징",
+      "question": "관계 연산 **투영(Projection)**에 해당하는 SQL은?",
+      "choices": [
+        "WHERE 절",
+        "SELECT 절",
+        "JOIN",
+        "UNION"
+      ],
+      "answer": 2,
+      "explanation": "투영은 열을 고르는 연산이에요. SELECT 절이 맡아요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 투영에 해당하는 SQL 구성 요소는?"
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "type": "cards",
+      "section": "테이블 용어",
+      "title": "테이블 용어",
+      "cols": 3,
+      "items": [
+        {
+          "title": "테이블",
+          "desc": "= 릴레이션",
+          "icon": "table"
+        },
+        {
+          "title": "행",
+          "desc": "= 튜플, 레코드",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "열",
+          "desc": "= 속성, 필드",
+          "icon": "tag"
+        }
+      ],
+      "steps": [
+        {
+          "say": "테이블은 행과 열로 된 기본 단위예요."
+        },
+        {
+          "say": "테이블은 릴레이션이라고도 불러요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "행은 가로 한 줄이에요. 튜플, 레코드라고도 해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "열은 세로 한 줄이에요. 속성, 필드라고도 해요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "type": "compare",
+      "section": "테이블 용어",
+      "title": "기본키와 외래키",
+      "left": {
+        "title": "기본키 PK",
+        "items": [
+          "NULL, 중복 불가",
+          "테이블당 1개",
+          "개체 무결성"
+        ],
+        "icon": "tag"
+      },
+      "right": {
+        "title": "외래키 FK",
+        "items": [
+          "NULL, 중복 가능",
+          "여러 개 가능",
+          "참조 무결성"
+        ],
+        "icon": "link"
+      },
+      "steps": [
+        {
+          "say": "이번엔 두 가지 키예요."
+        },
+        {
+          "say": "기본키는 행 하나를 유일하게 가리켜요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그래서 NULL도, 중복도 안 돼요. 테이블당 하나예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "외래키는 다른 테이블의 기본키를 가리켜요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "NULL과 중복이 가능하고, 여러 개 둘 수 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "정리하면, PK는 개체 무결성, FK는 참조 무결성이에요.",
+          "focus": [
+            0,
+            1
+          ]
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "id": "s13",
+      "section": "테이블 용어",
+      "type": "data",
+      "title": "EMP와 DEPT",
+      "tables": [
+        "EMP",
+        "DEPT"
+      ],
+      "steps": [
+        {
+          "say": "사원 테이블 EMP를 볼게요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2,
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "EMP의 부서번호는 DEPT 테이블을 가리켜요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "DEPTNO"
+              ],
+              "tint": [
+                [
+                  0,
+                  2
+                ],
+                [
+                  1
+                ],
+                [
+                  3
+                ]
+              ]
+            },
+            "DEPT": {
+              "cols": [
+                "DEPTNO"
+              ],
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ],
+                [
+                  2
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "DEPT에는 10, 20, 30번 부서만 있어요.",
+          "t": {
+            "DEPT": {
+              "rows": [
+                0,
+                1,
+                2
+              ],
+              "cols": [
+                "DEPTNO"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s14",
+      "section": "테이블 용어",
+      "type": "data",
+      "title": "FK에 들어갈 값",
+      "tables": [
+        "DEPT",
+        "넣을 사원"
+      ],
+      "steps": [
+        {
+          "say": "외래키에는 아무 값이나 못 넣어요.",
+          "t": {
+            "넣을 사원": {
+              "cols": [
+                "DEPTNO"
+              ]
+            }
+          }
+        },
+        {
+          "say": "DEPT에 10, 20, 30번 부서가 있다고 해요.",
+          "t": {
+            "DEPT": {
+              "rows": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "참조하는 테이블에 있는 값, 또는 NULL만 돼요.",
+          "t": {
+            "DEPT": {
+              "tint": [
+                [
+                  1
+                ]
+              ]
+            },
+            "넣을 사원": {
+              "tint": [
+                [
+                  0
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "DEPTNO",
+                  "OK"
+                ],
+                [
+                  1,
+                  "DEPTNO",
+                  "OK"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "DEPT에 없는 50번으로 넣으면 오류가 나요.",
+          "t": {
+            "넣을 사원": {
+              "filter": [
+                0,
+                1
+              ],
+              "cells": [
+                [
+                  2,
+                  "DEPTNO"
+                ]
+              ],
+              "notes": [
+                [
+                  2,
+                  "DEPTNO",
+                  "오류!"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "이게 참조 무결성이에요.",
+          "t": {
+            "넣을 사원": {
+              "rows": [
+                0,
+                1
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "테이블 용어",
+      "question": "DEPT에 10, 20, 30만 있을 때 EMP.DEPTNO에 **넣을 수 없는** 값은?",
+      "choices": [
+        "10",
+        "30",
+        "NULL",
+        "50"
+      ],
+      "answer": 4,
+      "explanation": "50은 DEPT에 없어서 오류예요. NULL은 들어갈 수 있어요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 외래키에 넣을 수 없는 값은?"
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "compare",
+      "section": "SQL 명령어",
+      "title": "SQL은 선언적 언어",
+      "left": {
+        "title": "절차적 언어",
+        "items": [
+          "어떻게, How",
+          "순서대로 기술"
+        ],
+        "icon": "workflow"
+      },
+      "right": {
+        "title": "SQL",
+        "items": [
+          "무엇을, What",
+          "방법은 옵티마이저"
+        ],
+        "icon": "target",
+        "tone": "good"
+      },
+      "steps": [
+        {
+          "say": "SQL은 관계형 DB의 표준 언어예요."
+        },
+        {
+          "say": "표준은 ANSI와 ISO가 정해요."
+        },
+        {
+          "say": "절차적 언어는 처리 순서를 하나하나 적어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL은 무엇을 원하는지만 적어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "어떻게 가져올지는 옵티마이저가 정해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그리고 한 건씩이 아니라 집합 단위로 처리해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "cards",
+      "section": "SQL 명령어",
+      "title": "SQL 명령어 4분류",
+      "cols": 2,
+      "items": [
+        {
+          "title": "DML",
+          "desc": "데이터 조회, 변경",
+          "icon": "database"
+        },
+        {
+          "title": "DDL",
+          "desc": "구조 정의, 변경",
+          "icon": "ruler"
+        },
+        {
+          "title": "DCL",
+          "desc": "권한 부여, 회수",
+          "icon": "lock"
+        },
+        {
+          "title": "TCL",
+          "desc": "트랜잭션 확정, 취소",
+          "icon": "recycle"
+        }
+      ],
+      "steps": [
+        {
+          "say": "SQL 명령어는 네 가지로 나눠요."
+        },
+        {
+          "say": "DML. 데이터를 조회하고 바꿔요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "DDL. 테이블 같은 구조를 정의해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "DCL. 권한을 주고 회수해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "TCL. 트랜잭션을 확정하거나 취소해요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "compare",
+      "section": "SQL 명령어",
+      "title": "DML과 DDL",
+      "left": {
+        "title": "DML",
+        "items": [
+          "SELECT INSERT",
+          "UPDATE DELETE",
+          "MERGE"
+        ],
+        "icon": "database"
+      },
+      "right": {
+        "title": "DDL",
+        "items": [
+          "CREATE ALTER",
+          "DROP RENAME",
+          "TRUNCATE"
+        ],
+        "icon": "ruler"
+      },
+      "steps": [
+        {
+          "say": "DML 명령어부터 볼게요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SELECT, INSERT, UPDATE, DELETE.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그리고 MERGE도 DML이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SELECT를 DQL로 따로 부르기도 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "하지만 시험에선 보통 DML에 넣어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "DDL은 CREATE, ALTER, DROP이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "RENAME과 TRUNCATE도 DDL이에요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "compare",
+      "section": "SQL 명령어",
+      "title": "DCL과 TCL",
+      "left": {
+        "title": "DCL",
+        "items": [
+          "GRANT",
+          "REVOKE"
+        ],
+        "icon": "lock"
+      },
+      "right": {
+        "title": "TCL",
+        "items": [
+          "COMMIT",
+          "ROLLBACK",
+          "SAVEPOINT"
+        ],
+        "icon": "recycle"
+      },
+      "steps": [
+        {
+          "say": "DCL은 GRANT와 REVOKE예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "권한을 주고, 빼앗아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "TCL은 COMMIT과 ROLLBACK이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "SAVEPOINT도 TCL이에요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "callout",
+      "section": "SQL 명령어",
+      "tone": "warning",
+      "title": "TRUNCATE는 DDL",
+      "text": "TRUNCATE는 데이터를 지우지만 **DDL**. 롤백이 안 되고 **자동 커밋**돼요.",
+      "steps": [
+        {
+          "say": "가장 자주 나오는 함정이에요."
+        },
+        {
+          "say": "TRUNCATE는 데이터를 지우지만 DDL이에요."
+        },
+        {
+          "say": "오라클에선 롤백이 안 되고, 자동 커밋돼요."
+        },
+        {
+          "say": "DELETE와 같은 DML로 착각하지 마세요."
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "quiz",
+      "section": "SQL 명령어",
+      "question": "SQL 명령어 분류가 **바르게** 짝지어진 것은?",
+      "choices": [
+        "TRUNCATE, DML",
+        "MERGE, DDL",
+        "RENAME, DDL",
+        "SAVEPOINT, DCL"
+      ],
+      "answer": 3,
+      "explanation": "RENAME은 DDL이에요. MERGE는 DML, SAVEPOINT는 TCL이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 분류가 바르게 짝지어진 것은?"
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "cards",
+      "section": "ERD와 관계",
+      "title": "모델이 테이블로",
+      "cols": 2,
+      "items": [
+        {
+          "title": "엔터티",
+          "desc": "테이블이 됨",
+          "icon": "box"
+        },
+        {
+          "title": "속성",
+          "desc": "컬럼이 됨",
+          "icon": "tag"
+        },
+        {
+          "title": "식별자",
+          "desc": "기본키가 됨",
+          "icon": "target"
+        },
+        {
+          "title": "관계",
+          "desc": "외래키가 됨",
+          "icon": "link"
+        }
+      ],
+      "steps": [
+        {
+          "say": "ERD는 엔터티와 관계를 그린 그림이에요."
+        },
+        {
+          "say": "물리 모델로 가면 이렇게 바뀌어요."
+        },
+        {
+          "say": "엔터티는 테이블이 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "속성은 컬럼이 돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "식별자는 기본키가 돼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "관계는 외래키로 구현해요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "cards",
+      "section": "ERD와 관계",
+      "title": "관계의 종류",
+      "cols": 3,
+      "items": [
+        {
+          "title": "1:1",
+          "desc": "사원과 사원상세",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "1:N",
+          "desc": "N쪽에 FK",
+          "icon": "branch"
+        },
+        {
+          "title": "M:N",
+          "desc": "교차 테이블로",
+          "icon": "network"
+        }
+      ],
+      "steps": [
+        {
+          "say": "관계는 세 종류예요."
+        },
+        {
+          "say": "1대1. 한 행이 상대의 최대 한 행과 짝지어져요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "1대 N. 가장 흔해요. 부서와 사원이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "외래키는 N쪽 테이블에 둬요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "M대 N은 그대로 못 만들어요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s23"
+    },
+    {
+      "type": "flow",
+      "section": "ERD와 관계",
+      "title": "M:N 풀기",
+      "direction": "right",
+      "edges": [
+        "1 대 N",
+        "N 대 1"
+      ],
+      "nodes": [
+        {
+          "title": "학생",
+          "desc": "학번 PK",
+          "icon": "user"
+        },
+        {
+          "title": "수강",
+          "desc": "교차 테이블",
+          "icon": "table"
+        },
+        {
+          "title": "과목",
+          "desc": "과목번호 PK",
+          "icon": "book-open"
+        }
+      ],
+      "steps": [
+        {
+          "say": "학생과 과목은 M대 N 관계예요.",
+          "focus": [
+            0,
+            2
+          ]
+        },
+        {
+          "say": "가운데 수강이라는 교차 테이블을 둬요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "수강은 학번과 과목번호를 외래키로 가져요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그러면 1대 N 관계 두 개로 풀려요.",
+          "focus": [
+            0,
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s24"
+    },
+    {
+      "type": "quiz",
+      "section": "ERD와 관계",
+      "question": "학생과 과목처럼 **M:N 관계**를 구현하는 방법은?",
+      "choices": [
+        "교차 테이블로 분해",
+        "학생에 과목 FK",
+        "과목에 학번 FK",
+        "두 테이블 합치기"
+      ],
+      "answer": 1,
+      "explanation": "교차 테이블을 두어 1:N 관계 두 개로 나눠요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. M대 N 관계는 어떻게 구현할까요?"
+        }
+      ],
+      "id": "s25"
+    },
+    {
+      "type": "callout",
+      "section": "ERD와 관계",
+      "tone": "tip",
+      "title": "조인 포인트",
+      "text": "조인은 PK–FK끼리만 되는 게 아니에요. **타입이 맞고 의미가 맞으면** 어떤 컬럼이든 돼요.",
+      "steps": [
+        {
+          "say": "관계가 있으면 조인으로 함께 조회할 수 있어요."
+        },
+        {
+          "say": "그런데 조인은 PK와 FK 사이에만 되는 게 아니에요."
+        },
+        {
+          "say": "타입과 의미가 맞으면 어떤 컬럼끼리도 돼요."
+        }
+      ],
+      "id": "s26"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "선택은 WHERE, 투영은 SELECT",
+        "테이블=릴레이션, 행=튜플, 열=속성",
+        "PK는 NULL·중복 불가",
+        "FK는 참조값 또는 NULL만",
+        "TRUNCATE·RENAME은 DDL",
+        "M:N은 교차 테이블로 분해"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "선택은 WHERE, 투영은 SELECT예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "테이블은 릴레이션, 행은 튜플, 열은 속성이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "PK는 NULL과 중복이 안 돼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "FK는 참조하는 값이나 NULL만 돼요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "TRUNCATE와 RENAME은 DDL이에요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "MERGE는 DML이에요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "M대 N은 교차 테이블로 풀어요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s27"
+    }
+  ]
+}

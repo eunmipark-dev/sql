@@ -1,0 +1,1228 @@
+{
+  "slug": "io-mechanism",
+  "title": "데이터베이스 I/O 메커니즘",
+  "tables": {
+    "Row Source": {
+      "columns": [
+        "Operation",
+        "Rows",
+        "cr",
+        "pr"
+      ],
+      "rows": [
+        [
+          "TABLE ACCESS",
+          "300",
+          "303",
+          "280"
+        ],
+        [
+          " INDEX RANGE SCAN",
+          "300",
+          "3",
+          "2"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "DB I/O 메커니즘",
+      "subtitle": "블록 단위로 읽고 쓴다",
+      "icon": "disk",
+      "steps": [
+        {
+          "say": "데이터베이스 아이오 메커니즘을 시작할게요."
+        },
+        {
+          "say": "SQL이 느린 이유는 대부분 아이오예요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "flow",
+      "section": "SQL 성능과 I/O",
+      "title": "I/O를 기다리는 동안",
+      "direction": "right",
+      "edges": [
+        "디스크 I/O 요청",
+        "I/O 완료",
+        "CPU 할당"
+      ],
+      "nodes": [
+        {
+          "title": "Running",
+          "desc": "CPU 사용 중",
+          "icon": "workflow"
+        },
+        {
+          "title": "Waiting",
+          "desc": "I/O 대기 · 잠듦",
+          "icon": "warning",
+          "tone": "warn"
+        },
+        {
+          "title": "Runnable",
+          "desc": "CPU 차례 대기",
+          "icon": "users"
+        },
+        {
+          "title": "Running",
+          "desc": "다시 실행",
+          "icon": "workflow"
+        }
+      ],
+      "steps": [
+        {
+          "say": "프로세스는 CPU를 쓰며 일하다가,",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "디스크를 읽어야 하면 잠들어 기다려요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "읽기가 끝나면 CPU 차례를 기다려요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "그리고 다시 실행돼요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "아이오가 많을수록 기다림이 쌓여요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "callout",
+      "section": "SQL 성능과 I/O",
+      "tone": "tip",
+      "title": "튜닝의 핵심",
+      "text": "한 번은 짧아도 **횟수**가 쌓이면 느려져요. 튜닝 = **읽는 블록 수 줄이기**.",
+      "steps": [
+        {
+          "say": "한 번의 아이오는 짧아요."
+        },
+        {
+          "say": "하지만 횟수가 쌓이면 느려져요."
+        },
+        {
+          "say": "그래서 튜닝은 읽는 블록 수를 줄이는 거예요."
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "cards",
+      "section": "SQL 성능과 I/O",
+      "title": "블록 단위 I/O",
+      "cols": 3,
+      "items": [
+        {
+          "title": "블록",
+          "desc": "기본 8KB",
+          "icon": "box"
+        },
+        {
+          "title": "레코드 1건",
+          "desc": "블록 전체를 읽음",
+          "icon": "file"
+        },
+        {
+          "title": "인덱스도",
+          "desc": "블록 단위로 읽음",
+          "icon": "branch"
+        }
+      ],
+      "steps": [
+        {
+          "say": "DB는 블록 단위로 읽고 써요."
+        },
+        {
+          "say": "오라클 블록은 기본 8KB예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "레코드 하나만 필요해도 블록 전체를 읽어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "인덱스도 마찬가지로 블록 단위예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "그래서 몇 건이 아니라 몇 블록인지가 중요해요.",
+          "focus": [
+            0,
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "compare",
+      "section": "SQL 성능과 I/O",
+      "title": "시퀀셜과 랜덤",
+      "left": {
+        "title": "시퀀셜 액세스",
+        "icon": "train",
+        "tone": "good",
+        "items": [
+          "순서대로 차례로",
+          "Full Scan",
+          "리프 블록 스캔"
+        ]
+      },
+      "right": {
+        "title": "랜덤 액세스",
+        "icon": "shapes",
+        "tone": "bad",
+        "items": [
+          "한 블록씩 점프",
+          "인덱스 수직 탐색",
+          "ROWID 테이블 접근"
+        ]
+      },
+      "steps": [
+        {
+          "say": "읽는 방식은 두 가지예요."
+        },
+        {
+          "say": "시퀀셜은 순서대로 차례차례 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "랜덤은 레코드 하나 때문에 블록 하나를 읽어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "튜닝은 시퀀셜 선택도를 높이고,",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "랜덤 액세스를 줄이는 거예요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "quiz",
+      "section": "SQL 성능과 I/O",
+      "question": "SQL 튜닝에서 줄여야 할 **핵심 대상**은?",
+      "choices": [
+        "읽는 레코드 건수",
+        "읽는 블록 수",
+        "시퀀셜 액세스 비율",
+        "SQL 문장 길이"
+      ],
+      "answer": 2,
+      "explanation": "DB는 블록 단위로 읽어서 레코드 한 건도 블록 전체를 읽어요. 그래서 튜닝은 읽는 블록 수를 줄이는 거예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. SQL 튜닝에서 줄여야 할 핵심 대상은?"
+        }
+      ],
+      "id": "s05q"
+    },
+    {
+      "type": "compare",
+      "section": "논리적과 물리적 I/O",
+      "title": "논리적과 물리적 I/O",
+      "left": {
+        "title": "논리적 I/O",
+        "icon": "layers",
+        "items": [
+          "버퍼 캐시 읽기",
+          "메모리라 빠름",
+          "반복해도 거의 같음"
+        ]
+      },
+      "right": {
+        "title": "물리적 I/O",
+        "icon": "disk",
+        "items": [
+          "디스크 읽기",
+          "훨씬 느림",
+          "캐시 따라 달라짐"
+        ]
+      },
+      "steps": [
+        {
+          "say": "논리적 아이오는 버퍼 캐시에서 읽은 블록이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "같은 SQL을 반복하면 거의 같아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "물리적 아이오는 디스크에서 읽은 블록이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "캐시 상태에 따라 매번 달라요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "cards",
+      "section": "논리적과 물리적 I/O",
+      "title": "트레이스로 보면",
+      "cols": 3,
+      "items": [
+        {
+          "title": "query",
+          "desc": "Consistent 읽기",
+          "icon": "eye"
+        },
+        {
+          "title": "current",
+          "desc": "Current 읽기",
+          "icon": "box"
+        },
+        {
+          "title": "disk",
+          "desc": "디스크 읽기",
+          "icon": "disk",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "트레이스에선 이렇게 보여요."
+        },
+        {
+          "say": "query는 Consistent 모드 읽기예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "current는 Current 모드 읽기예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "이 둘을 더하면 논리적 아이오예요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "disk가 물리적 아이오예요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "compare",
+      "section": "논리적과 물리적 I/O",
+      "title": "두 가지 읽기 모드",
+      "left": {
+        "title": "Consistent",
+        "icon": "eye",
+        "items": [
+          "쿼리 시작 시점",
+          "SELECT 대부분"
+        ]
+      },
+      "right": {
+        "title": "Current",
+        "icon": "box",
+        "items": [
+          "지금 현재 블록",
+          "DML 변경할 때"
+        ]
+      },
+      "steps": [
+        {
+          "say": "Consistent 모드는 쿼리 시작 시점 기준이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "필요하면 Undo로 CR 블록을 만들어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Current 모드는 지금 현재 블록을 읽어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "DML로 블록을 바꿀 때 쓰여요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "오토트레이스에선 consistent gets와,",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "db block gets로 보여요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "flow",
+      "section": "논리적과 물리적 I/O",
+      "title": "왜 논리적 I/O일까",
+      "direction": "down",
+      "edges": [
+        "곱하기",
+        "결과"
+      ],
+      "nodes": [
+        {
+          "title": "논리적 I/O",
+          "desc": "SQL이 통제 가능",
+          "icon": "target"
+        },
+        {
+          "title": "미스 비율",
+          "desc": "100% − BCHR",
+          "icon": "scale"
+        },
+        {
+          "title": "물리적 I/O",
+          "desc": "함께 줄어듦",
+          "icon": "disk",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "공식 하나만 기억하세요."
+        },
+        {
+          "say": "논리적 아이오에,",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "캐시 미스 비율을 곱하면,",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "물리적 아이오예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "히트율은 시스템이 정해요. SQL이 못 바꿔요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래서 논리적 아이오를 줄이는 게 튜닝이에요.",
+          "focus": [
+            0,
+            2
+          ]
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "quiz",
+      "section": "논리적과 물리적 I/O",
+      "question": "같은 SQL을 반복 수행할 때 **거의 일정한** 값은?",
+      "choices": [
+        "물리적 I/O",
+        "논리적 I/O",
+        "디스크 대기 시간",
+        "Disk 항목"
+      ],
+      "answer": 2,
+      "explanation": "논리적 I/O는 거의 같아요. 물리적 I/O는 캐시 상태에 따라 달라요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 반복 수행해도 거의 일정한 값은?"
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "type": "code",
+      "section": "버퍼캐시 히트율",
+      "title": "BCHR 계산",
+      "code": "BCHR = (1 - 물리 I/O / 논리 I/O) x 100\n\nquery 90 + current 10\n  = 논리적 I/O 100\ndisk 20 = 물리적 I/O\n\nBCHR = (1 - 20 / 100) x 100 = 80%",
+      "steps": [
+        {
+          "say": "BCHR은 캐시에서 바로 찾은 비율이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "query 90에 current 10을 더하면,",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "논리적 아이오는 100블록이에요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "disk 20이 물리적 아이오예요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "100 중 20이 디스크로 갔어요.",
+          "focus": [
+            7
+          ]
+        },
+        {
+          "say": "그래서 히트율은 80퍼센트예요.",
+          "focus": [
+            7
+          ]
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "type": "callout",
+      "section": "버퍼캐시 히트율",
+      "tone": "warning",
+      "title": "히트율의 함정",
+      "text": "같은 블록을 반복해 읽으면 BCHR은 **오히려 높아져요**. 논리적 I/O **절대량**을 보세요.",
+      "steps": [
+        {
+          "say": "히트율이 높다고 좋은 SQL은 아니에요."
+        },
+        {
+          "say": "같은 블록을 수만 번 읽으면 히트율은 99퍼센트예요."
+        },
+        {
+          "say": "그래도 읽은 양 자체가 엄청나죠."
+        },
+        {
+          "say": "히트율보다 논리적 아이오의 양을 보세요."
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "compare",
+      "section": "Single과 Multiblock",
+      "title": "한 번에 몇 블록?",
+      "left": {
+        "title": "Single Block",
+        "icon": "box",
+        "items": [
+          "한 번에 한 블록",
+          "인덱스 · ROWID",
+          "소량 데이터"
+        ]
+      },
+      "right": {
+        "title": "Multiblock",
+        "icon": "layers",
+        "items": [
+          "한 번에 여러 블록",
+          "Full Scan",
+          "대량 데이터"
+        ]
+      },
+      "steps": [
+        {
+          "say": "한 번 요청에 몇 블록을 읽을까요?"
+        },
+        {
+          "say": "Single Block은 한 블록씩 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "인덱스와 ROWID 테이블 접근이 이 방식이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Multiblock은 여러 블록을 한꺼번에 읽어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Full Scan이 대표적이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "인덱스 Fast Full Scan도 그래요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "compare",
+      "section": "Single과 Multiblock",
+      "title": "대기 이벤트 이름",
+      "left": {
+        "title": "sequential read",
+        "icon": "box",
+        "items": [
+          "Single Block",
+          "인덱스 스캔"
+        ]
+      },
+      "right": {
+        "title": "scattered read",
+        "icon": "layers",
+        "items": [
+          "Multiblock",
+          "Full Scan"
+        ]
+      },
+      "steps": [
+        {
+          "say": "대기 이벤트 이름은 직관과 반대예요."
+        },
+        {
+          "say": "db file sequential read는,",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "싱글 블록 아이오예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "인덱스를 읽을 때 나와요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "db file scattered read는,",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "멀티 블록 아이오예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Full Scan할 때 나와요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "quiz",
+      "section": "Single과 Multiblock",
+      "question": "**db file sequential read**는 어떤 I/O 대기일까?",
+      "choices": [
+        "Multiblock I/O",
+        "Direct Path I/O",
+        "Full Scan I/O",
+        "Single Block I/O"
+      ],
+      "answer": 4,
+      "explanation": "sequential read는 Single Block I/O예요. 이름과 반대라 자주 나와요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. db file sequential read는요?"
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "flow",
+      "section": "Single과 Multiblock",
+      "title": "익스텐트 경계",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "남은 20블록",
+          "desc": "한 익스텐트 안",
+          "icon": "layers"
+        },
+        {
+          "title": "8블록",
+          "desc": "1회차",
+          "icon": "box"
+        },
+        {
+          "title": "8블록",
+          "desc": "2회차",
+          "icon": "box"
+        },
+        {
+          "title": "4블록",
+          "desc": "경계에서 멈춤",
+          "icon": "box",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "멀티 블록 개수는 파라미터로 정해요."
+        },
+        {
+          "say": "익스텐트에 블록이 20개 남았어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "한 번에 8개씩 읽는다면,",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "8개, 8개,",
+          "focus": [
+            1,
+            2
+          ]
+        },
+        {
+          "say": "마지막엔 4개만 읽어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "익스텐트 경계를 넘지 못하거든요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "캐시에 이미 있는 블록도 건너뛰어요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "compare",
+      "section": "Full Scan과 인덱스",
+      "title": "Full Scan과 인덱스",
+      "left": {
+        "title": "Table Full Scan",
+        "icon": "table",
+        "items": [
+          "시퀀셜 · Multi",
+          "대량 데이터 유리",
+          "크기에 비례"
+        ]
+      },
+      "right": {
+        "title": "Index Range Scan",
+        "icon": "search",
+        "items": [
+          "랜덤 · Single",
+          "소량 데이터 유리",
+          "읽을 건수에 비례"
+        ]
+      },
+      "steps": [
+        {
+          "say": "Full Scan은 시퀀셜에 멀티 블록이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "많이 읽을 때 유리해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "인덱스 스캔은 랜덤에 싱글 블록이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "조금 읽을 때 유리해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "인덱스는 읽을 건수에 비례해 느려져요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "id": "s18",
+      "section": "Full Scan과 인덱스",
+      "type": "data",
+      "title": "인덱스가 느린 경우",
+      "tables": [
+        "Row Source"
+      ],
+      "code": "-- 고객 1000건 중 300건을 인덱스로 조회",
+      "steps": [
+        {
+          "say": "고객 천 건 중 300건을 인덱스로 읽었어요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "Row Source": {
+              "cells": [
+                [
+                  1,
+                  "Rows"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "인덱스 자체는 3블록뿐이에요.",
+          "t": {
+            "Row Source": {
+              "rows": [
+                1
+              ],
+              "cells": [
+                [
+                  1,
+                  "cr"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "테이블 줄의 cr 303엔 인덱스 3블록이 포함돼 있어요.",
+          "t": {
+            "Row Source": {
+              "cells": [
+                [
+                  0,
+                  "cr"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "cr",
+                  "자식 포함"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그걸 빼면 테이블은 300블록이나 읽었어요.",
+          "t": {
+            "Row Source": {
+              "add": [
+                "자체 cr",
+                [
+                  "300",
+                  "3"
+                ]
+              ],
+              "cells": [
+                [
+                  0,
+                  "자체 cr"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "자체 cr",
+                  "1건에 1블록"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "이럴 땐 Full Scan이 훨씬 나아요.",
+          "t": {
+            "Row Source": {
+              "rows": [
+                0
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "Full Scan과 인덱스",
+      "tone": "warning",
+      "title": "인덱스 손익분기점",
+      "text": "보통 테이블의 **5~20% 이상**을 읽으면 Full Scan이 유리해요. 클러스터링 팩터에 따라 달라요.",
+      "steps": [
+        {
+          "say": "인덱스가 항상 빠른 건 아니에요."
+        },
+        {
+          "say": "보통 5에서 20퍼센트 넘게 읽으면,"
+        },
+        {
+          "say": "Full Scan이 더 나아요."
+        },
+        {
+          "say": "인덱스는 아주 적은 데이터를 찾는 도구예요."
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "quiz",
+      "section": "Full Scan과 인덱스",
+      "question": "테이블의 **30%**를 읽는 집계 SQL. 보통 유리한 방식은?",
+      "choices": [
+        "Index Range Scan",
+        "Index Unique Scan",
+        "Table Full Scan",
+        "ROWID 랜덤 액세스"
+      ],
+      "answer": 3,
+      "explanation": "많이 읽을 땐 시퀀셜과 멀티 블록인 Full Scan이 유리해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 테이블의 30퍼센트를 읽을 때 유리한 방식은?"
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "flow",
+      "section": "캐시 탐색",
+      "title": "버퍼 캐시 찾아가기",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "블록 주소 DBA",
+          "desc": "파일 · 블록 번호",
+          "icon": "map"
+        },
+        {
+          "title": "해시 함수",
+          "desc": "버킷 결정",
+          "icon": "filter"
+        },
+        {
+          "title": "해시 체인",
+          "desc": "버퍼 헤더 탐색",
+          "icon": "link"
+        },
+        {
+          "title": "버퍼 블록",
+          "desc": "없으면 디스크에서",
+          "icon": "database"
+        }
+      ],
+      "steps": [
+        {
+          "say": "메모리에서 블록을 찾는 데도 비용이 들어요."
+        },
+        {
+          "say": "블록 주소를 해시 함수에 넣어요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "나온 버킷의 체인을 따라가요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "버퍼 헤더를 찾으면 블록을 읽어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "없으면 디스크에서 읽어 체인에 달아요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "같은 주소는 항상 같은 체인에 연결돼요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "cards",
+      "section": "캐시 탐색",
+      "title": "줄 세우기 장치",
+      "cols": 2,
+      "items": [
+        {
+          "title": "CBC 래치",
+          "desc": "체인 스캔 전 획득",
+          "icon": "lock"
+        },
+        {
+          "title": "버퍼 Lock",
+          "desc": "블록 읽기 · 변경 중",
+          "icon": "shield"
+        }
+      ],
+      "steps": [
+        {
+          "say": "여러 프로세스가 동시에 접근하니 직렬화가 필요해요."
+        },
+        {
+          "say": "캐시버퍼 체인 래치. 체인을 보기 전에 잡아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "같은 블록을 많이 읽으면 경합이 생겨요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "버퍼 Lock. 블록을 읽거나 바꾸는 동안 걸어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "quiz",
+      "section": "캐시 탐색",
+      "question": "해시 체인을 **스캔하기 전에** 얻어야 하는 것은?",
+      "choices": [
+        "캐시버퍼 체인 래치",
+        "버퍼 Lock",
+        "TX Lock",
+        "공유 풀 래치"
+      ],
+      "answer": 1,
+      "explanation": "체인을 스캔하기 전엔 캐시버퍼 체인 래치를 잡아요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 해시 체인을 스캔하기 전에 얻는 것은?"
+        }
+      ],
+      "id": "s23"
+    },
+    {
+      "type": "compare",
+      "section": "캐시 탐색",
+      "title": "LRU로 밀어내기",
+      "left": {
+        "title": "자주 쓰는 블록",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "캐시에 오래 남음"
+        ]
+      },
+      "right": {
+        "title": "Full Scan 블록",
+        "icon": "table",
+        "items": [
+          "LRU 끝에 둠",
+          "먼저 밀려남"
+        ]
+      },
+      "steps": [
+        {
+          "say": "캐시는 좁아서 오래 안 쓴 블록을 밀어내요."
+        },
+        {
+          "say": "자주 쓰는 블록은 오래 남아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Full Scan 블록은 리스트 끝에 둬요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "대량 스캔이 캐시를 망치지 않게요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s24"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "성능은 건수가 아니라 블록 수",
+        "논리 I/O = query + current",
+        "튜닝은 논리적 I/O 줄이기",
+        "BCHR이 높다고 좋은 SQL은 아님",
+        "싱글은 sequential read",
+        "대량은 Full Scan, 소량은 인덱스"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "성능은 읽은 블록 수로 정해져요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "논리적 아이오는 query 더하기 current예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "튜닝은 논리적 아이오를 줄이는 거예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "히트율이 높다고 좋은 SQL은 아니에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "싱글 블록 대기는 sequential read예요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "많이 읽으면 Full Scan, 조금이면 인덱스.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s25"
+    }
+  ]
+}

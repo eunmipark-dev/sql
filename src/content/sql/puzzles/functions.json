@@ -1,0 +1,529 @@
+[
+  {
+    "id": "fn-nvl2-zero",
+    "topic": "NVL2",
+    "sql": "SELECT NVL2(comm, 'YES', 'NO')\nFROM emp\nWHERE ename = 'TURNER'",
+    "ask": "value",
+    "distractors": [
+      "NO",
+      "NULL",
+      "0"
+    ],
+    "expect": "YES",
+    "explain": "NVL2(a, b, c) 는 a 가 NULL 이 아니면 b, NULL 이면 c 예요. TURNER 의 comm 은 0 이고, 0 은 NULL 이 아니라 엄연한 값이라 'YES' 가 나와요."
+  },
+  {
+    "id": "fn-sum-plus-null",
+    "topic": "NULL 과 SUM",
+    "sql": "SELECT SUM(sal + comm)\nFROM emp",
+    "ask": "value",
+    "distractors": [
+      "31225",
+      "2200",
+      "NULL"
+    ],
+    "expect": "7800",
+    "explain": "sal + comm 은 comm 이 NULL 인 10명에서 NULL 이 되고, SUM 은 그 행을 빼고 더해요. ALLEN 1900 + WARD 1750 + MARTIN 2650 + TURNER 1500 = 7800. SUM(sal) + SUM(comm) 이었다면 31225 예요."
+  },
+  {
+    "id": "fn-coalesce-first",
+    "topic": "COALESCE",
+    "sql": "SELECT COALESCE(comm, mgr, sal)\nFROM emp\nWHERE ename = 'JONES'",
+    "ask": "value",
+    "distractors": [
+      "2975",
+      "NULL",
+      "0"
+    ],
+    "expect": "7839",
+    "explain": "COALESCE 는 왼쪽부터 보며 처음으로 NULL 이 아닌 값을 돌려줘요. JONES 는 comm 이 NULL 이라 다음 인자인 mgr 7839 가 나오고, sal 까지는 가지 않아요."
+  },
+  {
+    "id": "fn-nullif-count",
+    "topic": "NULLIF",
+    "sql": "SELECT COUNT(NULLIF(sal, 3000))\nFROM emp",
+    "ask": "value",
+    "distractors": [
+      "14",
+      "2",
+      "3000"
+    ],
+    "expect": "12",
+    "explain": "NULLIF(a, b) 는 a 와 b 가 같으면 NULL, 다르면 a 예요. 급여 3000 인 SCOTT, FORD 가 NULL 이 되고, COUNT(식)은 NULL 을 세지 않아 14 - 2 = 12 예요."
+  },
+  {
+    "id": "fn-nullif-is-null",
+    "topic": "NULLIF",
+    "sql": "SELECT ename\nFROM emp\nWHERE NULLIF(comm, 0) IS NULL",
+    "ask": "rows",
+    "expect": "11",
+    "explain": "comm 이 원래 NULL 인 10명은 그대로 NULL, TURNER 의 0 은 NULLIF 로 NULL 이 돼요. 그래서 10 + 1 = 11명이에요."
+  },
+  {
+    "id": "fn-nvl-where",
+    "topic": "NVL",
+    "sql": "SELECT ename\nFROM emp\nWHERE NVL(comm, 0) < 500",
+    "ask": "rows",
+    "expect": "12",
+    "explain": "NVL 이 NULL 을 0 으로 바꿔서 comm 이 없는 10명도 비교에 들어와요. 여기에 ALLEN 300, TURNER 0 을 더해 12명이에요. NVL 없이 comm < 500 이면 2명뿐이에요."
+  },
+  {
+    "id": "fn-not-null-compare",
+    "topic": "NOT 과 NULL",
+    "sql": "SELECT ename\nFROM emp\nWHERE NOT (comm > 400)",
+    "ask": "rows",
+    "expect": "2",
+    "explain": "comm 이 NULL 이면 comm > 400 은 알 수 없음이고, NOT 을 붙여도 여전히 알 수 없음이에요. 그래서 NULL 인 10명은 빠지고 ALLEN 300, TURNER 0 만 나와요."
+  },
+  {
+    "id": "fn-self-equal",
+    "topic": "NULL 비교",
+    "sql": "SELECT ename\nFROM emp\nWHERE mgr = mgr",
+    "ask": "rows",
+    "expect": "13",
+    "explain": "자기 자신과 비교해도 NULL = NULL 은 참이 아니라 알 수 없음이에요. mgr 이 NULL 인 KING 만 빠져서 13명이에요."
+  },
+  {
+    "id": "fn-ne-mgr",
+    "topic": "NULL 비교",
+    "sql": "SELECT ename\nFROM emp\nWHERE mgr <> 7698",
+    "ask": "rows",
+    "expect": "8",
+    "explain": "mgr 이 7698 인 5명(ALLEN, WARD, MARTIN, TURNER, JAMES)이 빠지고, mgr 이 NULL 인 KING 도 <> 비교가 알 수 없음이라 빠져요. 14 - 5 - 1 = 8명이에요."
+  },
+  {
+    "id": "fn-null-arith-where",
+    "topic": "NULL 연산",
+    "sql": "SELECT ename\nFROM emp\nWHERE sal + comm > 2000",
+    "ask": "rows",
+    "expect": "1",
+    "explain": "comm 이 NULL 이면 sal + comm 도 NULL 이라 KING(5000) 같은 고액 급여자도 빠져요. 남은 4명 중 2000 을 넘는 사람은 MARTIN(2650) 하나예요."
+  },
+  {
+    "id": "fn-and-or",
+    "topic": "AND · OR 우선순위",
+    "sql": "SELECT ename\nFROM emp\nWHERE job = 'CLERK'\n   OR job = 'ANALYST'\n  AND sal > 2000",
+    "ask": "rows",
+    "expect": "6",
+    "explain": "AND 가 OR 보다 먼저 묶여요. CLERK 전원(4명) OR (ANALYST 이면서 급여 2000 초과: SCOTT, FORD) 이라 6명이에요. 괄호로 (CLERK OR ANALYST) 를 묶으면 2명이에요."
+  },
+  {
+    "id": "fn-not-and",
+    "topic": "NOT 우선순위",
+    "sql": "SELECT ename\nFROM emp\nWHERE NOT deptno = 30\n  AND sal >= 3000",
+    "ask": "rows",
+    "expect": "3",
+    "explain": "NOT 은 AND 보다 먼저 적용돼서 바로 뒤의 deptno = 30 만 뒤집어요. 30번 부서가 아니면서 급여 3000 이상인 KING, SCOTT, FORD 3명이에요."
+  },
+  {
+    "id": "fn-in-null",
+    "topic": "IN 과 NULL",
+    "sql": "SELECT ename\nFROM emp\nWHERE comm IN (0, NULL)",
+    "ask": "rows",
+    "expect": "1",
+    "explain": "IN 은 comm = 0 OR comm = NULL 과 같아요. 뒤쪽 비교는 늘 알 수 없음이라 NULL 인 행은 찾지 못하고, comm 이 0 인 TURNER 만 나와요."
+  },
+  {
+    "id": "fn-not-in-list-null",
+    "topic": "NOT IN 과 NULL",
+    "sql": "SELECT ename\nFROM emp\nWHERE comm NOT IN (300, NULL)",
+    "ask": "rows",
+    "expect": "0",
+    "explain": "NOT IN 은 comm <> 300 AND comm <> NULL 이에요. comm <> NULL 이 언제나 알 수 없음이라 AND 전체가 참이 될 수 없어서 0행이에요. 목록에 NULL 이 하나라도 있으면 이렇게 돼요."
+  },
+  {
+    "id": "fn-between-reverse",
+    "topic": "BETWEEN",
+    "sql": "SELECT ename\nFROM emp\nWHERE sal BETWEEN 3000 AND 1000",
+    "ask": "rows",
+    "expect": "0",
+    "explain": "BETWEEN a AND b 는 sal >= a AND sal <= b 예요. 3000 이상이면서 1000 이하인 값은 없어서 0행이에요. 작은 값을 앞에 써야 해요."
+  },
+  {
+    "id": "fn-not-between",
+    "topic": "BETWEEN",
+    "sql": "SELECT ename\nFROM emp\nWHERE sal NOT BETWEEN 1250 AND 3000",
+    "ask": "rows",
+    "expect": "4",
+    "explain": "NOT BETWEEN 은 sal < 1250 OR sal > 3000 이에요. 경계값 1250, 3000 은 BETWEEN 쪽에 들어가서 빠져요. KING, SMITH, JAMES, ADAMS 4명이에요."
+  },
+  {
+    "id": "fn-between-string",
+    "topic": "BETWEEN 문자열",
+    "sql": "SELECT ename\nFROM emp\nWHERE ename BETWEEN 'A' AND 'C'",
+    "ask": "rows",
+    "expect": "3",
+    "explain": "문자열은 사전 순으로 비교해요. 'CLARK' 은 'C' 보다 뒤라서 빠져요. 'A' 이상 'C' 이하인 ALLEN, ADAMS, BLAKE 3명이에요."
+  },
+  {
+    "id": "fn-like-underscore",
+    "topic": "LIKE",
+    "sql": "SELECT ename\nFROM emp\nWHERE ename LIKE '%_%'",
+    "ask": "rows",
+    "expect": "14",
+    "explain": "LIKE 안의 _ 는 밑줄 문자가 아니라 '아무 글자 하나'예요. 그래서 '%_%' 는 한 글자 이상인 모든 이름과 맞아 14명 전부 나와요."
+  },
+  {
+    "id": "fn-like-escape",
+    "topic": "LIKE ESCAPE",
+    "sql": "SELECT ename\nFROM emp\nWHERE ename LIKE '%#_%' ESCAPE '#'",
+    "ask": "rows",
+    "expect": "0",
+    "explain": "ESCAPE 로 정한 # 뒤의 _ 는 진짜 밑줄 문자로 봐요. 이름에 밑줄이 들어간 사원이 없어서 0행이에요. ESCAPE 가 없으면 14행이에요."
+  },
+  {
+    "id": "fn-like-four",
+    "topic": "LIKE",
+    "sql": "SELECT ename\nFROM emp\nWHERE ename LIKE '____'",
+    "ask": "rows",
+    "expect": "3",
+    "explain": "_ 네 개는 정확히 네 글자를 뜻해요. % 가 없으니 더 길거나 짧으면 안 맞아요. KING, WARD, FORD 3명이에요."
+  },
+  {
+    "id": "fn-distinct-null",
+    "topic": "DISTINCT 와 NULL",
+    "sql": "SELECT DISTINCT comm\nFROM emp",
+    "ask": "rows",
+    "expect": "5",
+    "explain": "DISTINCT 는 NULL 끼리 같은 값으로 보고 하나로 합쳐요. 300, 500, 1400, 0 에 NULL 한 행을 더해 5행이에요."
+  },
+  {
+    "id": "fn-count-distinct-comm",
+    "topic": "COUNT(DISTINCT)",
+    "sql": "SELECT COUNT(DISTINCT comm)\nFROM emp",
+    "ask": "value",
+    "distractors": [
+      "5",
+      "14",
+      "3"
+    ],
+    "expect": "4",
+    "explain": "COUNT(DISTINCT 컬럼)은 NULL 을 빼고 서로 다른 값만 세요. 300, 500, 1400, 0 으로 4예요. SELECT DISTINCT comm 이 5행인 것과 헷갈리기 쉬워요."
+  },
+  {
+    "id": "fn-distinct-nvl",
+    "topic": "DISTINCT 와 NVL",
+    "sql": "SELECT DISTINCT NVL(comm, 0)\nFROM emp",
+    "ask": "rows",
+    "expect": "4",
+    "explain": "NVL 로 NULL 이 0 이 되면 TURNER 의 0 과 같은 값이 돼서 하나로 합쳐져요. 0, 300, 500, 1400 으로 4행이에요."
+  },
+  {
+    "id": "fn-count-where-null",
+    "topic": "COUNT 와 WHERE",
+    "sql": "SELECT COUNT(comm)\nFROM emp\nWHERE comm IS NULL",
+    "ask": "value",
+    "distractors": [
+      "10",
+      "NULL",
+      "14"
+    ],
+    "expect": "0",
+    "explain": "WHERE 로 남은 10행은 모두 comm 이 NULL 이에요. COUNT(comm) 은 NULL 을 세지 않아 0 이에요. 행 수를 세려면 COUNT(*) 를 써야 10이 나와요."
+  },
+  {
+    "id": "fn-max-string",
+    "topic": "문자열 집계",
+    "sql": "SELECT MAX(ename)\nFROM emp",
+    "ask": "value",
+    "distractors": [
+      "MARTIN",
+      "KING",
+      "ADAMS"
+    ],
+    "expect": "WARD",
+    "explain": "문자열의 MAX 는 길이나 급여가 아니라 사전 순으로 가장 뒤인 값이에요. W 로 시작하는 WARD 가 가장 뒤예요."
+  },
+  {
+    "id": "fn-nulls-last",
+    "topic": "NULLS LAST",
+    "sql": "SELECT ename\nFROM emp\nORDER BY comm DESC NULLS LAST\nFETCH FIRST 1 ROWS ONLY",
+    "ask": "value",
+    "distractors": [
+      "KING",
+      "TURNER",
+      "ALLEN"
+    ],
+    "expect": "MARTIN",
+    "explain": "내림차순에서는 원래 NULL 이 맨 앞이지만, NULLS LAST 가 NULL 을 뒤로 보내요. 그래서 실제 값 중 가장 큰 comm 1400 의 MARTIN 이 첫 행이에요."
+  },
+  {
+    "id": "fn-order-multi",
+    "topic": "다중 정렬",
+    "sql": "SELECT ename\nFROM emp\nORDER BY deptno DESC, sal\nFETCH FIRST 1 ROWS ONLY",
+    "ask": "value",
+    "distractors": [
+      "SMITH",
+      "BLAKE",
+      "MILLER"
+    ],
+    "expect": "JAMES",
+    "explain": "DESC 는 deptno 에만 붙고 sal 은 기본값인 오름차순이에요. 가장 큰 30번 부서 안에서 급여가 가장 낮은 JAMES(950)가 첫 행이에요."
+  },
+  {
+    "id": "fn-order-desc-scope",
+    "topic": "다중 정렬",
+    "sql": "SELECT ename\nFROM emp\nORDER BY job DESC, ename\nFETCH FIRST 1 ROWS ONLY",
+    "ask": "value",
+    "distractors": [
+      "WARD",
+      "TURNER",
+      "SMITH"
+    ],
+    "expect": "ALLEN",
+    "explain": "job 내림차순이면 SALESMAN 이 맨 앞이에요. ename 에는 DESC 가 없으니 오름차순이라, SALESMAN 4명 중 이름이 가장 앞선 ALLEN 이 나와요."
+  },
+  {
+    "id": "fn-order-position",
+    "topic": "위치 번호 정렬",
+    "sql": "SELECT job\nFROM emp\nORDER BY 1 DESC\nFETCH FIRST 1 ROWS ONLY",
+    "ask": "value",
+    "distractors": [
+      "PRESIDENT",
+      "ANALYST",
+      "CLERK"
+    ],
+    "expect": "SALESMAN",
+    "explain": "ORDER BY 1 은 SELECT 의 첫 번째 컬럼(job)으로 정렬해요. 숫자 1 로 정렬하는 게 아니에요. 사전 순 내림차순이라 S 로 시작하는 SALESMAN 이 첫 행이에요."
+  },
+  {
+    "id": "fn-order-alias",
+    "topic": "별칭 정렬",
+    "sql": "SELECT sal + NVL(comm, 0) AS total\nFROM emp\nWHERE deptno = 30\nORDER BY total DESC\nFETCH FIRST 1 ROWS ONLY",
+    "ask": "value",
+    "distractors": [
+      "2650",
+      "1400",
+      "1900"
+    ],
+    "expect": "2850",
+    "explain": "ORDER BY 에서는 SELECT 의 별칭을 쓸 수 있어요. 30번 부서의 total 은 BLAKE 2850, MARTIN 2650(1250+1400) … 이라 커미션 없는 BLAKE 가 1위예요."
+  },
+  {
+    "id": "fn-case-simple-null",
+    "topic": "CASE 와 NULL",
+    "sql": "SELECT CASE comm\n         WHEN NULL THEN 'NONE'\n         ELSE 'SOME'\n       END\nFROM emp\nWHERE ename = 'KING'",
+    "ask": "value",
+    "distractors": [
+      "NONE",
+      "NULL",
+      "에러"
+    ],
+    "expect": "SOME",
+    "explain": "단순 CASE 는 comm = NULL 로 비교해서 절대 참이 될 수 없어요. 그래서 KING 의 comm 이 NULL 인데도 ELSE 의 'SOME' 이 나와요. CASE WHEN comm IS NULL 로 써야 해요."
+  },
+  {
+    "id": "fn-case-order",
+    "topic": "CASE 평가 순서",
+    "sql": "SELECT CASE\n         WHEN sal >= 1000 THEN 'A'\n         WHEN sal >= 3000 THEN 'B'\n         ELSE 'C'\n       END\nFROM emp\nWHERE ename = 'KING'",
+    "ask": "value",
+    "distractors": [
+      "B",
+      "C",
+      "NULL"
+    ],
+    "expect": "A",
+    "explain": "CASE 는 위에서부터 보고 처음 참인 WHEN 에서 멈춰요. KING 의 5000 은 첫 조건 sal >= 1000 에 이미 맞아서 'A' 예요. 넓은 조건을 먼저 쓰면 아래 WHEN 은 쓸모가 없어져요."
+  },
+  {
+    "id": "fn-case-no-else",
+    "topic": "CASE 와 NULL",
+    "sql": "SELECT CASE\n         WHEN sal > 5000 THEN 'HIGH'\n       END\nFROM emp\nWHERE ename = 'KING'",
+    "ask": "value",
+    "distractors": [
+      "HIGH",
+      "5000",
+      "에러"
+    ],
+    "expect": "NULL",
+    "explain": "KING 의 급여는 5000 이라 5000 초과가 아니에요. 맞는 WHEN 이 없고 ELSE 도 없으면 CASE 는 에러가 아니라 NULL 을 돌려줘요."
+  },
+  {
+    "id": "fn-case-sum",
+    "topic": "CASE 와 SUM",
+    "sql": "SELECT SUM(CASE job WHEN 'CLERK' THEN sal END)\nFROM emp",
+    "ask": "value",
+    "distractors": [
+      "4",
+      "29025",
+      "NULL"
+    ],
+    "expect": "4150",
+    "explain": "CLERK 이 아니면 CASE 가 NULL 이 되고 SUM 은 NULL 을 건너뛰어요. 결국 CLERK 급여만 더해져 800 + 950 + 1300 + 1100 = 4150 이에요."
+  },
+  {
+    "id": "fn-distinct-case",
+    "topic": "CASE 와 NULL",
+    "sql": "SELECT DISTINCT\n  CASE WHEN comm > 0 THEN 'Y' ELSE 'N' END\nFROM emp",
+    "ask": "rows",
+    "expect": "2",
+    "explain": "comm 이 NULL 이면 comm > 0 이 알 수 없음이라 WHEN 에 안 맞고 ELSE 로 가요. 그래서 NULL 행이 따로 생기지 않고 'Y', 'N' 두 행만 나와요."
+  },
+  {
+    "id": "fn-length-trim",
+    "topic": "TRIM · LENGTH",
+    "sql": "SELECT LENGTH(TRIM('  SQL D  '))\nFROM dual",
+    "ask": "value",
+    "distractors": [
+      "4",
+      "9",
+      "3"
+    ],
+    "expect": "5",
+    "explain": "TRIM 은 양 끝의 공백만 지우고 가운데 공백은 그대로 둬요. 'SQL D' 가 남아서 공백 포함 5글자예요."
+  },
+  {
+    "id": "fn-substr",
+    "topic": "SUBSTR",
+    "sql": "SELECT SUBSTR('SQLDEVELOPER', 4, 3)\nFROM dual",
+    "ask": "value",
+    "distractors": [
+      "LDE",
+      "DEVE",
+      "DEVELOPER"
+    ],
+    "expect": "DEV",
+    "explain": "SUBSTR(문자열, 시작, 길이) 에서 위치는 1부터 세요. 4번째 글자 D 부터 3글자를 잘라 'DEV' 예요. 세 번째 인자는 끝 위치가 아니라 길이예요."
+  },
+  {
+    "id": "fn-substr-distinct",
+    "topic": "SUBSTR",
+    "sql": "SELECT DISTINCT SUBSTR(ename, 1, 1)\nFROM emp",
+    "ask": "rows",
+    "expect": "10",
+    "explain": "이름 첫 글자는 K, J, B, C, S, F, A, W, M, T 예요. J(JONES·JAMES), S(SCOTT·SMITH), A(ALLEN·ADAMS), M(MARTIN·MILLER) 이 겹쳐서 14개 중 10행이 남아요."
+  },
+  {
+    "id": "fn-rtrim-set",
+    "topic": "LTRIM · RTRIM",
+    "sql": "SELECT RTRIM('ABCCBC', 'BC')\nFROM dual",
+    "ask": "value",
+    "distractors": [
+      "ABCC",
+      "ABC",
+      "ABCCB"
+    ],
+    "expect": "A",
+    "explain": "RTRIM 의 두 번째 인자는 지울 '문자열'이 아니라 '문자들의 집합'이에요. 오른쪽부터 B 나 C 인 글자를 계속 지워서 A 만 남아요."
+  },
+  {
+    "id": "fn-lpad-cut",
+    "topic": "LPAD",
+    "sql": "SELECT LPAD('SQLD', 2)\nFROM dual",
+    "ask": "value",
+    "distractors": [
+      "LD",
+      "SQLD",
+      "  SQLD"
+    ],
+    "expect": "SQ",
+    "explain": "LPAD 의 두 번째 인자는 결과의 전체 길이예요. 원래 문자열이 더 길면 채우는 대신 왼쪽부터 그 길이만큼 잘라서 'SQ' 가 돼요."
+  },
+  {
+    "id": "fn-replace",
+    "topic": "REPLACE",
+    "sql": "SELECT REPLACE('BANANA', 'AN', 'X')\nFROM dual",
+    "ask": "value",
+    "distractors": [
+      "BXANA",
+      "BXNA",
+      "BANXA"
+    ],
+    "expect": "BXXA",
+    "explain": "REPLACE 는 첫 번째만이 아니라 맞는 부분을 모두 바꿔요. B·AN·AN·A 에서 AN 두 개가 X 가 돼 'BXXA' 예요."
+  },
+  {
+    "id": "fn-round-neg",
+    "topic": "ROUND",
+    "sql": "SELECT ROUND(1250, -2)\nFROM dual",
+    "ask": "value",
+    "distractors": [
+      "1200",
+      "1250",
+      "13"
+    ],
+    "expect": "1300",
+    "explain": "자릿수가 -2 면 십의 자리에서 반올림해 백의 자리까지 남겨요. 1250 의 십의 자리가 5 라서 올림돼 1300 이에요."
+  },
+  {
+    "id": "fn-trunc-neg",
+    "topic": "TRUNC",
+    "sql": "SELECT TRUNC(1789.9, -2)\nFROM dual",
+    "ask": "value",
+    "distractors": [
+      "1800",
+      "1789",
+      "17"
+    ],
+    "expect": "1700",
+    "explain": "TRUNC 는 반올림 없이 버리기만 해요. -2 자리면 백의 자리 아래를 모두 버려 1700 이에요. ROUND 였다면 1800 이에요."
+  },
+  {
+    "id": "fn-round-half-neg",
+    "topic": "ROUND",
+    "sql": "SELECT ROUND(-2.5)\nFROM dual",
+    "ask": "value",
+    "distractors": [
+      "-2",
+      "3",
+      "-2.5"
+    ],
+    "expect": "-3",
+    "explain": "ROUND 는 0.5 를 0 에서 멀어지는 쪽으로 반올림해요. 음수 -2.5 는 -3 이 돼요. 더 큰 쪽(-2)으로 가는 게 아니에요."
+  },
+  {
+    "id": "fn-ceil-neg",
+    "topic": "CEIL · FLOOR",
+    "sql": "SELECT CEIL(-1.5)\nFROM dual",
+    "ask": "value",
+    "distractors": [
+      "-2",
+      "1",
+      "-1.5"
+    ],
+    "expect": "-1",
+    "explain": "CEIL 은 그 수 이상인 가장 작은 정수예요. 음수에서는 0 쪽으로 가서 -1.5 → -1 이에요. FLOOR(-1.5) 였다면 -2 예요."
+  },
+  {
+    "id": "fn-mod-neg",
+    "topic": "MOD",
+    "sql": "SELECT MOD(-7, 3)\nFROM dual",
+    "ask": "value",
+    "distractors": [
+      "2",
+      "1",
+      "-2"
+    ],
+    "expect": "-1",
+    "explain": "MOD 결과의 부호는 나눠지는 수(-7)를 따라가요. -7 = 3 × (-2) + (-1) 이라 -1 이에요. 수학의 나머지처럼 2 가 나오지 않아요."
+  },
+  {
+    "id": "fn-mod-odd",
+    "topic": "MOD",
+    "sql": "SELECT ename\nFROM emp\nWHERE MOD(empno, 2) = 1",
+    "ask": "rows",
+    "expect": "4",
+    "explain": "사번이 홀수인 사원은 KING 7839, ALLEN 7499, WARD 7521, SMITH 7369 로 4명이에요. 나머지 10명은 짝수예요."
+  },
+  {
+    "id": "fn-sign-sum",
+    "topic": "SIGN",
+    "sql": "SELECT SUM(SIGN(sal - 2000))\nFROM emp",
+    "ask": "value",
+    "distractors": [
+      "2",
+      "14",
+      "0"
+    ],
+    "expect": "-2",
+    "explain": "SIGN 은 양수면 1, 음수면 -1, 0 이면 0 이에요. 급여 2000 초과가 6명(+6), 미만이 8명(-8)이라 합은 -2 예요."
+  },
+  {
+    "id": "fn-in-and",
+    "topic": "IN · NOT IN",
+    "sql": "SELECT ename\nFROM emp\nWHERE deptno IN (10, 20)\n  AND job NOT IN ('CLERK', 'ANALYST')",
+    "ask": "rows",
+    "expect": "3",
+    "explain": "10·20번 부서 8명 중 CLERK(MILLER, SMITH, ADAMS)과 ANALYST(SCOTT, FORD)를 빼면 KING, CLARK, JONES 3명이에요. 비교 대상 job 에 NULL 이 없어 NOT IN 도 정상 동작해요."
+  }
+]

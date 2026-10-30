@@ -1,0 +1,12 @@
+node_modules
+dist
+*.local
+.env
+.env.*
+!.env.example
+.idea
+/public/data/exams/index.json
+/public/data/exams/bank/
+
+# 빌드한 APK 사본
+/release/

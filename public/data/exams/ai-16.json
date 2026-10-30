@@ -1,0 +1,741 @@
+{
+  "id": "ai-16",
+  "kind": "ai",
+  "title": "모의고사 16회",
+  "round": 16,
+  "timeLimitMin": 90,
+  "questions": [
+    {
+      "id": 1,
+      "subject": 1,
+      "theory": "data-model",
+      "question": "한 은행의 기존 시스템을 분석한 결과 다음과 같은 문제가 발견되었다.\n\n- (가) 고객의 연락처가 `고객`, `계좌`, `대출` 테이블에 각각 저장되어 있어, 연락처가 바뀔 때마다 세 곳을 모두 고쳐야 한다.\n- (나) 새로운 예금 상품이 출시될 때마다 상품별 처리 방식에 맞춰 테이블 구조를 변경해야 한다.\n- (다) `대출` 테이블의 보증인 정보와 `고객` 테이블 사이의 연관 관계가 정의되어 있지 않아, 같은 사람의 정보가 두 테이블에서 서로 모순되게 저장되어 있다.\n\n(가)~(다)에 해당하는 데이터 모델링 유의점을 순서대로 짝지은 것으로 가장 적절한 것은?",
+      "choices": [
+        "(가) 비유연성, (나) 중복, (다) 비일관성",
+        "(가) 중복, (나) 비일관성, (다) 비유연성",
+        "(가) 중복, (나) 비유연성, (다) 비일관성",
+        "(가) 비일관성, (나) 비유연성, (다) 중복"
+      ],
+      "answer": 3,
+      "explanation": "데이터 모델링의 유의점은 **중복, 비유연성, 비일관성** 세 가지다.\n\n- (가) 같은 데이터가 여러 테이블에 저장되어 관리 비용이 커지는 것은 **중복**이다.\n- (나) 업무 프로세스(상품별 처리 방식)가 바뀔 때마다 모델을 고쳐야 하는 것은 데이터 정의가 프로세스와 분리되지 않은 **비유연성**이다.\n- (다) 데이터 간 연관 관계가 불분명하여 서로 모순된 데이터가 생기는 것은 **비일관성**이다.\n\n나머지 보기는 세 개념의 짝을 뒤섞은 것이다."
+    },
+    {
+      "id": 2,
+      "subject": 1,
+      "theory": "entity",
+      "question": "은행 업무를 분석하면서 엔터티 이름을 정하고 있다. 다음 중 엔터티 **명명 규칙**에 비추어 가장 적절한 것은?",
+      "choices": [
+        "고객이 금융상품에 가입하면서 생기는 엔터티의 이름을 '고객상품' 대신 생성 의미가 드러나는 '상품가입계약'으로 정한다.",
+        "한 엔터티에 많은 거래가 쌓이므로 집합임이 드러나도록 '거래내역들'이라는 복수형 이름을 사용한다.",
+        "논리 모델에서도 이름을 짧게 하기 위해 '입출금거래이력'을 'IOTXHST'처럼 약어로 표기한다.",
+        "영업 부서는 '고객', 여신 부서는 '차주'라고 부르므로 같은 대상을 가리키더라도 두 엔터티를 각각 따로 둔다."
+      ],
+      "answer": 1,
+      "explanation": "엔터티 명명 규칙은 현업 용어 사용, 약어 지양, **단수 명사** 사용, 모델 내 **유일한 이름**, **생성 의미대로 부여**다. '고객상품'처럼 두 엔터티 이름을 붙이는 것보다 엔터티가 생기는 업무 의미가 드러나는 '상품가입계약'이 적절하다.\n\n- 엔터티 이름은 집합에 속한 한 개체의 의미를 나타내므로 복수형('거래내역들')을 쓰지 않는다.\n- 의미가 모호해지는 약어는 가급적 피한다.\n- 같은 대상을 가리키는 동의어 후보는 하나의 엔터티로 통합해야 한다."
+    },
+    {
+      "id": 3,
+      "subject": 1,
+      "theory": "attribute",
+      "question": "은행의 `계좌` 엔터티에 대해 엔터티, 인스턴스, 속성, 속성값의 관계를 설명한 것이다. 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "`계좌` 엔터티는 업무에서 관리하는 두 개 이상의 계좌 인스턴스의 집합이어야 한다.",
+        "`계좌` 엔터티는 계좌번호, 개설일자, 잔액처럼 두 개 이상의 속성으로 설명된다.",
+        "계좌번호가 '110-01'인 인스턴스의 '잔액' 속성은 특정 시점에 하나의 값만 가진다.",
+        "한 고객이 여러 연락처를 가지듯 하나의 인스턴스는 한 속성에 여러 속성값을 가질 수 있으며, 이 경우 그 속성을 그대로 하나의 컬럼으로 구현하는 것이 원칙이다."
+      ],
+      "answer": 4,
+      "explanation": "하나의 속성은 하나의 인스턴스에서 **하나의 속성값만** 가져야 한다. 여러 값을 가지는 다중값 속성은 그대로 한 컬럼에 담지 않고 별도 엔터티로 분리하는 것이 원칙(제1정규형)이다.\n\n엔터티는 두 개 이상의 인스턴스 집합이어야 하고, 두 개 이상의 속성을 가지며, 한 인스턴스의 한 속성은 하나의 값을 가진다는 나머지 설명은 모두 옳다."
+    },
+    {
+      "id": 4,
+      "subject": 1,
+      "theory": "relationship",
+      "question": "관계를 **존재에 의한 관계**와 **행위에 의한 관계**로 분류할 때, 다음 중 행위에 의한 관계로 가장 적절한 것은?",
+      "choices": [
+        "지점에 행원이 소속되어 있다.",
+        "고객이 계좌를 개설한다.",
+        "본부 아래에 여러 지점이 속해 있다.",
+        "상품분류에 여러 금융상품이 포함되어 있다."
+      ],
+      "answer": 2,
+      "explanation": "**행위에 의한 관계**는 엔터티 간에 어떤 행위(이벤트)가 있어야 성립하는 관계다. 고객과 계좌는 고객이 '개설'이라는 행위를 해야 연결되므로 행위에 의한 관계다.\n\n지점-행원 소속, 본부-지점, 상품분류-금융상품은 한 엔터티의 존재가 다른 엔터티의 존재에 의해 성립하는 **존재에 의한 관계**다. 참고로 ERD에서는 두 관계를 구분하지 않고 같은 관계선으로 표현한다."
+    },
+    {
+      "id": 5,
+      "subject": 1,
+      "theory": "identifier",
+      "question": "은행의 `대출` 엔터티에서 주식별자로 '담보번호'를 검토하였다. 담보번호는 담보물마다 서로 다른 값이 부여되고 한 번 부여되면 바뀌지 않는다. 그러나 **신용대출은 담보가 없어 담보번호 값이 존재하지 않는** 대출이 있다는 이유로 주식별자로 부적합하다는 결론이 났다.\n\n이 결론의 근거가 되는 주식별자의 특징으로 가장 적절한 것은?",
+      "choices": [
+        "유일성",
+        "존재성",
+        "최소성",
+        "불변성"
+      ],
+      "answer": 2,
+      "explanation": "주식별자는 **존재성**을 만족해야 한다. 즉 주식별자로 지정된 속성에는 반드시 값이 들어 있어야 하며 NULL일 수 없다. 담보가 없는 신용대출은 담보번호 값이 없으므로 존재성을 위배한다.\n\n- 유일성: 담보물마다 다른 값이 부여되므로 문제 되지 않는다.\n- 최소성: 단일 속성이므로 문제 되지 않는다.\n- 불변성: 한 번 부여되면 바뀌지 않으므로 문제 되지 않는다."
+    },
+    {
+      "id": 6,
+      "subject": 1,
+      "theory": "normalization",
+      "question": "다음 `대출신청` 테이블의 PK는 대출번호이며, 업무 규칙상 고객명과 고객등급은 고객번호에 의해 결정된다.\n\n| 대출번호 | 고객번호 | 고객명 | 고객등급 | 신청금액 |\n|---|---|---|---|---|\n| L01 | C01 | 한지우 | VIP | 5000 |\n| L02 | C01 | 한지우 | VIP | 3000 |\n| L03 | C02 | 오세린 | 일반 | 1000 |\n\n이 테이블에서 다음 상황이 발생하였다.\n\n- (가) 아직 대출을 신청한 적 없는 신규 고객의 등급은 대출번호가 없어 저장할 수 없다.\n- (나) C01 고객의 등급을 바꾸면서 L01 행만 수정하고 L02 행은 수정하지 않아 데이터가 불일치하게 되었다.\n- (다) L03 대출을 삭제하자 C02 고객의 이름과 등급 정보도 함께 사라졌다.\n\n이에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "(가)는 갱신 이상, (나)는 삽입 이상, (다)는 삭제 이상이며, 제2정규화로 해소된다.",
+        "(가)는 삽입 이상, (나)는 갱신 이상, (다)는 삭제 이상이며, 부분 함수 종속을 제거하는 제2정규화로 해소된다.",
+        "(가)는 삽입 이상, (나)는 갱신 이상, (다)는 삭제 이상이며, 이행 함수 종속을 제거하는 제3정규화로 해소된다.",
+        "(가)~(다)는 모두 반복 속성 때문에 발생하므로 제1정규화로 해소된다."
+      ],
+      "answer": 3,
+      "explanation": "(가)는 원하지 않는 데이터(대출)가 있어야만 저장할 수 있는 **삽입 이상**, (나)는 중복 저장된 값 중 일부만 바뀌는 **갱신 이상**, (다)는 한 행을 지우면서 다른 정보까지 사라지는 **삭제 이상**이다.\n\nPK가 대출번호 **단일 속성**이므로 부분 함수 종속은 존재할 수 없다(제2정규형은 이미 만족). 원인은 `대출번호 → 고객번호 → 고객명, 고객등급`의 **이행 함수 종속**이므로, 고객 정보를 별도 `고객` 테이블로 분리하는 **제3정규화**로 해소된다. 각 칸에 하나의 값만 들어 있으므로 제1정규형 위반도 아니다."
+    },
+    {
+      "id": 7,
+      "subject": 1,
+      "theory": "relationship-and-join",
+      "question": "`이체` 엔터티는 `계좌` 엔터티와 **출금계좌**, **입금계좌**라는 두 개의 관계를 가지며, 두 관계 모두 계좌번호를 FK로 상속한다.\n\n[ACCOUNT]\n\n| ACCT_NO | OWNER |\n|---|---|\n| A1 | 김민준 |\n| A2 | 김민준 |\n| A3 | 이서연 |\n| A4 | 박지호 |\n\n[TRANSFER]\n\n| TR_ID | FROM_ACCT | TO_ACCT | AMT |\n|---|---|---|---|\n| T1 | A1 | A3 | 100 |\n| T2 | A1 | A2 | 50 |\n| T3 | A3 | A4 | 70 |\n| T4 | A2 | A1 | 30 |\n| T5 | A3 | A1 | 20 |\n\n다음 SQL의 실행 결과로 옳은 것은?",
+      "code": "SELECT T.TR_ID\n  FROM TRANSFER T\n  JOIN ACCOUNT F ON T.FROM_ACCT = F.ACCT_NO\n  JOIN ACCOUNT R ON T.TO_ACCT   = R.ACCT_NO\n WHERE F.OWNER = R.OWNER\n ORDER BY T.TR_ID;",
+      "choices": [
+        "T2, T4",
+        "T2",
+        "T1, T2, T4, T5",
+        "결과 없음"
+      ],
+      "answer": 1,
+      "explanation": "하나의 엔터티와 역할이 다른 두 개의 관계를 맺으면, SQL에서는 같은 테이블을 **별칭을 달리하여 두 번 조인**한다. F는 출금계좌 쪽, R은 입금계좌 쪽 ACCOUNT다.\n\n- T1: 김민준 → 이서연 (다름)\n- T2: 김민준(A1) → 김민준(A2) (같음)\n- T3: 이서연 → 박지호 (다름)\n- T4: 김민준(A2) → 김민준(A1) (같음)\n- T5: 이서연 → 김민준 (다름)\n\n따라서 본인 계좌 간 이체인 **T2, T4**가 출력된다."
+    },
+    {
+      "id": 8,
+      "subject": 1,
+      "theory": "transaction-model",
+      "question": "업무상 `대출` 1건이 실행되면 반드시 1건 이상의 `상환스케줄`이 함께 생성되어야 한다(대출 ||--|{ 상환스케줄). 개발자가 Oracle에서 아래와 같이 처리하였고, 세 번째 INSERT는 PK 중복으로 오류가 발생하였다. 애플리케이션은 오류를 무시하고 마지막 COMMIT을 실행하였다.\n\n이 처리 결과에 대한 설명으로 가장 적절한 것은? (`LOAN_SCHED`의 PK는 (LOAN_NO, SEQ)이다.)",
+      "code": "INSERT INTO LOAN       (LOAN_NO, CUST_NO, AMT)   VALUES ('L10', 'C01', 3000);\nINSERT INTO LOAN_SCHED (LOAN_NO, SEQ, PAY_AMT)   VALUES ('L10', 1, 1000);\nINSERT INTO LOAN_SCHED (LOAN_NO, SEQ, PAY_AMT)   VALUES ('L10', 1, 1000);  -- 오류 발생\nCOMMIT;",
+      "choices": [
+        "오류가 발생한 문장 때문에 트랜잭션 전체가 자동으로 롤백되어 아무 데이터도 저장되지 않는다.",
+        "대출 1건과 상환스케줄 2건이 모두 저장된다.",
+        "대출 1건만 저장되고 상환스케줄은 하나도 저장되지 않는다.",
+        "대출 1건과 1회차 상환스케줄만 저장되어, 함께 처리되어야 할 작업의 일부만 반영되므로 원자성이 깨진다."
+      ],
+      "answer": 4,
+      "explanation": "Oracle에서 DML 문장이 오류로 실패하면 **그 문장만** 취소되고(문장 수준 롤백), 앞서 성공한 문장은 트랜잭션 안에 그대로 남는다. 이후 COMMIT을 실행했으므로 `LOAN` 1건과 1회차 `LOAN_SCHED` 1건이 확정된다.\n\n대출과 상환스케줄은 모델상 함께 생성되어야 하는 하나의 트랜잭션 단위이므로, 실패 시에는 COMMIT이 아니라 **ROLLBACK**으로 전체를 취소해야 원자성(All or Nothing)이 지켜진다. 트랜잭션 전체가 자동 롤백되는 것은 아니며, 2회차 행은 오류로 입력되지 않았다."
+    },
+    {
+      "id": 9,
+      "subject": 1,
+      "theory": "null-attribute",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle 기준, 결과는 C1 / C2 / C3 / C4 순서)",
+      "code": "SELECT NVL(NULL + 10, 0)                               AS C1,\n       LENGTH('')                                       AS C2,\n       'A' || NULL                                      AS C3,\n       CASE WHEN NULL = NULL THEN 'Y' ELSE 'N' END      AS C4\n  FROM DUAL;",
+      "choices": [
+        "10 / 0 / A / Y",
+        "0 / 0 / NULL / N",
+        "0 / NULL / A / N",
+        "0 / NULL / NULL / Y"
+      ],
+      "answer": 3,
+      "explanation": "- C1: `NULL + 10`처럼 NULL이 포함된 산술 연산 결과는 NULL이므로 `NVL(NULL, 0)` = **0**이다.\n- C2: Oracle은 빈 문자열 `''`을 **NULL**로 취급하므로 `LENGTH('')`는 0이 아니라 **NULL**이다.\n- C3: Oracle의 `||` 연결 연산은 NULL을 빈 문자열처럼 처리하므로 `'A' || NULL` = **'A'**다.\n- C4: `NULL = NULL`의 결과는 TRUE가 아니라 UNKNOWN이므로 WHEN 조건을 만족하지 못해 ELSE의 **'N'**이 반환된다.\n\n따라서 0 / NULL / A / N이다."
+    },
+    {
+      "id": 10,
+      "subject": 1,
+      "theory": "natural-vs-surrogate-key",
+      "question": "은행의 `거래내역` 엔터티 주식별자로 다음 세 가지 안을 검토하고 있다. 계좌번호는 `계좌` 엔터티로부터 상속받은 값이며, 업무 규칙상 한 계좌에서 같은 거래일시(초 단위까지)에 두 건 이상의 거래가 발생하지 않는다.\n\n- (가) 계좌번호 + 거래일시\n- (나) 계좌번호 + 거래순번 (거래순번은 계좌 안에서 1부터 차례로 부여)\n- (다) 거래ID (시퀀스로 생성한 단일 번호)\n\n이 중 **본질식별자**에 해당하는 것만 고른 것은?",
+      "choices": [
+        "(가)",
+        "(가), (나)",
+        "(나), (다)",
+        "(가), (나), (다)"
+      ],
+      "answer": 1,
+      "explanation": "본질식별자와 인조식별자는 **업무에 의해 자연스럽게 만들어지는가**로 구분한다.\n\n- (가) 계좌번호(부모로부터 상속)와 거래일시는 거래가 발생할 때 업무적으로 결정되는 값이므로 **본질식별자**다.\n- (나) 거래순번은 업무가 아니라 편의상 부여한 일련번호이므로, 부모 식별자에 순번을 붙인 형태라도 **인조식별자**로 본다.\n- (다) 시퀀스로 생성한 단일 번호는 대표적인 **인조식별자**다."
+    },
+    {
+      "id": 11,
+      "subject": 2,
+      "theory": "rdb-overview",
+      "question": "ACCOUNT 테이블의 ACCT_NO는 기본키이고, ACCOUNT.CUST_NO는 CUSTOMER.CUST_NO를 참조하는 외래키이다. ACCOUNT.CUST_NO에는 NOT NULL 제약이 없다. 이에 대한 설명으로 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "한 고객번호가 ACCOUNT.CUST_NO에 여러 번 나타날 수 있다.",
+        "ACCOUNT.CUST_NO에는 NULL을 저장할 수 있다.",
+        "CUSTOMER에 존재하지 않는 고객번호를 ACCOUNT.CUST_NO에 입력하면 참조 무결성 위반으로 오류가 발생한다.",
+        "ACCT_NO는 기본키이므로 중복 값은 허용되지 않지만, NULL은 한 행에 한하여 저장할 수 있다."
+      ],
+      "answer": 4,
+      "explanation": "기본키는 **유일성과 NOT NULL**을 동시에 보장하므로 NULL은 한 행이라도 저장할 수 없다.\n\n외래키는 부모 테이블의 기본키 값이나 NULL만 가질 수 있고(NOT NULL 제약이 없을 때), 1:M 관계에서는 같은 값이 여러 번 나타날 수 있다. 부모에 없는 값을 입력하면 참조 무결성 위반 오류가 발생한다."
+    },
+    {
+      "id": 12,
+      "subject": 2,
+      "theory": "select",
+      "question": "ACCOUNT 테이블에 ACCT_NO, BRANCH, BAL 컬럼이 있다. 다음 중 Oracle에서 **오류 없이 실행되는** SQL은?",
+      "choices": [
+        "`SELECT *, BAL FROM ACCOUNT;`",
+        "`SELECT A.*, A.BAL * 0.01 AS \"예상 이자\" FROM ACCOUNT A;`",
+        "`SELECT ACCT_NO, BAL 현재 잔액 FROM ACCOUNT;`",
+        "`SELECT DISTINCT ACCT_NO, DISTINCT BRANCH FROM ACCOUNT;`"
+      ],
+      "answer": 2,
+      "explanation": "`A.*`처럼 테이블 별칭을 붙인 애스터리스크는 다른 컬럼과 함께 쓸 수 있고, 공백이 포함된 별칭은 큰따옴표로 감싸면 사용할 수 있으므로 정상 실행된다.\n\n- 별칭 없이 쓴 `*`는 Oracle에서 다른 컬럼과 함께 나열할 수 없다.\n- 공백이 포함된 별칭을 큰따옴표 없이 쓰면 오류가 발생한다.\n- DISTINCT는 SELECT 바로 뒤에 한 번만 쓰며 컬럼마다 붙일 수 없다."
+    },
+    {
+      "id": 13,
+      "subject": 2,
+      "theory": "select",
+      "question": "다음 [ACCOUNT] 테이블에 SQL을 실행했을 때 결과 값은?\n\n[ACCOUNT]\n\n| ACCT | BAL | FEE |\n|---|---|---|\n| A1 | 1000 | 100 |\n| A2 | 500 | NULL |\n| A3 | NULL | 50 |\n| A4 | 800 | 0 |",
+      "code": "SELECT COUNT(*)\n  FROM (SELECT DISTINCT BAL - FEE * 2 AS NET\n          FROM ACCOUNT);",
+      "choices": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "answer": 2,
+      "explanation": "산술 연산자 우선순위에 따라 `FEE * 2`를 먼저 계산한 뒤 BAL에서 뺀다.\n\n- A1: 1000 - 200 = 800\n- A2: 500 - NULL = NULL\n- A3: NULL - 100 = NULL\n- A4: 800 - 0 = 800\n\nDISTINCT는 NULL끼리도 같은 값으로 보아 하나로 합치므로 결과는 {800, NULL} 2행이다. COUNT(*)는 NULL인 행도 세므로 **2**다."
+    },
+    {
+      "id": 14,
+      "subject": 2,
+      "theory": "functions",
+      "question": "계좌번호를 화면에 표시할 때 가운데 부분을 마스킹하려 한다. 다음 SQL의 실행 결과로 옳은 것은? (Oracle)",
+      "code": "SELECT SUBSTR('110-234-567890', 1, 4)\n       || LPAD('*', LENGTH('110-234-567890') - 8, '*')\n       || SUBSTR('110-234-567890', -4) AS MASKED\n  FROM DUAL;",
+      "choices": [
+        "`110-*****7890`",
+        "`110******7890`",
+        "`110-******7890`",
+        "`110-******67890`"
+      ],
+      "answer": 3,
+      "explanation": "`'110-234-567890'`의 길이는 14다.\n\n- `SUBSTR(V, 1, 4)` → 앞 4글자 **'110-'**\n- `LPAD('*', 14 - 8, '*')` = `LPAD('*', 6, '*')` → 전체 길이 6이 되도록 왼쪽을 '*'로 채워 **'\\*\\*\\*\\*\\*\\*'**(6개)\n- `SUBSTR(V, -4)` → 뒤에서 4번째부터 끝까지 **'7890'**\n\n따라서 결과는 **'110-\\*\\*\\*\\*\\*\\*7890'**(14글자)이다. LPAD의 두 번째 인자는 덧붙일 개수가 아니라 **결과 전체 길이**라는 점에 주의한다."
+    },
+    {
+      "id": 15,
+      "subject": 2,
+      "theory": "functions",
+      "question": "원금 1,234,567원, 연이율 4.5%인 대출의 월 이자를 계산하는 SQL이다. 실행 결과로 옳은 것은? (Oracle, 결과는 C1 / C2 / C3 / C4 순서)",
+      "code": "SELECT ROUND(1234567 * 0.045 / 12, -1) AS C1,\n       TRUNC(1234567 * 0.045 / 12, -1) AS C2,\n       CEIL(1234567 * 0.045 / 12)      AS C3,\n       MOD(1234567, 1000)              AS C4\n  FROM DUAL;",
+      "choices": [
+        "4630 / 4630 / 4629 / 567",
+        "4620 / 4620 / 4630 / 1234",
+        "4629.63 / 4620 / 4630 / 567",
+        "4630 / 4620 / 4630 / 567"
+      ],
+      "answer": 4,
+      "explanation": "월 이자 = 1234567 × 0.045 / 12 = 55555.515 / 12 = **4629.62625**이다.\n\n- C1: `ROUND(x, -1)`은 일의 자리에서 반올림하여 십의 자리까지 남긴다 → **4630**\n- C2: `TRUNC(x, -1)`은 일의 자리 이하를 버린다 → **4620**\n- C3: `CEIL(x)`은 x 이상인 가장 작은 정수 → **4630**\n- C4: `MOD(1234567, 1000)`은 1234567을 1000으로 나눈 나머지 → **567**"
+    },
+    {
+      "id": 16,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 [TXN] 테이블에 SQL을 실행했을 때 결과로 옳은 것은? (Oracle, TYPE은 D: 입금, W: 출금, F: 수수료)\n\n[TXN]\n\n| TID | TYPE | AMT |\n|---|---|---|\n| T1 | D | 1000 |\n| T2 | W | 300 |\n| T3 | F | 10 |\n| T4 | W | NULL |\n| T5 | D | 500 |",
+      "code": "SELECT SUM(DECODE(TYPE, 'D', AMT, 'W', -AMT)) AS NET,\n       COUNT(DECODE(TYPE, 'W', 1))             AS W_CNT\n  FROM TXN;",
+      "choices": [
+        "NET = 1200, W_CNT = 2",
+        "NET = 1190, W_CNT = 2",
+        "NET = 1200, W_CNT = 1",
+        "NET = 1190, W_CNT = 1"
+      ],
+      "answer": 1,
+      "explanation": "DECODE에서 일치하는 값이 없고 기본값도 생략하면 **NULL**을 반환한다.\n\n- NET: T1 = 1000, T2 = -300, T3 = NULL('F'는 일치하는 값이 없음), T4 = -NULL = NULL, T5 = 500. SUM은 NULL을 무시하므로 1000 - 300 + 500 = **1200**이다. 수수료(T3)를 빼서 1190으로 계산하면 틀린다.\n- W_CNT: TYPE이 'W'인 T2, T4는 AMT와 관계없이 1을 반환하고 나머지는 NULL이다. COUNT는 NULL이 아닌 값만 세므로 **2**다."
+    },
+    {
+      "id": 17,
+      "subject": 2,
+      "theory": "where",
+      "question": "다음 [ACCOUNT] 테이블에 SQL을 실행했을 때 결과 값은?\n\n[ACCOUNT]\n\n| ACCT | STATUS | BAL |\n|---|---|---|\n| A1 | ACTIVE | 50 |\n| A2 | ACTIVE | 500 |\n| A3 | CLOSED | 0 |\n| A4 | NULL | 300 |\n| A5 | DORMANT | NULL |\n| A6 | DORMANT | 1000 |",
+      "code": "SELECT COUNT(*)\n  FROM ACCOUNT\n WHERE STATUS <> 'CLOSED'\n   AND BAL NOT BETWEEN 0 AND 100;",
+      "choices": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "answer": 3,
+      "explanation": "두 조건이 AND로 연결되어 있으므로 둘 다 TRUE인 행만 반환된다. NULL과의 비교는 UNKNOWN이 되어 걸러진다.\n\n- A1: STATUS 조건 TRUE, 50은 0~100 사이이므로 NOT BETWEEN은 FALSE → 제외\n- A2: TRUE AND TRUE → **포함**\n- A3: STATUS = 'CLOSED'이므로 FALSE → 제외\n- A4: `NULL <> 'CLOSED'`는 UNKNOWN → 제외\n- A5: BAL이 NULL이므로 NOT BETWEEN 결과가 UNKNOWN → 제외\n- A6: TRUE AND TRUE → **포함**\n\n결과는 **2**다."
+    },
+    {
+      "id": 18,
+      "subject": 2,
+      "theory": "where",
+      "question": "다음 [ACCOUNT] 테이블에 SQL을 실행했을 때 결과 건수는?\n\n[ACCOUNT]\n\n| ACCT_NO |\n|---|\n| 110-123-456789 |\n| 110-12-3456789 |\n| 110-1234-56789 |\n| 110-987- |\n| 1101-23-456789 |\n| 110-0-0-12345 |",
+      "code": "SELECT COUNT(*)\n  FROM ACCOUNT\n WHERE ACCT_NO LIKE '110-___-%';",
+      "choices": [
+        "0건",
+        "1건",
+        "2건",
+        "3건"
+      ],
+      "answer": 4,
+      "explanation": "패턴 `'110-___-%'`은 '110-'로 시작하고, 이어서 **임의의 문자 정확히 3개**(`_`는 한 글자, 하이픈도 한 글자로 매칭), 그다음 '-', 그 뒤에는 0개 이상의 아무 문자가 오는 값이다.\n\n- '110-123-456789': 5~7번째 '123', 8번째 '-' → **일치**\n- '110-12-3456789': 5~7번째 '12-', 8번째 '3' → 불일치\n- '110-1234-56789': 8번째가 '4' → 불일치\n- '110-987-': `%`는 빈 문자열과도 일치 → **일치**\n- '1101-23-456789': '110-'로 시작하지 않음 → 불일치\n- '110-0-0-12345': 5~7번째 '0-0', 8번째 '-' → **일치**\n\n따라서 **3건**이다."
+    },
+    {
+      "id": 19,
+      "subject": 2,
+      "theory": "group-by-having",
+      "question": "다음 [TXN] 테이블에 SQL을 실행한 결과로 옳은 것은? (ACCT(CNT, TOT) 형식으로 표기)\n\n[TXN]\n\n| ACCT | TYPE | AMT |\n|---|---|---|\n| A1 | D | 100 |\n| A1 | W | 50 |\n| A1 | D | 200 |\n| A2 | D | 400 |\n| A2 | W | 300 |\n| A3 | D | 150 |\n| A3 | D | 150 |\n| A3 | D | NULL |\n| A4 | W | 500 |",
+      "code": "SELECT ACCT, COUNT(*) AS CNT, SUM(AMT) AS TOT\n  FROM TXN\n WHERE TYPE = 'D'\n GROUP BY ACCT\nHAVING COUNT(AMT) >= 2\n ORDER BY ACCT;",
+      "choices": [
+        "A1(3, 350)",
+        "A1(2, 300), A2(1, 400), A3(3, 300)",
+        "A1(2, 300), A3(2, 300)",
+        "A1(2, 300), A3(3, 300)"
+      ],
+      "answer": 4,
+      "explanation": "WHERE 절이 먼저 적용되어 TYPE = 'D'인 행만 남은 뒤 그룹핑된다.\n\n- A1: 100, 200 → COUNT(*) = 2, COUNT(AMT) = 2, SUM = 300 → HAVING 만족\n- A2: 400 → COUNT(AMT) = 1 → 제외\n- A3: 150, 150, NULL → COUNT(*) = **3**, COUNT(AMT) = 2, SUM = 300 → HAVING 만족\n- A4: 'D' 행이 없어 그룹 자체가 없다.\n\nHAVING은 COUNT(AMT)로 거르지만 SELECT의 CNT는 COUNT(*)이므로 A3의 CNT는 NULL 행을 포함한 3이다."
+    },
+    {
+      "id": 20,
+      "subject": 2,
+      "theory": "group-by-having",
+      "question": "ACCOUNT 테이블(ACCT_NO, CUST_NO, BRANCH, BAL)에 대해 Oracle에서 **오류 없이 실행되는** SQL은?",
+      "choices": [
+        "`SELECT BRANCH, SUM(BAL) AS TOT FROM ACCOUNT GROUP BY BRANCH HAVING TOT > 1000;`",
+        "`SELECT BRANCH, SUM(BAL) FROM ACCOUNT GROUP BY BRANCH HAVING MAX(BAL) > 500 ORDER BY COUNT(*) DESC;`",
+        "`SELECT BRANCH, CUST_NO, SUM(BAL) FROM ACCOUNT GROUP BY BRANCH;`",
+        "`SELECT BRANCH, SUM(BAL) FROM ACCOUNT WHERE SUM(BAL) > 1000 GROUP BY BRANCH;`"
+      ],
+      "answer": 2,
+      "explanation": "HAVING과 ORDER BY에는 SELECT 목록에 없는 집계 함수(MAX(BAL), COUNT(*))도 사용할 수 있으므로 정상 실행된다.\n\n- HAVING은 SELECT보다 먼저 처리되므로 SELECT에서 정의한 별칭 TOT를 참조할 수 없다.\n- GROUP BY에 없는 CUST_NO를 집계 함수 없이 SELECT하면 오류(ORA-00979)가 발생한다.\n- WHERE 절에는 집계 함수를 쓸 수 없다(ORA-00934). 그룹 조건은 HAVING에 써야 한다."
+    },
+    {
+      "id": 21,
+      "subject": 2,
+      "theory": "order-by",
+      "question": "다음 [ACCOUNT] 테이블에 SQL을 실행한 결과의 출력 순서로 옳은 것은? (Oracle)\n\n[ACCOUNT]\n\n| ACCT | BRANCH | BAL |\n|---|---|---|\n| A1 | 강남 | 300 |\n| A2 | NULL | 100 |\n| A3 | 강남 | NULL |\n| A4 | 종로 | 200 |\n| A5 | 강남 | 100 |",
+      "code": "SELECT ACCT\n  FROM ACCOUNT\n ORDER BY BRANCH DESC, BAL;",
+      "choices": [
+        "A2, A4, A5, A1, A3",
+        "A4, A5, A1, A3, A2",
+        "A2, A4, A3, A5, A1",
+        "A4, A3, A5, A1, A2"
+      ],
+      "answer": 1,
+      "explanation": "Oracle은 NULL을 **가장 큰 값**으로 취급한다.\n\n- 1차 정렬 BRANCH DESC: NULL이 가장 크므로 맨 앞 → A2, 그다음 '종로' → A4, 그다음 '강남' → A1, A3, A5\n- 2차 정렬 BAL ASC(강남 내부): 100(A5) → 300(A1) → NULL(A3, 오름차순에서는 맨 뒤)\n\n따라서 **A2, A4, A5, A1, A3**이다."
+    },
+    {
+      "id": 22,
+      "subject": 2,
+      "theory": "order-by",
+      "question": "ORDER BY 절에 대한 설명으로 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "ORDER BY는 논리적으로 SELECT 절 이후에 처리되므로 SELECT 절에서 정의한 컬럼 별칭을 사용할 수 있다.",
+        "GROUP BY나 DISTINCT를 사용하지 않은 일반 SELECT문에서는 SELECT 목록에 없는 컬럼으로도 정렬할 수 있다.",
+        "Oracle은 NULL을 가장 큰 값으로, SQL Server는 가장 작은 값으로 취급하여 정렬한다.",
+        "`ORDER BY 3`처럼 위치 번호를 쓸 때 SELECT 목록의 컬럼 수보다 큰 번호를 지정하면 마지막 컬럼을 기준으로 정렬된다."
+      ],
+      "answer": 4,
+      "explanation": "ORDER BY에 위치 번호를 사용할 때 SELECT 목록의 컬럼 수를 벗어나는 번호를 지정하면 **오류**가 발생한다(Oracle ORA-01785). 마지막 컬럼으로 대신 정렬해 주지 않는다.\n\n나머지 설명은 모두 옳다. ORDER BY는 가장 마지막에 처리되어 별칭을 쓸 수 있고, 일반 SELECT에서는 SELECT 목록에 없는 컬럼으로도 정렬할 수 있으며, NULL 정렬 위치는 Oracle과 SQL Server가 반대다."
+    },
+    {
+      "id": 23,
+      "subject": 2,
+      "theory": "join",
+      "question": "다음 세 테이블에 SQL을 실행한 결과로 옳은 것은? (NAME(CNT, TOT) 형식으로 표기)\n\n[CUSTOMER]\n\n| CUST | NAME |\n|---|---|\n| C1 | 김 |\n| C2 | 이 |\n| C3 | 박 |\n\n[ACCOUNT]\n\n| ACCT | CUST |\n|---|---|\n| A1 | C1 |\n| A2 | C1 |\n| A3 | C2 |\n| A4 | C3 |\n\n[TXN]\n\n| ACCT | AMT |\n|---|---|\n| A1 | 100 |\n| A1 | 200 |\n| A2 | 50 |\n| A3 | 300 |\n| A5 | 70 |",
+      "code": "SELECT C.NAME, COUNT(*) AS CNT, SUM(T.AMT) AS TOT\n  FROM CUSTOMER C, ACCOUNT A, TXN T\n WHERE C.CUST = A.CUST\n   AND A.ACCT = T.ACCT\n GROUP BY C.NAME;",
+      "choices": [
+        "김(2, 350), 이(1, 300)",
+        "김(3, 350), 이(1, 300), 박(0, NULL)",
+        "김(3, 350), 이(1, 300)",
+        "김(3, 350), 이(1, 300), 박(1, 70)"
+      ],
+      "answer": 3,
+      "explanation": "세 테이블을 등가 조인(내부 조인)하면 조인 조건을 모두 만족하는 행만 남는다.\n\n- 김(C1): A1의 거래 2건(100, 200) + A2의 거래 1건(50) → **3건, 350**\n- 이(C2): A3의 거래 1건(300) → **1건, 300**\n- 박(C3): A4에 거래가 없으므로 조인 결과에서 빠진다(0건 행이 생기지 않음).\n- TXN의 A5는 ACCOUNT에 없으므로 어떤 고객과도 연결되지 않는다.\n\nCNT는 고객별 계좌 수가 아니라 조인 결과 행(거래) 수다."
+    },
+    {
+      "id": 24,
+      "subject": 2,
+      "theory": "join",
+      "question": "Oracle의 `(+)` 외부 조인 표기법에 대한 설명으로 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "`(+)`는 조인 조건에서 값이 없어 NULL로 채워질 쪽, 즉 데이터가 부족한 테이블의 컬럼에 붙인다.",
+        "`WHERE A.ID(+) = B.ID(+)`처럼 양쪽 컬럼에 모두 `(+)`를 붙이면 FULL OUTER JOIN을 구현할 수 있다.",
+        "외부 조인되는 테이블에 대한 일반 조건(예: `L.STATUS = 'ACTIVE'`)에 `(+)`를 빠뜨리면 결과가 내부 조인과 같아질 수 있다.",
+        "`WHERE C.CUST_NO = L.CUST_NO(+)`는 ANSI 표준의 `CUSTOMER C LEFT OUTER JOIN LOAN L ON C.CUST_NO = L.CUST_NO`와 같은 결과를 낸다."
+      ],
+      "answer": 2,
+      "explanation": "Oracle의 `(+)` 표기는 조인 조건의 **한쪽에만** 붙일 수 있으며, 양쪽에 붙이면 오류(ORA-01468)가 발생한다. FULL OUTER JOIN은 ANSI 표준의 `FULL OUTER JOIN`을 사용하거나 LEFT/RIGHT 외부 조인을 UNION으로 결합해 구현한다.\n\n`(+)`는 NULL을 채워 넣을 쪽에 붙이고, 외부 조인 대상 테이블의 일반 조건에도 `(+)`를 붙여야 외부 조인이 유지된다. 고객 쪽을 모두 남기는 `C.CUST_NO = L.CUST_NO(+)`는 LEFT OUTER JOIN과 같다."
+    },
+    {
+      "id": 25,
+      "subject": 2,
+      "theory": "standard-join",
+      "question": "다음 세 테이블에 SQL을 실행했을 때 결과 건수는?\n\n[CUSTOMER]\n\n| CUST | NAME |\n|---|---|\n| C1 | 김 |\n| C2 | 이 |\n| C3 | 박 |\n| C4 | 최 |\n\n[ACCOUNT]\n\n| ACCT | CUST | BR |\n|---|---|---|\n| A1 | C1 | B1 |\n| A2 | C1 | B9 |\n| A3 | C2 | B2 |\n\n[BRANCH]\n\n| BR | BNAME |\n|---|---|\n| B1 | 강남 |\n| B2 | 종로 |",
+      "code": "SELECT C.NAME, A.ACCT, B.BNAME\n  FROM CUSTOMER C\n  LEFT OUTER JOIN ACCOUNT A ON C.CUST = A.CUST\n INNER JOIN BRANCH B        ON A.BR   = B.BR;",
+      "choices": [
+        "2건",
+        "3건",
+        "4건",
+        "5건"
+      ],
+      "answer": 1,
+      "explanation": "조인은 왼쪽부터 차례로 수행된다.\n\n1. CUSTOMER LEFT OUTER JOIN ACCOUNT: (김, A1, B1), (김, A2, B9), (이, A3, B2), (박, NULL, NULL), (최, NULL, NULL) → 5행\n2. 위 결과 INNER JOIN BRANCH ON A.BR = B.BR: B1, B2와 일치하는 A1, A3 행만 남는다. A2의 B9는 BRANCH에 없고, 박·최의 BR은 NULL이라 등호 비교가 UNKNOWN이 되어 모두 제거된다.\n\n결과는 **2건**이다. 앞에서 외부 조인으로 살린 행도 뒤의 **내부 조인**에서 사라질 수 있다는 점이 핵심이다."
+    },
+    {
+      "id": 26,
+      "subject": 2,
+      "theory": "standard-join",
+      "question": "계좌가 하나도 없는 고객을 조회하려고 아래 SQL을 작성하였다. ACCOUNT.CUST에는 NOT NULL 제약이 있다.\n\n[CUSTOMER]\n\n| CUST | NAME |\n|---|---|\n| C1 | 김 |\n| C2 | 이 |\n| C3 | 박 |\n| C4 | 최 |\n\n[ACCOUNT]\n\n| ACCT | CUST |\n|---|---|\n| A1 | C1 |\n| A2 | C1 |\n| A3 | C3 |\n\n다음 중 위 SQL과 실행 결과가 **다른** 것은?",
+      "code": "SELECT C.NAME\n  FROM CUSTOMER C\n  LEFT OUTER JOIN ACCOUNT A\n    ON C.CUST = A.CUST\n WHERE A.CUST IS NULL;",
+      "choices": [
+        "`SELECT C.NAME FROM CUSTOMER C WHERE NOT EXISTS (SELECT 1 FROM ACCOUNT A WHERE A.CUST = C.CUST);`",
+        "`SELECT C.NAME FROM CUSTOMER C WHERE C.CUST NOT IN (SELECT A.CUST FROM ACCOUNT A);`",
+        "`SELECT NAME FROM CUSTOMER WHERE CUST IN (SELECT CUST FROM CUSTOMER MINUS SELECT CUST FROM ACCOUNT);`",
+        "`SELECT C.NAME FROM CUSTOMER C LEFT OUTER JOIN ACCOUNT A ON C.CUST = A.CUST AND A.CUST IS NULL;`"
+      ],
+      "answer": 4,
+      "explanation": "주어진 SQL은 외부 조인 후 **WHERE 절**에서 `A.CUST IS NULL`인 행만 남기는 안티 조인이므로 결과는 '이', '최'다. NOT EXISTS, NOT IN(서브쿼리 결과에 NULL이 없으므로 안전), MINUS를 이용한 방법도 모두 '이', '최'를 반환한다.\n\n반면 `A.CUST IS NULL`을 **ON 절**에 넣으면 이는 조인 조건이 되어 ACCOUNT의 어떤 행과도 매칭되지 않을 뿐, LEFT OUTER JOIN이므로 CUSTOMER의 모든 행이 그대로 남는다. 결과는 김, 이, 박, 최 4건으로 달라진다."
+    },
+    {
+      "id": 27,
+      "subject": 2,
+      "theory": "subquery",
+      "question": "다음 두 테이블에 SQL을 실행한 결과로 옳은 것은? (출력 순서대로 표기)\n\n[CUSTOMER]\n\n| CUST | NAME |\n|---|---|\n| C1 | 김 |\n| C2 | 이 |\n| C3 | 박 |\n| C4 | 최 |\n\n[ACCOUNT]\n\n| ACCT | CUST | BAL |\n|---|---|---|\n| A1 | C1 | 1500 |\n| A2 | C1 | 2000 |\n| A3 | C2 | 500 |\n| A4 | C2 | 3000 |\n| A5 | C3 | 1000 |",
+      "code": "SELECT C.NAME\n  FROM CUSTOMER C\n WHERE NOT EXISTS (SELECT 1\n                     FROM ACCOUNT A\n                    WHERE A.CUST = C.CUST\n                      AND A.BAL  < 1000)\n ORDER BY C.NAME;",
+      "choices": [
+        "김, 박",
+        "김",
+        "김, 박, 최",
+        "김, 이, 박"
+      ],
+      "answer": 3,
+      "explanation": "상관 서브쿼리는 고객마다 '잔액이 1000 미만인 계좌'가 있는지 확인하고, NOT EXISTS는 그런 계좌가 **하나도 없을 때** TRUE가 된다.\n\n- 김: 1500, 2000 → 1000 미만 없음 → **포함**\n- 이: 500이 있음 → 제외\n- 박: 1000은 1000 미만이 아님 → **포함**\n- 최: 계좌가 아예 없어 서브쿼리가 공집합 → NOT EXISTS가 TRUE → **포함**\n\n'모든 계좌가 1000 이상'을 이중 부정으로 표현하면 계좌가 없는 고객도 조건을 만족한다는 점에 주의한다. 결과는 김, 박, 최다."
+    },
+    {
+      "id": 28,
+      "subject": 2,
+      "theory": "subquery",
+      "question": "다음 [ACCOUNT] 테이블에 SQL을 실행한 결과로 옳은 것은? (출력 순서대로 표기)\n\n[ACCOUNT]\n\n| ACCT | BRANCH | BAL |\n|---|---|---|\n| A1 | 강남 | 500 |\n| A2 | 강남 | 800 |\n| A3 | 종로 | 300 |\n| A4 | 종로 | 300 |\n| A5 | NULL | 900 |",
+      "code": "SELECT ACCT\n  FROM ACCOUNT A\n WHERE BAL = (SELECT MAX(BAL)\n                FROM ACCOUNT B\n               WHERE B.BRANCH = A.BRANCH)\n ORDER BY ACCT;",
+      "choices": [
+        "A2, A3",
+        "A2, A3, A4",
+        "A2, A3, A4, A5",
+        "A5"
+      ],
+      "answer": 2,
+      "explanation": "상관 서브쿼리는 바깥 행의 BRANCH와 같은 지점의 최대 잔액을 구한다.\n\n- 강남: 최대 800 → A2만 일치\n- 종로: 최대 300 → A3, A4 모두 일치(동점이면 둘 다 반환)\n- A5: BRANCH가 NULL이라 `B.BRANCH = NULL`은 어떤 행에서도 TRUE가 되지 않는다. 서브쿼리 결과 MAX는 NULL이고 `900 = NULL`은 UNKNOWN → 제외\n\n결과는 **A2, A3, A4**다."
+    },
+    {
+      "id": 29,
+      "subject": 2,
+      "theory": "set-operators",
+      "question": "다음 두 테이블에 대해 (가), (나) SQL을 실행했을 때 결과 건수로 옳은 것은? (Oracle 기준)\n\n[DEPOSIT]\n\n| CUST |\n|---|\n| C1 |\n| C1 |\n| C2 |\n| C3 |\n| NULL |\n\n[LOAN]\n\n| CUST |\n|---|\n| C2 |\n| C2 |\n| C4 |\n| NULL |",
+      "code": "-- (가)\nSELECT CUST FROM DEPOSIT\nMINUS\nSELECT CUST FROM LOAN;\n\n-- (나)\nSELECT CUST FROM DEPOSIT\nINTERSECT\nSELECT CUST FROM LOAN;",
+      "choices": [
+        "(가) 2건, (나) 2건",
+        "(가) 2건, (나) 1건",
+        "(가) 3건, (나) 1건",
+        "(가) 3건, (나) 2건"
+      ],
+      "answer": 1,
+      "explanation": "MINUS와 INTERSECT는 결과에서 **중복을 제거**하며, 집합 연산자에서는 NULL끼리도 같은 값으로 비교된다.\n\n- (가) DEPOSIT의 고유 값 {C1, C2, C3, NULL}에서 LOAN의 {C2, C4, NULL}을 빼면 {C1, C3} → **2건** (NULL도 LOAN에 있으므로 제거)\n- (나) 양쪽에 모두 있는 값 {C2, NULL} → **2건**\n\nNULL을 서로 다른 값으로 착각하면 (가) 3건, (나) 1건으로 잘못 계산하게 된다."
+    },
+    {
+      "id": 30,
+      "subject": 2,
+      "theory": "set-operators",
+      "question": "DEPOSIT(CUST, BAL), LOAN(CUST, AMT) 테이블이 있다. BAL과 AMT는 모두 숫자형이다. 다음 중 Oracle에서 **오류가 발생하는** SQL은?",
+      "choices": [
+        "`SELECT CUST, BAL FROM DEPOSIT UNION SELECT CUST, AMT FROM LOAN ORDER BY BAL;`",
+        "`SELECT CUST, BAL AS AMT FROM DEPOSIT UNION ALL SELECT CUST, AMT FROM LOAN ORDER BY 2;`",
+        "`SELECT CUST, NULL FROM DEPOSIT UNION SELECT CUST, AMT FROM LOAN;`",
+        "`SELECT CUST, BAL FROM DEPOSIT UNION SELECT CUST, AMT FROM LOAN ORDER BY AMT;`"
+      ],
+      "answer": 4,
+      "explanation": "집합 연산 결과의 컬럼 이름은 **첫 번째 SELECT**의 컬럼명(별칭)을 따른다. 따라서 결과 집합에는 AMT라는 컬럼이 없고, ORDER BY AMT는 오류(ORA-00904)가 발생한다.\n\n- ORDER BY BAL은 첫 번째 SELECT의 컬럼명이므로 정상이다.\n- 첫 번째 SELECT에서 별칭 AMT를 주었거나 위치 번호(2)를 쓰면 정상이다.\n- NULL은 어떤 데이터 타입과도 짝을 맞출 수 있으므로 정상이다."
+    },
+    {
+      "id": 31,
+      "subject": 2,
+      "theory": "group-functions",
+      "question": "다음 SQL의 결과 행 수와, 결과에서 PROD 컬럼이 NULL로 표시되는 행 수로 옳은 것은?\n\n[SALES]\n\n| BRANCH | PROD | AMT |\n|---|---|---|\n| 강남 | 예금 | 100 |\n| 강남 | 적금 | 200 |\n| 강남 | NULL | 50 |\n| 종로 | 예금 | 300 |",
+      "code": "SELECT BRANCH, PROD, SUM(AMT)\n  FROM SALES\n GROUP BY ROLLUP(BRANCH, PROD);",
+      "choices": [
+        "6행, 3행",
+        "7행, 3행",
+        "7행, 4행",
+        "8행, 4행"
+      ],
+      "answer": 3,
+      "explanation": "ROLLUP(BRANCH, PROD)는 (BRANCH, PROD), (BRANCH), () 세 수준의 집계를 만든다.\n\n- (BRANCH, PROD): (강남, 예금), (강남, 적금), (강남, NULL), (종로, 예금) → 4행. 원본의 NULL도 하나의 그룹이 된다.\n- (BRANCH) 소계: 강남, 종로 → 2행 (PROD는 NULL로 표시)\n- () 총계: 1행 (BRANCH, PROD 모두 NULL)\n\n전체 **7행**이며 PROD가 NULL인 행은 원본 NULL 그룹 1행 + 소계 2행 + 총계 1행 = **4행**이다. 원래 NULL과 집계로 생긴 NULL은 GROUPING 함수로 구분한다."
+    },
+    {
+      "id": 32,
+      "subject": 2,
+      "theory": "group-functions",
+      "question": "그룹 함수에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "`ROLLUP(BRANCH, PROD)`와 `ROLLUP(PROD, BRANCH)`는 인수 순서와 관계없이 같은 집계 수준을 만든다.",
+        "`CUBE(BRANCH, PROD)`는 (BRANCH, PROD), (BRANCH), () 세 가지 집계 수준을 만든다.",
+        "`GROUPING SETS(BRANCH, PROD)`는 BRANCH별 집계와 PROD별 집계만 만들며, 전체 합계가 필요하면 `()`를 함께 지정해야 한다.",
+        "`GROUPING(PROD)`는 PROD 값이 원래 데이터에서 NULL인 행에 대해서도 1을 반환한다."
+      ],
+      "answer": 3,
+      "explanation": "GROUPING SETS는 괄호 안에 나열한 집계 수준만 만든다. `GROUPING SETS(BRANCH, PROD)`는 BRANCH별, PROD별 집계만 생성하므로 전체 합계가 필요하면 `GROUPING SETS(BRANCH, PROD, ())`처럼 빈 괄호를 추가해야 한다.\n\n- ROLLUP은 인수 순서에 따라 소계 대상이 달라진다(계층적).\n- CUBE(BRANCH, PROD)는 (BRANCH, PROD), (BRANCH), (PROD), () **네 가지** 수준을 만든다.\n- GROUPING은 해당 컬럼이 **집계되어** NULL이 된 행에서만 1을 반환하고, 원래 NULL인 값에는 0을 반환한다."
+    },
+    {
+      "id": 33,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 [REPAY] 테이블은 대출별 상환 예정액이다. SQL의 실행 결과에서 REMAIN 값을 출력 순서대로 나열한 것으로 옳은 것은?\n\n[REPAY]\n\n| LOAN | SEQ | AMT |\n|---|---|---|\n| L1 | 1 | 100 |\n| L1 | 2 | 200 |\n| L1 | 3 | 300 |\n| L2 | 1 | 50 |\n| L2 | 2 | 50 |",
+      "code": "SELECT LOAN, SEQ,\n       SUM(AMT) OVER (PARTITION BY LOAN ORDER BY SEQ\n                      ROWS BETWEEN CURRENT ROW\n                               AND UNBOUNDED FOLLOWING) AS REMAIN\n  FROM REPAY\n ORDER BY LOAN, SEQ;",
+      "choices": [
+        "600, 500, 300, 100, 50",
+        "100, 300, 600, 50, 100",
+        "600, 600, 600, 100, 100",
+        "300, 500, 600, 50, 100"
+      ],
+      "answer": 1,
+      "explanation": "`ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING`은 현재 행부터 파티션의 **마지막 행까지** 합산한다. 대출(LOAN)별로 파티션이 나뉜다.\n\n- L1: SEQ 1 → 100 + 200 + 300 = 600, SEQ 2 → 200 + 300 = 500, SEQ 3 → 300\n- L2: SEQ 1 → 50 + 50 = 100, SEQ 2 → 50\n\n따라서 **600, 500, 300, 100, 50**이다. `100, 300, 600, ...`은 처음부터 현재 행까지 누적하는 기본 범위의 결과다."
+    },
+    {
+      "id": 34,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 SQL의 실행 결과에서 RK 값을 ACCT 순서(A1~A5)대로 나열한 것으로 옳은 것은? (Oracle 기준)\n\n[ACCOUNT]\n\n| ACCT | BRANCH | BAL |\n|---|---|---|\n| A1 | 강남 | 500 |\n| A2 | 강남 | NULL |\n| A3 | 강남 | 700 |\n| A4 | 종로 | 300 |\n| A5 | 종로 | 300 |",
+      "code": "SELECT ACCT,\n       RANK() OVER (PARTITION BY BRANCH ORDER BY BAL DESC) AS RK\n  FROM ACCOUNT\n ORDER BY ACCT;",
+      "choices": [
+        "2, 3, 1, 1, 1",
+        "2, NULL, 1, 1, 2",
+        "2, 3, 1, 1, 2",
+        "3, 1, 2, 1, 1"
+      ],
+      "answer": 4,
+      "explanation": "Oracle은 NULL을 가장 큰 값으로 취급하므로, 내림차순(DESC)에서는 별도 지정이 없으면 **NULL이 맨 앞**(NULLS FIRST)에 온다.\n\n- 강남 파티션: NULL(A2) → 700(A3) → 500(A1) 순서이므로 A2 = 1, A3 = 2, A1 = 3\n- 종로 파티션: 300, 300 동점 → A4 = 1, A5 = 1\n\nACCT 순서로 나열하면 **3, 1, 2, 1, 1**이다. NULL을 맨 뒤로 보내려면 `ORDER BY BAL DESC NULLS LAST`를 써야 한다."
+    },
+    {
+      "id": 35,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "TXN(ACCT, TXN_DT, AMT) 테이블에서 **계좌별로 거래일시 순서에 따라 직전 거래의 금액**을 함께 조회하려 한다. 단, 계좌의 첫 거래는 직전 금액을 0으로 표시해야 한다. 빈칸에 들어갈 내용으로 가장 적절한 것은?\n\n```sql\nSELECT ACCT, TXN_DT, AMT,\n       (빈칸) AS PREV_AMT\n  FROM TXN;\n```",
+      "choices": [
+        "`LEAD(AMT, 1, 0) OVER (PARTITION BY ACCT ORDER BY TXN_DT)`",
+        "`LAG(AMT, 1, 0) OVER (PARTITION BY ACCT ORDER BY TXN_DT)`",
+        "`LAG(AMT, 1, 0) OVER (ORDER BY ACCT)`",
+        "`LAG(AMT, 0, 1) OVER (PARTITION BY ACCT ORDER BY TXN_DT)`"
+      ],
+      "answer": 2,
+      "explanation": "이전 행의 값을 가져오는 함수는 **LAG**이며, 인수는 `LAG(값, 몇 행 앞, 없을 때 기본값)` 순서다. 계좌별로 따로 계산해야 하므로 `PARTITION BY ACCT`, 거래 순서이므로 `ORDER BY TXN_DT`가 필요하다.\n\n- LEAD는 **다음** 행의 값을 가져온다.\n- PARTITION BY 없이 ORDER BY ACCT만 쓰면 계좌가 바뀌는 경계에서 다른 계좌의 금액을 가져오고, 계좌 내 거래 순서도 보장되지 않는다.\n- `LAG(AMT, 0, 1)`은 0행 앞, 즉 현재 행의 값을 반환한다."
+    },
+    {
+      "id": 36,
+      "subject": 2,
+      "theory": "top-n",
+      "question": "다음 SQL의 결과 건수는? (Oracle 12c 이상 기준)\n\n[ACCOUNT]\n\n| ACCT | BAL |\n|---|---|\n| A | 900 |\n| B | 800 |\n| C | 800 |\n| D | 800 |\n| E | 700 |",
+      "code": "SELECT ACCT, BAL\n  FROM ACCOUNT\n ORDER BY BAL DESC\n FETCH FIRST 2 ROWS WITH TIES;",
+      "choices": [
+        "2건",
+        "3건",
+        "4건",
+        "5건"
+      ],
+      "answer": 3,
+      "explanation": "`FETCH FIRST 2 ROWS WITH TIES`는 정렬 기준으로 2번째 행까지 가져오되, **마지막 행(2번째)과 정렬 값이 같은 행을 모두** 함께 반환한다.\n\nBAL 내림차순으로 A(900), B(800), C(800), D(800), E(700)이고, 2번째 행 B의 값 800과 같은 C, D가 추가되어 A, B, C, D **4건**이다. WITH TIES 대신 ONLY를 쓰면 2건이다."
+    },
+    {
+      "id": 37,
+      "subject": 2,
+      "theory": "top-n",
+      "question": "ACCOUNT(ACCT, BAL) 테이블에서 잔액이 **가장 많은 계좌 3개**를 조회하려 한다. Oracle에서 항상 의도한 결과를 얻는 SQL은? (잔액에 동점은 없다고 가정한다.)",
+      "choices": [
+        "`SELECT * FROM (SELECT ACCT, BAL FROM ACCOUNT ORDER BY BAL DESC) WHERE ROWNUM <= 3;`",
+        "`SELECT ACCT, BAL FROM ACCOUNT WHERE ROWNUM <= 3 ORDER BY BAL DESC;`",
+        "`SELECT * FROM (SELECT ACCT, BAL, ROWNUM AS RN FROM ACCOUNT ORDER BY BAL DESC) WHERE RN <= 3;`",
+        "`SELECT * FROM (SELECT ACCT, BAL FROM ACCOUNT ORDER BY BAL DESC) WHERE ROWNUM >= 2 AND ROWNUM <= 4;`"
+      ],
+      "answer": 1,
+      "explanation": "ROWNUM은 행이 WHERE 절을 통과할 때 **정렬보다 먼저** 부여된다. 따라서 인라인 뷰에서 먼저 정렬한 뒤 바깥 쿼리에서 ROWNUM으로 잘라야 한다.\n\n- WHERE ROWNUM <= 3 후 ORDER BY는 임의의 3건을 뽑은 뒤 정렬할 뿐이다.\n- 인라인 뷰 안에서 ROWNUM을 별칭 RN으로 받으면 그 값은 ORDER BY 이전, 즉 읽힌 순서대로 부여된 번호이므로 정렬 순위와 무관하다.\n- `ROWNUM >= 2` 조건은 첫 행이 1을 받아 탈락하고 다음 행도 다시 1을 받으므로 결과가 0건이다."
+    },
+    {
+      "id": 38,
+      "subject": 2,
+      "theory": "hierarchical-query",
+      "question": "다음 SQL의 결과에 **포함되는** 행으로 옳은 것은? (Oracle 기준, NAME | UP_NM | LV 순서로 표기)\n\n[ORG]\n\n| ID | NAME | PID |\n|---|---|---|\n| 1 | 본점 | NULL |\n| 2 | 서울본부 | 1 |\n| 3 | 부산본부 | 1 |\n| 4 | 강남지점 | 2 |\n| 5 | 종로지점 | 2 |\n| 6 | 해운대지점 | 3 |",
+      "code": "SELECT NAME, PRIOR NAME AS UP_NM, LEVEL AS LV\n  FROM ORG\n WHERE LEVEL = 3\n START WITH PID IS NULL\nCONNECT BY PRIOR ID = PID;",
+      "choices": [
+        "`강남지점 | 본점 | 3`",
+        "`서울본부 | 본점 | 2`",
+        "`부산본부 | NULL | 2`",
+        "`해운대지점 | 부산본부 | 3`"
+      ],
+      "answer": 4,
+      "explanation": "SELECT 절의 `PRIOR NAME`은 계층 전개에서 현재 행의 **부모 행**의 NAME을 반환한다. 본점(LEVEL 1)에서 시작해 서울본부·부산본부(LEVEL 2), 강남·종로·해운대지점(LEVEL 3)으로 전개된다.\n\nWHERE LEVEL = 3은 전개가 끝난 뒤 적용되므로 결과는 (강남지점, 서울본부, 3), (종로지점, 서울본부, 3), (해운대지점, 부산본부, 3) 세 행이다.\n\n- 강남지점의 부모는 본점이 아니라 서울본부다.\n- 서울본부, 부산본부는 LEVEL 2이므로 WHERE 조건에서 제외된다."
+    },
+    {
+      "id": 39,
+      "subject": 2,
+      "theory": "hierarchical-query",
+      "question": "다음 [ORG] 테이블에 SQL을 실행한 결과로 옳은 것은? (Oracle 기준)\n\n[ORG]\n\n| ID | NAME | PID |\n|---|---|---|\n| 1 | 본점 | NULL |\n| 2 | 서울본부 | 1 |\n| 3 | 부산본부 | 1 |\n| 4 | 강남지점 | 2 |\n| 5 | 종로지점 | 2 |\n| 6 | 해운대지점 | 3 |",
+      "code": "SELECT SYS_CONNECT_BY_PATH(NAME, '/') AS PATH\n  FROM ORG\n WHERE CONNECT_BY_ISLEAF = 1\n START WITH NAME = '강남지점'\nCONNECT BY PRIOR PID = ID;",
+      "choices": [
+        "`/본점/서울본부/강남지점`",
+        "`/강남지점/서울본부/본점`",
+        "`/강남지점`",
+        "`/서울본부/본점`"
+      ],
+      "answer": 2,
+      "explanation": "`CONNECT BY PRIOR PID = ID`는 이전 행(PRIOR)의 PID와 같은 ID를 가진 행, 즉 **부모 쪽으로** 올라가는 역방향 전개다.\n\n- LEVEL 1: 강남지점 (경로 /강남지점)\n- LEVEL 2: 서울본부 (경로 /강남지점/서울본부)\n- LEVEL 3: 본점 (경로 /강남지점/서울본부/본점)\n\n역방향 전개에서는 더 이상 올라갈 부모가 없는 **본점**이 리프(CONNECT_BY_ISLEAF = 1)가 된다. SYS_CONNECT_BY_PATH는 전개된 순서대로 경로를 이어 붙이므로 결과는 **/강남지점/서울본부/본점**이다."
+    },
+    {
+      "id": 40,
+      "subject": 2,
+      "theory": "pivot-unpivot",
+      "question": "다음 SQL의 결과에서 ACCT가 'A1'인 행으로 옳은 것은? (Oracle 기준)\n\n[TXN]\n\n| ACCT | TYPE | AMT |\n|---|---|---|\n| A1 | D | 100 |\n| A1 | D | 200 |\n| A1 | W | 50 |\n| A2 | W | 70 |",
+      "code": "SELECT *\n  FROM (SELECT ACCT, TYPE, AMT FROM TXN)\n PIVOT (SUM(AMT) AS S, MAX(AMT) AS M\n        FOR TYPE IN ('D' AS DEP, 'W' AS WD))\n ORDER BY ACCT;",
+      "choices": [
+        "(ACCT, DEP, WD) = (A1, 300, 50)",
+        "(ACCT, S_DEP, M_DEP, S_WD, M_WD) = (A1, 300, 200, 50, 50)",
+        "(ACCT, DEP_S, DEP_M, WD_S, WD_M) = (A1, 300, 200, 50, 50)",
+        "(ACCT, DEP_S, DEP_M, WD_S, WD_M) = (A1, 300, 300, 50, 50)"
+      ],
+      "answer": 3,
+      "explanation": "PIVOT 절에 집계 함수를 여러 개 쓰고 각각 별칭을 주면, 결과 컬럼 이름은 **`IN 목록 별칭_집계 별칭`** 형태가 된다. 따라서 DEP_S, DEP_M, WD_S, WD_M 네 컬럼이 생기고, PIVOT에 쓰이지 않은 ACCT가 암시적 GROUP BY 기준이 된다.\n\n- DEP_S: A1의 'D' 금액 합계 100 + 200 = 300\n- DEP_M: A1의 'D' 금액 최댓값 200\n- WD_S, WD_M: A1의 'W'는 50 한 건이므로 50, 50\n\n결과는 (A1, 300, 200, 50, 50)이다."
+    },
+    {
+      "id": 41,
+      "subject": 2,
+      "theory": "regex",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle 기준, C1 / C2 순서로 표기)",
+      "code": "SELECT REGEXP_SUBSTR('KB110-12345-6789', '[0-9]{4,}')       AS C1,\n       REGEXP_SUBSTR('KB110-12345-6789', '[0-9]{4,}', 1, 2) AS C2\n  FROM DUAL;",
+      "choices": [
+        "12345 / 6789",
+        "110 / 12345",
+        "1234 / 6789",
+        "12345 / NULL"
+      ],
+      "answer": 1,
+      "explanation": "`[0-9]{4,}`는 **숫자가 4개 이상 연속**된 부분과 일치하며, 반복 지정자는 기본적으로 가능한 한 길게(탐욕적) 일치한다.\n\n'KB110-12345-6789'에서 '110'은 숫자가 3개뿐이라 일치하지 않는다.\n\n- C1: 첫 번째 일치 → **'12345'** (4개에서 멈추지 않고 5개 모두)\n- C2: 두 번째 일치(4번째 인수 occurrence = 2) → **'6789'**"
+    },
+    {
+      "id": 42,
+      "subject": 2,
+      "theory": "regex",
+      "question": "다음 SQL의 결과 건수는? (Oracle 기준)\n\n[ACCOUNT]\n\n| ACCT_NO |\n|---|\n| 110-23-456789 |\n| 110-234-567890 |\n| 1102-34-567890 |\n| 110-2345-67890 |\n| 110-234-56789 |\n| 333-12-123456 |",
+      "code": "SELECT ACCT_NO\n  FROM ACCOUNT\n WHERE REGEXP_LIKE(ACCT_NO, '^[0-9]{3}-[0-9]{2,3}-[0-9]{6}$');",
+      "choices": [
+        "0건",
+        "1건",
+        "2건",
+        "3건"
+      ],
+      "answer": 4,
+      "explanation": "패턴은 문자열 **전체**가 '숫자 3개 - 숫자 2~3개 - 숫자 6개' 형식이어야 한다(`^`와 `$`로 시작과 끝을 고정).\n\n- '110-23-456789': 3-2-6 → **일치**\n- '110-234-567890': 3-3-6 → **일치**\n- '1102-34-567890': 첫 부분이 4자리 → 불일치\n- '110-2345-67890': 가운데가 4자리 → 불일치\n- '110-234-56789': 마지막이 5자리 → 불일치\n- '333-12-123456': 3-2-6 → **일치**\n\n결과는 **3건**이다."
+    },
+    {
+      "id": 43,
+      "subject": 2,
+      "theory": "dml",
+      "question": "ACCOUNT 테이블에 (ACCT, BAL, FEE)가 ('A1', 1000, 0), ('A2', 50, 0) 두 행 있다. 아래 UPDATE 문을 실행한 후 `SELECT BAL, FEE FROM ACCOUNT WHERE ACCT = 'A1';`의 결과로 옳은 것은?",
+      "code": "UPDATE ACCOUNT\n   SET BAL = BAL - 100,\n       FEE = BAL * 0.01\n WHERE BAL >= 100;",
+      "choices": [
+        "BAL = 900, FEE = 9",
+        "BAL = 900, FEE = 10",
+        "BAL = 1000, FEE = 10",
+        "BAL = 900, FEE = 0"
+      ],
+      "answer": 2,
+      "explanation": "UPDATE 문의 SET 절에 있는 모든 식은 **수정 전(원래) 값**을 기준으로 계산된다. 앞에서 BAL을 바꿨다고 해서 뒤의 식이 바뀐 값을 보는 것이 아니다.\n\n- A1(BAL 1000)은 WHERE 조건을 만족한다.\n- BAL = 1000 - 100 = **900**\n- FEE = 원래 BAL 1000 × 0.01 = **10** (900 × 0.01 = 9가 아니다)\n\nA2는 BAL이 50이라 수정되지 않는다."
+    },
+    {
+      "id": 44,
+      "subject": 2,
+      "theory": "dml",
+      "question": "다음 테이블에 대해 아래 두 문장을 순서대로 실행한 후 `SELECT COUNT(*) FROM ACCOUNT;`의 결과는? (DORMANT 테이블은 처음에 비어 있다.)\n\n[ACCOUNT]\n\n| ACCT |\n|---|\n| A1 |\n| A2 |\n| A3 |\n| A4 |\n| A5 |\n\n[TXN]\n\n| ACCT | YR |\n|---|---|\n| A1 | 2024 |\n| A2 | 2022 |\n| A2 | 2023 |\n| A3 | 2025 |\n| A5 | NULL |",
+      "code": "INSERT INTO DORMANT (ACCT)\nSELECT A.ACCT\n  FROM ACCOUNT A\n WHERE NOT EXISTS (SELECT 1\n                     FROM TXN T\n                    WHERE T.ACCT = A.ACCT\n                      AND T.YR  >= 2024);\n\nDELETE FROM ACCOUNT\n WHERE ACCT IN (SELECT ACCT FROM DORMANT);",
+      "choices": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "answer": 3,
+      "explanation": "첫 번째 INSERT는 2024년 이후 거래가 **없는** 계좌를 DORMANT에 넣는다.\n\n- A1: 2024년 거래 있음 → 제외\n- A2: 2022, 2023년뿐 → **휴면**\n- A3: 2025년 거래 있음 → 제외\n- A4: 거래 자체가 없음 → 서브쿼리 공집합 → **휴면**\n- A5: YR이 NULL이라 `NULL >= 2024`는 UNKNOWN → 일치 행 없음 → **휴면**\n\nDORMANT = {A2, A4, A5}이고, DELETE로 이 3건을 지우면 ACCOUNT에는 A1, A3 **2건**이 남는다."
+    },
+    {
+      "id": 45,
+      "subject": 2,
+      "theory": "tcl",
+      "question": "다음 상황에 대한 설명으로 가장 적절한 것은?\n\n> 트랜잭션 TX1이 계좌 A1의 잔액을 조회하여 1,000원을 얻었다. 그 사이 TX2가 A1의 잔액을 500원으로 UPDATE하고 **COMMIT**하였다. TX1이 같은 트랜잭션 안에서 A1의 잔액을 다시 조회하자 500원이 조회되었다.",
+      "choices": [
+        "Non-Repeatable Read 현상이며, 이를 방지하려면 최소한 REPEATABLE READ 격리 수준이 필요하다.",
+        "Dirty Read 현상이며, READ COMMITTED 격리 수준이면 방지된다.",
+        "Phantom Read 현상이며, SERIALIZABLE 격리 수준에서만 방지된다.",
+        "Non-Repeatable Read 현상이며, READ COMMITTED 격리 수준이면 방지된다."
+      ],
+      "answer": 1,
+      "explanation": "한 트랜잭션 안에서 같은 행을 두 번 읽었는데, 그 사이 다른 트랜잭션이 **수정 후 커밋**하여 값이 달라진 것은 **Non-Repeatable Read**다. 이는 READ COMMITTED에서는 발생할 수 있고, **REPEATABLE READ** 이상에서 방지된다.\n\n- Dirty Read는 커밋되지 않은 데이터를 읽는 현상인데, 여기서 TX2는 커밋하였다.\n- Phantom Read는 같은 조건으로 다시 조회했을 때 **없던 행이 새로 나타나는** 현상이다."
+    },
+    {
+      "id": 46,
+      "subject": 2,
+      "theory": "tcl",
+      "question": "ACCOUNT 테이블에 A1의 잔액 1000, A2의 잔액 500이 커밋되어 있고 A3 계좌는 없다. Oracle에서 아래 문장을 순서대로 실행했을 때, 마지막 COMMIT 이후 A1, A2의 잔액으로 옳은 것은? (오류가 발생한 문장은 무시하고 다음 문장이 실행된다고 가정한다.)",
+      "code": "UPDATE ACCOUNT SET BAL = BAL - 300 WHERE ACCT = 'A1';\nSAVEPOINT S1;\nUPDATE ACCOUNT SET BAL = BAL + 300 WHERE ACCT = 'A2';\nSAVEPOINT S2;\nUPDATE ACCOUNT SET BAL = BAL - 100 WHERE ACCT = 'A1';\nROLLBACK TO S1;\nUPDATE ACCOUNT SET BAL = BAL + 300 WHERE ACCT = 'A3';\nROLLBACK TO S2;\nCOMMIT;",
+      "choices": [
+        "A1 = 600, A2 = 800",
+        "A1 = 700, A2 = 800",
+        "A1 = 1000, A2 = 500",
+        "A1 = 700, A2 = 500"
+      ],
+      "answer": 4,
+      "explanation": "SAVEPOINT로 되돌아가면 그 SAVEPOINT **이후에 만든 SAVEPOINT는 모두 사라진다**.\n\n1. A1: 1000 → 700, SAVEPOINT S1\n2. A2: 500 → 800, SAVEPOINT S2\n3. A1: 700 → 600\n4. ROLLBACK TO S1 → S1 이후 작업(2, 3) 취소: A1 = 700, A2 = 500. 이때 S2도 함께 사라진다.\n5. A3 UPDATE는 대상 행이 없어 0건 처리(오류 아님)\n6. ROLLBACK TO S2 → S2가 더 이상 존재하지 않으므로 **오류**(무시)\n7. COMMIT → A1 = **700**, A2 = **500** 확정"
+    },
+    {
+      "id": 47,
+      "subject": 2,
+      "theory": "ddl",
+      "question": "Oracle에서 아래와 같이 LOAN 테이블을 생성한 뒤 INSERT 문 5개를 순서대로 실행했다. 오류가 발생한 문장은 무시하고 진행했을 때, 마지막에 `SELECT COUNT(*) FROM LOAN;`의 결과는?",
+      "code": "CREATE TABLE LOAN (\n  LOAN_NO  NUMBER        PRIMARY KEY,\n  CUST_NO  VARCHAR2(5)   NOT NULL,\n  AMT      NUMBER(10)    CHECK (AMT > 0),\n  RATE     NUMBER(4, 2)  CHECK (RATE BETWEEN 0 AND 20),\n  ACCT_NO  VARCHAR2(10)  UNIQUE\n);\n\nINSERT INTO LOAN VALUES (1, 'C1', 1000, 3.5, 'A1');\nINSERT INTO LOAN VALUES (2, 'C2',  500, NULL, NULL);\nINSERT INTO LOAN VALUES (3, 'C3',  700, 4.0, NULL);\nINSERT INTO LOAN VALUES (4, '',    300, 2.0, 'A4');\nINSERT INTO LOAN VALUES (5, 'C5',    0, 1.0, 'A5');\nCOMMIT;",
+      "choices": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "answer": 2,
+      "explanation": "각 INSERT를 제약조건과 비교한다.\n\n1. (1, 'C1', 1000, 3.5, 'A1') → 성공\n2. (2, 'C2', 500, NULL, NULL) → **성공**. CHECK 제약은 결과가 FALSE일 때만 위반이며, NULL과의 비교는 UNKNOWN이므로 통과한다. UNIQUE 컬럼에도 NULL은 허용된다.\n3. (3, 'C3', 700, 4.0, NULL) → **성공**. UNIQUE 컬럼에 NULL은 여러 행에 들어갈 수 있다.\n4. (4, '', 300, 2.0, 'A4') → Oracle은 `''`을 NULL로 취급하므로 CUST_NO의 NOT NULL 위반으로 **실패**\n5. (5, 'C5', 0, 1.0, 'A5') → AMT > 0 CHECK 위반으로 **실패**\n\n결과는 **3**이다."
+    },
+    {
+      "id": 48,
+      "subject": 2,
+      "theory": "ddl",
+      "question": "Oracle에서 아래 문장을 순서대로 실행했다. TXN_LOG 테이블은 비어 있으며 AMT 컬럼에 `CHECK (AMT > 0)` 제약이 있다. 오류가 발생한 문장은 무시하고 진행했을 때 마지막 SELECT의 결과는?",
+      "code": "CREATE SEQUENCE TXN_SEQ START WITH 100 INCREMENT BY 10;\n\nINSERT INTO TXN_LOG (TXN_ID, AMT) VALUES (TXN_SEQ.NEXTVAL, 500);\nINSERT INTO TXN_LOG (TXN_ID, AMT) VALUES (TXN_SEQ.NEXTVAL, -1);\nROLLBACK;\nINSERT INTO TXN_LOG (TXN_ID, AMT) VALUES (TXN_SEQ.NEXTVAL, 300);\nCOMMIT;\n\nSELECT TXN_ID FROM TXN_LOG;",
+      "choices": [
+        "100",
+        "110",
+        "120",
+        "130"
+      ],
+      "answer": 3,
+      "explanation": "시퀀스는 트랜잭션과 독립적으로 동작한다. NEXTVAL로 한 번 증가한 값은 **ROLLBACK해도 되돌아가지 않고**, 문장이 오류로 실패해도 이미 생성된 번호는 소비된다.\n\n1. 첫 INSERT: NEXTVAL = 100 (성공)\n2. 두 번째 INSERT: NEXTVAL = 110 생성 후 CHECK 위반으로 실패 (110은 소비됨)\n3. ROLLBACK: 100번 행은 취소되지만 시퀀스는 110 상태 그대로\n4. 세 번째 INSERT: NEXTVAL = **120** (성공) → COMMIT\n\n따라서 TXN_LOG에는 TXN_ID가 120인 행 하나만 남는다."
+    },
+    {
+      "id": 49,
+      "subject": 2,
+      "theory": "dcl",
+      "question": "BANK.ACCOUNT 테이블의 소유자 BANK가 아래 순서로 DCL을 실행했다. 모든 문장이 실행된 후 KIM이 BANK.ACCOUNT에 대해 할 수 있는 작업으로 옳은 것은? (Oracle, KIM은 이 문장들 외에 다른 권한이 없으며 TELLER 롤은 기본 롤로 활성화되어 있다.)",
+      "code": "GRANT SELECT ON BANK.ACCOUNT TO KIM;\nCREATE ROLE TELLER;\nGRANT SELECT, UPDATE ON BANK.ACCOUNT TO TELLER;\nGRANT TELLER TO KIM;\nREVOKE SELECT ON BANK.ACCOUNT FROM KIM;\nREVOKE UPDATE ON BANK.ACCOUNT FROM TELLER;",
+      "choices": [
+        "SELECT는 가능하고 UPDATE는 불가능하다.",
+        "SELECT와 UPDATE 모두 가능하다.",
+        "SELECT와 UPDATE 모두 불가능하다.",
+        "SELECT는 불가능하고 UPDATE는 가능하다."
+      ],
+      "answer": 1,
+      "explanation": "KIM은 SELECT 권한을 **직접** 받은 경로와 **TELLER 롤**을 통해 받은 경로 두 가지를 가지고 있다.\n\n- `REVOKE SELECT ... FROM KIM`은 직접 받은 SELECT만 회수한다. 롤을 통해 받은 SELECT는 그대로이므로 **SELECT 가능**하다.\n- `REVOKE UPDATE ... FROM TELLER`로 롤에서 UPDATE가 빠지면 그 롤을 부여받은 사용자에게도 바로 반영되므로 **UPDATE 불가능**하다."
+    },
+    {
+      "id": 50,
+      "subject": 2,
+      "theory": "dcl",
+      "question": "Oracle의 권한 부여와 회수에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "WITH ADMIN OPTION으로 시스템 권한을 받은 사용자가 이를 다른 사용자에게 부여한 뒤 자신의 권한을 회수당하면, 다른 사용자에게 부여한 권한도 연쇄적으로 회수된다.",
+        "오브젝트 권한을 다른 사용자에게 다시 부여할 수 있게 하려면 WITH ADMIN OPTION을 지정한다.",
+        "롤(ROLE)에는 시스템 권한만 담을 수 있고 오브젝트 권한은 담을 수 없다.",
+        "WITH GRANT OPTION으로 오브젝트 권한을 받은 사용자가 이를 다른 사용자에게 부여한 뒤 자신의 권한을 회수당하면, 다른 사용자에게 부여한 권한도 함께 회수된다."
+      ],
+      "answer": 4,
+      "explanation": "오브젝트 권한을 **WITH GRANT OPTION**으로 받아 재부여한 경우, 중간 사용자의 권한을 회수하면 그가 부여한 권한도 **연쇄적으로 회수**된다.\n\n- 시스템 권한의 **WITH ADMIN OPTION**은 연쇄 회수되지 않는다. 중간 사용자가 회수당해도 그가 부여한 권한은 남는다.\n- 오브젝트 권한의 재부여 옵션은 WITH GRANT OPTION이고, WITH ADMIN OPTION은 시스템 권한과 롤에 쓰인다.\n- 롤에는 시스템 권한과 오브젝트 권한을 모두 담을 수 있다."
+    }
+  ]
+}

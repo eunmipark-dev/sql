@@ -1,0 +1,745 @@
+{
+  "id": "ai-18",
+  "kind": "ai",
+  "title": "모의고사 18회",
+  "round": 18,
+  "timeLimitMin": 90,
+  "questions": [
+    {
+      "id": 1,
+      "subject": 1,
+      "theory": "data-model",
+      "question": "호텔 예약 시스템 구축 프로젝트에서 다음 (가)~(다) 작업을 수행하였다. 각 작업이 속하는 데이터 모델링 단계를 바르게 짝지은 것은?\n\n- (가) 호텔 전사 관점에서 고객, 객실, 예약 등 핵심 엔터티와 그 사이의 관계를 도출하였다.\n- (나) `예약` 엔터티의 주식별자와 속성을 확정하고, 이행 종속을 제거하는 정규화를 수행하였다.\n- (다) `투숙` 테이블을 체크인 월 기준으로 파티션하고, 자주 조회하는 컬럼에 인덱스를 설계하였다.",
+      "choices": [
+        "(가) 개념적 모델링, (나) 물리적 모델링, (다) 논리적 모델링",
+        "(가) 개념적 모델링, (나) 논리적 모델링, (다) 물리적 모델링",
+        "(가) 논리적 모델링, (나) 개념적 모델링, (다) 물리적 모델링",
+        "(가) 논리적 모델링, (나) 논리적 모델링, (다) 물리적 모델링"
+      ],
+      "answer": 2,
+      "explanation": "핵심 엔터티와 관계를 도출해 전사적 큰 그림을 그리는 (가)는 **개념적 모델링**이다. 식별자·속성을 확정하고 정규화하는 (나)는 **논리적 모델링**이며, 파티션·인덱스처럼 성능과 저장 구조를 고려하는 (다)는 특정 DBMS를 염두에 둔 **물리적 모델링**이다. 정규화는 물리 단계가 아니라 논리 단계의 핵심 활동이므로 ①은 틀렸고, 핵심 엔터티 도출은 개념 단계이므로 ③④도 틀렸다."
+    },
+    {
+      "id": 2,
+      "subject": 1,
+      "theory": "entity",
+      "question": "호텔 업무를 분석하여 다음과 같은 엔터티를 도출하였다.\n\n- 객실: 호텔이 보유한 각 객실(101호, 102호 …)의 유형, 층, 상태 정보\n- 예약: 고객이 특정 객실을 특정 기간 이용하겠다고 신청한 정보\n- 숙박요금정책: 시즌·요일별 요금 산정 규칙\n- 예약변경이력: 예약의 날짜·인원·객실이 바뀔 때마다 해당 예약과 변경을 처리한 직원 정보를 함께 남기는 변경 기록\n\n엔터티 분류에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "'객실'은 물리적 형태가 있으므로 유형 엔터티이며, 발생 시점상 행위 엔터티에 해당한다.",
+        "'예약'은 고객과 객실로부터 발생하지만 업무의 출발점이 되므로 기본 엔터티에 해당한다.",
+        "'숙박요금정책'은 물리적 형태가 없으므로 사건 엔터티에 해당한다.",
+        "'예약변경이력'은 예약이 바뀔 때마다 발생하여 데이터가 계속 늘어나므로 행위 엔터티에 해당한다."
+      ],
+      "answer": 4,
+      "explanation": "'예약변경이력'처럼 2개 이상의 부모 엔터티(예약, 직원)로부터 업무 수행 중에 반복 발생하고 데이터 양이 계속 증가하는 엔터티는 **행위 엔터티**다. ① 객실은 유형 엔터티이지만 발생 시점상 독립적으로 생성되는 **기본 엔터티**다. ② 예약은 고객·객실(기본 엔터티)로부터 발생하는 **중심 엔터티**다. ③ 숙박요금정책은 형태가 없는 규칙·개념이므로 **개념 엔터티**이며, 사건 엔터티는 업무 수행 중 발생하는 주문·결제 같은 것이다."
+    },
+    {
+      "id": 3,
+      "subject": 1,
+      "theory": "attribute",
+      "question": "호텔의 `고객` 엔터티에 속성을 정의하는 과정에서 나온 의견 중 가장 적절한 것은?",
+      "choices": [
+        "한 고객이 '선호 객실유형'을 여러 개 가질 수 있다면 이는 다중값 속성이므로, 별도 엔터티로 분리하는 것이 바람직하다.",
+        "'주소'는 시·구·동·상세주소로 나눌 수 있으므로 업무 요건과 관계없이 반드시 하위 속성으로 분해해야 한다.",
+        "'고객번호'는 고객의 주식별자이므로 속성이 아니라 엔터티 자체로 분류된다.",
+        "하나의 속성은 한 인스턴스에서 여러 개의 값을 가질 수 있는 것이 원칙이다."
+      ],
+      "answer": 1,
+      "explanation": "속성은 **한 인스턴스에서 하나의 값만** 가지는 것이 원칙이다. 선호 객실유형처럼 여러 값이 들어가는 **다중값 속성**은 제1정규형 원칙에 따라 별도 엔터티(예: 고객선호객실)로 분리한다. ② 복합 속성의 분해 여부는 업무 요건(예: 구 단위 집계 필요 여부)에 따라 결정하므로 '반드시'는 틀렸다. ③ 주식별자도 엔터티를 구성하는 속성이다. ④는 속성 원칙과 정반대다."
+    },
+    {
+      "id": 4,
+      "subject": 1,
+      "theory": "relationship",
+      "question": "호텔 데이터 모델의 관계에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "'객실유형'과 '객실'의 관계는 고객이 객실을 예약하는 행위가 있어야 성립하므로 행위에 의한 관계이다.",
+        "ERD에서는 존재에 의한 관계는 실선으로, 행위에 의한 관계는 점선으로 구분하여 표기한다.",
+        "'고객'과 '예약'의 관계는 고객이 예약을 '하는' 행위가 있어야 연결되므로 행위에 의한 관계에 해당한다.",
+        "두 엔터티 사이에는 하나의 관계만 정의할 수 있으므로, '고객'과 '예약' 사이에 '예약자'와 '투숙자' 관계를 동시에 둘 수 없다."
+      ],
+      "answer": 3,
+      "explanation": "고객과 예약처럼 어떤 행위(예약 신청)가 일어나야 연결되는 관계는 **행위에 의한 관계**다. ① 객실은 특정 객실유형에 속해 존재하는 것만으로 연결되므로 **존재에 의한 관계**다. ② ERD는 존재·행위 관계를 **구분하지 않고** 같은 관계선으로 표현한다(실선·점선 구분은 UML의 연관·의존 관계). ④ 두 엔터티 사이에도 업무 의미가 다르면 여러 관계를 정의할 수 있다."
+    },
+    {
+      "id": 5,
+      "subject": 1,
+      "theory": "identifier",
+      "question": "호텔 `고객` 엔터티의 주식별자로 '이메일주소'를 검토하였다. 이메일주소는 고객마다 서로 다르고 거의 바뀌지 않는다. 그러나 프런트 데스크에서 바로 투숙하는 워크인(Walk-in) 고객 중에는 이메일주소를 알려주지 않는 경우가 있어 주식별자로 부적합하다는 의견이 나왔다.\n\n이 의견의 근거가 되는 주식별자의 특징은?",
+      "choices": [
+        "유일성",
+        "존재성",
+        "최소성",
+        "불변성"
+      ],
+      "answer": 2,
+      "explanation": "주식별자로 지정된 속성은 모든 인스턴스에 **반드시 값이 존재**해야 한다(존재성, NOT NULL). 이메일이 없는 고객이 있다면 존재성을 위반한다. 사례에서 이메일은 서로 다르므로 유일성은 만족하고, 단일 속성이므로 최소성 문제도 없으며, 거의 바뀌지 않으므로 불변성 문제도 아니다."
+    },
+    {
+      "id": 6,
+      "subject": 1,
+      "theory": "normalization",
+      "question": "다음 `객실` 테이블의 PK는 객실번호이며, 업무 규칙상 유형명과 기본요금은 객실유형코드에 의해 결정된다.\n\n| 객실번호 | 층 | 객실유형코드 | 유형명 | 기본요금 |\n|---|---|---|---|---|\n| 101 | 1 | STD | 스탠다드 | 100000 |\n| 102 | 1 | STD | 스탠다드 | 100000 |\n| 201 | 2 | DLX | 디럭스 | 180000 |\n| 202 | 2 | DLX | 디럭스 | 180000 |\n\n이 테이블에 대한 설명으로 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "객실번호 → 객실유형코드 → 기본요금으로 이어지는 이행적 함수 종속이 존재한다.",
+        "DLX의 기본요금을 변경할 때 201호 행만 수정하면 같은 유형의 요금이 서로 달라지는 갱신 이상이 생길 수 있다.",
+        "아직 객실이 배정되지 않은 새 유형 'STE'의 유형명과 기본요금을 등록할 수 없는 것은 삽입 이상에 해당한다.",
+        "PK가 단일 속성이어서 부분 함수 종속이 없으므로 이 테이블은 이미 제3정규형을 만족한다."
+      ],
+      "answer": 4,
+      "explanation": "PK가 단일 속성이면 부분 함수 종속이 없어 **제2정규형**은 만족하지만, 일반 속성(객실유형코드)이 다른 일반 속성(유형명, 기본요금)을 결정하는 **이행적 함수 종속**이 남아 있으므로 제3정규형은 아니다. 따라서 ④가 틀렸다. ①~③은 이행 종속과 그로 인한 갱신 이상·삽입 이상을 올바르게 설명한다. 객실유형(객실유형코드, 유형명, 기본요금)을 별도 테이블로 분리하면 제3정규형이 된다."
+    },
+    {
+      "id": 7,
+      "subject": 1,
+      "theory": "relationship-and-join",
+      "question": "`객실`과 `편의시설`은 M:N 관계이며, 교차 엔터티 `ROOM_AMENITY`로 해소하였다. 데이터가 다음과 같을 때 SQL의 실행 결과로 옳은 것은? (ROOM_NO : CNT 형식, ROOM_NO 순)\n\n[ROOM]\n\n| ROOM_NO |\n|---|\n| 101 |\n| 102 |\n| 201 |\n| 301 |\n\n[AMENITY]\n\n| AMN_CD | AMN_NM |\n|---|---|\n| A1 | 욕조 |\n| A2 | 미니바 |\n| A3 | 테라스 |\n\n[ROOM_AMENITY]\n\n| ROOM_NO | AMN_CD |\n|---|---|\n| 201 | A1 |\n| 201 | A2 |\n| 301 | A1 |\n| 301 | A2 |\n| 301 | A3 |\n| 101 | A2 |",
+      "code": "SELECT R.ROOM_NO, COUNT(A.AMN_NM) AS CNT\n  FROM ROOM R\n  LEFT OUTER JOIN ROOM_AMENITY RA\n    ON R.ROOM_NO = RA.ROOM_NO\n  LEFT OUTER JOIN AMENITY A\n    ON RA.AMN_CD = A.AMN_CD\n   AND A.AMN_NM <> '미니바'\n GROUP BY R.ROOM_NO\n ORDER BY R.ROOM_NO;",
+      "choices": [
+        "101 : 0, 102 : 0, 201 : 1, 301 : 2",
+        "101 : 1, 102 : 0, 201 : 2, 301 : 3",
+        "201 : 1, 301 : 2",
+        "101 : 1, 102 : 1, 201 : 1, 301 : 2"
+      ],
+      "answer": 1,
+      "explanation": "ROOM을 기준으로 두 번 LEFT OUTER JOIN하므로 객실 4개는 모두 결과에 남는다. 두 번째 조인의 ON 절에 `A.AMN_NM <> '미니바'`가 있어 A2(미니바)와 연결되는 행은 AMENITY 쪽 컬럼이 NULL이 된다.\n\n- 101: A2만 있으므로 AMN_NM이 NULL → 0\n- 102: 편의시설 없음 → 0\n- 201: A1(욕조) 1건, A2는 NULL → 1\n- 301: A1, A3 → 2\n\n`COUNT(A.AMN_NM)`은 NULL을 세지 않는다. ②는 미니바 제외 조건을 무시한 경우, ③은 INNER JOIN으로 착각한 경우, ④는 102의 NULL 행까지 세는 COUNT(*)처럼 계산한 경우다."
+    },
+    {
+      "id": 8,
+      "subject": 1,
+      "theory": "transaction-model",
+      "question": "호텔 예약 모델이 IE 표기법으로 다음과 같이 작성되어 있다. (`|`는 필수, `o`는 선택, `{`는 여러 건을 의미한다.)\n\n이 모델을 근거로 트랜잭션을 설계할 때 가장 적절한 것은?",
+      "code": "고객 ||--o{ 예약     : 신청한다\n예약 ||--|{ 예약객실 : 포함한다\n객실 ||--o{ 예약객실 : 배정된다",
+      "choices": [
+        "신규 고객 등록과 그 고객의 첫 예약 등록은 반드시 하나의 트랜잭션으로 묶어야 한다.",
+        "객실을 새로 등록할 때는 해당 객실의 예약객실 행도 함께 등록해야 하므로 하나의 트랜잭션으로 묶어야 한다.",
+        "예약 등록과 그 예약에 포함되는 예약객실 등록은 하나의 트랜잭션으로 묶어 함께 COMMIT하거나 함께 ROLLBACK해야 한다.",
+        "예약을 먼저 INSERT하고 COMMIT한 뒤, 예약객실은 다음 트랜잭션에서 등록해도 모델과 일치한다."
+      ],
+      "answer": 3,
+      "explanation": "예약 ||--|{ 예약객실은 **양쪽 모두 필수**이므로 예약은 1건 이상의 예약객실을 반드시 가져야 하고, 예약객실도 반드시 예약에 속해야 한다. 따라서 둘은 하나의 트랜잭션(원자성)으로 처리해야 한다. ① 고객 쪽에서 예약은 선택(o{)이므로 고객은 예약 없이 독립적으로 등록될 수 있다. ② 객실 쪽에서 예약객실도 선택이다. ④처럼 예약만 먼저 COMMIT하면 예약객실이 0건인 예약이 존재하는 순간이 생겨 모델과 어긋난다."
+    },
+    {
+      "id": 9,
+      "subject": 1,
+      "theory": "null-attribute",
+      "question": "`GUEST_NOTE` 테이블에 다음과 같이 4건을 입력하였다. 3번 행은 INSERT 시 MEMO에 `''`(빈 문자열)을, 4번 행은 `' '`(공백 한 칸)을 입력하였다. SQL의 실행 결과로 옳은 것은? (Oracle 기준, 결과는 C1 / C2 / C3 순서)\n\n| ID | MEMO (VARCHAR2) |\n|---|---|\n| 1 | 'VIP' |\n| 2 | NULL |\n| 3 | '' |\n| 4 | ' ' |",
+      "code": "SELECT COUNT(MEMO)            AS C1,\n       COUNT(*) - COUNT(MEMO) AS C2,\n       SUM(LENGTH(MEMO))      AS C3\n  FROM GUEST_NOTE;",
+      "choices": [
+        "3 / 1 / 4",
+        "3 / 1 / NULL",
+        "2 / 2 / 3",
+        "2 / 2 / 4"
+      ],
+      "answer": 4,
+      "explanation": "Oracle은 길이 0인 빈 문자열 `''`을 **NULL로 취급**한다. 따라서 MEMO가 NULL인 행은 2번과 3번 두 건이고, 공백 한 칸 `' '`은 NULL이 아닌 길이 1의 값이다.\n\n- C1 = COUNT(MEMO) = 2 ('VIP', ' ')\n- C2 = 4 - 2 = 2\n- C3 = LENGTH('VIP') + LENGTH(' ') = 3 + 1 = 4 (NULL의 LENGTH는 NULL이며 SUM에서 제외)\n\n①은 빈 문자열을 값으로 본 경우(SQL Server라면 가능한 해석), ③은 공백을 길이 0으로 본 경우다."
+    },
+    {
+      "id": 10,
+      "subject": 1,
+      "theory": "natural-vs-surrogate-key",
+      "question": "호텔의 `투숙` 엔터티는 업무 규칙상 같은 객실에 같은 날짜로 체크인하는 투숙은 하나뿐이며, 하위 엔터티 `투숙부가서비스`가 투숙의 주식별자를 상속받는다. 주식별자로 다음 두 안을 검토 중이다.\n\n- (A) 본질식별자: 객실번호 + 체크인일자\n- (B) 인조식별자: 시퀀스로 생성한 투숙ID\n\n두 안에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "(B)를 PK로 사용하면 PK 인덱스만으로 '객실번호 + 체크인일자' 조건의 조회를 효율적으로 처리할 수 있다.",
+        "(A)를 사용하면 투숙부가서비스의 PK가 (객실번호, 체크인일자, 순번)처럼 길어져 조인 조건과 SQL이 복잡해질 수 있다.",
+        "인조식별자는 업무적 의미가 없으므로 어떤 경우에도 주식별자로 사용해서는 안 된다.",
+        "(A)를 사용하면 같은 객실·같은 체크인일자의 중복 투숙을 막기 위해 별도의 UNIQUE 제약을 추가해야 한다."
+      ],
+      "answer": 2,
+      "explanation": "본질식별자를 식별 관계로 상속하면 하위 엔터티로 내려갈수록 PK 속성 수가 늘어나 조인 조건과 SQL이 복잡해진다. 이것이 인조식별자를 검토하는 대표적 이유다. ① 투숙ID PK 인덱스로는 객실번호·체크인일자 조건을 처리할 수 없어 별도 인덱스가 필요하다. ③ 원칙은 본질식별자 우선이지만, 복잡도·성능 등을 이유로 인조식별자를 쓸 수 있다. ④ (A)는 PK 자체가 (객실번호, 체크인일자)이므로 중복이 이미 방지된다. 오히려 (B)를 쓸 때 UNIQUE 제약이 필요하다."
+    },
+    {
+      "id": 11,
+      "subject": 2,
+      "theory": "rdb-overview",
+      "question": "호텔 DB에서 `ROOM`(PK: ROOM_NO), `GUEST`(PK: GID), `STAY`(PK: STAY_ID) 테이블을 설계하였다. STAY.ROOM_NO는 ROOM.ROOM_NO를, STAY.GID는 GUEST.GID를 참조하는 외래키이며 둘 다 NOT NULL 제약은 없다. 기본키와 외래키에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "STAY.ROOM_NO에는 ROOM에 존재하는 객실번호 또는 NULL만 저장할 수 있으며, 같은 객실번호가 여러 행에 중복 저장될 수 있다.",
+        "한 테이블에는 외래키를 하나만 정의할 수 있으므로 STAY에 두 개의 외래키를 둘 수 없다.",
+        "기본키는 개체 무결성을, 외래키는 도메인 무결성을 보장하기 위한 제약이다.",
+        "STAY의 기본키를 (STAY_ID, ROOM_NO)로 바꾸면 ROOM_NO 값은 NULL이 허용된다."
+      ],
+      "answer": 1,
+      "explanation": "외래키 컬럼에는 **참조 대상에 존재하는 값 또는 NULL**만 들어갈 수 있고, 한 객실에 여러 투숙이 있으므로 중복도 허용된다. ② 외래키는 한 테이블에 여러 개 정의할 수 있다. ③ 외래키가 보장하는 것은 **참조 무결성**이다. ④ 기본키를 구성하는 모든 컬럼은 NULL을 허용하지 않는다."
+    },
+    {
+      "id": 12,
+      "subject": 2,
+      "theory": "select",
+      "question": "다음 [ROOM_RATE] 테이블에 SQL을 실행했을 때 결과 행 수는?\n\n[ROOM_RATE]\n\n| ROOM_NO | BASE | EXTRA |\n|---|---|---|\n| 101 | 100 | NULL |\n| 102 | 100 | 0 |\n| 201 | 150 | 20 |\n| 202 | 150 | 20 |\n| 301 | 200 | NULL |",
+      "code": "SELECT DISTINCT BASE + EXTRA AS TOT\n  FROM ROOM_RATE;",
+      "choices": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "answer": 3,
+      "explanation": "BASE + EXTRA를 계산하면 101 → NULL(NULL과의 산술 연산은 NULL), 102 → 100, 201 → 170, 202 → 170, 301 → NULL이다. DISTINCT는 NULL끼리도 같은 값으로 보아 하나로 묶으므로 결과는 NULL, 100, 170의 **3행**이다. NULL을 서로 다른 값으로 보면 4행, NULL 행을 아예 제외하면 2행으로 잘못 계산하게 된다."
+    },
+    {
+      "id": 13,
+      "subject": 2,
+      "theory": "select",
+      "question": "SELECT 문에 대한 설명으로 가장 적절한 것은? (Oracle 19c 기준)",
+      "choices": [
+        "DISTINCT는 SELECT 목록의 첫 번째 컬럼에만 적용되고, 나머지 컬럼은 중복 제거 대상이 아니다.",
+        "ALL은 기본값이므로 생략하면 중복 행을 포함한 모든 행이 출력된다.",
+        "`SELECT 1 + 1;`처럼 FROM 절 없이도 실행할 수 있다.",
+        "컬럼 별칭에 공백을 포함하려면 작은따옴표로 감싸야 한다. 예: `SELECT ROOM_NO AS '객실 번호' FROM ROOM;`"
+      ],
+      "answer": 2,
+      "explanation": "SELECT의 기본 옵션은 **ALL**이므로 생략하면 중복을 포함한 모든 행이 나온다. ① DISTINCT는 SELECT 목록 전체 컬럼의 조합을 기준으로 중복을 제거한다. ③ Oracle 19c에서는 FROM 절이 필수이므로 `SELECT 1 + 1 FROM DUAL;`처럼 써야 한다. ④ 공백이나 특수문자가 들어간 별칭은 **큰따옴표**로 감싼다. 작은따옴표는 문자열 상수를 의미한다."
+    },
+    {
+      "id": 14,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle, 결과는 A / B / C / D 순서)",
+      "code": "SELECT SUBSTR(C, INSTR(C, '-') + 1, 4) AS A,\n       LENGTH(REPLACE(C, '-'))          AS B,\n       INITCAP(SUBSTR(C, -3))           AS C,\n       LTRIM(SUBSTR(C, 7, 4), '0')      AS D\n  FROM (SELECT 'busan-0712-std' AS C FROM DUAL);",
+      "choices": [
+        "0712 / 14 / STD / 712",
+        "-071 / 12 / Std / 0712",
+        "0712 / 12 / std / 712",
+        "0712 / 12 / Std / 712"
+      ],
+      "answer": 4,
+      "explanation": "C = 'busan-0712-std'(14자)이다.\n\n- A: INSTR(C, '-')는 첫 번째 '-'의 위치 6이므로 SUBSTR(C, 7, 4) = **'0712'**\n- B: REPLACE에서 바꿀 문자열을 생략하면 찾은 문자열을 제거한다. '-' 2개를 지우면 14 - 2 = **12**\n- C: SUBSTR(C, -3)은 뒤에서 3자 'std', INITCAP은 첫 글자만 대문자로 바꾸므로 **'Std'**\n- D: SUBSTR(C, 7, 4) = '0712'에서 왼쪽의 '0'을 제거하면 **'712'**"
+    },
+    {
+      "id": 15,
+      "subject": 2,
+      "theory": "functions",
+      "question": "체크인이 2025-02-27, 체크아웃이 2025-03-02인 투숙에 대해 다음 SQL을 실행했다. 결과로 옳은 것은? (Oracle, 결과는 A / B / C / D 순서)",
+      "code": "SELECT DATE '2025-03-02' - DATE '2025-02-27'              AS A,\n       TO_CHAR(LAST_DAY(DATE '2025-02-27'), 'DD')         AS B,\n       TO_CHAR(ADD_MONTHS(DATE '2025-03-02', -1), 'MM-DD') AS C,\n       TO_CHAR(DATE '2025-02-27' + 30/24, 'MM-DD HH24')   AS D\n  FROM DUAL;",
+      "choices": [
+        "3 / 28 / 02-02 / 02-28 06",
+        "4 / 28 / 02-02 / 02-28 06",
+        "3 / 29 / 02-02 / 02-28 06",
+        "3 / 28 / 02-02 / 03-29 00"
+      ],
+      "answer": 1,
+      "explanation": "- A: 날짜 - 날짜는 일수다. 2025년은 평년이므로 2/27 → 2/28 → 3/1 → 3/2로 **3**일이다(체크인일을 포함해 세는 4는 오답).\n- B: LAST_DAY(2025-02-27)는 2025-02-28이므로 **'28'**이다(윤년이 아니다).\n- C: ADD_MONTHS(2025-03-02, -1)은 2025-02-02이므로 **'02-02'**이다.\n- D: 숫자 1은 하루이므로 30/24는 30시간이다. 2025-02-27 00시 + 30시간 = 2025-02-28 06시 → **'02-28 06'**이다. ④는 30/24를 30일로 착각한 경우다."
+    },
+    {
+      "id": 16,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 [STAY] 테이블에 SQL을 실행한 결과로 옳은 것은? (Oracle, 결과는 P1 / P2 / P3 순서)\n\n[STAY]\n\n| ID | NIGHTS | GRADE |\n|---|---|---|\n| 1 | 1 | VIP |\n| 2 | 3 | GOLD |\n| 3 | 5 | NULL |\n| 4 | 2 | GOLD |\n| 5 | 7 | VIP |",
+      "code": "SELECT SUM(CASE GRADE WHEN 'VIP'  THEN NIGHTS * 2\n                      WHEN 'GOLD' THEN NIGHTS\n           END)                    AS P1,\n       COUNT(DECODE(GRADE, 'GOLD', 1)) AS P2,\n       SUM(NVL2(GRADE, 0, NIGHTS))     AS P3\n  FROM STAY;",
+      "choices": [
+        "26 / 2 / 5",
+        "21 / 5 / 5",
+        "21 / 2 / 5",
+        "21 / 2 / 0"
+      ],
+      "answer": 3,
+      "explanation": "- P1: VIP는 NIGHTS × 2(1×2 + 7×2 = 16), GOLD는 NIGHTS(3 + 2 = 5)다. GRADE가 NULL인 3번 행은 어떤 WHEN에도 해당하지 않고 ELSE가 없으므로 NULL이 되어 SUM에서 제외된다. 16 + 5 = **21**\n- P2: DECODE(GRADE, 'GOLD', 1)은 GOLD가 아니면 기본값이 없어 NULL을 돌려준다. COUNT는 NULL을 세지 않으므로 **2**\n- P3: NVL2(GRADE, 0, NIGHTS)는 GRADE가 NULL이 아니면 0, NULL이면 NIGHTS다. 3번 행만 5이므로 **5**\n\n①은 NULL 행의 5를 P1에 더한 경우, ②는 DECODE가 NULL 대신 0을 돌려준다고 본 경우다."
+    },
+    {
+      "id": 17,
+      "subject": 2,
+      "theory": "where",
+      "question": "다음 [GUEST] 테이블에 대해 (가)~(다) SQL을 실행했을 때 결과로 옳은 것은?\n\n[GUEST]\n\n| NAME |\n|---|\n| 김민수 |\n| 김수 |\n| 이김수 |\n| 김 |\n| 민김 |",
+      "code": "-- (가)\nSELECT COUNT(*) FROM GUEST WHERE NAME LIKE '김_%';\n\n-- (나)\nSELECT COUNT(*) FROM GUEST WHERE NAME LIKE '%김%';\n\n-- (다)\nSELECT COUNT(*) FROM GUEST WHERE NAME LIKE '_김%';",
+      "choices": [
+        "(가) 3, (나) 5, (다) 2",
+        "(가) 2, (나) 4, (다) 2",
+        "(가) 2, (나) 5, (다) 1",
+        "(가) 2, (나) 5, (다) 2"
+      ],
+      "answer": 4,
+      "explanation": "`_`는 정확히 한 글자, `%`는 0글자 이상을 의미한다.\n\n- (가) '김_%': '김'으로 시작하고 뒤에 최소 1글자 → 김민수, 김수 = **2** ('김' 한 글자는 `_`를 채울 수 없어 제외)\n- (나) '%김%': '김'이 어디든 포함 → 5건 모두 = **5**\n- (다) '_김%': 두 번째 글자가 '김' → 이김수, 민김 = **2** ('민김'은 뒤의 `%`가 0글자와 일치)\n\n①은 '김'도 (가)에 포함한 경우, ③은 `%`가 0글자와 일치한다는 점을 놓친 경우다."
+    },
+    {
+      "id": 18,
+      "subject": 2,
+      "theory": "where",
+      "question": "다음 [MEMBER] 테이블에 SQL을 실행했을 때 결과 값은?\n\n[MEMBER]\n\n| ID | GRADE | POINT |\n|---|---|---|\n| 1 | VIP | 500 |\n| 2 | GOLD | NULL |\n| 3 | NULL | 300 |\n| 4 | SILVER | 100 |\n| 5 | SILVER | NULL |\n| 6 | NULL | NULL |",
+      "code": "SELECT COUNT(*)\n  FROM MEMBER\n WHERE GRADE NOT IN ('VIP', 'GOLD')\n    OR POINT < 200;",
+      "choices": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "answer": 2,
+      "explanation": "`GRADE NOT IN ('VIP', 'GOLD')`는 `GRADE <> 'VIP' AND GRADE <> 'GOLD'`이므로 GRADE가 NULL이면 UNKNOWN이다. 각 행을 판정하면 다음과 같다.\n\n- 1: FALSE OR FALSE → FALSE\n- 2: FALSE OR UNKNOWN → UNKNOWN\n- 3: UNKNOWN OR FALSE(300 < 200) → UNKNOWN\n- 4: TRUE → 포함\n- 5: TRUE → 포함\n- 6: UNKNOWN OR UNKNOWN → UNKNOWN\n\nWHERE는 TRUE인 행만 반환하므로 **2**건이다. GRADE가 NULL인 3, 6번이 NOT IN을 만족한다고 보면 4로 잘못 계산한다."
+    },
+    {
+      "id": 19,
+      "subject": 2,
+      "theory": "group-by-having",
+      "question": "다음 [STAY] 테이블에 SQL을 실행한 결과로 옳은 것은?\n\n[STAY]\n\n| RTYPE | NIGHTS | AMT |\n|---|---|---|\n| STD | 1 | 100 |\n| STD | 3 | 300 |\n| DLX | 2 | 400 |\n| DLX | 1 | 200 |\n| STE | 4 | 1200 |\n| STD | 2 | NULL |",
+      "code": "SELECT RTYPE, SUM(AMT) AS TOT\n  FROM STAY\n GROUP BY RTYPE\nHAVING AVG(NIGHTS) >= 2\n   AND COUNT(AMT) >= 2;",
+      "choices": [
+        "STD 400",
+        "STD 400, STE 1200",
+        "STD 400, DLX 600",
+        "결과 없음"
+      ],
+      "answer": 1,
+      "explanation": "그룹별로 HAVING 조건을 확인한다.\n\n- STD: AVG(NIGHTS) = (1 + 3 + 2) / 3 = 2 → 조건 만족, COUNT(AMT) = 2(NULL 제외) → 만족, SUM(AMT) = 400\n- DLX: AVG(NIGHTS) = 1.5 → 탈락\n- STE: AVG(NIGHTS) = 4이지만 COUNT(AMT) = 1 → 탈락\n\n결과는 **STD 400** 한 행이다. HAVING에는 SELECT 절에 없는 집계 함수(AVG, COUNT)도 사용할 수 있다."
+    },
+    {
+      "id": 20,
+      "subject": 2,
+      "theory": "group-by-having",
+      "question": "다음 [PAY] 테이블에 대해 (가), (나) SQL을 실행했을 때 결과 행 수로 옳은 것은?\n\n[PAY]\n\n| HOTEL | AMT |\n|---|---|\n| 서울 | 100 |\n| 서울 | 300 |\n| 부산 | 200 |\n| 부산 | 400 |\n| 제주 | 50 |\n| 제주 | NULL |",
+      "code": "-- (가)\nSELECT HOTEL, COUNT(*)\n  FROM PAY\n WHERE AMT >= 200\n GROUP BY HOTEL;\n\n-- (나)\nSELECT HOTEL, COUNT(*)\n  FROM PAY\n GROUP BY HOTEL\nHAVING MIN(AMT) >= 200;",
+      "choices": [
+        "(가) 3행, (나) 1행",
+        "(가) 2행, (나) 2행",
+        "(가) 2행, (나) 1행",
+        "(가) 3행, (나) 2행"
+      ],
+      "answer": 3,
+      "explanation": "(가)는 WHERE로 먼저 행을 거른 뒤 그룹화한다. AMT >= 200인 행은 서울 300, 부산 200, 부산 400뿐이므로 서울(1), 부산(2)의 **2행**이다. 제주는 남는 행이 없어 그룹 자체가 생기지 않는다.\n\n(나)는 모든 행을 그룹화한 뒤 그룹 단위로 거른다. MIN(AMT)는 서울 100, 부산 200, 제주 50(NULL 제외)이므로 부산만 남아 **1행**이다.\n\nWHERE는 행 단위, HAVING은 그룹 단위 필터라는 차이가 결과를 바꾼다."
+    },
+    {
+      "id": 21,
+      "subject": 2,
+      "theory": "order-by",
+      "question": "다음 [ROOM] 테이블에 SQL을 실행한 결과의 출력 순서로 옳은 것은? (Oracle)\n\n[ROOM]\n\n| ROOM_NO | FLOOR | PRICE |\n|---|---|---|\n| 101 | 1 | 100 |\n| 102 | 1 | NULL |\n| 201 | 2 | 150 |\n| 202 | 2 | 150 |\n| 301 | 3 | NULL |",
+      "code": "SELECT ROOM_NO\n  FROM ROOM\n ORDER BY PRICE DESC, FLOOR DESC, ROOM_NO;",
+      "choices": [
+        "201, 202, 101, 301, 102",
+        "102, 301, 202, 201, 101",
+        "101, 201, 202, 102, 301",
+        "301, 102, 201, 202, 101"
+      ],
+      "answer": 4,
+      "explanation": "Oracle은 NULL을 가장 큰 값으로 취급하므로 **DESC 정렬에서는 NULL이 맨 앞**에 온다.\n\n1. PRICE NULL: 102(1층), 301(3층) → FLOOR DESC이므로 301, 102\n2. PRICE 150: 201, 202 → FLOOR가 같으므로 ROOM_NO 오름차순 201, 202\n3. PRICE 100: 101\n\n따라서 **301, 102, 201, 202, 101**이다. ①은 NULL을 맨 뒤로 보낸 경우(SQL Server의 DESC 동작), ②는 2차·3차 정렬 키를 잘못 적용한 경우다."
+    },
+    {
+      "id": 22,
+      "subject": 2,
+      "theory": "order-by",
+      "question": "ORDER BY 절에 대한 설명으로 가장 적절한 것은? (Oracle 기준)",
+      "choices": [
+        "하나의 ORDER BY 절에서 컬럼명, SELECT 절의 컬럼 별칭, SELECT 목록의 위치 번호를 섞어서 사용할 수 있다.",
+        "GROUP BY를 사용한 SELECT 문에서도 GROUP BY에 없는 컬럼을 집계 함수 없이 ORDER BY에 사용할 수 있다.",
+        "ORDER BY 절은 논리적 실행 순서상 SELECT 절보다 먼저 수행되므로 SELECT 절의 별칭을 사용할 수 없다.",
+        "정렬 방향을 지정하지 않으면 기본값은 DESC이다."
+      ],
+      "answer": 1,
+      "explanation": "`ORDER BY RTYPE, TOT DESC, 3`처럼 컬럼명·별칭·위치 번호를 함께 쓸 수 있다. ② GROUP BY 이후에는 그룹 단위 결과만 남으므로 GROUP BY 컬럼이나 집계 함수만 ORDER BY에 쓸 수 있다. ③ ORDER BY는 SELECT 이후 **가장 마지막**에 수행되므로 별칭 사용이 가능하다. ④ 기본값은 ASC다."
+    },
+    {
+      "id": 23,
+      "subject": 2,
+      "theory": "join",
+      "question": "호텔은 월(MON) 기준으로 시즌을 관리한다. 다음 [SEASON], [RESV] 테이블에 SQL을 실행했을 때 결과 값은?\n\n[SEASON]\n\n| S_NAME | FROM_M | TO_M |\n|---|---|---|\n| 비수기 | 1 | 5 |\n| 성수기 | 5 | 8 |\n| 연말 | 12 | 12 |\n\n[RESV]\n\n| RID | MON |\n|---|---|\n| R1 | 3 |\n| R2 | 5 |\n| R3 | 7 |\n| R4 | 10 |\n| R5 | 12 |",
+      "code": "SELECT COUNT(*)\n  FROM RESV R, SEASON S\n WHERE R.MON BETWEEN S.FROM_M AND S.TO_M;",
+      "choices": [
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
+      "answer": 2,
+      "explanation": "BETWEEN을 이용한 Non-EQUI JOIN이다. 시즌 구간이 5월에서 겹친다는 점이 핵심이다.\n\n- R1(3월): 비수기 → 1건\n- R2(5월): 비수기(1~5), 성수기(5~8) 모두 해당 → **2건**\n- R3(7월): 성수기 → 1건\n- R4(10월): 해당 시즌 없음 → 0건(INNER 조인에서 제외)\n- R5(12월): 연말 → 1건\n\n합계 **5**건이다. 예약 1건당 시즌이 하나라고 가정하면 4로 잘못 계산한다."
+    },
+    {
+      "id": 24,
+      "subject": 2,
+      "theory": "join",
+      "question": "법인 고객은 객실유형별 할인율을 적용받는다. 다음 [GUEST], [CORP_RATE] 테이블에 SQL을 실행한 결과로 옳은 것은? (결과는 COUNT(*) / SUM(R.DC) 순서)\n\n[GUEST]\n\n| GID | CORP_CD |\n|---|---|\n| G1 | C1 |\n| G2 | C1 |\n| G3 | NULL |\n| G4 | C2 |\n\n[CORP_RATE]\n\n| CORP_CD | RTYPE | DC |\n|---|---|---|\n| C1 | STD | 10 |\n| C1 | DLX | 15 |\n| C2 | STD | 5 |\n| NULL | STD | 0 |",
+      "code": "SELECT COUNT(*), SUM(R.DC)\n  FROM GUEST G, CORP_RATE R\n WHERE G.CORP_CD = R.CORP_CD;",
+      "choices": [
+        "6 / 55",
+        "3 / 30",
+        "5 / 55",
+        "5 / 30"
+      ],
+      "answer": 3,
+      "explanation": "등가 조인은 조인 키가 일치하는 모든 조합을 만든다.\n\n- G1(C1) × C1 2행 → 2건 (10, 15)\n- G2(C1) × C1 2행 → 2건 (10, 15)\n- G3(NULL): NULL = NULL은 UNKNOWN이므로 CORP_RATE의 NULL 행과도 조인되지 않는다 → 0건\n- G4(C2) × C2 1행 → 1건 (5)\n\n건수 2 + 2 + 1 = **5**, 합계 25 + 25 + 5 = **55**다. ①은 NULL끼리 조인된다고 본 경우, ②④는 고객 1명당 1건만 조인된다고 본 경우다."
+    },
+    {
+      "id": 25,
+      "subject": 2,
+      "theory": "standard-join",
+      "question": "다음 [ROOM], [STAY], [GUEST] 테이블에 SQL을 실행한 결과로 옳은 것은? (ROOM_NO, NAME 순서로 표기하며 행 순서는 고려하지 않는다)\n\n[ROOM]\n\n| ROOM_NO | RTYPE |\n|---|---|\n| 101 | STD |\n| 102 | DLX |\n| 201 | STE |\n| 202 | STD |\n\n[STAY]\n\n| SID | ROOM_NO | GID |\n|---|---|---|\n| S1 | 101 | G1 |\n| S2 | 101 | G2 |\n| S3 | 201 | G9 |\n\n[GUEST]\n\n| GID | NAME |\n|---|---|\n| G1 | 김 |\n| G2 | 이 |\n| G3 | 박 |",
+      "code": "SELECT R.ROOM_NO, G.NAME\n  FROM ROOM R\n  LEFT OUTER JOIN STAY S\n    ON R.ROOM_NO = S.ROOM_NO\n INNER JOIN GUEST G\n    ON S.GID = G.GID;",
+      "choices": [
+        "(101, 김), (101, 이), (102, NULL), (201, NULL), (202, NULL)",
+        "(101, 김), (101, 이), (201, NULL)",
+        "(101, 김), (101, 이), (102, NULL), (202, NULL)",
+        "(101, 김), (101, 이)"
+      ],
+      "answer": 4,
+      "explanation": "조인은 왼쪽부터 차례로 수행된다.\n\n1. ROOM LEFT OUTER JOIN STAY: (101, S1), (101, S2), (102, NULL), (201, S3), (202, NULL) 5행\n2. 이 결과와 GUEST를 **INNER JOIN**한다. S.GID가 NULL인 102, 202 행과 GUEST에 없는 G9를 가진 201 행은 조건을 만족하지 못해 모두 제거된다.\n\n최종 결과는 **(101, 김), (101, 이)** 2행이다. 앞에서 OUTER JOIN으로 살린 행도 뒤의 INNER JOIN에서 사라질 수 있다는 점이 함정이다. 모두 살리려면 두 번째 조인도 LEFT OUTER JOIN이어야 한다(그 경우 ①)."
+    },
+    {
+      "id": 26,
+      "subject": 2,
+      "theory": "standard-join",
+      "question": "객실 업그레이드는 현재 등급보다 1~2단계 높은 유형으로만 가능하다. 다음 [ROOM_TYPE] 테이블에 SQL을 실행한 결과로 옳은 것은? (RTYPE : CNT 형식, 출력 순서대로)\n\n[ROOM_TYPE]\n\n| RTYPE | GRADE |\n|---|---|\n| STD | 1 |\n| SUP | 2 |\n| DLX | 3 |\n| STE | 4 |",
+      "code": "SELECT A.RTYPE, COUNT(B.RTYPE) AS CNT\n  FROM ROOM_TYPE A\n  LEFT OUTER JOIN ROOM_TYPE B\n    ON B.GRADE BETWEEN A.GRADE + 1 AND A.GRADE + 2\n GROUP BY A.RTYPE, A.GRADE\n ORDER BY A.GRADE;",
+      "choices": [
+        "STD : 2, SUP : 2, DLX : 1, STE : 0",
+        "STD : 2, SUP : 2, DLX : 1",
+        "STD : 3, SUP : 2, DLX : 1, STE : 0",
+        "STD : 2, SUP : 2, DLX : 1, STE : 1"
+      ],
+      "answer": 1,
+      "explanation": "ON 절에 범위 조건을 쓴 셀프 LEFT OUTER JOIN이다. A의 각 등급에 대해 B.GRADE가 A.GRADE+1 ~ A.GRADE+2인 행을 찾는다.\n\n- STD(1): 2~3 → SUP, DLX → 2\n- SUP(2): 3~4 → DLX, STE → 2\n- DLX(3): 4~5 → STE → 1\n- STE(4): 5~6 → 없음 → B 컬럼 NULL 1행 → COUNT(B.RTYPE) = 0\n\n②는 INNER JOIN처럼 STE를 제외한 경우, ④는 NULL 행까지 세는 COUNT(*)로 계산한 경우다."
+    },
+    {
+      "id": 27,
+      "subject": 2,
+      "theory": "subquery",
+      "question": "다음 [GUEST], [RESV] 테이블에 SQL을 실행한 결과로 옳은 것은?\n\n[GUEST]\n\n| GID | NAME |\n|---|---|\n| G1 | 김 |\n| G2 | 이 |\n| G3 | 박 |\n\n[RESV]\n\n| RID | GID | STATUS |\n|---|---|---|\n| R1 | G1 | 취소 |\n| R2 | G2 | 확정 |",
+      "code": "SELECT G.NAME\n  FROM GUEST G\n WHERE EXISTS (SELECT 1\n                 FROM RESV R\n                WHERE R.STATUS = '확정');",
+      "choices": [
+        "이",
+        "김, 이, 박",
+        "김, 이",
+        "결과 없음"
+      ],
+      "answer": 2,
+      "explanation": "서브쿼리 안에 메인 쿼리의 G를 참조하는 조건(예: `R.GID = G.GID`)이 없으므로 **비연관 서브쿼리**다. 서브쿼리는 GUEST 행과 관계없이 항상 같은 결과(확정 예약 R2가 존재)를 내므로 EXISTS는 모든 행에서 TRUE가 되고, GUEST 3명 **김, 이, 박**이 모두 출력된다. '확정 예약이 있는 고객'만 구하려면 `AND R.GID = G.GID`를 추가해 연관 서브쿼리로 만들어야 한다(그 경우 ①)."
+    },
+    {
+      "id": 28,
+      "subject": 2,
+      "theory": "subquery",
+      "question": "다음 [ROOM] 테이블에 대해 실행했을 때 **오류가 발생하는** SQL은? (Oracle 기준)\n\n[ROOM]\n\n| ROOM_NO | RTYPE | PRICE |\n|---|---|---|\n| 101 | STD | 100 |\n| 102 | STD | 120 |\n| 201 | DLX | 200 |\n| 301 | STE | 400 |",
+      "choices": [
+        "SELECT ROOM_NO FROM ROOM WHERE PRICE > (SELECT AVG(PRICE) FROM ROOM);",
+        "SELECT ROOM_NO FROM ROOM WHERE PRICE IN (SELECT MAX(PRICE) FROM ROOM GROUP BY RTYPE);",
+        "SELECT ROOM_NO FROM ROOM WHERE PRICE = (SELECT MIN(PRICE) FROM ROOM GROUP BY RTYPE);",
+        "SELECT ROOM_NO FROM ROOM WHERE PRICE = (SELECT PRICE FROM ROOM WHERE RTYPE = 'DLX');"
+      ],
+      "answer": 3,
+      "explanation": "③의 서브쿼리는 RTYPE별 최솟값을 구하므로 STD, DLX, STE 3행을 반환한다. 단일 행 비교 연산자 `=`에 여러 행이 반환되면 실행 시 오류(ORA-01427)가 발생한다. 여러 행을 비교하려면 ②처럼 IN 같은 다중 행 연산자를 써야 한다. ①의 AVG는 1행, ④는 현재 데이터에서 DLX가 1행뿐이므로 정상 실행된다. 단, ④도 DLX 객실이 2개 이상이 되면 같은 오류가 발생한다."
+    },
+    {
+      "id": 29,
+      "subject": 2,
+      "theory": "set-operators",
+      "question": "다음 세 테이블에 대해 (가), (나) SQL을 실행했을 때 결과 건수로 옳은 것은? (Oracle 기준)\n\n[BOOK_WEB]\n\n| GID |\n|---|\n| 1 |\n| 1 |\n| 2 |\n\n[BOOK_TEL]\n\n| GID |\n|---|\n| 2 |\n| 3 |\n\n[BOOK_AGENCY]\n\n| GID |\n|---|\n| 3 |\n| 4 |",
+      "code": "-- (가)\nSELECT GID FROM BOOK_WEB\nUNION ALL\nSELECT GID FROM BOOK_TEL\nUNION\nSELECT GID FROM BOOK_AGENCY;\n\n-- (나)\nSELECT GID FROM BOOK_WEB\nUNION\nSELECT GID FROM BOOK_TEL\nUNION ALL\nSELECT GID FROM BOOK_AGENCY;",
+      "choices": [
+        "(가) 5, (나) 5",
+        "(가) 4, (나) 4",
+        "(가) 7, (나) 5",
+        "(가) 4, (나) 5"
+      ],
+      "answer": 4,
+      "explanation": "집합 연산자는 우선순위가 같으면 **위에서부터 차례로** 수행된다.\n\n- (가): WEB UNION ALL TEL = {1, 1, 2, 2, 3} → 여기에 UNION AGENCY를 하면 전체에서 중복이 제거되어 {1, 2, 3, 4} → **4**건\n- (나): WEB UNION TEL = {1, 2, 3} → 여기에 UNION ALL AGENCY를 하면 중복 제거 없이 3, 4가 붙어 {1, 2, 3, 3, 4} → **5**건\n\n마지막 연산이 UNION이면 앞에서 UNION ALL로 생긴 중복까지 모두 제거된다는 점이 핵심이다."
+    },
+    {
+      "id": 30,
+      "subject": 2,
+      "theory": "set-operators",
+      "question": "2024년 투숙 고객 [STAY_24]와 2025년 투숙 고객 [STAY_25]가 다음과 같다. 결과가 **G1, G3 두 행만** 출력되는 SQL은? (Oracle 기준, 행 순서는 고려하지 않는다)\n\n[STAY_24]\n\n| GID |\n|---|\n| G1 |\n| G1 |\n| G2 |\n| G3 |\n\n[STAY_25]\n\n| GID |\n|---|\n| G2 |\n| G4 |",
+      "choices": [
+        "SELECT GID FROM STAY_24 MINUS SELECT GID FROM STAY_25;",
+        "SELECT GID FROM STAY_24 WHERE GID NOT IN (SELECT GID FROM STAY_25);",
+        "SELECT GID FROM STAY_25 MINUS SELECT GID FROM STAY_24;",
+        "SELECT GID FROM STAY_24 INTERSECT SELECT GID FROM STAY_25;"
+      ],
+      "answer": 1,
+      "explanation": "MINUS는 앞 집합에서 뒤 집합을 뺀 뒤 **중복을 제거**하므로 {G1, G3} 2행이 나온다. ② NOT IN은 차집합 의미는 같지만 중복 제거를 하지 않아 G1, G1, G3 3행이 된다. ③은 순서가 바뀌어 G4만 나온다. ④ INTERSECT는 교집합이므로 G2만 나온다."
+    },
+    {
+      "id": 31,
+      "subject": 2,
+      "theory": "group-functions",
+      "question": "다음 SQL의 결과 건수와, HOTEL과 RTYPE이 **모두 NULL로 표시되는** 행의 수로 옳은 것은?\n\n[SALES]\n\n| HOTEL | RTYPE | AMT |\n|---|---|---|\n| 서울 | STD | 100 |\n| 서울 | DLX | 200 |\n| 서울 | NULL | 50 |\n| 부산 | STD | 150 |\n| 부산 | STD | 70 |",
+      "code": "SELECT HOTEL, RTYPE, SUM(AMT)\n  FROM SALES\n GROUP BY CUBE(HOTEL, RTYPE);",
+      "choices": [
+        "9건, 1건",
+        "10건, 1건",
+        "10건, 2건",
+        "9건, 2건"
+      ],
+      "answer": 3,
+      "explanation": "CUBE(HOTEL, RTYPE)는 (HOTEL, RTYPE), (HOTEL), (RTYPE), () 네 수준을 만든다. RTYPE 값 자체가 NULL인 데이터가 있다는 점에 주의한다.\n\n- (HOTEL, RTYPE): 서울-STD, 서울-DLX, 서울-NULL, 부산-STD → 4건\n- (HOTEL): 서울, 부산 → 2건\n- (RTYPE): STD, DLX, **NULL(데이터)** → 3건\n- (): 총계 → 1건\n\n합계 **10건**이다. 이 중 RTYPE 수준의 'NULL 데이터 그룹'(합계 50)과 총계(합계 570)는 화면상 HOTEL, RTYPE이 모두 NULL로 보이므로 **2건**이다. 두 행은 GROUPING(RTYPE) 값(0과 1)으로 구별할 수 있다."
+    },
+    {
+      "id": 32,
+      "subject": 2,
+      "theory": "group-functions",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle 기준, (HOTEL, TOT)를 출력 순서대로 표기)\n\n[SALES]\n\n| HOTEL | RTYPE | AMT |\n|---|---|---|\n| 서울 | STD | 100 |\n| 서울 | DLX | 300 |\n| 부산 | STD | 200 |\n| 부산 | STE | 500 |",
+      "code": "SELECT HOTEL, SUM(AMT) AS TOT\n  FROM SALES\n GROUP BY ROLLUP(HOTEL, RTYPE)\nHAVING GROUPING(RTYPE) = 1\n ORDER BY HOTEL;",
+      "choices": [
+        "(부산, 700), (서울, 400)",
+        "(부산, 700), (서울, 400), (NULL, 1100)",
+        "(NULL, 1100), (부산, 700), (서울, 400)",
+        "(NULL, 1100)"
+      ],
+      "answer": 2,
+      "explanation": "ROLLUP(HOTEL, RTYPE)은 (HOTEL, RTYPE) 상세 4행, (HOTEL) 소계 2행, () 총계 1행을 만든다. `GROUPING(RTYPE) = 1`은 RTYPE이 집계되어 사라진 행, 즉 **HOTEL 소계와 총계**만 남긴다.\n\n- 부산 소계 700, 서울 소계 400, 총계 1100\n\nHOTEL 오름차순 정렬에서 '부산'이 '서울'보다 앞이고, Oracle은 NULL을 가장 큰 값으로 보므로 총계(NULL)는 **맨 뒤**에 온다. ①은 총계를 빠뜨린 경우, ③은 NULL을 가장 작은 값으로 본 경우다."
+    },
+    {
+      "id": 33,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 SQL의 실행 결과에서 R 값을 출력 순서대로 나열한 것으로 옳은 것은? (문자는 가나다순으로 정렬된다.)\n\n[OCC]\n\n| HOTEL | MON | CNT |\n|---|---|---|\n| 서울 | 1 | 10 |\n| 서울 | 2 | 20 |\n| 서울 | 3 | 30 |\n| 부산 | 1 | 5 |\n| 부산 | 2 | 15 |",
+      "code": "SELECT HOTEL, MON,\n       SUM(CNT) OVER (PARTITION BY HOTEL ORDER BY MON\n                      ROWS BETWEEN CURRENT ROW\n                               AND UNBOUNDED FOLLOWING) AS R\n  FROM OCC\n ORDER BY HOTEL, MON;",
+      "choices": [
+        "5, 20, 10, 30, 60",
+        "20, 20, 60, 60, 60",
+        "20, 15, 30, 50, 60",
+        "20, 15, 60, 50, 30"
+      ],
+      "answer": 4,
+      "explanation": "`ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING`은 현재 행부터 파티션의 마지막 행까지를 합산하는 **역방향 누적합**이다. 출력은 HOTEL, MON 순이므로 부산이 먼저다.\n\n- 부산 1월: 5 + 15 = 20, 부산 2월: 15\n- 서울 1월: 10 + 20 + 30 = 60, 서울 2월: 20 + 30 = 50, 서울 3월: 30\n\n①은 처음부터 현재 행까지의 누적합, ②는 파티션 전체 합계로 계산한 경우다."
+    },
+    {
+      "id": 34,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "객실별로 체크아웃 후 다음 체크인까지 비어 있던 일수(IDLE)를 구하려 한다. 다음 SQL의 실행 결과에서 IDLE 값을 출력 순서대로 나열한 것으로 옳은 것은? (Oracle, IN_DT와 OUT_DT는 시각이 00:00인 DATE 타입이다.)\n\n[STAY]\n\n| ROOM_NO | IN_DT | OUT_DT |\n|---|---|---|\n| 101 | 2025-03-01 | 2025-03-03 |\n| 101 | 2025-03-05 | 2025-03-06 |\n| 101 | 2025-03-06 | 2025-03-08 |\n| 102 | 2025-03-02 | 2025-03-04 |\n| 102 | 2025-03-10 | 2025-03-11 |",
+      "code": "SELECT ROOM_NO, IN_DT,\n       LEAD(IN_DT) OVER (PARTITION BY ROOM_NO ORDER BY IN_DT)\n         - OUT_DT AS IDLE\n  FROM STAY\n ORDER BY ROOM_NO, IN_DT;",
+      "choices": [
+        "2, 0, NULL, 6, NULL",
+        "3, 1, NULL, 7, NULL",
+        "NULL, 2, 0, NULL, 6",
+        "2, 0, 0, 6, 0"
+      ],
+      "answer": 1,
+      "explanation": "LEAD(IN_DT)는 같은 객실(파티션) 안에서 IN_DT 순으로 **다음 행**의 체크인일을 가져온다.\n\n- 101 첫 행: 03-05 - 03-03 = 2\n- 101 둘째 행: 03-06 - 03-06 = 0\n- 101 셋째 행: 다음 행이 없어 LEAD가 NULL → NULL - 날짜 = NULL\n- 102 첫 행: 03-10 - 03-04 = 6\n- 102 둘째 행: NULL\n\n③은 LAG처럼 이전 행을 가져온 경우, ④는 LEAD의 기본값을 0으로 착각한 경우다. 기본값을 주려면 `LEAD(IN_DT, 1, 기본값)`처럼 세 번째 인수를 지정해야 한다."
+    },
+    {
+      "id": 35,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 SQL의 실행 결과에서 ID가 2인 행의 R1, R2 값으로 옳은 것은?\n\n[PAY]\n\n| ID | DAY | AMT |\n|---|---|---|\n| 1 | 1 | 100 |\n| 2 | 2 | 50 |\n| 3 | 2 | 70 |\n| 4 | 3 | 30 |",
+      "code": "SELECT ID,\n       SUM(AMT) OVER (ORDER BY DAY, ID\n                      ROWS UNBOUNDED PRECEDING)  AS R1,\n       SUM(AMT) OVER (ORDER BY DAY\n                      RANGE UNBOUNDED PRECEDING) AS R2\n  FROM PAY;",
+      "choices": [
+        "R1 = 150, R2 = 150",
+        "R1 = 220, R2 = 220",
+        "R1 = 150, R2 = 220",
+        "R1 = 220, R2 = 150"
+      ],
+      "answer": 3,
+      "explanation": "R1은 **ROWS** 단위이므로 (DAY, ID) 순서에서 첫 행부터 현재 행까지 물리적인 행만 더한다. ID 2는 두 번째 행이므로 100 + 50 = **150**이다.\n\nR2는 **RANGE** 단위이므로 현재 행과 정렬 값(DAY)이 같은 행을 모두 같은 범위로 본다. ID 2와 ID 3은 DAY가 2로 같으므로 둘 다 100 + 50 + 70 = **220**이다. ORDER BY만 쓰고 윈도우 절을 생략했을 때의 기본값도 이 RANGE 방식이다."
+    },
+    {
+      "id": 36,
+      "subject": 2,
+      "theory": "top-n",
+      "question": "다음 SQL의 결과 건수는? (Oracle 12c 이상 기준)\n\n[ROOM]\n\n| ROOM_NO | PRICE |\n|---|---|\n| 101 | 100 |\n| 102 | 300 |\n| 201 | 250 |\n| 202 | 300 |\n| 301 | 250 |\n| 302 | 500 |",
+      "code": "SELECT ROOM_NO, PRICE\n  FROM ROOM\n ORDER BY PRICE DESC\n FETCH FIRST 2 ROWS WITH TIES;",
+      "choices": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "answer": 2,
+      "explanation": "PRICE 내림차순은 302(500), 102·202(300), 201·301(250), 101(100) 순이다. `FETCH FIRST 2 ROWS`로 앞의 2행(302, 그리고 300인 행 하나)을 가져오되, `WITH TIES`는 마지막 행(2번째)과 정렬 값이 같은 행을 함께 포함한다. 2번째 행의 PRICE가 300이므로 300인 102, 202가 모두 포함되어 **3**건이다. 250인 행은 2번째 행과 값이 다르므로 포함되지 않는다."
+    },
+    {
+      "id": 37,
+      "subject": 2,
+      "theory": "top-n",
+      "question": "다음 [ROOM] 테이블에서 가격 상위 3위 이내의 객실을 조회하려고 (가)~(다)를 실행했다. 결과 값으로 옳은 것은?\n\n[ROOM]\n\n| ROOM_NO | PRICE |\n|---|---|\n| 101 | 500 |\n| 102 | 400 |\n| 103 | 400 |\n| 201 | 300 |\n| 202 | 300 |\n| 203 | 200 |",
+      "code": "-- (가)\nSELECT COUNT(*) FROM (SELECT ROW_NUMBER() OVER (ORDER BY PRICE DESC) AS RK FROM ROOM)\n WHERE RK <= 3;\n\n-- (나)\nSELECT COUNT(*) FROM (SELECT RANK() OVER (ORDER BY PRICE DESC) AS RK FROM ROOM)\n WHERE RK <= 3;\n\n-- (다)\nSELECT COUNT(*) FROM (SELECT DENSE_RANK() OVER (ORDER BY PRICE DESC) AS RK FROM ROOM)\n WHERE RK <= 3;",
+      "choices": [
+        "(가) 3, (나) 4, (다) 5",
+        "(가) 3, (나) 3, (다) 3",
+        "(가) 3, (나) 5, (다) 5",
+        "(가) 3, (나) 3, (다) 5"
+      ],
+      "answer": 4,
+      "explanation": "PRICE 내림차순으로 각 함수의 순위를 매기면 다음과 같다.\n\n| PRICE | ROW_NUMBER | RANK | DENSE_RANK |\n|---|---|---|---|\n| 500 | 1 | 1 | 1 |\n| 400 | 2 | 2 | 2 |\n| 400 | 3 | 2 | 2 |\n| 300 | 4 | 4 | 3 |\n| 300 | 5 | 4 | 3 |\n| 200 | 6 | 6 | 4 |\n\nRK <= 3인 행은 (가) **3**건, (나) RANK는 동순위 다음 번호를 건너뛰어 300이 4위가 되므로 **3**건, (다) DENSE_RANK는 건너뛰지 않아 300이 3위가 되므로 **5**건이다."
+    },
+    {
+      "id": 38,
+      "subject": 2,
+      "theory": "hierarchical-query",
+      "question": "다음 SQL의 결과에 **포함되는** 행은? (Oracle 기준, NAME | PNAME | LV 순서로 표기)\n\n[LOC]\n\n| ID | NAME | PID |\n|---|---|---|\n| 1 | 본관 | NULL |\n| 2 | 3층 | 1 |\n| 3 | 5층 | 1 |\n| 4 | 301호 | 2 |\n| 5 | 302호 | 2 |\n| 6 | 501호 | 3 |",
+      "code": "SELECT NAME, PRIOR NAME AS PNAME, LEVEL AS LV\n  FROM LOC\n START WITH PID IS NULL\nCONNECT BY PRIOR ID = PID;",
+      "choices": [
+        "501호 | 5층 | 3",
+        "본관 | 본관 | 1",
+        "302호 | 본관 | 3",
+        "5층 | 501호 | 2"
+      ],
+      "answer": 1,
+      "explanation": "`PRIOR ID = PID`는 PRIOR가 자식 쪽 키(ID)에 붙은 **순방향** 전개다. SELECT 절의 `PRIOR NAME`은 **직전에 전개된 행, 즉 부모 행**의 NAME을 돌려준다.\n\n- 본관: 루트이므로 부모가 없어 PNAME은 NULL, LV 1 (②는 틀림)\n- 3층, 5층: PNAME 본관, LV 2\n- 301호, 302호: PNAME 3층, LV 3 (③은 틀림)\n- 501호: PNAME **5층**, LV **3** (①)\n\n④는 부모·자식을 거꾸로 표기한 것이다."
+    },
+    {
+      "id": 39,
+      "subject": 2,
+      "theory": "hierarchical-query",
+      "question": "다음 SQL의 결과 건수는? (Oracle 기준)\n\n[ZONE]\n\n| ID | NAME | PID |\n|---|---|---|\n| 1 | 본관 | NULL |\n| 2 | 본관3층 | 1 |\n| 3 | 본관5층 | 1 |\n| 4 | 301호 | 2 |\n| 5 | 302호 | 2 |\n| 6 | 501호 | 3 |\n| 7 | 별관 | NULL |\n| 8 | 별관1층 | 7 |\n| 9 | 101호 | 8 |",
+      "code": "SELECT COUNT(*)\n  FROM ZONE\n START WITH PID IS NULL\nCONNECT BY PRIOR ID = PID\n       AND LEVEL <= 2;",
+      "choices": [
+        "3",
+        "4",
+        "5",
+        "9"
+      ],
+      "answer": 3,
+      "explanation": "START WITH 조건을 만족하는 루트가 본관, 별관 **두 개**이므로 두 계층이 각각 전개된다. CONNECT BY 절의 `LEVEL <= 2`는 전개 자체를 2단계에서 멈추게 한다.\n\n- LEVEL 1: 본관, 별관 (2건)\n- LEVEL 2: 본관3층, 본관5층, 별관1층 (3건)\n- LEVEL 3인 객실(301호, 302호, 501호, 101호)은 전개되지 않는다.\n\n합계 **5**건이다. 루트를 하나로 보면 3건, 조건을 무시하면 전체 9건으로 잘못 계산한다."
+    },
+    {
+      "id": 40,
+      "subject": 2,
+      "theory": "pivot-unpivot",
+      "question": "다음 SQL의 결과에 대한 설명으로 옳은 것은? (Oracle 기준)\n\n[SALES]\n\n| HOTEL | RTYPE | AMT |\n|---|---|---|\n| 서울 | STD | 100 |\n| 서울 | STD | 200 |\n| 서울 | DLX | 300 |\n| 부산 | STD | 150 |\n| 부산 | STE | 400 |",
+      "code": "SELECT *\n  FROM (SELECT HOTEL, RTYPE, AMT FROM SALES)\n PIVOT (SUM(AMT) AS S, COUNT(*) AS C\n        FOR RTYPE IN ('STD' AS STD, 'DLX' AS DLX));",
+      "choices": [
+        "결과는 3행이며, IN 목록에 없는 STE도 별도의 행으로 출력된다.",
+        "결과 컬럼 이름은 S_STD, C_STD, S_DLX, C_DLX 형태로 만들어진다.",
+        "부산 행의 DLX_S 값은 0이다.",
+        "결과 컬럼은 HOTEL, STD_S, STD_C, DLX_S, DLX_C 5개이며, 서울 행의 STD_S는 300, STD_C는 2이다."
+      ],
+      "answer": 4,
+      "explanation": "PIVOT 절에 집계 함수가 여러 개이면 결과 컬럼 이름은 **'IN 별칭_집계 별칭'** 형태(STD_S, STD_C, DLX_S, DLX_C)가 된다. PIVOT에 쓰이지 않은 HOTEL이 암시적 GROUP BY 기준이 되므로 결과는 서울, 부산 **2행**이다.\n\n- 서울: STD_S = 100 + 200 = 300, STD_C = 2, DLX_S = 300, DLX_C = 1\n- 부산: STD_S = 150, STD_C = 1, DLX_S = NULL(해당 행 없음)\n\nIN 목록에 없는 STE 데이터는 어느 컬럼에도 반영되지 않는다. 따라서 ①②③은 틀렸다."
+    },
+    {
+      "id": 41,
+      "subject": 2,
+      "theory": "regex",
+      "question": "예약 코드 형식을 검증하는 다음 SQL의 결과 건수는? (Oracle 기준)\n\n[RESV]\n\n| CODE |\n|---|\n| HT-2025-0001 |\n| HT-25-12 |\n| ht-2025-0002 |\n| HT-2025-001 |\n| HTL-2025-0003 |",
+      "code": "SELECT CODE\n  FROM RESV\n WHERE REGEXP_LIKE(CODE, '^HT-[0-9]{4}-[0-9]{3,4}$');",
+      "choices": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "answer": 2,
+      "explanation": "패턴은 문자열 처음(^)부터 'HT-', 숫자 정확히 4개, '-', 숫자 3~4개로 끝($)나야 한다.\n\n- HT-2025-0001: 일치\n- HT-25-12: 연도가 2자리 → 불일치\n- ht-2025-0002: 기본은 대소문자를 구분하므로 소문자 'ht' → 불일치\n- HT-2025-001: 마지막이 3자리로 {3,4} 범위 → 일치\n- HTL-2025-0003: 'HT' 뒤에 '-'가 아닌 'L' → 불일치\n\n결과는 **2**건이다. 대소문자를 무시하려면 match_param으로 'i'를 지정해야 한다."
+    },
+    {
+      "id": 42,
+      "subject": 2,
+      "theory": "regex",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle 기준, 결과는 A / B 순서)",
+      "code": "SELECT REGEXP_SUBSTR('STD:101,DLX:2005,STE:9', '[0-9]{3,}', 1, 2)   AS A,\n       REGEXP_REPLACE('Room 1205, Floor 12', '[0-9]+', '#', 1, 2) AS B\n  FROM DUAL;",
+      "choices": [
+        "2005 / Room 1205, Floor #",
+        "9 / Room 1205, Floor #",
+        "2005 / Room #, Floor #",
+        "101 / Room #, Floor 12"
+      ],
+      "answer": 1,
+      "explanation": "- A: `[0-9]{3,}`는 숫자가 3개 이상 연속된 부분이다. 'STD:101,DLX:2005,STE:9'에서 일치하는 것은 '101', '2005'이며('9'는 1자리라 제외), 세 번째 인수 1(시작 위치), 네 번째 인수 2(두 번째 일치)이므로 **'2005'**다.\n- B: REGEXP_REPLACE의 네 번째 인수는 시작 위치, 다섯 번째 인수는 몇 번째 일치를 바꿀지(occurrence)다. 숫자 덩어리는 '1205', '12' 순서이므로 두 번째인 '12'만 '#'로 바뀌어 **'Room 1205, Floor #'**다. occurrence가 0이거나 생략되면 모든 일치를 바꾼다(③의 B)."
+    },
+    {
+      "id": 43,
+      "subject": 2,
+      "theory": "dml",
+      "question": "다음 두 테이블에 대해 아래 MERGE 문을 실행(Oracle)한 후 `SELECT COUNT(*), SUM(PRICE) FROM ROOM_PRICE;`의 결과로 옳은 것은?\n\n[ROOM_PRICE]\n\n| ROOM_NO | PRICE |\n|---|---|\n| 101 | 100 |\n| 102 | 120 |\n| 201 | 200 |\n\n[NEW_PRICE]\n\n| ROOM_NO | PRICE |\n|---|---|\n| 101 | 90 |\n| 102 | 150 |\n| 301 | 400 |\n| 302 | 50 |",
+      "code": "MERGE INTO room_price t\nUSING new_price s\n   ON (t.room_no = s.room_no)\n WHEN MATCHED THEN\n   UPDATE SET t.price = s.price\n    WHERE s.price > t.price\n WHEN NOT MATCHED THEN\n   INSERT (room_no, price) VALUES (s.room_no, s.price)\n    WHERE s.price >= 100;",
+      "choices": [
+        "5, 900",
+        "4, 840",
+        "4, 850",
+        "3, 450"
+      ],
+      "answer": 3,
+      "explanation": "WHEN 절마다 붙은 WHERE 조건을 확인한다.\n\n- 101(MATCHED): 새 가격 90 > 기존 100이 아니므로 **수정하지 않음** → 100\n- 102(MATCHED): 150 > 120 → 150으로 수정\n- 201: NEW_PRICE에 없으므로 그대로 200\n- 301(NOT MATCHED): 400 >= 100 → 입력\n- 302(NOT MATCHED): 50 >= 100이 아니므로 **입력하지 않음**\n\n최종 4건, 100 + 150 + 200 + 400 = **850**이다. ②는 UPDATE의 WHERE를 무시한 경우(101이 90), ①은 두 WHERE를 모두 무시한 경우다."
+    },
+    {
+      "id": 44,
+      "subject": 2,
+      "theory": "dml",
+      "question": "다음 [ROOM_ASSIGN] 테이블에 대해 아래 UPDATE 문 2개를 순서대로 실행(Oracle)한 후의 데이터로 옳은 것은? (GID(ROOM_A, ROOM_B) 형식)\n\n[ROOM_ASSIGN]\n\n| GID | ROOM_A | ROOM_B |\n|---|---|---|\n| G1 | 101 | 201 |\n| G2 | 102 | 202 |",
+      "code": "UPDATE room_assign\n   SET room_a = room_b,\n       room_b = room_a\n WHERE gid = 'G1';\n\nUPDATE room_assign\n   SET room_a = room_a + 1,\n       room_b = room_a\n WHERE gid = 'G2';",
+      "choices": [
+        "G1(201, 201), G2(103, 103)",
+        "G1(201, 101), G2(103, 102)",
+        "G1(201, 101), G2(103, 103)",
+        "G1(101, 201), G2(103, 102)"
+      ],
+      "answer": 2,
+      "explanation": "UPDATE의 SET 절에 있는 모든 식은 **수정 전 값**을 기준으로 계산된 뒤 한꺼번에 반영된다. 왼쪽부터 차례로 바뀐 값을 쓰는 것이 아니다.\n\n- 첫 번째 UPDATE: ROOM_A = 기존 ROOM_B(201), ROOM_B = 기존 ROOM_A(101) → G1(201, 101)로 두 값이 맞바뀐다.\n- 두 번째 UPDATE: ROOM_A = 102 + 1 = 103, ROOM_B = 기존 ROOM_A(102) → G2(103, 102)\n\n①③은 앞 식에서 바뀐 값을 뒤 식이 사용한다고 본 경우다."
+    },
+    {
+      "id": 45,
+      "subject": 2,
+      "theory": "tcl",
+      "question": "T 테이블은 `C NUMBER PRIMARY KEY`로 생성되어 있고 C 값이 1인 한 행이 커밋되어 있다. Oracle에서 아래 문장을 순서대로 실행한 후 T에 남아 있는 C 값은? (오류가 발생한 문장은 무시하고 다음 문장이 실행된다고 가정한다.)",
+      "code": "INSERT INTO t VALUES (2);\nINSERT INTO t VALUES (1);\nSAVEPOINT s1;\nINSERT INTO t VALUES (3);\nGRANT SELECT ON t TO u1;\nINSERT INTO t VALUES (4);\nROLLBACK TO s1;\nROLLBACK;",
+      "choices": [
+        "1",
+        "1, 2",
+        "1, 2, 3, 4",
+        "1, 2, 3"
+      ],
+      "answer": 4,
+      "explanation": "1. INSERT 2: 성공(미커밋)\n2. INSERT 1: PK 중복으로 **해당 문장만** 실패한다. 문장 단위 롤백이므로 앞의 INSERT 2는 취소되지 않는다.\n3. SAVEPOINT s1 → INSERT 3\n4. GRANT(DCL)는 실행 시 **자동 커밋**되므로 2, 3이 확정되고, 트랜잭션이 끝나면서 저장점 s1도 사라진다.\n5. INSERT 4: 새 트랜잭션\n6. ROLLBACK TO s1: 현재 트랜잭션에 s1이 없으므로 오류 → 무시\n7. ROLLBACK: 4만 취소\n\n최종 값은 **1, 2, 3**이다. ②는 GRANT의 자동 커밋을 놓친 경우, ①은 오류 문장이 트랜잭션 전체를 취소한다고 본 경우다."
+    },
+    {
+      "id": 46,
+      "subject": 2,
+      "theory": "tcl",
+      "question": "트랜잭션 TX1이 101호의 요금을 조회해 100을 읽었다. 그 사이 TX2가 101호 요금을 150으로 **UPDATE한 뒤 COMMIT**했고, TX1이 같은 행을 다시 조회하자 150이 읽혔다. 이 현상의 명칭과, ANSI 표준 기준으로 이 현상을 방지할 수 있는 **가장 낮은** 격리 수준을 바르게 짝지은 것은?",
+      "choices": [
+        "Non-Repeatable Read / REPEATABLE READ",
+        "Dirty Read / READ COMMITTED",
+        "Phantom Read / SERIALIZABLE",
+        "Non-Repeatable Read / READ COMMITTED"
+      ],
+      "answer": 1,
+      "explanation": "같은 행을 두 번 읽는 사이 다른 트랜잭션이 **수정 후 커밋**하여 값이 달라진 것은 **Non-Repeatable Read**다. READ COMMITTED는 커밋된 값만 읽으므로 Dirty Read는 막지만 Non-Repeatable Read는 허용한다. 이를 막는 가장 낮은 수준은 **REPEATABLE READ**다. Dirty Read는 커밋 전 값을 읽는 것이고, Phantom Read는 새 행의 **삽입**으로 없던 행이 나타나는 현상이다."
+    },
+    {
+      "id": 47,
+      "subject": 2,
+      "theory": "ddl",
+      "question": "Oracle에서 다음과 같이 테이블을 생성하였다. 이 테이블에 대한 설명으로 가장 적절한 것은?",
+      "code": "CREATE TABLE room_info (\n  room_no    NUMBER       CONSTRAINT room_pk PRIMARY KEY,\n  rtype      VARCHAR2(3)  CONSTRAINT room_ck CHECK (rtype IN ('STD', 'DLX', 'STE')),\n  phone_ext  VARCHAR2(4)  CONSTRAINT room_uk UNIQUE,\n  price      NUMBER(7)    DEFAULT 100000 NOT NULL\n);",
+      "choices": [
+        "RTYPE에 NULL을 입력하면 CHECK 조건 `RTYPE IN ('STD', 'DLX', 'STE')`를 만족하지 않으므로 오류가 발생한다.",
+        "PHONE_EXT가 NULL인 행은 여러 건 입력할 수 있다.",
+        "`INSERT INTO room_info (room_no, rtype, price) VALUES (101, 'STD', NULL);`을 실행하면 PRICE에 DEFAULT 값 100000이 입력된다.",
+        "`CREATE TABLE room_bak AS SELECT * FROM room_info;`로 복사하면 ROOM_UK 제약조건도 함께 복사된다."
+      ],
+      "answer": 2,
+      "explanation": "Oracle의 UNIQUE 제약은 NULL을 비교 대상에서 제외하므로 **NULL은 여러 건** 입력할 수 있다(SQL Server는 한 건만 허용). ① CHECK 조건이 NULL로 인해 UNKNOWN이면 위반으로 보지 않으므로 NULL 입력은 성공한다. ③ DEFAULT는 컬럼을 생략했을 때만 적용되고, NULL을 명시하면 NULL이 입력되려 하므로 NOT NULL 위반 오류가 난다. ④ CTAS는 NOT NULL 제약만 복사하고 PK·UNIQUE·CHECK·FK는 복사하지 않는다."
+    },
+    {
+      "id": 48,
+      "subject": 2,
+      "theory": "ddl",
+      "question": "호텔 `GUEST` 테이블에는 이름, 등급, 주민등록번호, 전화번호가 저장되어 있다. 프런트 직원이 이름과 등급만 볼 수 있도록 하려고 뷰(VIEW)를 활용하려 한다. 뷰에 대한 설명으로 가장 적절한 것은? (Oracle)",
+      "choices": [
+        "뷰는 SELECT 결과 데이터를 별도로 저장하므로, 원본 GUEST 테이블을 삭제해도 뷰는 계속 조회할 수 있다.",
+        "뷰의 정의를 바꾸려면 `ALTER VIEW v_guest AS SELECT ...`로 SELECT 문을 수정한다.",
+        "이름과 등급만 담은 뷰 V_GUEST를 만들고 프런트 직원에게 GUEST 대신 V_GUEST의 SELECT 권한만 주면 민감한 컬럼의 노출을 막을 수 있으며, 이는 뷰의 보안성 장점에 해당한다.",
+        "GUEST 테이블에 새 컬럼이 추가되면 그 컬럼을 사용하지 않는 V_GUEST도 반드시 다시 생성해야 한다."
+      ],
+      "answer": 3,
+      "explanation": "뷰는 숨기고 싶은 컬럼을 제외한 SELECT 문만 공개할 수 있어 **보안성**을 제공한다. ① 뷰는 데이터를 갖지 않는 **가상 테이블**(저장된 SELECT 문)이므로 원본 테이블이 없으면 조회할 수 없다. ② 뷰는 ALTER VIEW로 정의를 바꿀 수 없어 `CREATE OR REPLACE VIEW`로 재생성한다. ④ 테이블 구조가 바뀌어도 뷰가 쓰는 컬럼과 무관하면 뷰를 그대로 쓸 수 있다(**독립성**)."
+    },
+    {
+      "id": 49,
+      "subject": 2,
+      "theory": "dcl",
+      "question": "SCOTT 소유의 ROOM 테이블에 대해 아래 문장을 실행했다. U1은 CREATE TABLE 권한을 가지고 있지만 U1의 CREATE TABLE 문은 권한 부족 오류로 실패했다. U1의 문장이 성공하도록 SCOTT가 추가로 실행해야 할 문장으로 가장 적절한 것은? (Oracle)",
+      "code": "-- SCOTT 실행\nGRANT SELECT ON scott.room TO u1;\n\n-- U1 실행\nCREATE TABLE stay (\n  stay_id  NUMBER PRIMARY KEY,\n  room_no  NUMBER REFERENCES scott.room (room_no)\n);",
+      "choices": [
+        "GRANT ALTER ON scott.room TO u1;",
+        "GRANT INDEX ON scott.room TO u1;",
+        "GRANT SELECT ON scott.room TO u1 WITH GRANT OPTION;",
+        "GRANT REFERENCES ON scott.room TO u1;"
+      ],
+      "answer": 4,
+      "explanation": "다른 사용자의 테이블을 참조하는 **FK 제약조건을 만들려면 그 테이블에 대한 REFERENCES 오브젝트 권한**이 필요하다. SELECT 권한만으로는 FK를 만들 수 없으며, WITH GRANT OPTION은 재부여 권한을 줄 뿐이다. ALTER는 테이블 구조 변경, INDEX는 해당 테이블에 인덱스를 만드는 권한이다."
+    },
+    {
+      "id": 50,
+      "subject": 2,
+      "theory": "dcl",
+      "question": "DBA, SCOTT, U1이 아래 순서로 DCL을 실행했다. 이후 U2가 (가), (나)를 실행했을 때의 결과로 옳은 것은? (Oracle)",
+      "code": "-- DBA 실행\nGRANT CREATE VIEW TO u1 WITH ADMIN OPTION;\nGRANT CREATE VIEW TO u2 WITH ADMIN OPTION;\n\n-- SCOTT 실행\nGRANT SELECT ON scott.room TO u1 WITH GRANT OPTION;\nGRANT SELECT ON scott.room TO u2 WITH GRANT OPTION;\n\n-- U1 실행\nGRANT CREATE VIEW TO u3;\nGRANT SELECT ON scott.room TO u3;\n\n-- U2 실행\n-- (가)\nREVOKE CREATE VIEW FROM u3;\n-- (나)\nREVOKE SELECT ON scott.room FROM u3;",
+      "choices": [
+        "(가) 성공, (나) 실패",
+        "(가) 성공, (나) 성공",
+        "(가) 실패, (나) 성공",
+        "(가) 실패, (나) 실패"
+      ],
+      "answer": 1,
+      "explanation": "- (가) CREATE VIEW는 **시스템 권한**이다. WITH ADMIN OPTION으로 받은 사용자는 자신이 부여하지 않은 사용자에게서도 그 권한을 회수할 수 있으므로, U1이 U3에게 준 권한을 U2가 회수할 수 있다 → **성공**\n- (나) SELECT ON scott.room은 **오브젝트 권한**이다. WITH GRANT OPTION으로 받은 권한은 **권한을 부여한 사용자만** 회수할 수 있다. U3에게 부여한 것은 U1이므로 U2의 REVOKE는 오류가 발생한다 → **실패**"
+    }
+  ]
+}

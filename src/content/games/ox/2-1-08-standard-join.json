@@ -1,0 +1,21 @@
+[
+  {"text":"ANSI 표준 조인에서 INNER를 생략하고 JOIN만 쓰면 INNER JOIN으로 처리된다.","answer":true,"explain":"INNER JOIN이 표준 조인의 기본값이다."},
+  {"text":"표준 조인의 ON 절에는 등호(=) 조건만 사용할 수 있다.","answer":false,"explain":"ON 절에는 BETWEEN, 부등호 등 임의의 조건을 쓸 수 있어 Non-EQUI JOIN도 가능하다."},
+  {"text":"ON 절을 사용하면 이름이 서로 다른 컬럼끼리도 조인할 수 있다.","answer":true,"explain":"예: ON E.MGR = M.EMPNO."},
+  {"text":"표준 조인에서 ON 절을 사용하면 WHERE 절을 함께 사용할 수 없다.","answer":false,"explain":"ON과 WHERE는 함께 쓸 수 있다. 조인 조건은 ON에, 필터 조건은 WHERE에 두는 것이 원칙이다."},
+  {"text":"NATURAL JOIN은 두 테이블에서 이름이 같은 모든 컬럼을 대상으로 EQUI JOIN을 수행한다.","answer":true,"explain":"이름만 같고 의미가 다른 컬럼까지 조인 조건이 될 수 있어 주의해야 한다."},
+  {"text":"NATURAL JOIN의 조인 컬럼에는 E.DEPTNO처럼 테이블 별칭 접두사를 붙일 수 있다.","answer":false,"explain":"NATURAL JOIN의 조인 컬럼에 접두사를 붙이면 오류다."},
+  {"text":"NATURAL JOIN은 ON 절이나 USING 절과 함께 사용할 수 없다.","answer":true,"explain":"NATURAL JOIN은 조인 조건을 자동으로 정하므로 ON·USING을 쓸 수 없다."},
+  {"text":"USING 조건절은 같은 이름의 컬럼 중 조인에 사용할 컬럼만 선택해 EQUI JOIN한다.","answer":true,"explain":"NATURAL JOIN과 달리 조인 컬럼을 골라 지정할 수 있다."},
+  {"text":"USING 절에 지정한 조인 컬럼은 SELECT 절에서 반드시 테이블 별칭을 붙여 사용해야 한다.","answer":false,"explain":"USING에 쓴 컬럼에는 접두사를 붙일 수 없다. 나머지 컬럼에는 붙일 수 있다."},
+  {"text":"SQL Server는 NATURAL JOIN과 USING 조건절을 지원하지 않는다.","answer":true,"explain":"SQL Server에서는 ON 절을 사용해 조인한다."},
+  {"text":"USING (DEPTNO)로 조인하고 SELECT *를 실행하면 DEPTNO 컬럼이 두 번 출력된다.","answer":false,"explain":"USING과 NATURAL JOIN은 조인 컬럼을 한 번만 맨 앞에 출력한다. ON은 양쪽 모두 출력한다."},
+  {"text":"CROSS JOIN에는 ON 절을 사용할 수 없다.","answer":true,"explain":"CROSS JOIN은 조건 없이 모든 조합을 만들며 필터가 필요하면 WHERE를 쓴다."},
+  {"text":"A RIGHT OUTER JOIN B는 B LEFT OUTER JOIN A와 결과 집합이 같다.","answer":true,"explain":"두 경우 모두 B의 모든 행이 보존된다."},
+  {"text":"FULL OUTER JOIN 결과는 LEFT OUTER JOIN 결과와 RIGHT OUTER JOIN 결과를 UNION ALL한 것과 같다.","answer":false,"explain":"UNION(중복 제거)한 것과 같다. UNION ALL로 합치면 매칭 행이 중복된다."},
+  {"text":"FULL OUTER JOIN 결과 행 수는 INNER JOIN 행 수에 양쪽 테이블에만 있는 행 수를 각각 더한 값이다.","answer":true,"explain":"INNER + 왼쪽에만 + 오른쪽에만 있는 행 수다."},
+  {"text":"INNER JOIN에서는 필터 조건을 ON 절에 두든 WHERE 절에 두든 결과가 같다.","answer":true,"explain":"결과가 달라지는 것은 OUTER JOIN의 경우다."},
+  {"text":"LEFT OUTER JOIN에서 NULL로 채워지는 쪽 테이블의 조건을 WHERE 절에 쓰면 OUTER JOIN 결과가 그대로 유지된다.","answer":false,"explain":"NULL로 채워진 행이 WHERE에서 걸러져 사실상 INNER JOIN과 같아진다."},
+  {"text":"LEFT OUTER JOIN에서 기준 테이블에 대한 조건을 ON 절에 두면 기준 테이블의 행이 걸러진다.","answer":false,"explain":"ON 조건은 짝 찾기 조건이라 기준 테이블 행은 모두 남는다. 거르려면 WHERE에 써야 한다."},
+  {"text":"ANSI의 A LEFT JOIN B ON A.K = B.K는 Oracle의 WHERE A.K = B.K(+)와 대응된다.","answer":true,"explain":"NULL로 채워질 B 쪽 컬럼에 (+)를 붙인 것과 같다."}
+]

@@ -1,0 +1,2517 @@
+{
+  "slug": "join",
+  "title": "조인",
+  "tables": {
+    "EMP": {
+      "columns": [
+        "ENAME",
+        "SAL",
+        "DEPTNO"
+      ],
+      "rows": [
+        [
+          "SMITH",
+          "80",
+          "20"
+        ],
+        [
+          "ALLEN",
+          "160",
+          "30"
+        ],
+        [
+          "BLAKE",
+          "285",
+          "30"
+        ],
+        [
+          "KING",
+          "500",
+          "10"
+        ],
+        [
+          "FORD",
+          "300",
+          "20"
+        ],
+        [
+          "LEE",
+          "120",
+          "NULL"
+        ]
+      ]
+    },
+    "DEPT": {
+      "columns": [
+        "DEPTNO",
+        "DNAME",
+        "LOC"
+      ],
+      "rows": [
+        [
+          "10",
+          "ACCOUNTING",
+          "NEW YORK"
+        ],
+        [
+          "20",
+          "RESEARCH",
+          "DALLAS"
+        ],
+        [
+          "30",
+          "SALES",
+          "CHICAGO"
+        ],
+        [
+          "40",
+          "OPERATIONS",
+          "BOSTON"
+        ]
+      ]
+    },
+    "SALGRADE": {
+      "columns": [
+        "GRADE",
+        "LOSAL",
+        "HISAL"
+      ],
+      "rows": [
+        [
+          "1",
+          "70",
+          "120"
+        ],
+        [
+          "2",
+          "121",
+          "140"
+        ],
+        [
+          "3",
+          "141",
+          "200"
+        ],
+        [
+          "4",
+          "201",
+          "300"
+        ],
+        [
+          "5",
+          "301",
+          "999"
+        ]
+      ]
+    },
+    "EMP E": {
+      "columns": [
+        "EMPNO",
+        "ENAME",
+        "MGR"
+      ],
+      "rows": [
+        [
+          "101",
+          "SMITH",
+          "105"
+        ],
+        [
+          "102",
+          "ALLEN",
+          "103"
+        ],
+        [
+          "103",
+          "BLAKE",
+          "104"
+        ],
+        [
+          "104",
+          "KING",
+          "NULL"
+        ],
+        [
+          "105",
+          "FORD",
+          "104"
+        ],
+        [
+          "106",
+          "LEE",
+          "103"
+        ]
+      ]
+    },
+    "EMP M": {
+      "columns": [
+        "EMPNO",
+        "ENAME",
+        "MGR"
+      ],
+      "rows": [
+        [
+          "101",
+          "SMITH",
+          "105"
+        ],
+        [
+          "102",
+          "ALLEN",
+          "103"
+        ],
+        [
+          "103",
+          "BLAKE",
+          "104"
+        ],
+        [
+          "104",
+          "KING",
+          "NULL"
+        ],
+        [
+          "105",
+          "FORD",
+          "104"
+        ],
+        [
+          "106",
+          "LEE",
+          "103"
+        ]
+      ]
+    },
+    "T1": {
+      "columns": [
+        "A"
+      ],
+      "rows": [
+        [
+          "1"
+        ],
+        [
+          "2"
+        ]
+      ]
+    },
+    "T2": {
+      "columns": [
+        "A"
+      ],
+      "rows": [
+        [
+          "1"
+        ],
+        [
+          "1"
+        ],
+        [
+          "3"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "조인",
+      "subtitle": "테이블을 잇는 5가지 조인과 행 수 계산",
+      "icon": "link",
+      "steps": [
+        {
+          "say": "조인을 배워 볼게요."
+        },
+        {
+          "say": "오라클 전통 방식, WHERE 절 조인이에요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "flow",
+      "section": "조인이란",
+      "title": "조인이 하는 일",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "나뉜 테이블",
+          "desc": "정규화로 분리",
+          "icon": "table"
+        },
+        {
+          "title": "조인",
+          "desc": "값으로 연결",
+          "icon": "link"
+        },
+        {
+          "title": "하나의 결과",
+          "desc": "함께 조회",
+          "icon": "check"
+        }
+      ],
+      "steps": [
+        {
+          "say": "정규화로 테이블이 나뉘어 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "조인은 컬럼 값으로 다시 이어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래서 하나의 결과로 함께 볼 수 있어요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "cards",
+      "section": "조인이란",
+      "title": "조인의 기본",
+      "cols": 3,
+      "items": [
+        {
+          "title": "PK-FK 무관",
+          "desc": "논리 관계면 OK",
+          "icon": "link"
+        },
+        {
+          "title": "두 개씩",
+          "desc": "순차적으로 수행",
+          "icon": "workflow"
+        },
+        {
+          "title": "컬럼 구분",
+          "desc": "별칭.컬럼으로",
+          "icon": "tag"
+        }
+      ],
+      "steps": [
+        {
+          "say": "조인의 기본 세 가지예요."
+        },
+        {
+          "say": "첫째, PK와 FK 관계가 없어도 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "값의 논리적 관계만 있으면 조인돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 여러 테이블도 두 개씩 차례로 조인해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 같은 이름 컬럼은 별칭으로 구분해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "안 그러면 모호성 오류가 나요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "id": "s04",
+      "section": "조인이란",
+      "type": "data",
+      "title": "눈여겨볼 데이터",
+      "tables": [
+        "EMP",
+        "DEPT"
+      ],
+      "steps": [
+        {
+          "say": "예제 데이터에서 기억할 점이 두 가지예요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "DEPTNO"
+              ]
+            },
+            "DEPT": {
+              "cols": [
+                "DEPTNO"
+              ]
+            }
+          }
+        },
+        {
+          "say": "LEE는 부서 번호가 NULL이에요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                5
+              ],
+              "cells": [
+                [
+                  5,
+                  "DEPTNO"
+                ]
+              ],
+              "notes": [
+                [
+                  5,
+                  "DEPTNO",
+                  "NULL!"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "40번 부서에는 사원이 없어요.",
+          "t": {
+            "DEPT": {
+              "rows": [
+                3
+              ],
+              "notes": [
+                [
+                  3,
+                  "DEPTNO",
+                  "사원 없음"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "조인마다 이 둘이 나오는지 볼게요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                5
+              ]
+            },
+            "DEPT": {
+              "rows": [
+                3
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "조인이란",
+      "title": "조인 5가지",
+      "cols": 3,
+      "items": [
+        {
+          "title": "EQUI",
+          "desc": "같은 값끼리",
+          "icon": "link"
+        },
+        {
+          "title": "Non-EQUI",
+          "desc": "범위로 연결",
+          "icon": "ruler"
+        },
+        {
+          "title": "SELF",
+          "desc": "자기 자신과",
+          "icon": "recycle"
+        },
+        {
+          "title": "OUTER",
+          "desc": "빠진 행도 포함",
+          "icon": "layers"
+        },
+        {
+          "title": "CROSS",
+          "desc": "모든 조합",
+          "icon": "copy"
+        }
+      ],
+      "steps": [
+        {
+          "say": "조인은 다섯 가지를 배워요."
+        },
+        {
+          "say": "같은 값끼리 잇는 EQUI 조인.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "범위로 잇는 Non-EQUI 조인.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "자기 자신과 잇는 SELF 조인.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "빠진 행도 살리는 OUTER 조인.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "모든 조합을 만드는 CROSS 조인이에요.",
+          "focus": [
+            4
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "quiz",
+      "section": "조인이란",
+      "question": "조인에 대한 설명으로 **옳은** 것은?",
+      "choices": [
+        "PK와 FK 관계가 필수다",
+        "두 개씩 차례로 조인한다",
+        "세 개를 동시에 조인한다",
+        "같은 컬럼명도 구분 불필요"
+      ],
+      "answer": 2,
+      "explanation": "조인은 두 테이블씩 차례로 수행해요. PK와 FK 관계가 없어도 조인돼요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 조인에 대한 설명으로 옳은 것은?"
+        }
+      ],
+      "id": "s05q"
+    },
+    {
+      "id": "s06",
+      "section": "EQUI JOIN",
+      "type": "data",
+      "title": "EQUI JOIN 결과",
+      "tables": [
+        "EMP",
+        "DEPT"
+      ],
+      "code": "SELECT E.ENAME, E.DEPTNO, D.DNAME\nFROM   EMP E, DEPT D\nWHERE  E.DEPTNO = D.DEPTNO;",
+      "steps": [
+        {
+          "say": "EQUI 조인은 값이 정확히 같은 행끼리 이어요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "cols": [
+                "DEPTNO"
+              ]
+            },
+            "DEPT": {
+              "cols": [
+                "DEPTNO"
+              ]
+            }
+          }
+        },
+        {
+          "say": "가장 많이 쓰는 조인이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "10번 부서는 KING과 짝이에요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  3
+                ]
+              ],
+              "result": {
+                "title": "결과",
+                "columns": [
+                  "ENAME",
+                  "DEPTNO",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "KING",
+                    "10",
+                    "ACCOUNTING"
+                  ]
+                ]
+              }
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "20번 부서는 SMITH, FORD와 짝이에요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  3
+                ],
+                [
+                  0,
+                  4
+                ]
+              ],
+              "result": {
+                "title": "결과",
+                "columns": [
+                  "ENAME",
+                  "DEPTNO",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "KING",
+                    "10",
+                    "ACCOUNTING"
+                  ],
+                  [
+                    "SMITH",
+                    "20",
+                    "RESEARCH"
+                  ],
+                  [
+                    "FORD",
+                    "20",
+                    "RESEARCH"
+                  ]
+                ]
+              }
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "30번은 ALLEN, BLAKE예요. 모두 5명이 나와요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  3
+                ],
+                [
+                  0,
+                  4
+                ],
+                [
+                  1,
+                  2
+                ]
+              ],
+              "result": {
+                "title": "결과 5행",
+                "columns": [
+                  "ENAME",
+                  "DEPTNO",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "KING",
+                    "10",
+                    "ACCOUNTING"
+                  ],
+                  [
+                    "SMITH",
+                    "20",
+                    "RESEARCH"
+                  ],
+                  [
+                    "FORD",
+                    "20",
+                    "RESEARCH"
+                  ],
+                  [
+                    "ALLEN",
+                    "30",
+                    "SALES"
+                  ],
+                  [
+                    "BLAKE",
+                    "30",
+                    "SALES"
+                  ]
+                ]
+              }
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ],
+                [
+                  2
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "LEE는 NULL이라 어떤 부서와도 같지 않아요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  3
+                ],
+                [
+                  0,
+                  4
+                ],
+                [
+                  1,
+                  2
+                ]
+              ],
+              "rows": [
+                5
+              ],
+              "notes": [
+                [
+                  5,
+                  "DEPTNO",
+                  "짝 없음"
+                ]
+              ]
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ],
+                [
+                  2
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "사원이 없는 40번 부서도 빠져요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  3
+                ],
+                [
+                  0,
+                  4
+                ],
+                [
+                  1,
+                  2
+                ]
+              ]
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ],
+                [
+                  2
+                ]
+              ],
+              "rows": [
+                3
+              ],
+              "notes": [
+                [
+                  3,
+                  "DEPTNO",
+                  "짝 없음"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s07",
+      "section": "EQUI JOIN",
+      "type": "data",
+      "title": "일반 조건 추가",
+      "tables": [
+        "EMP",
+        "DEPT"
+      ],
+      "code": "SELECT E.ENAME, D.DNAME\nFROM   EMP E, DEPT D\nWHERE  E.DEPTNO = D.DEPTNO\nAND    D.LOC = 'DALLAS';",
+      "steps": [
+        {
+          "say": "일반 조건은 AND로 이어 붙여요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "DEPT": {
+              "cols": [
+                "LOC"
+              ]
+            }
+          }
+        },
+        {
+          "say": "댈러스에 있는 부서는 20번 하나예요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "DEPT": {
+              "cells": [
+                [
+                  1,
+                  "LOC"
+                ]
+              ],
+              "filter": [
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 SMITH와 FORD만 남아요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  0,
+                  4
+                ]
+              ],
+              "filter": [
+                0,
+                4
+              ],
+              "result": {
+                "title": "결과 2행",
+                "columns": [
+                  "ENAME",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "SMITH",
+                    "RESEARCH"
+                  ],
+                  [
+                    "FORD",
+                    "RESEARCH"
+                  ]
+                ]
+              }
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s08",
+      "section": "Non-EQUI JOIN",
+      "type": "data",
+      "title": "급여로 등급 찾기",
+      "tables": [
+        "EMP",
+        "SALGRADE"
+      ],
+      "code": "SELECT E.ENAME, E.SAL, S.GRADE\nFROM   EMP E, SALGRADE S\nWHERE  E.SAL BETWEEN S.LOSAL AND S.HISAL;",
+      "steps": [
+        {
+          "say": "Non-EQUI 조인은 범위로 이어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "FORD의 급여는 300이에요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                4
+              ],
+              "cells": [
+                [
+                  4,
+                  "SAL"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "4등급 구간은 201부터 300까지예요.",
+          "t": {
+            "SALGRADE": {
+              "rows": [
+                3
+              ],
+              "cells": [
+                [
+                  3,
+                  "LOSAL"
+                ],
+                [
+                  3,
+                  "HISAL"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "BETWEEN은 양 끝을 포함해요. 그래서 FORD는 4등급이에요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  4
+                ]
+              ]
+            },
+            "SALGRADE": {
+              "tint": [
+                [
+                  3
+                ]
+              ],
+              "notes": [
+                [
+                  3,
+                  "HISAL",
+                  "경계 포함"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "다른 사원도 급여 구간으로 등급을 찾아요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  0,
+                  5
+                ],
+                [
+                  1
+                ],
+                [
+                  2,
+                  4
+                ],
+                [
+                  3
+                ]
+              ],
+              "result": {
+                "title": "결과 6행",
+                "columns": [
+                  "ENAME",
+                  "SAL",
+                  "GRADE"
+                ],
+                "rows": [
+                  [
+                    "SMITH",
+                    "80",
+                    "1"
+                  ],
+                  [
+                    "ALLEN",
+                    "160",
+                    "3"
+                  ],
+                  [
+                    "BLAKE",
+                    "285",
+                    "4"
+                  ],
+                  [
+                    "KING",
+                    "500",
+                    "5"
+                  ],
+                  [
+                    "FORD",
+                    "300",
+                    "4"
+                  ],
+                  [
+                    "LEE",
+                    "120",
+                    "1"
+                  ]
+                ]
+              }
+            },
+            "SALGRADE": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  2
+                ],
+                [
+                  3
+                ],
+                [
+                  4
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "Non-EQUI JOIN",
+      "title": "Non-EQUI 포인트",
+      "cols": 3,
+      "items": [
+        {
+          "title": "양 끝 포함",
+          "desc": "BETWEEN 경계",
+          "icon": "check"
+        },
+        {
+          "title": "LEE도 나옴",
+          "desc": "부서 NULL이어도",
+          "icon": "user"
+        },
+        {
+          "title": "구간 겹침",
+          "desc": "중복, 누락 위험",
+          "icon": "warning",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "세 가지만 기억하세요."
+        },
+        {
+          "say": "첫째, BETWEEN은 경계값을 포함해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 부서가 NULL인 LEE도 나와요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "부서가 아니라 급여로 잇기 때문이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 등급 구간이 겹치면 행이 중복돼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "구간이 비면 누락이 생겨요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "quiz",
+      "section": "Non-EQUI JOIN",
+      "question": "급여 300, 4등급 구간이 201~300이다. **BETWEEN**으로 조인하면?",
+      "choices": [
+        "4등급",
+        "5등급",
+        "결과에서 빠짐",
+        "4, 5등급 두 행"
+      ],
+      "answer": 1,
+      "explanation": "BETWEEN은 양 끝을 포함해요. 그래서 4등급이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 급여 300은 몇 등급일까요?"
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "type": "flow",
+      "section": "3개 이상 조인",
+      "title": "3개 테이블 조인",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "EMP",
+          "desc": "6행",
+          "icon": "table"
+        },
+        {
+          "title": "+ DEPT",
+          "desc": "LEE 제외, 5행",
+          "icon": "link"
+        },
+        {
+          "title": "+ SALGRADE",
+          "desc": "급여 범위, 5행",
+          "icon": "ruler"
+        }
+      ],
+      "steps": [
+        {
+          "say": "테이블 세 개를 이어 볼게요."
+        },
+        {
+          "say": "EMP는 6행이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "부서가 NULL인 LEE가 빠져 5행이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "급여 등급까지 이어도 5행이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "조인 조건은 두 개가 필요했어요.",
+          "focus": [
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "type": "callout",
+      "section": "3개 이상 조인",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "N개 테이블 조인에는 최소 **N-1개** 조인 조건. 부족하면 **카티션 곱**이 생겨요.",
+      "steps": [
+        {
+          "say": "N개 테이블엔 최소 N 빼기 1개의 조건이 필요해요."
+        },
+        {
+          "say": "부족하면 카티션 곱이 생겨요."
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "quiz",
+      "section": "3개 이상 조인",
+      "question": "테이블 **4개**를 조인할 때 필요한 최소 조인 조건 수는?",
+      "choices": [
+        "2개",
+        "3개",
+        "4개",
+        "5개"
+      ],
+      "answer": 2,
+      "explanation": "N 빼기 1이에요. 4개면 3개가 필요해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 테이블 네 개면 조인 조건은 최소 몇 개일까요?"
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "id": "s14",
+      "section": "SELF JOIN",
+      "type": "data",
+      "title": "사원과 관리자",
+      "tables": [
+        "EMP E",
+        "EMP M"
+      ],
+      "code": "SELECT E.ENAME AS 사원, M.ENAME AS 관리자\nFROM   EMP E, EMP M\nWHERE  E.MGR = M.EMPNO;",
+      "steps": [
+        {
+          "say": "SELF 조인은 테이블 하나를 두 번 써요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "E는 사원 역할, M은 관리자 역할이에요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP E": {
+              "cols": [
+                "MGR"
+              ]
+            },
+            "EMP M": {
+              "cols": [
+                "EMPNO"
+              ]
+            }
+          }
+        },
+        {
+          "say": "SMITH의 MGR은 105, FORD의 사번이에요.",
+          "t": {
+            "EMP E": {
+              "tint": [
+                [
+                  0
+                ]
+              ],
+              "cells": [
+                [
+                  0,
+                  "MGR"
+                ]
+              ],
+              "result": {
+                "title": "사원과 관리자",
+                "columns": [
+                  "사원",
+                  "관리자"
+                ],
+                "rows": [
+                  [
+                    "SMITH",
+                    "FORD"
+                  ]
+                ]
+              }
+            },
+            "EMP M": {
+              "tint": [
+                [
+                  4
+                ]
+              ],
+              "cells": [
+                [
+                  4,
+                  "EMPNO"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "ALLEN과 LEE의 관리자는 BLAKE예요.",
+          "t": {
+            "EMP E": {
+              "tint": [
+                [],
+                [
+                  1,
+                  5
+                ]
+              ],
+              "result": {
+                "title": "사원과 관리자",
+                "columns": [
+                  "사원",
+                  "관리자"
+                ],
+                "rows": [
+                  [
+                    "SMITH",
+                    "FORD"
+                  ],
+                  [
+                    "ALLEN",
+                    "BLAKE"
+                  ],
+                  [
+                    "LEE",
+                    "BLAKE"
+                  ]
+                ]
+              }
+            },
+            "EMP M": {
+              "tint": [
+                [],
+                [
+                  2
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "BLAKE와 FORD는 KING이 관리해요.",
+          "t": {
+            "EMP E": {
+              "tint": [
+                [],
+                [],
+                [
+                  2,
+                  4
+                ]
+              ],
+              "result": {
+                "title": "결과 5행",
+                "columns": [
+                  "사원",
+                  "관리자"
+                ],
+                "rows": [
+                  [
+                    "SMITH",
+                    "FORD"
+                  ],
+                  [
+                    "ALLEN",
+                    "BLAKE"
+                  ],
+                  [
+                    "LEE",
+                    "BLAKE"
+                  ],
+                  [
+                    "BLAKE",
+                    "KING"
+                  ],
+                  [
+                    "FORD",
+                    "KING"
+                  ]
+                ]
+              }
+            },
+            "EMP M": {
+              "tint": [
+                [],
+                [],
+                [
+                  3
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "KING은 MGR이 NULL이라 짝이 없어요.",
+          "t": {
+            "EMP E": {
+              "rows": [
+                3
+              ],
+              "notes": [
+                [
+                  3,
+                  "MGR",
+                  "짝 없음"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "SELF JOIN",
+      "title": "SELF JOIN 규칙",
+      "cols": 3,
+      "items": [
+        {
+          "title": "별칭 필수",
+          "desc": "EMP E, EMP M",
+          "icon": "tag"
+        },
+        {
+          "title": "연결 조건",
+          "desc": "E.MGR=M.EMPNO",
+          "icon": "link"
+        },
+        {
+          "title": "KING 제외",
+          "desc": "MGR이 NULL",
+          "icon": "warning",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "SELF 조인 규칙 세 가지예요."
+        },
+        {
+          "say": "첫째, 별칭이 필수예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "E는 사원 역할, M은 관리자 역할이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 사원의 MGR과 관리자 사번을 이어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, KING은 MGR이 NULL이라 빠져요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "KING까지 보려면 OUTER 조인을 써요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "id": "s16",
+      "section": "OUTER JOIN",
+      "type": "data",
+      "title": "플러스 기호는 어디에?",
+      "tables": [
+        "EMP",
+        "DEPT"
+      ],
+      "code": "-- ① EMP 기준\nWHERE E.DEPTNO = D.DEPTNO(+)\n-- ② DEPT 기준\nWHERE E.DEPTNO(+) = D.DEPTNO",
+      "steps": [
+        {
+          "say": "OUTER 조인은 빠지던 행도 살려요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  3
+                ],
+                [
+                  0,
+                  4
+                ],
+                [
+                  1,
+                  2
+                ]
+              ]
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ],
+                [
+                  2
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "오라클은 괄호 플러스 기호를 붙여요.",
+          "focus": [
+            2,
+            4
+          ]
+        },
+        {
+          "say": "DEPT 쪽에 붙이면 EMP가 기준이에요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "result": {
+                "title": "EMP 기준",
+                "columns": [
+                  "ENAME",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "KING",
+                    "ACCOUNTING"
+                  ],
+                  [
+                    "SMITH",
+                    "RESEARCH"
+                  ],
+                  [
+                    "FORD",
+                    "RESEARCH"
+                  ],
+                  [
+                    "ALLEN",
+                    "SALES"
+                  ],
+                  [
+                    "BLAKE",
+                    "SALES"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "부서 없는 LEE도 나와요. 부서명은 NULL로 채워요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "rows": [
+                5
+              ],
+              "notes": [
+                [
+                  5,
+                  "DEPTNO",
+                  "짝 없음"
+                ]
+              ],
+              "result": {
+                "title": "EMP 기준 = LEFT",
+                "columns": [
+                  "ENAME",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "KING",
+                    "ACCOUNTING"
+                  ],
+                  [
+                    "SMITH",
+                    "RESEARCH"
+                  ],
+                  [
+                    "FORD",
+                    "RESEARCH"
+                  ],
+                  [
+                    "ALLEN",
+                    "SALES"
+                  ],
+                  [
+                    "BLAKE",
+                    "SALES"
+                  ],
+                  [
+                    "LEE",
+                    "NULL"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "EMP 쪽에 붙이면 DEPT가 기준이에요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "DEPT": {
+              "rows": [
+                0,
+                1,
+                2,
+                3
+              ]
+            },
+            "EMP": {
+              "result": {
+                "title": "DEPT 기준",
+                "columns": [
+                  "ENAME",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "KING",
+                    "ACCOUNTING"
+                  ],
+                  [
+                    "SMITH",
+                    "RESEARCH"
+                  ],
+                  [
+                    "FORD",
+                    "RESEARCH"
+                  ],
+                  [
+                    "ALLEN",
+                    "SALES"
+                  ],
+                  [
+                    "BLAKE",
+                    "SALES"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "사원 없는 40번 부서도 나와요. RIGHT 조인과 같아요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "DEPT": {
+              "rows": [
+                3
+              ],
+              "notes": [
+                [
+                  3,
+                  "DEPTNO",
+                  "짝 없음"
+                ]
+              ]
+            },
+            "EMP": {
+              "result": {
+                "title": "DEPT 기준 = RIGHT",
+                "columns": [
+                  "ENAME",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "KING",
+                    "ACCOUNTING"
+                  ],
+                  [
+                    "SMITH",
+                    "RESEARCH"
+                  ],
+                  [
+                    "FORD",
+                    "RESEARCH"
+                  ],
+                  [
+                    "ALLEN",
+                    "SALES"
+                  ],
+                  [
+                    "BLAKE",
+                    "SALES"
+                  ],
+                  [
+                    "NULL",
+                    "OPERATIONS"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "OUTER JOIN",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "(+)는 기준 쪽이 아니라 **부족한 쪽**, 즉 **NULL이 채워질 쪽**에 붙여요.",
+      "steps": [
+        {
+          "say": "플러스 기호는 기준 쪽에 붙이지 않아요."
+        },
+        {
+          "say": "NULL이 채워질 부족한 쪽에 붙여요."
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "cards",
+      "section": "OUTER JOIN",
+      "title": "플러스 기호 제약",
+      "cols": 3,
+      "items": [
+        {
+          "title": "양쪽 불가",
+          "desc": "FULL은 UNION",
+          "icon": "lock",
+          "tone": "warn"
+        },
+        {
+          "title": "OR 불가",
+          "desc": "OR로 결합 X",
+          "icon": "lock",
+          "tone": "warn"
+        },
+        {
+          "title": "조건에도",
+          "desc": "반대편 조건에 (+)",
+          "icon": "filter"
+        }
+      ],
+      "steps": [
+        {
+          "say": "플러스 기호에는 제약이 세 가지 있어요."
+        },
+        {
+          "say": "첫째, 양쪽에 동시에 못 붙여요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "FULL 조인은 ANSI 문법이나 UNION으로 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, OR로 다른 조건과 묶을 수 없어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 반대편 일반 조건에도 붙여야 해요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "id": "s19",
+      "section": "OUTER JOIN",
+      "type": "data",
+      "title": "반대편 조건의 함정",
+      "tables": [
+        "EMP",
+        "DEPT"
+      ],
+      "code": "SELECT E.ENAME, D.DNAME\nFROM   EMP E, DEPT D\nWHERE  E.DEPTNO = D.DEPTNO(+)\nAND    D.LOC(+) = 'DALLAS';",
+      "steps": [
+        {
+          "say": "EMP 기준 OUTER 조인에 댈러스 조건을 더해요.",
+          "focus": [
+            3,
+            4
+          ]
+        },
+        {
+          "say": "플러스 기호를 붙이면 짝을 찾는 조건이 돼요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "DEPT": {
+              "rows": [
+                1
+              ],
+              "cells": [
+                [
+                  1,
+                  "LOC"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 사원 6명이 모두 나와요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "result": {
+                "title": "D.LOC(+) = DALLAS",
+                "columns": [
+                  "ENAME",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "SMITH",
+                    "RESEARCH"
+                  ],
+                  [
+                    "ALLEN",
+                    "NULL"
+                  ],
+                  [
+                    "BLAKE",
+                    "NULL"
+                  ],
+                  [
+                    "KING",
+                    "NULL"
+                  ],
+                  [
+                    "FORD",
+                    "RESEARCH"
+                  ],
+                  [
+                    "LEE",
+                    "NULL"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "댈러스인 SMITH와 FORD만 부서명이 채워져요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  0,
+                  4
+                ]
+              ]
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "플러스 기호를 빼면 NULL 행이 걸러져요.",
+          "t": {
+            "EMP": {
+              "filter": [
+                0,
+                4
+              ],
+              "result": {
+                "title": "D.LOC = DALLAS",
+                "columns": [
+                  "ENAME",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "SMITH",
+                    "RESEARCH"
+                  ],
+                  [
+                    "FORD",
+                    "RESEARCH"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "사실상 INNER 조인이 돼요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  0,
+                  4
+                ]
+              ]
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "OUTER JOIN",
+      "question": "**E.DEPTNO = D.DEPTNO(+)**와 같은 ANSI 조인은?",
+      "choices": [
+        "INNER JOIN",
+        "RIGHT OUTER JOIN",
+        "LEFT OUTER JOIN",
+        "FULL OUTER JOIN"
+      ],
+      "answer": 3,
+      "explanation": "DEPT 쪽이 부족한 쪽이에요. EMP가 기준인 LEFT 조인이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. DEPT 쪽에 플러스 기호를 붙이면 어떤 조인일까요?"
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "flow",
+      "section": "CROSS JOIN",
+      "title": "조건이 없으면",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "EMP",
+          "desc": "6행",
+          "icon": "table"
+        },
+        {
+          "title": "DEPT",
+          "desc": "4행",
+          "icon": "table"
+        },
+        {
+          "title": "24행",
+          "desc": "모든 조합",
+          "icon": "copy"
+        }
+      ],
+      "steps": [
+        {
+          "say": "조인 조건이 없으면 어떻게 될까요?"
+        },
+        {
+          "say": "EMP 6행과 DEPT 4행이 있어요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "모든 행이 서로 짝을 지어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "6 곱하기 4, 24행이에요. 카티션 곱이에요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "callout",
+      "section": "CROSS JOIN",
+      "tone": "info",
+      "title": "언제 쓰나",
+      "text": "대부분은 **조인 조건 누락** 실수예요. 테스트 데이터나 모든 조합을 만들 때 일부러 쓰기도 해요.",
+      "steps": [
+        {
+          "say": "대부분은 조인 조건을 빠뜨린 실수예요."
+        },
+        {
+          "say": "모든 조합이 필요할 땐 일부러 쓰기도 해요."
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "id": "s23",
+      "section": "결과 행 수 계산",
+      "type": "data",
+      "title": "INNER와 LEFT 행 수",
+      "tables": [
+        "T1",
+        "T2"
+      ],
+      "steps": [
+        {
+          "say": "행 수 계산 연습을 해 볼게요. T1은 1과 2예요.",
+          "t": {
+            "T1": {
+              "rows": [
+                0,
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "T2는 1이 두 개, 그리고 3이에요.",
+          "t": {
+            "T2": {
+              "rows": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "INNER는 매칭 쌍 수예요. 1은 T2에 두 개라 두 번 짝을 지어요.",
+          "t": {
+            "T1": {
+              "tint": [
+                [
+                  0
+                ]
+              ]
+            },
+            "T2": {
+              "tint": [
+                [
+                  0,
+                  1
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 2행이에요.",
+          "t": {
+            "T1": {
+              "tint": [
+                [
+                  0
+                ]
+              ],
+              "result": {
+                "title": "INNER 2행",
+                "columns": [
+                  "T1.A",
+                  "T2.A"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "1"
+                  ],
+                  [
+                    "1",
+                    "1"
+                  ]
+                ]
+              }
+            },
+            "T2": {
+              "tint": [
+                [
+                  0,
+                  1
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "LEFT는 T1의 2가 더해져 3행이에요. 짝은 NULL이에요.",
+          "t": {
+            "T1": {
+              "rows": [
+                1
+              ],
+              "notes": [
+                [
+                  1,
+                  "A",
+                  "짝 없음"
+                ]
+              ],
+              "result": {
+                "title": "LEFT 3행",
+                "columns": [
+                  "T1.A",
+                  "T2.A"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "1"
+                  ],
+                  [
+                    "1",
+                    "1"
+                  ],
+                  [
+                    "2",
+                    "NULL"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s24",
+      "section": "결과 행 수 계산",
+      "type": "data",
+      "title": "RIGHT와 FULL 행 수",
+      "tables": [
+        "T1",
+        "T2"
+      ],
+      "steps": [
+        {
+          "say": "두 테이블 값을 같이 볼게요.",
+          "t": {
+            "T1": {
+              "tint": [
+                [
+                  0
+                ]
+              ]
+            },
+            "T2": {
+              "tint": [
+                [
+                  0,
+                  1
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "RIGHT는 T2의 3이 더해져 3행이에요.",
+          "t": {
+            "T2": {
+              "rows": [
+                2
+              ],
+              "notes": [
+                [
+                  2,
+                  "A",
+                  "짝 없음"
+                ]
+              ]
+            },
+            "T1": {
+              "result": {
+                "title": "RIGHT 3행",
+                "columns": [
+                  "T1.A",
+                  "T2.A"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "1"
+                  ],
+                  [
+                    "1",
+                    "1"
+                  ],
+                  [
+                    "NULL",
+                    "3"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "FULL은 둘 다 더해 4행이에요.",
+          "t": {
+            "T1": {
+              "rows": [
+                1
+              ],
+              "result": {
+                "title": "FULL 4행",
+                "columns": [
+                  "T1.A",
+                  "T2.A"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "1"
+                  ],
+                  [
+                    "1",
+                    "1"
+                  ],
+                  [
+                    "2",
+                    "NULL"
+                  ],
+                  [
+                    "NULL",
+                    "3"
+                  ]
+                ]
+              }
+            },
+            "T2": {
+              "rows": [
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "중복 값을 빠뜨리지 않는 게 핵심이에요.",
+          "t": {
+            "T1": {
+              "tint": [
+                [
+                  0
+                ]
+              ]
+            },
+            "T2": {
+              "tint": [
+                [
+                  0,
+                  1
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s24b",
+      "section": "결과 행 수 계산",
+      "type": "data",
+      "title": "CROSS 행 수",
+      "tables": [
+        "T1",
+        "T2"
+      ],
+      "steps": [
+        {
+          "say": "CROSS는 모든 조합이에요."
+        },
+        {
+          "say": "T1의 1이 T2의 세 행과 모두 짝을 지어요.",
+          "t": {
+            "T1": {
+              "tint": [
+                [
+                  0
+                ]
+              ],
+              "result": {
+                "title": "CROSS",
+                "columns": [
+                  "T1.A",
+                  "T2.A"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "1"
+                  ],
+                  [
+                    "1",
+                    "1"
+                  ],
+                  [
+                    "1",
+                    "3"
+                  ]
+                ]
+              }
+            },
+            "T2": {
+              "tint": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "T1의 2도 세 행과 짝을 지어요.",
+          "t": {
+            "T1": {
+              "tint": [
+                [],
+                [
+                  1
+                ]
+              ],
+              "result": {
+                "title": "CROSS",
+                "columns": [
+                  "T1.A",
+                  "T2.A"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "1"
+                  ],
+                  [
+                    "1",
+                    "1"
+                  ],
+                  [
+                    "1",
+                    "3"
+                  ],
+                  [
+                    "2",
+                    "1"
+                  ],
+                  [
+                    "2",
+                    "1"
+                  ],
+                  [
+                    "2",
+                    "3"
+                  ]
+                ]
+              }
+            },
+            "T2": {
+              "tint": [
+                [],
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "2 곱하기 3, 6행이에요.",
+          "t": {
+            "T1": {
+              "result": {
+                "title": "CROSS 6행",
+                "columns": [
+                  "T1.A",
+                  "T2.A"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "1"
+                  ],
+                  [
+                    "1",
+                    "1"
+                  ],
+                  [
+                    "1",
+                    "3"
+                  ],
+                  [
+                    "2",
+                    "1"
+                  ],
+                  [
+                    "2",
+                    "1"
+                  ],
+                  [
+                    "2",
+                    "3"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "결과 행 수 계산",
+      "question": "T1.A가 1, 2이고 T2.A가 1, 1, 3일 때 **INNER JOIN** 행 수는?",
+      "choices": [
+        "1행",
+        "3행",
+        "6행",
+        "2행"
+      ],
+      "answer": 4,
+      "explanation": "T2에 1이 두 개라 두 쌍이에요. 그래서 2행이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 이 예제의 이너 조인은 몇 행일까요?"
+        }
+      ],
+      "id": "s25"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "조인은 두 개씩, PK-FK 불필요",
+        "EQUI는 =, Non-EQUI는 범위",
+        "N개 테이블엔 조건 N-1개",
+        "SELF JOIN은 별칭 필수",
+        "(+)는 NULL이 채워질 쪽에",
+        "조건 없으면 카티션 곱 M×N"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "조인은 두 개씩, PK와 FK가 없어도 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "EQUI는 같은 값, Non-EQUI는 범위로 이어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "N개 테이블엔 조건이 N 빼기 1개 필요해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "SELF 조인은 별칭이 필수예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "플러스 기호는 NULL이 채워질 쪽에 붙여요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "조건이 없으면 카티션 곱이 생겨요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s26"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+[
+  { "text": "Oracle에서 인스턴스는 SGA와 백그라운드 프로세스의 집합이고, 데이터베이스는 디스크에 저장된 파일의 집합이다.", "answer": true, "explain": "인스턴스는 메모리와 프로세스, 데이터베이스는 데이터 파일·리두 로그·컨트롤 파일 등 물리 파일이다." },
+  { "text": "Oracle RAC 환경에서는 하나의 인스턴스가 여러 데이터베이스를 동시에 관리한다.", "answer": false, "explain": "RAC는 여러 인스턴스가 하나의 데이터베이스를 공유하는 구조다." },
+  { "text": "SQL Server는 하나의 인스턴스 안에 여러 개의 데이터베이스를 두는 구조다.", "answer": true, "explain": "SQL Server는 master, model, msdb, tempdb와 사용자 DB가 한 인스턴스에서 함께 운영된다." },
+  { "text": "PGA는 모든 서버 프로세스가 공유하는 메모리 영역이므로 접근 시 래치가 필요하다.", "answer": false, "explain": "공유 메모리는 SGA다. PGA는 서버 프로세스마다 독립적으로 할당되어 래치 없이 접근한다." },
+  { "text": "공유 풀(Shared Pool)은 라이브러리 캐시와 딕셔너리 캐시로 구성된다.", "answer": true, "explain": "라이브러리 캐시는 SQL·실행계획을, 딕셔너리 캐시는 테이블·컬럼·권한 등 메타정보를 캐싱한다." },
+  { "text": "정렬 작업 공간인 Sort Area와 해시 조인의 Hash Area는 PGA에 할당된다.", "answer": true, "explain": "정렬·해시 작업 공간은 PGA에 있으며 부족하면 Temp 테이블스페이스를 사용한다." },
+  { "text": "공유 서버(Shared Server) 방식에서는 사용자 프로세스마다 전용 서버 프로세스가 하나씩 생성된다.", "answer": false, "explain": "설명은 전용 서버 방식이다. 공유 서버는 디스패처가 요청을 큐에 넣고 소수의 공유 서버 프로세스가 처리한다." },
+  { "text": "버퍼 캐시의 더티 블록을 데이터 파일에 기록하는 백그라운드 프로세스는 LGWR이다.", "answer": false, "explain": "더티 블록은 DBWn이 기록한다. LGWR은 리두 로그 버퍼를 온라인 리두 로그 파일에 기록한다." },
+  { "text": "인스턴스 장애 후 재기동할 때 인스턴스 복구를 수행하는 백그라운드 프로세스는 SMON이다.", "answer": true, "explain": "SMON은 인스턴스 복구와 임시 세그먼트 정리를 담당한다." },
+  { "text": "비정상 종료된 사용자 프로세스의 락을 해제하고 트랜잭션을 롤백하는 프로세스는 SMON이다.", "answer": false, "explain": "비정상 종료된 프로세스를 정리하고 락 해제·롤백하는 것은 PMON이다." },
+  { "text": "Oracle에서 커밋은 LGWR이 리두 로그 버퍼를 리두 로그 파일에 기록하면 완료된다.", "answer": true, "explain": "더티 블록은 커밋과 무관하게 나중에 DBWn이 기록하며, 커밋은 Redo 기록으로 완료된다." },
+  { "text": "Write Ahead Logging 원칙에 따라 DBWn은 Redo보다 먼저 더티 블록을 데이터 파일에 기록한다.", "answer": false, "explain": "더티 블록을 기록하기 전에 해당 Redo가 먼저 리두 로그 파일에 기록되어야 한다." },
+  { "text": "Fast Commit은 변경된 블록을 디스크에 쓰지 않고 로그만 순차 기록해 커밋을 빠르게 하는 Redo의 목적이다.", "answer": true, "explain": "Redo의 목적은 Database Recovery, Cache Recovery, Fast Commit이다." },
+  { "text": "읽기 일관성(Read Consistency)은 Redo 로그의 목적에 해당한다.", "answer": false, "explain": "읽기 일관성은 Undo의 목적이다. Undo로 쿼리 시작 시점의 CR 블록을 만들어 읽는다." },
+  { "text": "체크포인트가 자주 발생하면 인스턴스 복구 시 적용할 Redo가 줄어 복구 시간이 짧아진다.", "answer": true, "explain": "더티 블록이 자주 기록되므로 복구할 양이 줄지만 대신 디스크 쓰기가 늘어난다." },
+  { "text": "Oracle에서 데이터를 읽고 쓰는 최소 단위는 익스텐트다.", "answer": false, "explain": "I/O 최소 단위는 블록이다. 익스텐트는 연속된 블록의 집합으로 공간 확장 단위다." },
+  { "text": "하나의 익스텐트는 여러 데이터 파일에 걸쳐 저장될 수 있다.", "answer": false, "explain": "익스텐트는 하나의 데이터 파일 안에 있다. 여러 데이터 파일에 걸칠 수 있는 것은 세그먼트다." },
+  { "text": "세그먼트 공간이 부족하면 테이블스페이스로부터 익스텐트 단위로 공간을 추가 할당받는다.", "answer": true, "explain": "익스텐트는 공간을 확장하는 단위다." },
+  { "text": "ROWID는 오브젝트 번호, 데이터 파일 번호, 블록 번호, 로우 번호로 구성된다.", "answer": true, "explain": "ROWID로 레코드가 저장된 블록과 그 안의 위치를 식별한다." }
+]

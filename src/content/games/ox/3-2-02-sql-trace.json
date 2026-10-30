@@ -1,0 +1,21 @@
+[
+  { "text": "AutoTrace의 db block gets는 Current 모드로 읽은 블록 수이고, consistent gets는 Consistent 모드로 읽은 블록 수다.", "answer": true, "explain": "두 값의 합이 논리적 I/O이며 physical reads가 물리적 I/O다." },
+  { "text": "AutoTrace의 실행 통계로 어느 오퍼레이션에서 블록을 많이 읽었는지 오퍼레이션별로 확인할 수 있다.", "answer": false, "explain": "AutoTrace는 SQL 전체 합계만 보여 준다. 오퍼레이션별 실측치는 SQL 트레이스나 DISPLAY_CURSOR로 본다." },
+  { "text": "DBA가 아닌 사용자가 AutoTrace 실행 통계를 보려면 PLUSTRACE 롤을 부여받아야 한다.", "answer": true, "explain": "실행 통계 확인에는 V$SESSTAT, V$STATNAME, V$MYSTAT 조회 권한이 필요하며 PLUSTRACE 롤에 담겨 있다." },
+  { "text": "10046 이벤트 트레이스를 레벨 4로 설정하면 바인드 변수 값과 대기 이벤트를 모두 수집한다.", "answer": false, "explain": "레벨 4는 바인드 변수 값, 레벨 8은 대기 이벤트를 추가하며, 둘 다 수집하려면 레벨 12가 필요하다." },
+  { "text": "SQL 트레이스 파일은 TKPROF 유틸리티로 포맷팅해서 읽기 쉬운 리포트로 만든다.", "answer": true, "explain": "tkprof 트레이스파일 리포트파일 sys=no 형식으로 실행한다." },
+  { "text": "TKPROF 옵션 sys=no는 SYS 유저가 수행한 재귀 SQL을 리포트에서 제외한다.", "answer": true, "explain": "딕셔너리 조회 같은 SYS 재귀 SQL을 빼서 분석 대상 SQL만 보이게 한다." },
+  { "text": "TKPROF 리포트에서 SELECT 문의 블록 읽기는 대부분 Execute Call에서 발생한다.", "answer": false, "explain": "SELECT의 블록 읽기는 대부분 Fetch Call에서 발생한다. DML은 Execute에서 실제 변경이 일어난다." },
+  { "text": "TKPROF의 query 항목은 AutoTrace의 consistent gets에 대응한다.", "answer": true, "explain": "query는 consistent gets, current는 db block gets, disk는 physical reads에 대응한다." },
+  { "text": "TKPROF의 disk 항목은 AutoTrace의 db block gets에 대응한다.", "answer": false, "explain": "disk는 physical reads(물리적 I/O)에 대응한다. db block gets에 대응하는 것은 current다." },
+  { "text": "TKPROF에서 elapsed가 cpu보다 훨씬 크면 대기 시간이 많았다는 뜻이다.", "answer": true, "explain": "elapsed는 CPU 시간과 대기 시간의 합이므로 차이만큼 대기에 시간을 썼다." },
+  { "text": "TKPROF 리포트에서 Misses in library cache during parse 값이 1이면 소프트 파싱이 발생한 것이다.", "answer": false, "explain": "값이 1이면 라이브러리 캐시에서 찾지 못한 하드 파싱이고, 0이면 소프트 파싱이다." },
+  { "text": "TKPROF Row Source Operation의 cr, pr, time 값은 자식 오퍼레이션의 값을 누적해 표시한다.", "answer": true, "explain": "부모 값에는 자식 값이 포함되므로 해당 오퍼레이션 자체의 값은 자식 값을 빼서 구한다." },
+  { "text": "arraysize를 키우면 Fetch Call 수가 줄고 같은 블록을 반복해서 읽는 횟수도 줄어든다.", "answer": true, "explain": "한 번에 더 많은 행을 가져오므로 Fetch Call과 query 값이 감소한다." },
+  { "text": "DISPLAY_CURSOR로 오퍼레이션별 실측 통계를 보려면 GATHER_PLAN_STATISTICS 힌트나 STATISTICS_LEVEL = ALL 설정이 필요하다.", "answer": true, "explain": "수행 통계를 수집해야 A-Rows, Buffers 같은 실측치가 표시된다." },
+  { "text": "DISPLAY_CURSOR의 포맷 옵션 ALLSTATS LAST는 커서의 누적 실행 통계를 보여 준다.", "answer": false, "explain": "ALLSTATS LAST는 마지막 실행 통계를 보여 주며, ALLSTATS만 쓰면 누적 실행 통계를 보여 준다." },
+  { "text": "DISPLAY_CURSOR의 E-Rows는 Starts 1회당 예상 건수이므로 Starts를 곱해 A-Rows와 비교해야 한다.", "answer": true, "explain": "E-Rows×Starts와 A-Rows의 차이가 크면 카디널리티 추정이 잘못된 것이다." },
+  { "text": "DISPLAY_CURSOR의 Buffers 항목은 디스크에서 읽은 블록 수를 의미한다.", "answer": false, "explain": "Buffers는 논리적 블록 읽기 수다. 디스크에서 읽은 블록 수는 Reads 항목이다." },
+  { "text": "log file sync 대기 이벤트는 커밋 시 LGWR이 리두를 기록할 때까지 기다리는 이벤트로 커밋이 너무 잦으면 증가한다.", "answer": true, "explain": "루프 안 건건이 커밋이 원인이면 커밋 주기 조정이나 일괄 처리로 줄인다." },
+  { "text": "응답 시간 분석에서 응답 시간은 Service Time(CPU 시간)과 Wait Time(대기 시간)의 합이다.", "answer": true, "explain": "Response Time = Service Time + Wait Time = CPU Time + Queue Time이다." }
+]

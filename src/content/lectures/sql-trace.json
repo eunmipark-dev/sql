@@ -1,0 +1,1617 @@
+{
+  "slug": "sql-trace",
+  "title": "SQL 트레이스와 실행 통계",
+  "tables": {
+    "Fetch 통계": {
+      "columns": [
+        "항목",
+        "값"
+      ],
+      "rows": [
+        [
+          "query",
+          "200"
+        ],
+        [
+          "current",
+          "0"
+        ],
+        [
+          "disk",
+          "150"
+        ],
+        [
+          "cpu",
+          "0.1"
+        ],
+        [
+          "elapsed",
+          "0.4"
+        ],
+        [
+          "Misses",
+          "1"
+        ]
+      ]
+    },
+    "Row Source": {
+      "columns": [
+        "Operation",
+        "cr"
+      ],
+      "rows": [
+        [
+          "TABLE ACCESS",
+          "500"
+        ],
+        [
+          " INDEX SCAN",
+          "100"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "SQL 트레이스",
+      "subtitle": "실제 수행 통계 읽기",
+      "icon": "search",
+      "steps": [
+        {
+          "say": "SQL 트레이스와 실행 통계를 시작할게요."
+        },
+        {
+          "say": "실제로 몇 블록을 읽었는지 확인하는 도구예요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "cards",
+      "section": "시작",
+      "title": "세 가지 도구",
+      "cols": 3,
+      "items": [
+        {
+          "title": "오토트레이스",
+          "desc": "SQL 전체 합계",
+          "icon": "eye"
+        },
+        {
+          "title": "TKPROF",
+          "desc": "Call별 · 대기 이벤트",
+          "icon": "file"
+        },
+        {
+          "title": "커서 조회",
+          "desc": "DISPLAY_CURSOR",
+          "icon": "search"
+        }
+      ],
+      "steps": [
+        {
+          "say": "도구는 세 가지예요."
+        },
+        {
+          "say": "오토트레이스. SQL 전체 통계를 보여요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL 트레이스와 TKPROF. 가장 자세해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "DISPLAY CURSOR. 캐시된 커서의 실측치예요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "code",
+      "section": "AutoTrace",
+      "title": "AutoTrace 통계",
+      "code": "SQL> SET AUTOTRACE TRACEONLY\n\n  0  recursive calls\n  0  db block gets\n  2  consistent gets\n  0  physical reads\n  1  rows processed",
+      "steps": [
+        {
+          "say": "오토트레이스를 켜면 이런 통계가 나와요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "recursive calls는 내부 재귀 SQL 수예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "하드 파싱 때 딕셔너리를 읽으면 늘어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "physical reads는 디스크에서 읽은 블록이에요.",
+          "focus": [
+            6
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "flow",
+      "section": "AutoTrace",
+      "title": "논리적 I/O 구하기",
+      "direction": "down",
+      "edges": [
+        "더하기",
+        "합계"
+      ],
+      "nodes": [
+        {
+          "title": "db block gets",
+          "desc": "Current 모드",
+          "icon": "box"
+        },
+        {
+          "title": "consistent",
+          "desc": "Consistent 모드",
+          "icon": "eye"
+        },
+        {
+          "title": "논리적 I/O",
+          "desc": "두 값의 합",
+          "icon": "target",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "논리적 아이오는 두 값을 더해요."
+        },
+        {
+          "say": "db block gets는 Current 모드예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "consistent gets는,",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Consistent 모드 읽기예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "둘을 더하면 논리적 아이오예요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "callout",
+      "section": "AutoTrace",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "AutoTrace는 **SQL 전체 합계**만 보여요. 오퍼레이션별 수치는 **트레이스**로.",
+      "steps": [
+        {
+          "say": "오토트레이스는 전체 합계만 보여요."
+        },
+        {
+          "say": "어느 단계가 많이 읽었는지는 몰라요."
+        },
+        {
+          "say": "그건 트레이스나 DISPLAY CURSOR로 봐요."
+        },
+        {
+          "say": "참고로 권한은 PLUSTRACE 롤이 필요해요."
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "flow",
+      "section": "SQL 트레이스",
+      "title": "트레이스 수집 흐름",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "트레이스 켜기",
+          "desc": "SQL_TRACE = TRUE",
+          "icon": "check"
+        },
+        {
+          "title": "SQL 실행",
+          "desc": "세션에서 수행",
+          "icon": "workflow"
+        },
+        {
+          "title": "트레이스 파일",
+          "desc": ".trc 생성",
+          "icon": "file"
+        },
+        {
+          "title": "TKPROF",
+          "desc": "읽기 좋게 포맷팅",
+          "icon": "book-open",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "트레이스는 이렇게 수집해요."
+        },
+        {
+          "say": "세션에서 SQL TRACE를 켜요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL을 실행해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "트레이스 파일이 생겨요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "그대로는 읽기 어려워서 TKPROF로 정리해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "sys는 no로 주면 재귀 SQL을 빼요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "layers",
+      "section": "SQL 트레이스",
+      "title": "10046 이벤트 레벨",
+      "axis": {
+        "top": "기본",
+        "bottom": "가장 자세함"
+      },
+      "layers": [
+        {
+          "title": "레벨 1",
+          "desc": "기본 SQL 트레이스",
+          "icon": "file"
+        },
+        {
+          "title": "레벨 4",
+          "desc": "+ 바인드 변수 값",
+          "icon": "tag"
+        },
+        {
+          "title": "레벨 8",
+          "desc": "+ 대기 이벤트",
+          "icon": "warning"
+        },
+        {
+          "title": "레벨 12",
+          "desc": "+ 바인드 값 + 대기 이벤트",
+          "icon": "layers"
+        }
+      ],
+      "steps": [
+        {
+          "say": "이벤트 트레이스로 더 자세히 모을 수 있어요."
+        },
+        {
+          "say": "레벨 1은 기본 트레이스와 같아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "레벨 4는 바인드 변수 값을 더해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "레벨 8은 대기 이벤트를 더해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "레벨 12는 둘 다 담아요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "quiz",
+      "section": "SQL 트레이스",
+      "question": "10046 트레이스에서 **바인드 값과 대기 이벤트**를 모두 담는 레벨은?",
+      "choices": [
+        "레벨 1",
+        "레벨 4",
+        "레벨 8",
+        "레벨 12"
+      ],
+      "answer": 4,
+      "explanation": "4는 바인드, 8은 대기 이벤트. 12는 둘 다예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 바인드 값과 대기 이벤트를 다 담는 레벨은?"
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "code",
+      "section": "TKPROF 읽기",
+      "title": "TKPROF 리포트",
+      "code": "call     cnt  cpu elapsed disk query rows\nParse      1  0.0     0.0    0     0    0\nExecute    1  0.0     0.0    0     0    0\nFetch      2  0.1     0.4  150   200    1\n\nMisses in library cache during parse: 1\n\n   1  TABLE ACCESS FULL EMP\n      (cr=200 pr=150)",
+      "steps": [
+        {
+          "say": "TKPROF 리포트예요. current 열은 생략했어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Call별로 한 줄씩 나와요.",
+          "focus": [
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "say": "SELECT는 Fetch에서 대부분 읽어요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "아래엔 오퍼레이션별 실측치가 나와요.",
+          "focus": [
+            8,
+            9
+          ]
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "cards",
+      "section": "TKPROF 읽기",
+      "title": "세 가지 Call",
+      "cols": 3,
+      "items": [
+        {
+          "title": "Parse",
+          "desc": "파싱 · 계획 생성",
+          "icon": "search"
+        },
+        {
+          "title": "Execute",
+          "desc": "DML 변경 발생",
+          "icon": "workflow"
+        },
+        {
+          "title": "Fetch",
+          "desc": "SELECT 결과 전송",
+          "icon": "arrow-left-right"
+        }
+      ],
+      "steps": [
+        {
+          "say": "Call은 세 단계예요."
+        },
+        {
+          "say": "Parse. 파싱하고 계획을 만들어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Execute. DML은 여기서 실제로 바뀌어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Fetch. 결과를 클라이언트로 보내요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "SELECT의 블록 읽기는 대부분 여기예요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "type": "cards",
+      "section": "TKPROF 읽기",
+      "title": "I/O 항목 대응",
+      "cols": 3,
+      "items": [
+        {
+          "title": "query",
+          "desc": "consistent",
+          "icon": "eye"
+        },
+        {
+          "title": "current",
+          "desc": "db block gets",
+          "icon": "box"
+        },
+        {
+          "title": "disk",
+          "desc": "physical reads",
+          "icon": "disk",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "오토트레이스 항목과 짝을 지어 봐요."
+        },
+        {
+          "say": "query는 consistent gets예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "current는 db block gets예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "disk는 physical reads예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "논리적 아이오는 query 더하기 current예요.",
+          "focus": [
+            0,
+            1
+          ]
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "id": "s12",
+      "section": "TKPROF 읽기",
+      "type": "data",
+      "title": "리포트 해석하기",
+      "tables": [
+        "Fetch 통계"
+      ],
+      "steps": [
+        {
+          "say": "TKPROF 리포트 값을 해석해 볼게요.",
+          "t": {
+            "Fetch 통계": {
+              "rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            }
+          }
+        },
+        {
+          "say": "논리적 아이오는 query 더하기 current, 200블록이에요.",
+          "t": {
+            "Fetch 통계": {
+              "rows": [
+                0,
+                1
+              ],
+              "result": {
+                "title": "해석",
+                "columns": [
+                  "지표",
+                  "값"
+                ],
+                "rows": [
+                  [
+                    "논리 I/O",
+                    "200"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "디스크에서 읽은 건 150블록이에요.",
+          "t": {
+            "Fetch 통계": {
+              "rows": [
+                2
+              ],
+              "result": {
+                "title": "해석",
+                "columns": [
+                  "지표",
+                  "값"
+                ],
+                "rows": [
+                  [
+                    "논리 I/O",
+                    "200"
+                  ],
+                  [
+                    "물리 I/O",
+                    "150"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "200 중 150을 디스크에서 읽었으니 히트율은 25퍼센트예요.",
+          "t": {
+            "Fetch 통계": {
+              "cells": [
+                [
+                  0,
+                  "값"
+                ],
+                [
+                  2,
+                  "값"
+                ]
+              ],
+              "result": {
+                "title": "해석",
+                "columns": [
+                  "지표",
+                  "값"
+                ],
+                "rows": [
+                  [
+                    "논리 I/O",
+                    "200"
+                  ],
+                  [
+                    "물리 I/O",
+                    "150"
+                  ],
+                  [
+                    "히트율",
+                    "25%"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "경과 0.4초에서 CPU 0.1초를 빼면 대기는 약 0.3초예요.",
+          "t": {
+            "Fetch 통계": {
+              "cells": [
+                [
+                  3,
+                  "값"
+                ],
+                [
+                  4,
+                  "값"
+                ]
+              ],
+              "result": {
+                "title": "해석",
+                "columns": [
+                  "지표",
+                  "값"
+                ],
+                "rows": [
+                  [
+                    "논리 I/O",
+                    "200"
+                  ],
+                  [
+                    "물리 I/O",
+                    "150"
+                  ],
+                  [
+                    "히트율",
+                    "25%"
+                  ],
+                  [
+                    "대기",
+                    "약 0.3초"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "디스크를 기다린 시간으로 보여요.",
+          "t": {
+            "Fetch 통계": {
+              "notes": [
+                [
+                  2,
+                  "값",
+                  "대기 원인"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "Misses 값이 1이면 하드 파싱, 0이면 소프트 파싱이에요.",
+          "t": {
+            "Fetch 통계": {
+              "rows": [
+                5
+              ],
+              "result": {
+                "title": "해석",
+                "columns": [
+                  "지표",
+                  "값"
+                ],
+                "rows": [
+                  [
+                    "논리 I/O",
+                    "200"
+                  ],
+                  [
+                    "물리 I/O",
+                    "150"
+                  ],
+                  [
+                    "히트율",
+                    "25%"
+                  ],
+                  [
+                    "대기",
+                    "약 0.3초"
+                  ],
+                  [
+                    "파싱",
+                    "하드"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "TKPROF 읽기",
+      "question": "**Misses in library cache during parse: 1**의 의미는?",
+      "choices": [
+        "소프트 파싱 발생",
+        "하드 파싱 발생",
+        "캐시 히트 1회",
+        "Fetch 실패"
+      ],
+      "answer": 2,
+      "explanation": "라이브러리 캐시에서 못 찾았다는 뜻이에요. 하드 파싱이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. Misses 값이 1이면 무슨 뜻일까요?"
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "cards",
+      "section": "TKPROF 읽기",
+      "title": "Row Source 통계",
+      "cols": 2,
+      "items": [
+        {
+          "title": "cr",
+          "desc": "Consistent 읽기",
+          "icon": "eye"
+        },
+        {
+          "title": "pr",
+          "desc": "디스크 읽기",
+          "icon": "disk"
+        },
+        {
+          "title": "pw",
+          "desc": "디스크 쓰기",
+          "icon": "file"
+        },
+        {
+          "title": "time",
+          "desc": "마이크로초",
+          "icon": "workflow"
+        }
+      ],
+      "steps": [
+        {
+          "say": "오퍼레이션별 통계는 네 가지예요."
+        },
+        {
+          "say": "cr은 Consistent 모드 읽기예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "pr은 디스크에서 읽은 블록이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "pw는 디스크에 쓴 블록이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "time은 마이크로초 단위 시간이에요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "id": "s15",
+      "section": "TKPROF 읽기",
+      "type": "data",
+      "title": "부모는 자식을 포함",
+      "tables": [
+        "Row Source"
+      ],
+      "steps": [
+        {
+          "say": "여기서 중요한 함정이 있어요.",
+          "t": {
+            "Row Source": {
+              "cols": [
+                "cr"
+              ]
+            }
+          }
+        },
+        {
+          "say": "부모인 테이블 액세스의 cr은 500이에요.",
+          "t": {
+            "Row Source": {
+              "cells": [
+                [
+                  0,
+                  "cr"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "자식인 인덱스는 100이에요.",
+          "t": {
+            "Row Source": {
+              "cells": [
+                [
+                  1,
+                  "cr"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "부모 값엔 자식 값이 포함돼 있어요.",
+          "t": {
+            "Row Source": {
+              "rows": [
+                0,
+                1
+              ],
+              "notes": [
+                [
+                  0,
+                  "cr",
+                  "자식 포함"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 테이블 자체는 400블록이에요.",
+          "t": {
+            "Row Source": {
+              "add": [
+                "자체",
+                [
+                  "400",
+                  "100"
+                ]
+              ],
+              "cells": [
+                [
+                  0,
+                  "자체"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "TKPROF 읽기",
+      "question": "부모 cr = 500, 자식 cr = 100. 부모 **자체가** 읽은 블록은?",
+      "choices": [
+        "400",
+        "500",
+        "100",
+        "600"
+      ],
+      "answer": 1,
+      "explanation": "부모 값은 자식을 포함한 누적치예요. 500에서 100을 빼면 400이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 부모 500, 자식 100. 부모 자체는요?"
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "flow",
+      "section": "TKPROF 읽기",
+      "title": "Fetch 횟수",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "300건",
+          "desc": "결과 전송",
+          "icon": "table"
+        },
+        {
+          "title": "Fetch 약 20번",
+          "desc": "Call 수",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "한 번에 15건",
+          "desc": "기본 arraysize",
+          "icon": "box"
+        }
+      ],
+      "steps": [
+        {
+          "say": "Fetch 횟수도 봐야 해요."
+        },
+        {
+          "say": "300건을 가져왔는데,",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Fetch를 약 20번 했어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "한 번에 15건씩이에요. 기본값이죠.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "arraysize를 키우면 Call이 줄어요.",
+          "focus": [
+            1,
+            2
+          ]
+        },
+        {
+          "say": "같은 블록 반복 읽기도 줄어요.",
+          "focus": [
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "flow",
+      "section": "DISPLAY_CURSOR",
+      "title": "DISPLAY_CURSOR",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "힌트 붙여 실행",
+          "desc": "통계 수집 힌트",
+          "icon": "idea"
+        },
+        {
+          "title": "커서 조회",
+          "desc": "'ALLSTATS LAST'",
+          "icon": "search"
+        },
+        {
+          "title": "실제 계획 · 실측치",
+          "desc": "파일 생성 불필요",
+          "icon": "check",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "DISPLAY CURSOR는 트레이스 파일이 필요 없어요."
+        },
+        {
+          "say": "gather plan statistics 힌트를 붙여요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "또는 statistics level을 ALL로 둬요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그다음 ALLSTATS LAST로 조회해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "LAST는 마지막 실행 통계예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "실제 계획과 실측치를 볼 수 있어요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "code",
+      "section": "DISPLAY_CURSOR",
+      "title": "커서 실측 출력",
+      "code": "Id Operation        Starts E-Rows A-Rows Buf\n 1 NESTED LOOPS          1           12  15\n 2  NESTED LOOPS         1      9    12   5\n*3   TABLE ACCESS FULL   1      9    12   3\n*4   INDEX UNIQUE SCAN  12      1    12   2\n 5  TABLE ACCESS ROWID  12      1    12  10",
+      "steps": [
+        {
+          "say": "출력은 이렇게 생겼어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "2번 줄 Buffers는 5예요.",
+          "focus": [
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "say": "아래 두 줄의 3과 2를 더한 값이에요.",
+          "focus": [
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "say": "4번은 12번 수행됐어요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "예상 1건에 12번이니 12건, 실제와 맞아요.",
+          "focus": [
+            5
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "cards",
+      "section": "DISPLAY_CURSOR",
+      "title": "주요 컬럼",
+      "cols": 2,
+      "items": [
+        {
+          "title": "Starts",
+          "desc": "수행 횟수",
+          "icon": "recycle"
+        },
+        {
+          "title": "E-Rows",
+          "desc": "1회당 예상 건수",
+          "icon": "eye"
+        },
+        {
+          "title": "A-Rows",
+          "desc": "실제 건수 합계",
+          "icon": "check"
+        },
+        {
+          "title": "Buffers",
+          "desc": "논리적 I/O",
+          "icon": "layers"
+        }
+      ],
+      "steps": [
+        {
+          "say": "컬럼 네 개를 알아 둬요."
+        },
+        {
+          "say": "Starts는 수행 횟수예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "E Rows는 한 번 수행당 예상 건수예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "A Rows는 실제 건수의 합계예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "Buffers는 논리적 아이오예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "Reads는 디스크 읽기예요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "callout",
+      "section": "DISPLAY_CURSOR",
+      "tone": "warning",
+      "title": "해석할 때 주의",
+      "text": "A-Rows·Buffers는 **자식 포함 누적치**. E-Rows는 **Starts를 곱해** A-Rows와 비교해요.",
+      "steps": [
+        {
+          "say": "여기도 부모 값은 자식을 포함해요."
+        },
+        {
+          "say": "E Rows는 1회 기준이에요."
+        },
+        {
+          "say": "그래서 Starts를 곱해서 비교해요."
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "quiz",
+      "section": "DISPLAY_CURSOR",
+      "question": "E-Rows를 A-Rows와 **비교하는 방법**은?",
+      "choices": [
+        "E-Rows 그대로",
+        "E-Rows 나누기 Starts",
+        "E-Rows 곱하기 Starts",
+        "Buffers 곱하기 Starts"
+      ],
+      "answer": 3,
+      "explanation": "E-Rows는 1회당 예상이에요. Starts를 곱해서 비교해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 예상 건수와 실제 건수는 어떻게 비교할까요?"
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "cards",
+      "section": "DISPLAY_CURSOR",
+      "title": "추정이 틀리는 원인",
+      "cols": 2,
+      "items": [
+        {
+          "title": "낡은 통계",
+          "desc": "데이터가 바뀜",
+          "icon": "warning",
+          "tone": "warn"
+        },
+        {
+          "title": "히스토그램",
+          "desc": "분포 정보 없음",
+          "icon": "scale",
+          "tone": "warn"
+        },
+        {
+          "title": "상관관계",
+          "desc": "컬럼끼리 연관",
+          "icon": "link",
+          "tone": "warn"
+        },
+        {
+          "title": "바인드 변수",
+          "desc": "값을 모름",
+          "icon": "tag",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "예상과 실제가 크게 다르면 추정이 틀린 거예요."
+        },
+        {
+          "say": "그러면 조인 순서와 방식도 잘못 골라요."
+        },
+        {
+          "say": "원인은 낡은 통계,",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "히스토그램 부재,",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "컬럼 간 상관관계,",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "그리고 바인드 변수예요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s23"
+    },
+    {
+      "type": "table",
+      "section": "도구 비교",
+      "title": "도구 한눈에 비교",
+      "columns": [
+        "항목",
+        "AutoTrace",
+        "TKPROF",
+        "CURSOR"
+      ],
+      "rows": [
+        [
+          "실제 실행계획",
+          "X",
+          "O",
+          "O"
+        ],
+        [
+          "오퍼레이션별 실측",
+          "X",
+          "O",
+          "O"
+        ],
+        [
+          "대기 이벤트",
+          "X",
+          "O",
+          "X"
+        ],
+        [
+          "파일 생성",
+          "불필요",
+          "필요",
+          "불필요"
+        ]
+      ],
+      "steps": [
+        {
+          "say": "세 도구를 비교해 볼게요."
+        },
+        {
+          "say": "오토트레이스는 예상 계획을 보여 줘요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "오퍼레이션별 실측치도 없어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "대기 이벤트는 트레이스만 보여 줘요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "트레이스만 파일을 만들어요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s24"
+    },
+    {
+      "type": "flow",
+      "section": "응답 시간 분석",
+      "title": "응답 시간의 구성",
+      "direction": "right",
+      "edges": [
+        "더하기",
+        "합계"
+      ],
+      "nodes": [
+        {
+          "title": "CPU 시간",
+          "desc": "Service Time",
+          "icon": "workflow"
+        },
+        {
+          "title": "대기 시간",
+          "desc": "Queue Time",
+          "icon": "warning",
+          "tone": "warn"
+        },
+        {
+          "title": "응답 시간",
+          "desc": "Response Time",
+          "icon": "target"
+        }
+      ],
+      "steps": [
+        {
+          "say": "응답 시간은 두 부분이에요."
+        },
+        {
+          "say": "CPU를 쓴 서비스 시간,",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그리고 무언가를 기다린 대기 시간이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "둘을 더하면 응답 시간이에요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s25"
+    },
+    {
+      "type": "compare",
+      "section": "응답 시간 분석",
+      "title": "두 가지 진단 방법",
+      "left": {
+        "title": "비율 기반",
+        "icon": "scale",
+        "tone": "bad",
+        "items": [
+          "히트율 같은 지표",
+          "병목을 놓칠 수 있음"
+        ]
+      },
+      "right": {
+        "title": "응답 시간 분석",
+        "icon": "target",
+        "tone": "good",
+        "items": [
+          "CPU와 대기로 분해",
+          "가장 큰 대기부터"
+        ]
+      },
+      "steps": [
+        {
+          "say": "비율 기반은 히트율 같은 지표로 봐요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "수치가 좋아도 병목을 놓칠 수 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "응답 시간 분석은 시간을 쪼개 봐요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "가장 오래 기다린 이벤트부터 해결해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s26"
+    },
+    {
+      "type": "table",
+      "section": "응답 시간 분석",
+      "title": "대기 이벤트로 원인 찾기",
+      "columns": [
+        "대기 이벤트",
+        "짐작되는 원인"
+      ],
+      "rows": [
+        [
+          "db file sequential read",
+          "인덱스 랜덤 액세스 과다"
+        ],
+        [
+          "db file scattered read",
+          "Full Scan"
+        ],
+        [
+          "log file sync",
+          "너무 잦은 커밋"
+        ],
+        [
+          "enq: TX - row lock",
+          "Lock 경합"
+        ],
+        [
+          "latch: shared pool",
+          "하드 파싱 과다"
+        ]
+      ],
+      "steps": [
+        {
+          "say": "대기 이벤트로 원인을 짐작할 수 있어요."
+        },
+        {
+          "say": "sequential read가 많으면,",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "인덱스 랜덤 액세스가 과다해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "scattered read는 Full Scan 대기예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "log file sync는 커밋이 너무 잦을 때예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "row lock은 락 경합이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "공유 풀 래치는 하드 파싱 과다예요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "바인드 변수로 해결해요.",
+          "focus": [
+            4
+          ]
+        }
+      ],
+      "id": "s27"
+    },
+    {
+      "type": "flow",
+      "section": "응답 시간 분석",
+      "title": "AWR 리포트",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "스냅샷",
+          "desc": "주기적으로 저장",
+          "icon": "disk"
+        },
+        {
+          "title": "두 시점 차이",
+          "desc": "Delta 리포트",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "Top 5 이벤트",
+          "desc": "분석의 출발점",
+          "icon": "target",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "시스템 전체는 AWR이나 Statspack으로 봐요."
+        },
+        {
+          "say": "성능 뷰를 주기적으로 저장해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "두 시점의 차이로 리포트를 만들어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Top 5 Timed Events부터 보면 돼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "클라이언트 메시지 대기는 유휴 이벤트예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "보통 무시해요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s28"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "query·current·disk 짝 맞추기",
+        "Misses 1이면 하드 파싱",
+        "Row Source 값은 자식 포함 누적치",
+        "E-Rows × Starts ↔ A-Rows",
+        "응답 시간 = CPU 시간 + 대기 시간",
+        "싱글 블록 대기는 sequential"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "query, current, disk의 짝을 기억하세요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Misses가 1이면 하드 파싱이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "부모 값은 자식을 포함한 누적치예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "E Rows는 Starts를 곱해서 비교해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "응답 시간은 CPU 더하기 대기 시간이에요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "싱글 블록 대기는 sequential read예요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s29"
+    }
+  ]
+}

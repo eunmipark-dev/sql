@@ -1,0 +1,1711 @@
+{
+  "slug": "query-transformation",
+  "title": "쿼리 변환",
+  "tables": {
+    "EMP": {
+      "columns": [
+        "ENAME",
+        "DEPTNO",
+        "SAL"
+      ],
+      "rows": [
+        [
+          "A",
+          "10",
+          "200"
+        ],
+        [
+          "B",
+          "20",
+          "50"
+        ],
+        [
+          "C",
+          "30",
+          "300"
+        ],
+        [
+          "D",
+          "10",
+          "80"
+        ],
+        [
+          "E",
+          "20",
+          "150"
+        ]
+      ]
+    },
+    "DEPT": {
+      "columns": [
+        "DEPTNO",
+        "LOC"
+      ],
+      "rows": [
+        [
+          "10",
+          "SEOUL"
+        ],
+        [
+          "20",
+          "BUSAN"
+        ],
+        [
+          "30",
+          "SEOUL"
+        ],
+        [
+          "40",
+          "DAEGU"
+        ]
+      ]
+    },
+    "EMP 6명": {
+      "columns": [
+        "ENAME",
+        "JOB",
+        "DEPTNO"
+      ],
+      "rows": [
+        [
+          "A",
+          "CLERK",
+          "10"
+        ],
+        [
+          "B",
+          "CLERK",
+          "20"
+        ],
+        [
+          "C",
+          "MANAGER",
+          "20"
+        ],
+        [
+          "D",
+          "NULL",
+          "20"
+        ],
+        [
+          "E",
+          "ANALYST",
+          "30"
+        ],
+        [
+          "F",
+          "CLERK",
+          "30"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "쿼리 변환",
+      "subtitle": "옵티마이저의 SQL 다시 쓰기",
+      "icon": "recycle",
+      "steps": [
+        {
+          "say": "쿼리 변환을 시작할게요."
+        },
+        {
+          "say": "옵티마이저는 SQL을 쓴 모양 그대로 실행하지 않아요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "flow",
+      "section": "시작",
+      "title": "쿼리 변환이란",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "작성한 SQL",
+          "desc": "개발자가 쓴 모양",
+          "icon": "file"
+        },
+        {
+          "title": "Transformer",
+          "desc": "같은 뜻으로 재작성",
+          "icon": "recycle"
+        },
+        {
+          "title": "더 나은 SQL",
+          "desc": "더 빠른 계획 기대",
+          "icon": "target"
+        }
+      ],
+      "steps": [
+        {
+          "say": "개발자가 쓴 SQL이 들어와요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "옵티마이저의 첫 단계가 이걸 다시 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "결과는 같고, 더 빠를 것 같은 형태로요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "그래서 실행계획이 SQL 모양과 다를 수 있어요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "compare",
+      "section": "시작",
+      "title": "휴리스틱 vs 비용기반",
+      "left": {
+        "title": "휴리스틱",
+        "icon": "ruler",
+        "items": [
+          "규칙대로 항상",
+          "단순 뷰 Merging",
+          "조건절 이행"
+        ]
+      },
+      "right": {
+        "title": "비용기반",
+        "icon": "scale",
+        "items": [
+          "비용이 낮을 때만",
+          "서브쿼리 Unnesting",
+          "OR-Expansion"
+        ]
+      },
+      "steps": [
+        {
+          "say": "변환 방식은 두 가지예요."
+        },
+        {
+          "say": "휴리스틱 변환은 규칙대로 항상 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "단순 뷰 Merging, 조건절 이행이 그 예예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "불필요한 조인 제거, 공통 표현식 제거도요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "비용기반 변환은 비용이 낮을 때만 해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "서브쿼리 Unnesting, 복합 뷰 Merging이요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "조인 조건 Pushdown, OR-Expansion도요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "id": "s04",
+      "section": "서브쿼리 Unnesting",
+      "type": "data",
+      "title": "중첩 서브쿼리",
+      "tables": [
+        "EMP",
+        "DEPT"
+      ],
+      "code": "SELECT * FROM emp\nWHERE  deptno IN (SELECT deptno\n                  FROM   dept\n                  WHERE  loc = 'SEOUL');",
+      "steps": [
+        {
+          "say": "WHERE 절 안에 서브쿼리가 있어요. 중첩 서브쿼리라고 해요.",
+          "focus": [
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "say": "필터 방식이면 사원 한 명마다 서브쿼리를 확인해요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "rows": [
+                0
+              ],
+              "notes": [
+                [
+                  0,
+                  "DEPTNO",
+                  "확인"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "서브쿼리는 서울 부서, 10번과 30번이에요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "DEPT": {
+              "filter": [
+                0,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "Unnesting은 이걸 조인으로 바꿔요. 부서번호가 같은 행끼리 짝지어요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  0,
+                  3
+                ],
+                [
+                  2
+                ]
+              ]
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  2
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "짝이 없는 사원은 빠져요.",
+          "t": {
+            "EMP": {
+              "filter": [
+                0,
+                2,
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "결과는 A, C, D예요. 필터 방식과 똑같아요.",
+          "t": {
+            "EMP": {
+              "result": {
+                "title": "결과 3행",
+                "columns": [
+                  "ENAME",
+                  "DEPTNO",
+                  "SAL"
+                ],
+                "rows": [
+                  [
+                    "A",
+                    "10",
+                    "200"
+                  ],
+                  [
+                    "C",
+                    "30",
+                    "300"
+                  ],
+                  [
+                    "D",
+                    "10",
+                    "80"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "section": "서브쿼리 Unnesting",
+      "title": "Unnesting 전과 후",
+      "left": {
+        "title": "필터 방식",
+        "icon": "filter",
+        "items": [
+          "행마다 서브쿼리",
+          "계획에 FILTER",
+          "메인 쿼리가 먼저"
+        ]
+      },
+      "right": {
+        "title": "Unnesting",
+        "icon": "link",
+        "tone": "good",
+        "items": [
+          "조인으로 변환",
+          "순서와 방식 자유",
+          "다양한 계획 검토"
+        ]
+      },
+      "steps": [
+        {
+          "say": "Unnesting을 안 하면 필터 방식이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "메인 쿼리 행마다 서브쿼리를 반복해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "실행계획에 FILTER가 보여요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "같은 입력값은 캐싱해서 재사용해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Unnesting은 서브쿼리를 조인으로 풀어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "조인 순서와 방식을 자유롭게 고를 수 있어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "cards",
+      "section": "서브쿼리 Unnesting",
+      "title": "결과가 늘지 않게",
+      "cols": 2,
+      "items": [
+        {
+          "title": "PK 보장",
+          "desc": "그냥 일반 조인",
+          "icon": "check",
+          "tone": "good"
+        },
+        {
+          "title": "중복 제거",
+          "desc": "Unique 후 조인",
+          "icon": "filter"
+        },
+        {
+          "title": "세미 조인",
+          "desc": "NL_SJ · HASH_SJ",
+          "icon": "link"
+        },
+        {
+          "title": "안티 조인",
+          "desc": "NOT EXISTS · IN",
+          "icon": "branch"
+        }
+      ],
+      "steps": [
+        {
+          "say": "조인으로 풀면 결과가 늘어날 수 있어요."
+        },
+        {
+          "say": "그래서 옵티마이저가 방법을 골라요."
+        },
+        {
+          "say": "서브쿼리 쪽이 PK면 그냥 조인해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "아니면 중복을 먼저 없애고 조인해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "또는 메인 쿼리를 먼저 읽는 세미 조인을 써요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "NOT EXISTS나 NOT IN은 안티 조인이 돼요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "callout",
+      "section": "서브쿼리 Unnesting",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "계획에 **FILTER**가 보이면 Unnesting 안 된 것. UNNEST, NO_UNNEST, HASH_SJ 등은 **서브쿼리 안에** 써요.",
+      "steps": [
+        {
+          "say": "FILTER가 보이면 Unnesting이 안 된 거예요."
+        },
+        {
+          "say": "NO UNNEST는 필터 방식으로 실행하게 해요."
+        },
+        {
+          "say": "UNNEST와 세미 조인 힌트는 서브쿼리 안에 써요."
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "quiz",
+      "section": "서브쿼리 Unnesting",
+      "question": "서브쿼리가 Unnesting되지 않고 행마다 반복 실행될 때 실행계획에 나타나는 것은?",
+      "choices": [
+        "HASH JOIN SEMI",
+        "FILTER",
+        "VIEW PUSHED PREDICATE",
+        "CONCATENATION"
+      ],
+      "answer": 2,
+      "explanation": "Unnesting되지 않으면 필터 방식이라 FILTER가 보여요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. Unnesting이 안 되면 실행계획에 무엇이 보일까요?"
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "flow",
+      "section": "뷰 Merging",
+      "title": "뷰 Merging",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "인라인 뷰",
+          "desc": "따로 최적화",
+          "icon": "layers"
+        },
+        {
+          "title": "합치기",
+          "desc": "메인 쿼리와 하나로",
+          "icon": "puzzle"
+        },
+        {
+          "title": "쿼리 블록 하나",
+          "desc": "메인 조건 활용",
+          "icon": "check",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "뷰를 따로 최적화하면 비효율이 생겨요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "메인 쿼리의 조건을 활용하지 못하거든요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그래서 뷰를 메인 쿼리와 합쳐요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "쿼리 블록 하나가 돼요. 이게 뷰 Merging이에요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "compare",
+      "section": "뷰 Merging",
+      "title": "단순 뷰와 복합 뷰",
+      "left": {
+        "title": "단순 뷰",
+        "icon": "box",
+        "items": [
+          "조건절과 조인만",
+          "항상 Merging"
+        ]
+      },
+      "right": {
+        "title": "복합 뷰",
+        "icon": "layers",
+        "items": [
+          "GROUP BY 포함",
+          "DISTINCT 포함",
+          "비용 보고 판단"
+        ]
+      },
+      "steps": [
+        {
+          "say": "뷰는 두 종류로 나눠요."
+        },
+        {
+          "say": "단순 뷰는 조건절과 조인만 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "휴리스틱으로 항상 합쳐요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "복합 뷰는 GROUP BY나 DISTINCT가 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "합칠지 말지 비용으로 판단해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "type": "cards",
+      "section": "뷰 Merging",
+      "title": "Merging 불가 5가지",
+      "cols": 3,
+      "items": [
+        {
+          "title": "집합 연산",
+          "desc": "UNION · MINUS 등",
+          "icon": "copy",
+          "tone": "bad"
+        },
+        {
+          "title": "계층 쿼리",
+          "desc": "CONNECT BY",
+          "icon": "branch",
+          "tone": "bad"
+        },
+        {
+          "title": "ROWNUM",
+          "desc": "의사 컬럼",
+          "icon": "tag",
+          "tone": "bad"
+        },
+        {
+          "title": "집계 함수",
+          "desc": "GROUP BY 없이",
+          "icon": "scale",
+          "tone": "bad"
+        },
+        {
+          "title": "분석 함수",
+          "desc": "윈도우 함수",
+          "icon": "layers",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "합칠 수 없는 뷰도 있어요. 다섯 가지예요."
+        },
+        {
+          "say": "첫째, UNION 같은 집합 연산자.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, CONNECT BY 절.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, ROWNUM 의사 컬럼.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, GROUP BY 없이 쓴 집계 함수.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "다섯째, 분석 함수예요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "이런 뷰는 조건절 Pushing을 대신 시도해요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "type": "callout",
+      "section": "뷰 Merging",
+      "tone": "info",
+      "title": "계획에서 확인",
+      "text": "계획에 **VIEW**가 보이면 Merging 안 된 것. **NO_MERGE**로 막고 **MERGE**로 유도해요.",
+      "steps": [
+        {
+          "say": "실행계획에 VIEW가 보이면 Merging이 안 된 거예요."
+        },
+        {
+          "say": "NO MERGE 힌트로 막고, MERGE로 유도해요."
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "quiz",
+      "section": "뷰 Merging",
+      "question": "다음 중 뷰 Merging이 **가능한** 뷰는?",
+      "choices": [
+        "UNION ALL을 포함한 뷰",
+        "ROWNUM을 사용한 뷰",
+        "조건절과 조인만 있는 뷰",
+        "분석 함수를 사용한 뷰"
+      ],
+      "answer": 3,
+      "explanation": "단순 뷰는 항상 Merging돼요. 집합 연산, ROWNUM, 분석 함수는 불가예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 뷰 Merging이 가능한 뷰는 무엇일까요?"
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "cards",
+      "section": "조건절 Pushing",
+      "title": "조건절 Pushing 3가지",
+      "cols": 3,
+      "items": [
+        {
+          "title": "Pushdown",
+          "desc": "밖에서 안으로",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "Pullup",
+          "desc": "안에서 밖으로",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "조인 조건",
+          "desc": "NL Inner 뷰 안으로",
+          "icon": "link"
+        }
+      ],
+      "steps": [
+        {
+          "say": "뷰를 합칠 수 없다면 조건을 밀어 넣어요."
+        },
+        {
+          "say": "Pushdown. 밖의 조건을 뷰 안으로 넣어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "뷰 안에서 미리 데이터를 걸러요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Pullup. 안의 조건을 밖으로 꺼내요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "꺼낸 조건을 다른 블록에 넣는 데 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "조인 조건 Pushdown. 조인 조건을 넣어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "NL 조인 안쪽에 있는 뷰로 넣어요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "compare",
+      "section": "조건절 Pushing",
+      "title": "조인 조건 Pushdown",
+      "left": {
+        "title": "적용 전",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "뷰 전체를 집계",
+          "그다음 조인"
+        ]
+      },
+      "right": {
+        "title": "적용 후",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "값을 하나씩 받음",
+          "인덱스로 필요한 것만",
+          "집계 낭비 없음"
+        ]
+      },
+      "steps": [
+        {
+          "say": "적용 전에는 뷰 전체를 집계하고 조인해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "적용 후에는 드라이빙 값을 하나씩 받아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "뷰 안 인덱스로 필요한 것만 집계해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "실행계획에 VIEW PUSHED PREDICATE가 보여요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "힌트는 PUSH PRED예요. 억제는 NO PUSH PRED예요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "flow",
+      "section": "조건절 이행",
+      "title": "조건절 이행",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "e = d",
+          "desc": "deptno로 조인",
+          "icon": "link"
+        },
+        {
+          "title": "e = 10",
+          "desc": "e.deptno 조건",
+          "icon": "filter"
+        },
+        {
+          "title": "d = 10",
+          "desc": "자동으로 추가",
+          "icon": "idea",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "A가 B와 같고, B가 C와 같으면 A는 C와 같아요."
+        },
+        {
+          "say": "e와 d는 부서번호로 조인해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "e의 부서번호는 10이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그럼 d의 부서번호도 10이죠.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "옵티마이저가 이 조건을 새로 만들어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "d 쪽 인덱스도 쓸 수 있게 돼요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "flow",
+      "section": "OR-Expansion",
+      "title": "OR-Expansion",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "OR 조건",
+          "desc": "인덱스 하나로 어려움",
+          "icon": "branch"
+        },
+        {
+          "title": "UNION ALL 분기",
+          "desc": "조건마다 다른 인덱스",
+          "icon": "layers"
+        },
+        {
+          "title": "LNNVL",
+          "desc": "중복 행 제거",
+          "icon": "filter",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "OR 조건은 인덱스 하나로 처리하기 어려워요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그래서 UNION ALL로 나눠요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "각 브랜치가 다른 인덱스를 쓸 수 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "두 번째 브랜치에 LNNVL을 붙여요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "같은 행이 두 번 나오는 걸 막아요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "id": "s18",
+      "section": "OR-Expansion",
+      "type": "data",
+      "title": "변환 후 모습",
+      "tables": [
+        "EMP 6명"
+      ],
+      "code": "-- 원래: job = 'CLERK' OR deptno = 20\nSELECT * FROM emp\nWHERE  job = 'CLERK'\nUNION ALL\nSELECT * FROM emp\nWHERE  deptno = 20\nAND    LNNVL(job = 'CLERK');",
+      "steps": [
+        {
+          "say": "원래 OR 조건이 이렇게 나뉘어요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "EMP 6명": {
+              "cols": [
+                "JOB",
+                "DEPTNO"
+              ]
+            }
+          }
+        },
+        {
+          "say": "첫 브랜치는 직무 조건이에요. CLERK 세 명이에요.",
+          "focus": [
+            2,
+            3
+          ],
+          "t": {
+            "EMP 6명": {
+              "rows": [
+                0,
+                1,
+                5
+              ],
+              "result": {
+                "title": "UNION ALL",
+                "columns": [
+                  "ENAME"
+                ],
+                "rows": [
+                  [
+                    "A"
+                  ],
+                  [
+                    "B"
+                  ],
+                  [
+                    "F"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "둘째 브랜치는 부서 조건이에요. 20번도 세 명이에요.",
+          "focus": [
+            5,
+            6
+          ],
+          "t": {
+            "EMP 6명": {
+              "rows": [
+                1,
+                2,
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "그런데 B는 첫 브랜치에서 이미 나왔어요.",
+          "t": {
+            "EMP 6명": {
+              "cells": [
+                [
+                  1,
+                  "JOB"
+                ],
+                [
+                  1,
+                  "DEPTNO"
+                ]
+              ],
+              "notes": [
+                [
+                  1,
+                  "JOB",
+                  "또 나옴"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "LNNVL은 조건이 거짓이나 모름일 때 참이에요. 그래서 B는 빠져요.",
+          "focus": [
+            7
+          ],
+          "t": {
+            "EMP 6명": {
+              "cells": [
+                [
+                  1,
+                  "JOB"
+                ],
+                [
+                  2,
+                  "JOB"
+                ],
+                [
+                  3,
+                  "JOB"
+                ]
+              ],
+              "notes": [
+                [
+                  1,
+                  "JOB",
+                  "CLERK라 빠짐"
+                ],
+                [
+                  3,
+                  "JOB",
+                  "모름이라 남음"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "C와 D가 더해져 다섯 명이에요. OR 조건 결과와 같아요.",
+          "t": {
+            "EMP 6명": {
+              "rows": [
+                2,
+                3
+              ],
+              "result": {
+                "title": "결과 5행",
+                "columns": [
+                  "ENAME"
+                ],
+                "rows": [
+                  [
+                    "A"
+                  ],
+                  [
+                    "B"
+                  ],
+                  [
+                    "F"
+                  ],
+                  [
+                    "C"
+                  ],
+                  [
+                    "D"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "OR-Expansion",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "계획에 **CONCATENATION**. 힌트는 **USE_CONCAT** 적용, **NO_EXPAND** 억제.",
+      "steps": [
+        {
+          "say": "실행계획엔 CONCATENATION이 보여요."
+        },
+        {
+          "say": "최신 버전에선 UNION ALL 형태로도 보여요."
+        },
+        {
+          "say": "적용 힌트는 USE CONCAT이에요. 억제는 NO EXPAND예요."
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "quiz",
+      "section": "OR-Expansion",
+      "question": "OR-Expansion에 대한 설명으로 **틀린** 것은?",
+      "choices": [
+        "UNION ALL로 분기한다",
+        "LNNVL로 중복을 막는다",
+        "CONCATENATION이 보인다",
+        "NO_CONCAT으로 억제한다"
+      ],
+      "answer": 4,
+      "explanation": "억제 힌트는 NO_EXPAND예요. 적용 힌트는 USE_CONCAT이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. OR-Expansion 설명으로 틀린 것은?"
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "compare",
+      "section": "기타 변환",
+      "title": "공통 표현식 제거",
+      "left": {
+        "title": "변환 전",
+        "icon": "copy",
+        "items": [
+          "부서 20 조건 두 번",
+          "비교 횟수 많음"
+        ]
+      },
+      "right": {
+        "title": "변환 후",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "부서 20 조건 한 번",
+          "인덱스 사용 가능"
+        ]
+      },
+      "steps": [
+        {
+          "say": "같은 조건식이 반복되면 한 번만 평가해요."
+        },
+        {
+          "say": "부서 20 조건이 괄호마다 반복돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "밖으로 꺼내 한 번만 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "비교가 줄고, 그 조건으로 인덱스도 쓸 수 있어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "id": "s22",
+      "section": "기타 변환",
+      "type": "data",
+      "title": "아우터가 이너로",
+      "tables": [
+        "DEPT",
+        "EMP"
+      ],
+      "code": "SELECT d.deptno, e.ename, e.sal\nFROM   dept d, emp e\nWHERE  e.deptno(+) = d.deptno\nAND    e.sal > 100;",
+      "steps": [
+        {
+          "say": "사원 쪽에 플러스 기호를 붙인 아우터 조인이에요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ],
+                [
+                  2
+                ],
+                [
+                  3
+                ]
+              ]
+            },
+            "EMP": {
+              "tint": [
+                [
+                  0,
+                  3
+                ],
+                [
+                  1,
+                  4
+                ],
+                [
+                  2
+                ],
+                []
+              ]
+            }
+          }
+        },
+        {
+          "say": "40번 부서는 사원이 없어서 NULL로 채워요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "DEPT": {
+              "notes": [
+                [
+                  3,
+                  "DEPTNO",
+                  "짝 없음"
+                ]
+              ]
+            },
+            "EMP": {
+              "result": {
+                "title": "아우터 조인 6행",
+                "columns": [
+                  "DEPTNO",
+                  "ENAME",
+                  "SAL"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "A",
+                    "200"
+                  ],
+                  [
+                    "10",
+                    "D",
+                    "80"
+                  ],
+                  [
+                    "20",
+                    "B",
+                    "50"
+                  ],
+                  [
+                    "20",
+                    "E",
+                    "150"
+                  ],
+                  [
+                    "30",
+                    "C",
+                    "300"
+                  ],
+                  [
+                    "40",
+                    "NULL",
+                    "NULL"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "그런데 SAL 조건에는 플러스 기호가 없어요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP": {
+              "cols": [
+                "SAL"
+              ]
+            }
+          }
+        },
+        {
+          "say": "NULL은 100보다 크다고 할 수 없어요. 40번 행은 걸러져요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP": {
+              "filter": [
+                0,
+                2,
+                4
+              ],
+              "result": {
+                "title": "SAL 조건 후 3행",
+                "columns": [
+                  "DEPTNO",
+                  "ENAME",
+                  "SAL"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "A",
+                    "200"
+                  ],
+                  [
+                    "20",
+                    "E",
+                    "150"
+                  ],
+                  [
+                    "30",
+                    "C",
+                    "300"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "NULL로 채운 행이 다 걸러지니 이너 조인과 결과가 같아요.",
+          "t": {
+            "DEPT": {
+              "rows": [
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 이너 조인으로 바꿔요. 조인 순서도 자유로워져요.",
+          "t": {
+            "DEPT": {
+              "filter": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "기타 변환",
+      "tone": "warning",
+      "title": "의도와 다를 수 있어요",
+      "text": "사원 없는 부서도 보려면 **e.sal(+) > 100**. ANSI 문법이면 조건을 **ON 절**에.",
+      "steps": [
+        {
+          "say": "의도가 아우터 조인이었다면 조심하세요."
+        },
+        {
+          "say": "필터에도 플러스 기호를 붙여야 해요."
+        },
+        {
+          "say": "ANSI 문법이라면 WHERE가 아닌 ON 절에 써요."
+        }
+      ],
+      "id": "s23"
+    },
+    {
+      "type": "quiz",
+      "section": "기타 변환",
+      "question": "WHERE e.deptno(+) = d.deptno AND e.sal > 100 은 어떻게 처리될까?",
+      "choices": [
+        "이너 조인으로 바뀐다",
+        "아우터 조인이 유지된다",
+        "문법 오류가 난다",
+        "카티션 곱이 된다"
+      ],
+      "answer": 1,
+      "explanation": "Outer 쪽 필터에 (+)가 없어 NULL 행이 걸러져요. 그래서 이너 조인이 돼요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 아우터 쪽 필터에 플러스 기호가 없어요. 어떻게 될까요?"
+        }
+      ],
+      "id": "s24"
+    },
+    {
+      "type": "cards",
+      "section": "기타 변환",
+      "title": "불필요한 조인 제거",
+      "cols": 2,
+      "items": [
+        {
+          "title": "1쪽 미참조",
+          "desc": "컬럼을 안 씀",
+          "icon": "eye"
+        },
+        {
+          "title": "제약 필수",
+          "desc": "PK와 FK",
+          "icon": "lock"
+        },
+        {
+          "title": "FK NULL",
+          "desc": "IS NOT NULL 추가",
+          "icon": "filter"
+        },
+        {
+          "title": "아우터",
+          "desc": "PK만 있으면 됨",
+          "icon": "link"
+        }
+      ],
+      "steps": [
+        {
+          "say": "1대 다 조인에서 1쪽 컬럼을 안 쓴다면요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그 조인은 아예 빼 버려요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "단, PK와 FK 제약이 있어야 해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "FK가 NULL을 허용하면 IS NOT NULL을 붙여요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "아우터 조인은 PK만 있으면 FK 없이도 빼요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s25"
+    },
+    {
+      "type": "flow",
+      "section": "기타 변환",
+      "title": "집합 연산을 조인으로",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "MINUS",
+          "desc": "양쪽 정렬 비교",
+          "icon": "copy"
+        },
+        {
+          "title": "안티 조인",
+          "desc": "HASH JOIN ANTI",
+          "icon": "branch"
+        },
+        {
+          "title": "중복 제거",
+          "desc": "HASH UNIQUE",
+          "icon": "filter"
+        }
+      ],
+      "steps": [
+        {
+          "say": "MINUS는 양쪽을 정렬해서 비교해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "이걸 안티 조인으로 바꿀 수 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "INTERSECT는 세미 조인이 돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그리고 DISTINCT로 중복을 없애요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "10g부터는 기본으로 꺼져 있어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "SET TO JOIN 힌트로 유도해요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s26"
+    },
+    {
+      "type": "cards",
+      "section": "기타 변환",
+      "title": "그 밖의 변환",
+      "cols": 3,
+      "items": [
+        {
+          "title": "NOT NULL",
+          "desc": "조인 컬럼에 추가",
+          "icon": "filter"
+        },
+        {
+          "title": "필터 추가",
+          "desc": "최소가 최대보다 큼",
+          "icon": "warning"
+        },
+        {
+          "title": "비교 순서",
+          "desc": "비용과 선택도로",
+          "icon": "checklist"
+        }
+      ],
+      "steps": [
+        {
+          "say": "작은 변환도 세 가지 있어요."
+        },
+        {
+          "say": "조인 컬럼에 IS NOT NULL 조건을 붙여요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "NULL은 어차피 조인에 실패하니까요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "최소값이 최대값보다 크면 아예 실행하지 않아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "필터 조건들의 평가 순서도 정해요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s27"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "Unnesting: 서브쿼리를 조인으로, 안 되면 FILTER",
+        "뷰 Merging 불가: 집합·계층·ROWNUM·집계·분석",
+        "조건절 Pushing: 조건을 뷰 안으로",
+        "조건절 이행: A=B, B=C면 A=C",
+        "OR-Expansion: UNION ALL + LNNVL",
+        "(+) 없는 Outer 필터면 이너 조인"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "Unnesting은 서브쿼리를 조인으로 풀어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "안 되면 FILTER로 반복 실행해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Merging이 안 되는 다섯 가지를 기억하세요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "합칠 수 없으면 조건을 뷰 안으로 밀어 넣어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "조건절 이행은 새 조건을 만들어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "OR는 UNION ALL과 LNNVL로 나눠요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "아우터 쪽 필터에 플러스가 없으면 이너 조인이에요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s28"
+    }
+  ]
+}

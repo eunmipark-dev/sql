@@ -1,0 +1,745 @@
+{
+  "id": "ai-17",
+  "kind": "ai",
+  "title": "모의고사 17회",
+  "round": 17,
+  "timeLimitMin": 90,
+  "questions": [
+    {
+      "id": 1,
+      "subject": 1,
+      "theory": "data-model",
+      "question": "물류회사 C사의 시스템 진단 결과 다음 사례들이 발견되었다.\n\n- (가) 창고관리시스템과 배송관리시스템이 거래처 주소를 각자 따로 저장하고 있어, 주소가 바뀌면 한쪽만 수정되는 일이 반복되었다.\n- (나) 출고 절차에 '검수' 단계가 추가되는 등 업무 절차가 조금만 바뀌어도 매번 출고 테이블 구조를 고쳐야 했다.\n- (다) 출고 데이터와 재고 데이터 사이의 연관 관계가 명확히 정의되지 않아, 출고가 완료된 상품이 재고에는 그대로 남아 있는 모순이 생겼다.\n\n각 사례와 데이터 모델링 시 유의점의 연결로 가장 적절한 것은?",
+      "choices": [
+        "(가) 비일관성, (나) 중복, (다) 비유연성",
+        "(가) 중복, (나) 비일관성, (다) 비유연성",
+        "(가) 중복, (나) 비유연성, (다) 비일관성",
+        "(가) 비유연성, (나) 중복, (다) 비일관성"
+      ],
+      "answer": 3,
+      "explanation": "(가)는 같은 데이터(거래처 주소)가 여러 곳에 저장된 **중복**의 문제다. (나)는 데이터 정의가 사용 프로세스에 묶여 있어 업무가 바뀔 때마다 모델을 고쳐야 하는 **비유연성**이다(해결: 데이터 정의와 프로세스 분리). (다)는 중복 여부와 별개로 데이터 간 연관 관계를 명확히 정의하지 않아 서로 모순된 데이터가 생긴 **비일관성**이다. 따라서 ③이 옳고, 나머지는 세 유의점의 정의를 서로 바꿔 연결했다."
+    },
+    {
+      "id": 2,
+      "subject": 1,
+      "theory": "entity",
+      "question": "물류 시스템을 설계하면서 엔터티 이름을 다음과 같이 정하였다. 엔터티 명명 규칙에 비추어 가장 적절한 것은?",
+      "choices": [
+        "고객의 출고 요청으로 생성되는 엔터티를 '고객상품'이 아닌 '출고지시'처럼 생성되는 업무 의미가 드러나도록 명명하였다.",
+        "창고 엔터티에는 여러 창고 인스턴스가 담기므로 '창고들'처럼 복수형 명사로 명명하였다.",
+        "'운송배차관리정보'는 이름이 길어 'TDMI'처럼 영문 약어로 줄여 엔터티명으로 사용하였다.",
+        "창고팀과 배송팀이 각자 '거점'이라는 같은 엔터티명을 서로 다른 의미로 사용하도록 허용하였다."
+      ],
+      "answer": 1,
+      "explanation": "엔터티 명명 규칙은 ① 현업 용어 사용, ② 약어 지양, ③ **단수 명사** 사용, ④ 모든 엔터티에서 **유일한 이름**, ⑤ **생성 의미대로** 부여이다. '고객상품'처럼 관련 엔터티를 이어 붙인 이름보다 '출고지시'처럼 엔터티가 생성되는 업무 의미가 드러나는 이름이 바람직하므로 ①이 적절하다. ②는 복수형, ③은 약어 사용, ④는 같은 이름을 다른 의미로 쓰게 하여 유일성 원칙에 어긋난다."
+    },
+    {
+      "id": 3,
+      "subject": 1,
+      "theory": "attribute",
+      "question": "물류센터의 `창고` 엔터티를 다음과 같이 정의하였다.\n\n| 창고코드 | 창고명 | 소재지 | 대표전화 |\n|---|---|---|---|\n| W01 | 평택1센터 | 경기 평택 | 031-111-2222 |\n| W02 | 이천센터 | 경기 이천 | 031-333-4444 |\n\n엔터티·인스턴스·속성·속성값의 관계에 대한 설명으로 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "`창고` 엔터티는 창고코드, 창고명, 소재지 등 두 개 이상의 속성으로 구성된다.",
+        "하나의 인스턴스(창고코드 W01)는 각 속성에 대해 하나의 속성값만 가진다.",
+        "속성은 업무에서 필요로 하며 더 이상 분리되지 않는 최소의 데이터 단위로 정의한다.",
+        "한 창고가 대표전화를 여러 개 가지게 되면 '대표전화' 속성 하나에 여러 번호를 함께 저장하는 것이 원칙이다."
+      ],
+      "answer": 4,
+      "explanation": "한 인스턴스는 하나의 속성에 대해 **하나의 속성값만** 가져야 한다. 한 창고가 전화번호를 여러 개 가진다면 이는 다중값 속성이므로 한 속성에 여러 값을 넣지 말고 별도 엔터티(예: 창고연락처)로 분리해야 한다(제1정규형). ①·②·③은 엔터티는 2개 이상의 속성을 가지고, 인스턴스는 속성마다 하나의 값을 가지며, 속성은 더 이상 분리되지 않는 최소 단위라는 올바른 설명이다."
+    },
+    {
+      "id": 4,
+      "subject": 1,
+      "theory": "relationship",
+      "question": "운송 관리 시스템의 업무 규칙이 다음과 같다.\n\n> 운송차량 1대는 여러 배송 건을 배정받을 수 있으며, 배정받은 배송이 하나도 없는 차량도 있다. 배송 1건은 반드시 1대의 차량에만 배정된다.\n\n`차량`과 `배송` 사이의 관계에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "차량과 배송은 M:N 관계이므로 교차 엔터티를 두어 해소해야 한다.",
+        "차량 1대는 0건 이상의 배송에, 배송 1건은 정확히 1대의 차량에 참여하는 1:M 관계이다.",
+        "배송 쪽에서 차량은 선택 참여이므로 배송 테이블의 차량번호 FK는 NULL을 허용해야 한다.",
+        "IE 표기법으로는 차량 쪽 선 끝에 `o|`, 배송 쪽 선 끝에 `|{`를 표시한다."
+      ],
+      "answer": 2,
+      "explanation": "차량 1대는 배송을 0건 이상(선택, 다수) 가지고, 배송 1건은 차량 1대에 반드시(필수, 하나) 속하므로 **1:M 관계**다. ①은 배송이 차량 하나에만 배정되므로 M:N이 아니다. ③ 배송 입장에서 차량은 **필수**이므로 FK는 NOT NULL이 적절하다. ④ IE 표기법은 상대 엔터티 쪽 선 끝에 참여 형태를 그리므로 차량 쪽은 `||`(정확히 1), 배송 쪽은 `o{`(0 이상 다수)가 되어야 한다."
+    },
+    {
+      "id": 5,
+      "subject": 1,
+      "theory": "identifier",
+      "question": "`출고` 엔터티의 속성이 다음과 같다.\n\n| 속성 | 설명 |\n|---|---|\n| 출고번호 | 출고 시 시스템이 부여하는 번호. 주식별자 |\n| 출고지시서번호 | 업무상 중복되지 않는 지시서 번호. 출고를 구분할 수는 있으나 다른 엔터티와의 관계 연결에는 쓰지 않음 |\n| 창고코드 | `창고` 엔터티의 주식별자를 관계를 통해 받아온 속성 |\n| 출고일자 | 출고가 이루어진 날짜 |\n\n식별자 분류에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "출고번호는 다른 엔터티로부터 관계를 통해 받아온 값이므로 외부식별자에 해당한다.",
+        "출고지시서번호는 유일성을 만족하므로 다른 엔터티와의 참조 관계 연결에 반드시 사용해야 한다.",
+        "창고코드는 `창고`와의 관계를 통해 받아온 속성으로, `출고` 입장에서 외부식별자(FK)에 해당한다.",
+        "출고번호와 출고지시서번호 모두 인스턴스를 유일하게 구분하므로 둘 다 주식별자로 지정한다."
+      ],
+      "answer": 3,
+      "explanation": "**외부식별자**는 다른 엔터티와의 관계를 통해 부모로부터 받아오는 식별자로 물리 모델의 FK에 해당한다. 창고코드는 `창고`로부터 받아온 속성이므로 ③이 옳다. ① 출고번호는 엔터티 내부에서 스스로 만들어지는 **내부식별자**다. ② 출고지시서번호처럼 인스턴스를 구분할 수 있지만 대표성이 없는 **보조식별자**는 참조 관계 연결에 사용하지 않는다. ④ 주식별자는 하나만 지정하고 나머지 후보는 보조식별자가 된다."
+    },
+    {
+      "id": 6,
+      "subject": 1,
+      "theory": "normalization",
+      "question": "다음 `출고지시` 테이블의 PK는 출고지시번호이다.\n\n| 출고지시번호 | 창고코드 | 품목코드1 | 수량1 | 품목코드2 | 수량2 | 품목코드3 | 수량3 |\n|---|---|---|---|---|---|---|---|\n| OD01 | W1 | P10 | 5 | P20 | 3 | NULL | NULL |\n| OD02 | W2 | P30 | 7 | NULL | NULL | NULL | NULL |\n\n이 테이블에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "각 칸에 하나의 값만 들어 있으므로 제1정규형을 만족하며 더 이상 분해할 필요가 없다.",
+        "PK가 단일 속성이므로 부분 함수 종속이 발생하며, 이는 제2정규화로 해결한다.",
+        "품목코드1~3은 서로 이행 함수 종속 관계에 있으므로 제3정규화의 대상이다.",
+        "품목코드·수량이 반복되는 속성 그룹이므로 `출고지시상세` 엔터티로 분리하는 것이 바람직하다."
+      ],
+      "answer": 4,
+      "explanation": "`품목코드1, 수량1, 품목코드2, 수량2 …`처럼 같은 성격의 컬럼이 반복되는 **반복 그룹**은 제1정규형 위반으로 보고, (출고지시번호, 품목코드 또는 순번)을 PK로 하는 `출고지시상세`로 분리한다. 이렇게 하면 품목이 4개 이상인 지시도 구조 변경 없이 저장되고 빈 컬럼(NULL)도 사라진다. ①은 반복 그룹을 간과했고, ② 부분 함수 종속은 **복합 PK의 일부**에 종속될 때 생기므로 단일 PK에서는 발생하지 않는다. ③ 반복 컬럼은 이행 종속 문제가 아니다."
+    },
+    {
+      "id": 7,
+      "subject": 1,
+      "theory": "relationship-and-join",
+      "question": "`창고`와 `품목`은 M:N 관계이며, 교차 엔터티 `STOCK`으로 해소하였다. 다음 SQL의 결과로 옳은 것은? (ITEM_CD / WH_CNT / TOT_QTY 순서로 표기)\n\n[ITEM]\n\n| ITEM_CD | ITEM_NM |\n|---|---|\n| I1 | 박스 |\n| I2 | 팔레트 |\n| I3 | 랩 |\n\n[STOCK]\n\n| WH_CD | ITEM_CD | QTY |\n|---|---|---|\n| W1 | I1 | 100 |\n| W2 | I1 | 50 |\n| W2 | I2 | 30 |\n| W3 | I2 | 0 |",
+      "code": "SELECT I.ITEM_CD,\n       COUNT(S.WH_CD) AS WH_CNT,\n       SUM(S.QTY)     AS TOT_QTY\n  FROM ITEM I\n  LEFT OUTER JOIN STOCK S\n    ON I.ITEM_CD = S.ITEM_CD\n GROUP BY I.ITEM_CD\n ORDER BY I.ITEM_CD;",
+      "choices": [
+        "I1 / 2 / 150, I2 / 2 / 30, I3 / 0 / NULL",
+        "I1 / 2 / 150, I2 / 1 / 30, I3 / 0 / NULL",
+        "I1 / 2 / 150, I2 / 2 / 30, I3 / 1 / NULL",
+        "I1 / 2 / 150, I2 / 2 / 30"
+      ],
+      "answer": 1,
+      "explanation": "M:N 관계는 교차 엔터티(STOCK)를 통해 조인한다. LEFT OUTER JOIN이므로 재고가 없는 I3도 STOCK 쪽 컬럼이 NULL인 1행으로 남는다.\n\n- I1: W1(100), W2(50) → COUNT(S.WH_CD)=2, SUM=150\n- I2: W2(30), W3(0) → 수량 0도 하나의 행이므로 COUNT=2, SUM=30\n- I3: 매칭 없음 → COUNT(S.WH_CD)는 NULL을 세지 않아 0, SUM은 NULL\n\n②는 수량 0인 행을 빼고 셌고, ③은 COUNT(컬럼)이 NULL을 센다고 착각했으며, ④는 INNER JOIN 결과다."
+    },
+    {
+      "id": 8,
+      "subject": 1,
+      "theory": "transaction-model",
+      "question": "IE 표기법으로 작성된 입고 업무 모델이 다음과 같다. (`|`는 필수, `o`는 선택, `{`는 여러 건을 의미한다.)\n\n- `창고 ||--o{ 입고` : 창고는 입고가 없을 수도 있고, 입고는 반드시 하나의 창고에 속한다.\n- `입고 ||--|{ 입고상세` : 입고는 반드시 1건 이상의 입고상세를 가지며, 입고상세는 반드시 하나의 입고에 속한다.\n- `입고상세 ||--o| 검수결과` : 검수결과는 입고 며칠 뒤 검수가 끝나야 생성되며, 0건 또는 1건이다.\n\n이 모델을 근거로 한 트랜잭션 설계로 가장 적절한 것은?",
+      "choices": [
+        "창고를 등록할 때 첫 입고 건을 반드시 함께 INSERT하고 한 번에 COMMIT해야 한다.",
+        "입고와 그 입고상세는 하나의 트랜잭션으로 함께 INSERT하고, 하나라도 실패하면 모두 ROLLBACK한다.",
+        "입고상세를 INSERT할 때는 검수결과도 반드시 같은 트랜잭션으로 함께 INSERT해야 한다.",
+        "입고를 먼저 INSERT하여 COMMIT한 뒤 입고상세를 별도 트랜잭션으로 입력해도 무결성 문제는 생기지 않는다."
+      ],
+      "answer": 2,
+      "explanation": "양쪽이 모두 필수(`||--|{`)인 입고–입고상세는 어느 한쪽만 존재해서는 안 되므로 **하나의 트랜잭션**으로 함께 입력하고, 일부라도 실패하면 전체를 ROLLBACK해야 한다. ① 창고 쪽에서 입고는 선택(`o{`)이므로 창고 등록은 독립 트랜잭션이다. ③ 검수결과는 선택(`o|`)이고 생성 시점도 다르므로 별도 트랜잭션이 맞다. ④ 입고만 먼저 커밋하면 상세 입력 실패 시 상세 없는 '빈 입고'가 남아 무결성이 깨진다."
+    },
+    {
+      "id": 9,
+      "subject": 1,
+      "theory": "null-attribute",
+      "question": "Oracle에서 비어 있는 SHIP 테이블(ID NUMBER, MEMO VARCHAR2(20))에 다음 문장을 실행하였다. 마지막 SELECT의 결과로 옳은 것은? (C1 / C2 / C3 순서)",
+      "code": "INSERT INTO SHIP VALUES (1, '파손주의');\nINSERT INTO SHIP VALUES (2, '');\nINSERT INTO SHIP VALUES (3, NULL);\nINSERT INTO SHIP VALUES (4, '냉장');\n\nSELECT COUNT(MEMO)                                AS C1,\n       SUM(CASE WHEN MEMO IS NULL THEN 1 ELSE 0 END) AS C2,\n       COUNT(NVL(MEMO, '없음'))                     AS C3\n  FROM SHIP;",
+      "choices": [
+        "3 / 1 / 4",
+        "2 / 2 / 2",
+        "3 / 1 / 3",
+        "2 / 2 / 4"
+      ],
+      "answer": 4,
+      "explanation": "Oracle은 길이가 0인 빈 문자열 `''`을 **NULL로 취급**한다. 따라서 ID 2와 3의 MEMO가 모두 NULL이다.\n\n- C1: COUNT(MEMO)는 NULL을 제외하므로 '파손주의', '냉장' → **2**\n- C2: MEMO IS NULL인 행은 ID 2, 3 → **2**\n- C3: NVL로 NULL을 '없음'으로 바꾼 뒤 세므로 4행 모두 → **4**\n\n①·③은 `''`을 NULL이 아닌 값으로 본 SQL Server식 해석이고, ②는 NVL 적용 후에도 NULL이 남는다고 본 오답이다."
+    },
+    {
+      "id": 10,
+      "subject": 1,
+      "theory": "natural-vs-surrogate-key",
+      "question": "택배사가 부여하는 `운송장번호`를 `배송이력` 테이블의 단독 PK로 사용해 왔다. 그런데 택배사가 운송장번호를 **약 2년 주기로 재사용**한다는 사실이 확인되었고, 배송이력은 5년간 보관해야 한다.\n\n이에 대한 식별자 설계로 가장 적절한 것은?",
+      "choices": [
+        "운송장번호는 업무에서 실제 쓰는 본질식별자이므로 재사용되더라도 그대로 단독 PK로 유지한다.",
+        "운송장번호 컬럼에 NOT NULL 제약을 추가하면 재사용으로 인한 중복 문제를 해결할 수 있다.",
+        "시스템이 부여하는 인조식별자(배송이력ID)를 PK로 두고, (운송장번호, 발송일자) 조합에 별도 UNIQUE 제약을 두어 업무 중복을 막는다.",
+        "인조식별자를 PK로 쓰면 운송장번호로는 조회할 필요가 없으므로 운송장번호 컬럼은 삭제한다."
+      ],
+      "answer": 3,
+      "explanation": "보관 기간 안에 같은 운송장번호가 다시 나오므로 운송장번호 단독으로는 **유일성**을 보장할 수 없다. 인조식별자를 PK로 두면 식별은 해결되지만, 인조식별자만으로는 업무상 중복 입력을 막지 못하므로 본질적인 조합(운송장번호+발송일자)에 **UNIQUE 제약**을 함께 두는 것이 적절하다. ①은 PK 중복이 생기고, ② NOT NULL은 중복을 막지 못한다. ④ 운송장번호는 고객 조회 등에 계속 쓰이는 업무 속성이므로 삭제하면 안 된다."
+    },
+    {
+      "id": 11,
+      "subject": 2,
+      "theory": "rdb-overview",
+      "question": "WAREHOUSE.WH_CD는 기본키이고, STOCK.WH_CD는 WAREHOUSE.WH_CD를 참조하는 외래키이다. 외래키에는 ON DELETE 옵션이 없고 NOT NULL 제약도 없다. 현재 데이터가 다음과 같을 때, Oracle에서 실행하면 **오류가 발생하는** 문장은?\n\n[WAREHOUSE]\n\n| WH_CD | WH_NM |\n|---|---|\n| W1 | 평택 |\n| W2 | 이천 |\n| W3 | 김해 |\n\n[STOCK]\n\n| STK_ID | WH_CD | QTY |\n|---|---|---|\n| 1 | W1 | 10 |\n| 2 | W1 | 20 |\n| 3 | NULL | 5 |",
+      "choices": [
+        "`DELETE FROM WAREHOUSE WHERE WH_CD = 'W3';`",
+        "`DELETE FROM WAREHOUSE WHERE WH_CD = 'W1';`",
+        "`UPDATE STOCK SET WH_CD = 'W2' WHERE STK_ID = 3;`",
+        "`INSERT INTO STOCK VALUES (4, NULL, 7);`"
+      ],
+      "answer": 2,
+      "explanation": "외래키는 참조 무결성을 보장한다. W1은 STOCK의 두 행이 참조하고 있으므로 ON DELETE 옵션이 없는 상태에서 부모 행을 삭제하면 **자식 레코드가 존재한다는 오류**(ORA-02292)가 발생한다. ① W3는 참조하는 자식이 없어 삭제된다. ③ 존재하는 부모 값(W2)으로 변경하는 것은 허용된다. ④ NOT NULL 제약이 없는 외래키에는 NULL을 입력할 수 있다."
+    },
+    {
+      "id": 12,
+      "subject": 2,
+      "theory": "select",
+      "question": "DELIVERY 테이블에는 DLV_NO, WH_CD, QTY 컬럼이 있다. 다음 중 Oracle에서 **오류 없이 실행되는** SQL은?",
+      "choices": [
+        "`SELECT D.*, QTY * 2 AS DBL FROM DELIVERY D;`",
+        "`SELECT *, QTY * 2 AS DBL FROM DELIVERY;`",
+        "`SELECT DELIVERY.QTY FROM DELIVERY D;`",
+        "`SELECT DLV_NO, QTY * 2 AS DBL FROM DELIVERY WHERE DBL > 10;`"
+      ],
+      "answer": 1,
+      "explanation": "Oracle에서 `*`를 다른 컬럼과 함께 쓰려면 `D.*`처럼 테이블(별칭)로 한정해야 하므로 ①은 정상 실행된다. ② 한정하지 않은 `*` 뒤에 다른 컬럼을 나열하면 오류다. ③ FROM 절에서 테이블 별칭을 지정했다면 컬럼 한정에도 별칭(D)을 써야 하며, 원래 테이블명으로 한정하면 오류다. ④ WHERE 절은 SELECT 절보다 먼저 처리되므로 SELECT에서 정의한 별칭 DBL을 쓸 수 없다."
+    },
+    {
+      "id": 13,
+      "subject": 2,
+      "theory": "select",
+      "question": "다음 [PARCEL] 테이블에 SQL을 실행했을 때 결과 행 수는? (Oracle)\n\n[PARCEL]\n\n| PID | WEIGHT |\n|---|---|\n| 1 | 3 |\n| 2 | 8 |\n| 3 | 12 |\n| 4 | 15 |\n| 5 | 27 |\n| 6 | NULL |",
+      "code": "SELECT DISTINCT TRUNC(WEIGHT / 10) * 10 AS W_BAND\n  FROM PARCEL;",
+      "choices": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "answer": 3,
+      "explanation": "DISTINCT는 SELECT 목록의 **계산 결과**를 기준으로 중복을 제거한다.\n\n- 3, 8 → TRUNC(0.3)·10 = 0, TRUNC(0.8)·10 = 0 → 0\n- 12, 15 → 10\n- 27 → 20\n- NULL → 연산 결과도 NULL\n\n결과 값은 0, 10, 20, NULL이다. DISTINCT에서 NULL은 하나의 값처럼 한 행으로 남으므로 **4행**이다. NULL 행을 빼면 3이 되는데, DISTINCT는 NULL을 제거하지 않는다."
+    },
+    {
+      "id": 14,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle, A / B / C 순서)",
+      "code": "SELECT LTRIM(SUBSTR('KR-ICN-2026-000731',\n                     INSTR('KR-ICN-2026-000731', '-', -1) + 1), '0') AS A,\n       LENGTH(REPLACE('KR-ICN-2026', '-'))                          AS B,\n       INSTR('KR-ICN-2026-000731', '-', 4, 2)                       AS C\n  FROM DUAL;",
+      "choices": [
+        "731 / 11 / 12",
+        "000731 / 9 / 12",
+        "731 / 9 / 7",
+        "731 / 9 / 12"
+      ],
+      "answer": 4,
+      "explanation": "문자열 'KR-ICN-2026-000731'에서 '-'의 위치는 3, 7, 12이다.\n\n- A: INSTR(…, '-', -1)은 뒤에서부터 찾은 **마지막** '-'의 위치 12를 반환한다. SUBSTR(…, 13)은 '000731'이고, LTRIM(…, '0')은 왼쪽의 '0'을 모두 제거하여 **'731'**이 된다.\n- B: REPLACE에서 세 번째 인수를 생략하면 찾은 문자열을 삭제한다. 'KRICN2026'의 길이는 **9**이다.\n- C: 4번째 위치부터 찾을 때 첫 번째 '-'는 7, 두 번째 '-'는 **12**이다.\n\n②는 LTRIM을 빠뜨렸고, ①은 '-'까지 길이에 포함했으며, ③은 첫 번째 '-'의 위치를 고른 오답이다."
+    },
+    {
+      "id": 15,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle, A / B / C 순서)",
+      "code": "SELECT TO_CHAR(ADD_MONTHS(DATE '2026-04-30', -2), 'MM-DD') AS A,\n       DATE '2026-03-02' - DATE '2026-02-26'                AS B,\n       TO_CHAR(DATE '2026-03-27' + 36/24, 'DD HH24')        AS C\n  FROM DUAL;",
+      "choices": [
+        "02-28 / 5 / 28 12",
+        "02-28 / 4 / 28 12",
+        "03-02 / 4 / 28 12",
+        "02-28 / 4 / 29 12"
+      ],
+      "answer": 2,
+      "explanation": "- A: ADD_MONTHS는 기준일이 월말이거나 결과 월에 같은 일자가 없으면 결과 월의 **말일**을 돌려준다. 2026-04-30에서 2개월 전은 2월이고 2026년 2월의 말일은 28일이므로 **'02-28'**이다.\n- B: 날짜 - 날짜는 일수(숫자)다. 2026년은 윤년이 아니므로 2/26 → 2/27, 2/28, 3/1, 3/2로 **4**일이다.\n- C: 36/24일은 36시간이다. 3월 27일 00시에 36시간을 더하면 **3월 28일 12시**가 되어 'DD HH24' 형식으로 '28 12'이다.\n\n①은 윤년(2/29)으로 계산했고, ③은 말일 규칙을 무시했으며, ④는 시간 계산이 틀렸다."
+    },
+    {
+      "id": 16,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 [ORDER_SHIP] 테이블에 SQL을 실행했을 때 FEE 값을 ORD_NO 순서대로 나열한 것으로 옳은 것은? (Oracle)\n\n[ORDER_SHIP]\n\n| ORD_NO | REGION | WEIGHT |\n|---|---|---|\n| 1 | 서울 | 3 |\n| 2 | 제주 | 3 |\n| 3 | 부산 | 12 |\n| 4 | NULL | 5 |",
+      "code": "SELECT ORD_NO,\n       CASE WHEN REGION = '제주' THEN 5000\n            WHEN WEIGHT > 10     THEN 4000\n            ELSE 3000\n       END + DECODE(REGION, NULL, 1000, 0) AS FEE\n  FROM ORDER_SHIP\n ORDER BY ORD_NO;",
+      "choices": [
+        "3000, 5000, 4000, 4000",
+        "3000, 5000, 4000, 3000",
+        "3000, 5000, 4000, NULL",
+        "3000, 5000, 3000, 4000"
+      ],
+      "answer": 1,
+      "explanation": "- CASE는 위에서부터 처음 참이 되는 WHEN의 값을 반환한다. 1번은 3000, 2번은 제주이므로 5000, 3번은 무게 12 > 10이므로 4000이다. 4번은 REGION이 NULL이라 `REGION = '제주'`가 UNKNOWN(참 아님)이고, 무게 5도 조건에 맞지 않아 ELSE의 3000이다.\n- DECODE는 **NULL과 NULL을 같은 값으로 비교**하므로 4번 행은 `DECODE(NULL, NULL, 1000, 0)` = 1000이다. 나머지 행은 0이다.\n\n따라서 3000, 5000, 4000, **4000**이다. ②는 DECODE도 NULL을 비교하지 못한다고 본 오답이고, ③은 CASE 결과가 NULL이 된다고 본 오답이다(ELSE가 있으므로 NULL이 아니다)."
+    },
+    {
+      "id": 17,
+      "subject": 2,
+      "theory": "where",
+      "question": "다음 [STOCK] 테이블에 대해 (가), (나) SQL을 실행했을 때 결과로 옳은 것은?\n\n[STOCK]\n\n| ITEM | QTY |\n|---|---|\n| A | 5 |\n| B | 10 |\n| C | 30 |\n| D | 50 |\n| E | 70 |\n| F | NULL |",
+      "code": "-- (가)\nSELECT COUNT(*) FROM STOCK WHERE QTY BETWEEN 50 AND 10;\n\n-- (나)\nSELECT COUNT(*) FROM STOCK WHERE QTY NOT BETWEEN 10 AND 50;",
+      "choices": [
+        "(가) 4, (나) 2",
+        "(가) 0, (나) 3",
+        "(가) 4, (나) 3",
+        "(가) 0, (나) 2"
+      ],
+      "answer": 4,
+      "explanation": "- (가) `BETWEEN a AND b`는 `QTY >= a AND QTY <= b`이다. `QTY >= 50 AND QTY <= 10`을 동시에 만족하는 값은 없으므로 **0건**이다. 작은 값을 앞에 써야 한다.\n- (나) `NOT BETWEEN 10 AND 50`은 `QTY < 10 OR QTY > 50`이므로 A(5), E(70)이 해당한다. F는 NULL이라 비교 결과가 UNKNOWN이므로 제외되어 **2건**이다.\n\n(가)를 4건으로 본 것은 범위를 자동으로 뒤집어 준다고 착각한 것이고, (나)를 3건으로 본 것은 NULL 행이 포함된다고 착각한 것이다."
+    },
+    {
+      "id": 18,
+      "subject": 2,
+      "theory": "where",
+      "question": "다음 [SHIPMENT] 테이블에 대해 (가), (나) SQL을 실행했을 때 결과로 옳은 것은?\n\n[SHIPMENT]\n\n| SHIP_NO | STATUS | RETURN_YN |\n|---|---|---|\n| 1 | 완료 | N |\n| 2 | 완료 | Y |\n| 3 | 완료 | NULL |\n| 4 | 배송중 | NULL |\n| 5 | NULL | N |\n| 6 | 배송중 | N |",
+      "code": "-- (가)\nSELECT COUNT(*) FROM SHIPMENT\n WHERE NOT (STATUS = '완료' AND RETURN_YN = 'N');\n\n-- (나)\nSELECT COUNT(*) FROM SHIPMENT\n WHERE STATUS <> '완료' OR RETURN_YN <> 'N';",
+      "choices": [
+        "(가) 5, (나) 3",
+        "(가) 3, (나) 5",
+        "(가) 3, (나) 3",
+        "(가) 5, (나) 5"
+      ],
+      "answer": 3,
+      "explanation": "NULL과의 비교는 UNKNOWN이며, WHERE 절은 결과가 TRUE인 행만 반환한다. (표에서 T: TRUE, F: FALSE, U: UNKNOWN)\n\n| SHIP_NO | 괄호 안 AND | (가) NOT | (나) `<>` OR `<>` |\n|---|---|---|---|\n| 1 | T AND T = T | F | F OR F = F |\n| 2 | T AND F = F | **T** | F OR T = **T** |\n| 3 | T AND U = U | U | F OR U = U |\n| 4 | F AND U = F | **T** | T OR U = **T** |\n| 5 | U AND T = U | U | U OR F = U |\n| 6 | F AND T = F | **T** | T OR F = **T** |\n\n두 SQL 모두 2, 4, 6번의 **3건**이다. 드모르간 법칙(`NOT (A AND B)` = `NOT A OR NOT B`)은 3값 논리에서도 성립한다. 3·5번처럼 UNKNOWN이 되는 행은 NOT을 붙여도 UNKNOWN이라 반환되지 않는다는 점이 핵심이다."
+    },
+    {
+      "id": 19,
+      "subject": 2,
+      "theory": "group-by-having",
+      "question": "다음 [SHIPMENT] 테이블에 SQL을 실행한 결과로 옳은 것은? (SHIP_DT는 DATE 타입, (MM, CNT, TOT) 순서로 표기)\n\n[SHIPMENT]\n\n| SHIP_NO | SHIP_DT | QTY |\n|---|---|---|\n| 1 | 2026-01-05 | 10 |\n| 2 | 2026-01-20 | 40 |\n| 3 | 2026-02-03 | 25 |\n| 4 | 2026-02-14 | 30 |\n| 5 | 2026-03-09 | NULL |\n| 6 | 2026-03-22 | 15 |\n| 7 | 2026-03-30 | 50 |",
+      "code": "SELECT TO_CHAR(SHIP_DT, 'MM') AS MM,\n       COUNT(*)                AS CNT,\n       SUM(QTY)                AS TOT\n  FROM SHIPMENT\n GROUP BY TO_CHAR(SHIP_DT, 'MM')\nHAVING MAX(QTY) - MIN(QTY) >= 20\n ORDER BY MM;",
+      "choices": [
+        "(01, 2, 50), (03, 2, 65)",
+        "(01, 2, 50), (03, 3, 65)",
+        "(01, 2, 50), (02, 2, 55), (03, 3, 65)",
+        "(03, 3, 65)"
+      ],
+      "answer": 2,
+      "explanation": "TO_CHAR(SHIP_DT, 'MM')의 결과로 월별 그룹을 만든다.\n\n- 01월: MAX 40 − MIN 10 = 30 ≥ 20 → 통과, CNT 2, TOT 50\n- 02월: 30 − 25 = 5 → 제외\n- 03월: MAX, MIN은 NULL을 무시하므로 50 − 15 = 35 → 통과. COUNT(*)는 NULL 행까지 세므로 **3**, SUM은 NULL을 무시하여 65\n\n①은 COUNT(*)가 NULL 행을 제외한다고 착각했고, ③은 HAVING 조건을 적용하지 않았다."
+    },
+    {
+      "id": 20,
+      "subject": 2,
+      "theory": "group-by-having",
+      "question": "STOCK 테이블(WH_CD, ITEM_CD, QTY)에 대해 Oracle에서 실행할 때 **오류가 발생하는** SQL은?",
+      "choices": [
+        "`SELECT WH_CD, SUM(QTY) FROM STOCK GROUP BY WH_CD ORDER BY SUM(QTY) DESC;`",
+        "`SELECT WH_CD FROM STOCK GROUP BY WH_CD HAVING AVG(QTY) > 10;`",
+        "`SELECT COUNT(*) FROM STOCK HAVING COUNT(*) > 0;`",
+        "`SELECT WH_CD, SUM(QTY) FROM STOCK GROUP BY WH_CD ORDER BY ITEM_CD;`"
+      ],
+      "answer": 4,
+      "explanation": "GROUP BY를 사용하면 이후 단계(SELECT, ORDER BY)에서는 **GROUP BY에 쓴 표현식이나 집계 함수만** 쓸 수 있다. ④는 그룹 안에 여러 값이 있을 수 있는 ITEM_CD로 정렬하므로 'GROUP BY 표현식이 아니다'(ORA-00979) 오류가 발생한다. ① ORDER BY에 집계 함수를 쓰는 것은 가능하다. ② HAVING에는 SELECT에 없는 집계 함수도 쓸 수 있다. ③ GROUP BY 없이 HAVING을 쓰면 전체 행을 하나의 그룹으로 본다."
+    },
+    {
+      "id": 21,
+      "subject": 2,
+      "theory": "order-by",
+      "question": "STOCK 테이블(WH_CD, ITEM_CD, QTY)에 대해 Oracle에서 실행할 때 **오류가 발생하는** SQL은?",
+      "choices": [
+        "`SELECT DISTINCT WH_CD FROM STOCK ORDER BY QTY;`",
+        "`SELECT WH_CD FROM STOCK ORDER BY QTY;`",
+        "`SELECT WH_CD AS W, QTY FROM STOCK ORDER BY W, 2 DESC;`",
+        "`SELECT WH_CD, QTY FROM STOCK ORDER BY 2 DESC NULLS LAST, WH_CD;`"
+      ],
+      "answer": 1,
+      "explanation": "DISTINCT로 중복을 제거하면 하나의 WH_CD 행에 원래 여러 QTY가 대응하므로 어떤 값으로 정렬할지 정할 수 없다. 따라서 DISTINCT를 쓴 경우 **SELECT 목록에 없는 컬럼**으로 정렬하면 오류(ORA-01791)가 발생한다. ② DISTINCT가 없으면 SELECT에 없는 컬럼으로도 정렬할 수 있다. ③ 별칭과 위치 번호를 섞어 쓸 수 있다. ④ Oracle은 NULLS FIRST/LAST로 NULL 위치를 지정할 수 있다."
+    },
+    {
+      "id": 22,
+      "subject": 2,
+      "theory": "order-by",
+      "question": "다음 [DLV] 테이블의 DLV_DT는 **VARCHAR2** 타입이다. SQL을 실행한 결과의 출력 순서로 옳은 것은?\n\n[DLV]\n\n| DLV_NO | DLV_DT |\n|---|---|\n| D1 | 2026-9-15 |\n| D2 | 2026-10-2 |\n| D3 | 2026-1-30 |\n| D4 | 2026-10-15 |",
+      "code": "SELECT DLV_NO\n  FROM DLV\n ORDER BY DLV_DT DESC;",
+      "choices": [
+        "D4, D2, D1, D3",
+        "D2, D4, D1, D3",
+        "D1, D2, D4, D3",
+        "D1, D4, D2, D3"
+      ],
+      "answer": 3,
+      "explanation": "문자형은 날짜 순서가 아니라 **왼쪽부터 한 글자씩** 비교한다. '2026-'까지 같고 6번째 글자는 D1이 '9', D2·D4가 '1', D3도 '1'이다.\n\n- 내림차순이므로 '9'인 **D1**이 가장 먼저 온다.\n- D2('2026-10-2'), D4('2026-10-15'), D3('2026-1-30')는 7번째 글자가 D2·D4는 '0', D3는 '-'이다. '-'(45)는 '0'(48)보다 작으므로 D3가 마지막이다.\n- D2와 D4는 9번째 글자가 '2'와 '1'이므로 **D2 → D4** 순서다.\n\n결과는 D1, D2, D4, D3이다. ①은 실제 날짜 기준의 내림차순이며, 날짜를 이런 형식의 문자로 저장하면 정렬이 어긋나므로 DATE 타입이나 'YYYY-MM-DD'처럼 자릿수를 맞춘 형식을 써야 한다."
+    },
+    {
+      "id": 23,
+      "subject": 2,
+      "theory": "join",
+      "question": "다음 [PARCEL], [ZONE_FEE] 테이블에 SQL을 실행한 결과로 옳은 것은? (건수 / 합계 순서)\n\n[PARCEL]\n\n| PID | DIST |\n|---|---|\n| P1 | 5 |\n| P2 | 10 |\n| P3 | 20 |\n| P4 | 25 |\n| P5 | 35 |\n\n[ZONE_FEE]\n\n| ZONE | MIN_KM | MAX_KM | FEE |\n|---|---|---|---|\n| A | 0 | 10 | 3000 |\n| B | 10 | 20 | 4000 |\n| C | 20 | 30 | 5000 |",
+      "code": "SELECT COUNT(*), SUM(Z.FEE)\n  FROM PARCEL P, ZONE_FEE Z\n WHERE P.DIST BETWEEN Z.MIN_KM AND Z.MAX_KM;",
+      "choices": [
+        "4 / 16000",
+        "6 / 24000",
+        "5 / 21000",
+        "6 / 21000"
+      ],
+      "answer": 2,
+      "explanation": "BETWEEN은 **양 끝을 모두 포함**한다. 구간의 경계값(10, 20)이 두 구간에 동시에 속하도록 설정되어 있어 경계에 있는 소포는 두 번 조인된다.\n\n- P1(5) → A: 3000\n- P2(10) → A, B: 3000 + 4000\n- P3(20) → B, C: 4000 + 5000\n- P4(25) → C: 5000\n- P5(35) → 일치하는 구간이 없어 결과에서 빠진다(내부 조인).\n\n건수는 1 + 2 + 2 + 1 = **6**, 합계는 **24000**이다. 비등가 조인에서는 구간이 겹치지 않도록 `>`와 `<=`를 조합하는 등 경계 설계에 주의해야 한다."
+    },
+    {
+      "id": 24,
+      "subject": 2,
+      "theory": "join",
+      "question": "다음 [WAREHOUSE], [OUTBOUND] 테이블에 대해 (가), (나) SQL을 실행했을 때 결과 행 수로 옳은 것은? (Oracle)\n\n[WAREHOUSE]\n\n| WH_CD | WH_NM |\n|---|---|\n| W1 | 평택 |\n| W2 | 이천 |\n| W3 | 김해 |\n| W4 | 칠곡 |\n\n[OUTBOUND]\n\n| OB_NO | WH_CD | STATUS |\n|---|---|---|\n| 1 | W1 | 완료 |\n| 2 | W1 | 취소 |\n| 3 | W2 | 취소 |\n| 4 | W3 | 완료 |\n| 5 | W9 | 완료 |",
+      "code": "-- (가)\nSELECT W.WH_CD\n  FROM WAREHOUSE W, OUTBOUND O\n WHERE W.WH_CD = O.WH_CD(+)\n   AND O.OB_NO IS NULL;\n\n-- (나)\nSELECT W.WH_CD, O.OB_NO\n  FROM WAREHOUSE W, OUTBOUND O\n WHERE W.WH_CD = O.WH_CD(+)\n   AND O.STATUS = '완료';",
+      "choices": [
+        "(가) 1, (나) 4",
+        "(가) 2, (나) 2",
+        "(가) 0, (나) 2",
+        "(가) 1, (나) 2"
+      ],
+      "answer": 4,
+      "explanation": "두 SQL 모두 WAREHOUSE를 기준으로 하는 아우터 조인(`O.WH_CD(+)`)을 먼저 수행하면 W1-1, W1-2, W2-3, W3-4, W4-(NULL)의 5행이 만들어진다.\n\n- (가) 아우터 조인 후 `O.OB_NO IS NULL`인 행만 남기므로 출고가 한 건도 없는 **W4 1행**이다. 이 패턴은 '짝이 없는 행 찾기'에 쓰인다.\n- (나) `O.STATUS = '완료'`에 (+)를 붙이지 않았으므로 조인 이후 필터로 동작하여 NULL로 채워진 행이 모두 제거된다. 사실상 내부 조인이 되어 W1-1, W3-4의 **2행**이다.\n\nW9의 출고는 기준 테이블에 없는 창고이므로 어느 쪽에도 나오지 않는다. (나)에서 모든 창고를 남기려면 `O.STATUS(+) = '완료'`로 써야 한다."
+    },
+    {
+      "id": 25,
+      "subject": 2,
+      "theory": "standard-join",
+      "question": "창고관리시스템(WMS)과 전사시스템(ERP)의 재고를 대사(對査)하려고 한다. 다음 SQL의 결과로 출력되는 ITEM_CD를 순서대로 나열한 것은?\n\n[WMS_STOCK]\n\n| ITEM_CD | QTY |\n|---|---|\n| I1 | 10 |\n| I2 | 5 |\n| I3 | 0 |\n| I4 | 7 |\n\n[ERP_STOCK]\n\n| ITEM_CD | QTY |\n|---|---|\n| I2 | 5 |\n| I3 | 2 |\n| I5 | 9 |\n| I6 | 1 |",
+      "code": "SELECT COALESCE(W.ITEM_CD, E.ITEM_CD) AS ITEM_CD\n  FROM WMS_STOCK W\n  FULL OUTER JOIN ERP_STOCK E\n    ON W.ITEM_CD = E.ITEM_CD\n WHERE W.ITEM_CD IS NULL\n    OR E.ITEM_CD IS NULL\n    OR W.QTY <> E.QTY\n ORDER BY 1;",
+      "choices": [
+        "I1, I3, I4, I5, I6",
+        "I1, I4, I5, I6",
+        "I1, I2, I3, I4, I5, I6",
+        "I3, I5, I6"
+      ],
+      "answer": 1,
+      "explanation": "FULL OUTER JOIN은 양쪽 테이블의 모든 행을 남긴다. 결과는 I1(WMS만), I2(양쪽), I3(양쪽), I4(WMS만), I5(ERP만), I6(ERP만)의 6행이다.\n\nWHERE 조건으로 걸러 보면\n- I1, I4: E.ITEM_CD가 NULL → 포함\n- I5, I6: W.ITEM_CD가 NULL → 포함\n- I3: 0 <> 2 → 포함\n- I2: 5 = 5이고 양쪽 다 존재 → 제외\n\n결과는 **I1, I3, I4, I5, I6**이다. ②는 수량이 다른 I3을 놓쳤고, ④는 한쪽에만 있는 WMS 품목을 빠뜨렸다."
+    },
+    {
+      "id": 26,
+      "subject": 2,
+      "theory": "standard-join",
+      "question": "다음 [CARRIER], [DISPATCH] 테이블에 대해 (가), (나) SQL을 실행했을 때 결과 행 수로 옳은 것은?\n\n[CARRIER]\n\n| CR_CD | CR_NM |\n|---|---|\n| C1 | 한진 |\n| C2 | CJ |\n| C3 | 롯데 |\n\n[DISPATCH]\n\n| DSP_NO | CR_CD | STATUS |\n|---|---|---|\n| 1 | C1 | 완료 |\n| 2 | C1 | 취소 |\n| 3 | C2 | 취소 |",
+      "code": "-- (가)\nSELECT C.CR_CD, D.DSP_NO\n  FROM CARRIER C\n  LEFT OUTER JOIN DISPATCH D\n    ON C.CR_CD = D.CR_CD\n   AND D.STATUS = '완료';\n\n-- (나)\nSELECT C.CR_CD, D.DSP_NO\n  FROM CARRIER C\n  LEFT OUTER JOIN DISPATCH D\n    ON C.CR_CD = D.CR_CD\n WHERE D.STATUS = '완료'\n    OR D.STATUS IS NULL;",
+      "choices": [
+        "(가) 3, (나) 3",
+        "(가) 3, (나) 2",
+        "(가) 2, (나) 2",
+        "(가) 4, (나) 2"
+      ],
+      "answer": 2,
+      "explanation": "- (가) 조건이 ON 절에 있으므로 '완료'인 배차만 조인 대상이 되고, 짝이 없는 운송사도 모두 남는다. C1-1, C2-(NULL), C3-(NULL)의 **3행**이다.\n- (나) 먼저 ON 조건만으로 아우터 조인하면 C1-1(완료), C1-2(취소), C2-3(취소), C3-(NULL)의 4행이다. 이후 WHERE에서 '완료'이거나 NULL인 행만 남기므로 C1-1, C3-(NULL)의 **2행**이다.\n\nC2는 '취소' 배차만 있어서 조인 결과의 STATUS가 NULL이 아니므로 (나)에서 사라진다. 즉 `WHERE (조건 OR 컬럼 IS NULL)`은 ON 절에 조건을 둔 것과 같지 않다."
+    },
+    {
+      "id": 27,
+      "subject": 2,
+      "theory": "subquery",
+      "question": "다음 [STOCK], [WAREHOUSE] 테이블에 대해 (가), (나) SQL을 실행했을 때 결과로 옳은 것은?\n\n[STOCK]\n\n| ITEM | WH_CD |\n|---|---|\n| I1 | W1 |\n| I2 | W2 |\n| I3 | NULL |\n| I4 | W9 |\n\n[WAREHOUSE]\n\n| WH_CD |\n|---|\n| W1 |\n| W2 |\n| W3 |",
+      "code": "-- (가)\nSELECT COUNT(*) FROM STOCK S\n WHERE S.WH_CD NOT IN (SELECT WH_CD FROM WAREHOUSE);\n\n-- (나)\nSELECT COUNT(*) FROM STOCK S\n WHERE NOT EXISTS (SELECT 1\n                     FROM WAREHOUSE W\n                    WHERE W.WH_CD = S.WH_CD);",
+      "choices": [
+        "(가) 1, (나) 1",
+        "(가) 2, (나) 2",
+        "(가) 1, (나) 2",
+        "(가) 0, (나) 2"
+      ],
+      "answer": 3,
+      "explanation": "- (가) `NOT IN`은 `WH_CD <> 'W1' AND WH_CD <> 'W2' AND WH_CD <> 'W3'`과 같다. I4(W9)는 모두 참이라 포함된다. I3은 WH_CD가 NULL이므로 비교 결과가 UNKNOWN이 되어 제외된다. → **1**\n- (나) `NOT EXISTS`는 서브쿼리 결과 행의 존재 여부만 본다. I3은 `W.WH_CD = NULL`을 만족하는 행이 없으므로 NOT EXISTS가 참이 되어 포함된다. I4도 포함된다. → **2**\n\n서브쿼리 쪽에 NULL이 없더라도 **메인 쿼리 컬럼이 NULL이면** NOT IN과 NOT EXISTS의 결과가 달라진다. (서브쿼리에 NULL이 있으면 NOT IN은 아예 0건이 된다.)"
+    },
+    {
+      "id": 28,
+      "subject": 2,
+      "theory": "subquery",
+      "question": "다음 [STOCK] 테이블에 SQL을 실행한 결과로 옳은 것은? (Oracle)\n\n[STOCK]\n\n| WH | ITEM | QTY |\n|---|---|---|\n| W1 | A | 30 |\n| W2 | A | 20 |\n| W1 | B | 10 |\n| W2 | C | 40 |\n| W3 | C | 30 |\n| W3 | D | 30 |",
+      "code": "SELECT ITEM\n  FROM STOCK\n GROUP BY ITEM\nHAVING SUM(QTY) > (SELECT AVG(SUM(QTY))\n                     FROM STOCK\n                    GROUP BY ITEM)\n ORDER BY ITEM;",
+      "choices": [
+        "C",
+        "A, C, D",
+        "A, B, C, D",
+        "A, C"
+      ],
+      "answer": 4,
+      "explanation": "서브쿼리 `SELECT AVG(SUM(QTY)) FROM STOCK GROUP BY ITEM`은 품목별 합계(A 50, B 10, C 70, D 30)를 구한 뒤 그 합계들의 평균을 구한다. Oracle은 GROUP BY와 함께 쓸 때 집계 함수를 한 번 중첩할 수 있다. (50 + 10 + 70 + 30) / 4 = **40**이다.\n\n메인 쿼리는 품목별 합계가 40보다 큰 품목을 찾으므로 A(50), C(70) → **A, C**이다.\n\n②는 서브쿼리를 행 단위 평균(160 / 6 ≈ 26.7)으로 잘못 계산한 결과이며, 이 경우 D(30)까지 포함된다."
+    },
+    {
+      "id": 29,
+      "subject": 2,
+      "theory": "set-operators",
+      "question": "다음 [INBOUND] 테이블에 대해 (가), (나) SQL을 실행했을 때 결과 행 수로 옳은 것은? (OUTBOUND 테이블에는 데이터가 있지만 `WHERE 1 = 2` 조건으로 한 건도 선택되지 않는다.)\n\n[INBOUND]\n\n| ITEM |\n|---|\n| A |\n| A |\n| B |\n| C |\n| NULL |\n| NULL |",
+      "code": "-- (가)\nSELECT ITEM FROM INBOUND\nUNION\nSELECT ITEM FROM OUTBOUND WHERE 1 = 2;\n\n-- (나)\nSELECT ITEM FROM INBOUND\nUNION ALL\nSELECT ITEM FROM OUTBOUND WHERE 1 = 2;",
+      "choices": [
+        "(가) 4, (나) 6",
+        "(가) 3, (나) 6",
+        "(가) 6, (나) 6",
+        "(가) 4, (나) 4"
+      ],
+      "answer": 1,
+      "explanation": "두 번째 쿼리가 공집합이어도 집합 연산자의 성질은 그대로 적용된다.\n\n- (가) UNION은 **전체 결과에서 중복을 제거**한다. 따라서 INBOUND 자체의 중복(A 2건, NULL 2건)도 제거되어 A, B, C, NULL의 **4행**이다. 집합 연산에서 NULL끼리는 같은 값으로 보아 하나만 남는다.\n- (나) UNION ALL은 중복을 제거하지 않으므로 INBOUND 6행이 그대로 나온다.\n\n②는 NULL을 결과에서 빼 버린 오답이고, ③은 UNION이 서로 다른 쿼리 사이의 중복만 제거한다고 착각한 것이다."
+    },
+    {
+      "id": 30,
+      "subject": 2,
+      "theory": "set-operators",
+      "question": "두 시스템의 품목 목록을 대사하기 위해 다음 SQL을 실행하였다. 결과 행 수는? (Oracle)\n\n[WMS]\n\n| ITEM |\n|---|\n| I1 |\n| I2 |\n| I2 |\n| I3 |\n\n[ERP]\n\n| ITEM |\n|---|\n| I2 |\n| I3 |\n| I3 |\n| I4 |\n| I5 |",
+      "code": "SELECT ITEM\n  FROM (SELECT ITEM FROM WMS\n        MINUS\n        SELECT ITEM FROM ERP)\nUNION ALL\nSELECT ITEM\n  FROM (SELECT ITEM FROM ERP\n        MINUS\n        SELECT ITEM FROM WMS);",
+      "choices": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "answer": 2,
+      "explanation": "MINUS는 앞 결과에서 뒤 결과에 있는 값을 빼고, **중복을 제거**한 결과를 돌려준다.\n\n- WMS MINUS ERP: {I1, I2, I3} − {I2, I3, I4, I5} = **{I1}**\n- ERP MINUS WMS: {I2, I3, I4, I5} − {I1, I2, I3} = **{I4, I5}** (I3이 ERP에 2건 있어도 MINUS 결과에서 중복 없이 다뤄진다)\n\n두 결과를 UNION ALL로 합치면 I1, I4, I5의 **3행**이다. 한쪽 시스템에만 있는 품목을 찾는 대사 패턴이다."
+    },
+    {
+      "id": 31,
+      "subject": 2,
+      "theory": "group-functions",
+      "question": "다음 [SHIP] 테이블에 SQL을 실행한 결과에 대한 설명으로 옳은 것은?\n\n[SHIP]\n\n| WH | CARRIER | QTY |\n|---|---|---|\n| W1 | 한진 | 10 |\n| W1 | CJ | 20 |\n| W2 | CJ | 30 |\n| W2 | 롯데 | 40 |\n| W3 | 한진 | 50 |",
+      "code": "SELECT WH, CARRIER, SUM(QTY)\n  FROM SHIP\n GROUP BY CUBE(WH, CARRIER)\nHAVING GROUPING(WH) = 1;",
+      "choices": [
+        "결과는 창고별 소계 3건과 총계 1건으로 4건이다.",
+        "결과는 운송사별 소계 3건뿐이며, 총계 행은 포함되지 않는다.",
+        "결과는 CUBE가 만드는 12건 중 GROUPING(WH) = 0인 행들이다.",
+        "결과는 운송사별 소계 3건과 총계 1건으로 4건이며, 총계 행의 SUM(QTY)는 150이다."
+      ],
+      "answer": 4,
+      "explanation": "CUBE(WH, CARRIER)는 (WH, CARRIER), (WH), (CARRIER), ()의 네 수준을 모두 만든다. 행 수는 5 + 3 + 3 + 1 = 12건이다.\n\nGROUPING(WH) = 1은 WH가 집계되어 **NULL로 표시된 행**이다. 즉 WH 없이 집계된 (CARRIER) 수준과 () 수준만 남는다.\n\n- (CARRIER): 한진 60, CJ 50, 롯데 40 → 3건\n- (): 총계 150 → 1건\n\n따라서 **4건**이며 총계는 150이다. ①은 GROUPING(CARRIER) = 1 AND GROUPING(WH) = 0인 창고별 소계를 떠올린 오답이고, ③은 GROUPING 값의 의미를 반대로 해석했다."
+    },
+    {
+      "id": 32,
+      "subject": 2,
+      "theory": "group-functions",
+      "question": "다음 [SHIP] 테이블에 SQL을 실행했을 때 (전체 결과 건수 / CARRIER 컬럼이 NULL로 표시되는 행 수 / GC가 1인 행 수)로 옳은 것은?\n\n[SHIP]\n\n| WH | CARRIER | QTY |\n|---|---|---|\n| W1 | 한진 | 10 |\n| W1 | NULL | 20 |\n| W2 | CJ | 30 |",
+      "code": "SELECT WH, CARRIER, SUM(QTY),\n       GROUPING(CARRIER) AS GC\n  FROM SHIP\n GROUP BY ROLLUP(WH, CARRIER);",
+      "choices": [
+        "6 / 3 / 3",
+        "5 / 3 / 3",
+        "6 / 4 / 3",
+        "6 / 4 / 4"
+      ],
+      "answer": 3,
+      "explanation": "ROLLUP(WH, CARRIER)는 (WH, CARRIER), (WH), () 수준을 만든다.\n\n| WH | CARRIER | SUM | GC |\n|---|---|---|---|\n| W1 | 한진 | 10 | 0 |\n| W1 | NULL | 20 | 0 |\n| W1 | NULL | 30 | 1 |\n| W2 | CJ | 30 | 0 |\n| W2 | NULL | 30 | 1 |\n| NULL | NULL | 60 | 1 |\n\n전체 **6건**이며 CARRIER가 NULL로 보이는 행은 **4건**이다. 이 중 2행째는 원래 데이터의 NULL(운송사 미지정)이고, 나머지 3건은 소계·총계 때문에 생긴 NULL이다. GROUPING(CARRIER)는 집계로 생긴 NULL에서만 1을 반환하므로 GC = 1인 행은 **3건**이다. 이처럼 GROUPING 함수로 '실제 NULL'과 '소계 NULL'을 구분할 수 있다."
+    },
+    {
+      "id": 33,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 [DLV] 테이블에 SQL을 실행했을 때 PREV_SUM 값을 출력 순서대로 나열한 것으로 옳은 것은?\n\n[DLV]\n\n| DRIVER | SEQ | QTY |\n|---|---|---|\n| K | 1 | 10 |\n| K | 2 | 30 |\n| K | 3 | 20 |\n| L | 1 | 40 |\n| L | 2 | 10 |",
+      "code": "SELECT DRIVER, SEQ,\n       SUM(QTY) OVER (PARTITION BY DRIVER\n                      ORDER BY SEQ\n                      ROWS BETWEEN UNBOUNDED PRECEDING\n                               AND 1 PRECEDING) AS PREV_SUM\n  FROM DLV\n ORDER BY DRIVER, SEQ;",
+      "choices": [
+        "NULL, 10, 40, NULL, 40",
+        "0, 10, 40, 0, 40",
+        "10, 40, 60, 40, 50",
+        "NULL, 10, 40, 60, 100"
+      ],
+      "answer": 1,
+      "explanation": "윈도우 범위는 파티션(DRIVER)의 처음부터 **현재 행 바로 앞 행까지**이므로 현재 행은 포함되지 않는다.\n\n- K1: 앞 행이 없어 윈도우가 비어 있으므로 SUM은 **NULL**(0이 아님)\n- K2: K1의 10 → 10\n- K3: 10 + 30 → 40\n- L1: 새 파티션의 첫 행 → NULL\n- L2: 40\n\n②는 빈 윈도우의 SUM을 0으로 본 오답, ③은 현재 행까지 포함한 누적합(`UNBOUNDED PRECEDING AND CURRENT ROW`), ④는 PARTITION BY를 무시한 결과다."
+    },
+    {
+      "id": 34,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 [STOCK] 테이블에 SQL을 실행했을 때 RNK 값을 ITEM 순서(A~E)대로 나열한 것으로 옳은 것은? (Oracle)\n\n[STOCK]\n\n| ITEM | QTY |\n|---|---|\n| A | 50 |\n| B | NULL |\n| C | 70 |\n| D | 50 |\n| E | 30 |",
+      "code": "SELECT ITEM,\n       RANK() OVER (ORDER BY QTY DESC) AS RNK\n  FROM STOCK\n ORDER BY ITEM;",
+      "choices": [
+        "2, NULL, 1, 2, 4",
+        "3, 1, 2, 3, 5",
+        "2, 5, 1, 2, 4",
+        "3, 1, 2, 3, 4"
+      ],
+      "answer": 2,
+      "explanation": "Oracle은 NULL을 **가장 큰 값**으로 취급하므로 내림차순(DESC)에서는 NULL이 맨 앞에 온다(기본값 NULLS FIRST).\n\n정렬 순서: B(NULL) → C(70) → A(50), D(50) → E(30)\n\nRANK는 동순위 다음 순위를 건너뛰므로 B 1, C 2, A·D 3, E **5**이다. A~E 순서로 3, 1, 2, 3, 5이다.\n\n③은 NULL을 마지막으로 보낸 SQL Server식 정렬 결과이고, ④는 DENSE_RANK처럼 순위를 건너뛰지 않은 오답이다. 윈도우 함수도 NULL 행에 순위를 부여한다."
+    },
+    {
+      "id": 35,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 [VISIT] 테이블은 트럭별 방문일(DAY, 숫자형)을 기록한 것이다. SQL의 실행 결과로 옳은 것은? ((TRUCK, DAY)를 출력 순서대로 표기)\n\n[VISIT]\n\n| TRUCK | DAY |\n|---|---|\n| T1 | 1 |\n| T1 | 3 |\n| T1 | 8 |\n| T2 | 2 |\n| T2 | 4 |\n| T2 | 5 |",
+      "code": "SELECT TRUCK, DAY\n  FROM (SELECT TRUCK, DAY,\n               LEAD(DAY) OVER (PARTITION BY TRUCK\n                               ORDER BY DAY) - DAY AS GAP\n          FROM VISIT)\n WHERE GAP >= 2\n ORDER BY TRUCK, DAY;",
+      "choices": [
+        "(T1, 3), (T2, 2)",
+        "(T1, 1), (T1, 3), (T1, 8), (T2, 2)",
+        "(T1, 3), (T1, 8), (T2, 4)",
+        "(T1, 1), (T1, 3), (T2, 2)"
+      ],
+      "answer": 4,
+      "explanation": "LEAD(DAY)는 같은 트럭 안에서 **다음 행**의 DAY를 가져온다.\n\n| TRUCK | DAY | 다음 DAY | GAP |\n|---|---|---|---|\n| T1 | 1 | 3 | 2 |\n| T1 | 3 | 8 | 5 |\n| T1 | 8 | NULL | NULL |\n| T2 | 2 | 4 | 2 |\n| T2 | 4 | 5 | 1 |\n| T2 | 5 | NULL | NULL |\n\nGAP ≥ 2인 행은 (T1, 1), (T1, 3), (T2, 2)이다. 각 파티션의 마지막 행은 다음 행이 없어 GAP이 NULL이므로 제외된다. ③은 LAG(이전 행)으로 계산한 결과이고, ②는 NULL을 조건에 맞는 것으로 본 오답이다. 윈도우 함수 결과로 필터링하려면 인라인 뷰로 감싼 뒤 바깥 WHERE에서 조건을 걸어야 한다."
+    },
+    {
+      "id": 36,
+      "subject": 2,
+      "theory": "top-n",
+      "question": "다음 [STOCK] 테이블에 SQL을 실행한 결과로 옳은 것은? (Oracle, (RN, ITEM)을 출력 순서대로 표기)\n\n[STOCK]\n\n| ITEM | QTY |\n|---|---|\n| A | 40 |\n| B | 90 |\n| C | 10 |\n| D | 70 |\n| E | 60 |",
+      "code": "SELECT ROWNUM AS RN, ITEM\n  FROM (SELECT ITEM, QTY\n          FROM STOCK\n         ORDER BY QTY DESC)\n WHERE ROWNUM <= 3\n ORDER BY QTY;",
+      "choices": [
+        "(1, E), (2, D), (3, B)",
+        "(1, C), (2, A), (3, E)",
+        "(3, E), (2, D), (1, B)",
+        "(1, B), (2, D), (3, E)"
+      ],
+      "answer": 3,
+      "explanation": "ROWNUM은 인라인 뷰에서 **정렬된 순서대로 행이 넘어올 때** 부여된다. 인라인 뷰는 QTY 내림차순(B 90, D 70, E 60, A 40, C 10)이므로 B=1, D=2, E=3이 부여되고 `ROWNUM <= 3`으로 세 행이 선택된다.\n\n그다음 바깥 쿼리의 ORDER BY QTY(오름차순)가 적용되어 E(60), D(70), B(90) 순서로 출력되지만, 이미 부여된 ROWNUM 값은 바뀌지 않는다. 따라서 (3, E), (2, D), (1, B)이다.\n\n①은 ORDER BY 이후에 ROWNUM을 다시 매긴다고 본 오답이고, ②는 인라인 뷰의 정렬을 무시하고 오름차순 상위 3건을 고른 오답이다."
+    },
+    {
+      "id": 37,
+      "subject": 2,
+      "theory": "top-n",
+      "question": "다음 [DRIVER] 테이블에 SQL을 실행했을 때 결과 건수와 첫 번째로 출력되는 NAME으로 옳은 것은? (Oracle 12c 이상)\n\n[DRIVER]\n\n| NAME | SCORE |\n|---|---|\n| 가 | 88 |\n| 나 | NULL |\n| 다 | 95 |\n| 라 | 88 |\n| 마 | 70 |\n| 바 | 88 |",
+      "code": "SELECT NAME, SCORE\n  FROM DRIVER\n ORDER BY SCORE DESC\n FETCH FIRST 3 ROWS WITH TIES;",
+      "choices": [
+        "5건, 나",
+        "4건, 다",
+        "3건, 나",
+        "5건, 다"
+      ],
+      "answer": 1,
+      "explanation": "Oracle은 NULL을 가장 큰 값으로 보므로 `ORDER BY SCORE DESC`에서 NULL인 '나'가 **맨 앞**에 온다. 정렬 순서는 나(NULL), 다(95), 가·라·바(88), 마(70)이다.\n\n`FETCH FIRST 3 ROWS WITH TIES`는 3번째 행까지 가져오되, 3번째 행과 정렬 키가 같은 행을 **모두 함께** 가져온다. 3번째 행은 88점이므로 88점인 가·라·바가 모두 포함되어 나, 다, 가, 라, 바의 **5건**이다.\n\n②는 NULL을 맨 뒤로 보낸 경우(다, 가, 라, 바)이고, ③은 WITH TIES를 ONLY처럼 해석한 오답이다."
+    },
+    {
+      "id": 38,
+      "subject": 2,
+      "theory": "hierarchical-query",
+      "question": "물류센터의 보관 위치를 계층 구조로 관리하는 [LOCATION] 테이블에 다음 SQL을 실행했다. 결과 건수와 'A-01-1셀' 행의 LV 값으로 옳은 것은? (Oracle)\n\n[LOCATION]\n\n| LOC_ID | LOC_NM | PARENT_ID |\n|---|---|---|\n| C1 | 평택센터 | NULL |\n| Z1 | A구역 | C1 |\n| Z2 | B구역 | C1 |\n| R1 | A-01랙 | Z1 |\n| R2 | A-02랙 | Z1 |\n| S1 | A-01-1셀 | R1 |\n| S2 | A-01-2셀 | R1 |\n| R3 | B-01랙 | Z2 |",
+      "code": "SELECT LOC_NM, LEVEL AS LV\n  FROM LOCATION\n START WITH LOC_ID = 'Z1'\nCONNECT BY PRIOR LOC_ID = PARENT_ID;",
+      "choices": [
+        "5건, LV = 4",
+        "5건, LV = 3",
+        "8건, LV = 4",
+        "4건, LV = 2"
+      ],
+      "answer": 2,
+      "explanation": "START WITH 조건을 만족하는 Z1(A구역)이 루트가 되어 **LEVEL 1**부터 시작한다. LEVEL은 테이블 전체 트리의 깊이가 아니라 **START WITH로 시작한 행 기준의 깊이**다.\n\n- LEVEL 1: A구역\n- LEVEL 2: A-01랙, A-02랙\n- LEVEL 3: A-01-1셀, A-01-2셀\n\n평택센터, B구역, B-01랙은 Z1의 하위가 아니므로 전개되지 않는다. 결과는 **5건**이고 A-01-1셀의 LV는 **3**이다. ①은 평택센터를 LEVEL 1로 계산한 오답이다."
+    },
+    {
+      "id": 39,
+      "subject": 2,
+      "theory": "hierarchical-query",
+      "question": "다음 SQL의 결과에 **포함되는** 행은? (Oracle, LOC_NM | UP_NM | LV 순서로 표기)\n\n[LOCATION]\n\n| LOC_ID | LOC_NM | PARENT_ID |\n|---|---|---|\n| C1 | 평택센터 | NULL |\n| Z1 | A구역 | C1 |\n| Z2 | B구역 | C1 |\n| R1 | A-01랙 | Z1 |\n| R2 | A-02랙 | Z1 |\n| S1 | A-01-1셀 | R1 |\n| S2 | A-01-2셀 | R1 |\n| R3 | B-01랙 | Z2 |",
+      "code": "SELECT LOC_NM,\n       PRIOR LOC_NM AS UP_NM,\n       LEVEL        AS LV\n  FROM LOCATION\n WHERE LEVEL >= 3\n START WITH PARENT_ID IS NULL\nCONNECT BY PRIOR LOC_ID = PARENT_ID;",
+      "choices": [
+        "A-01랙 | 평택센터 | 3",
+        "A구역 | 평택센터 | 2",
+        "A-01-1셀 | A구역 | 4",
+        "B-01랙 | B구역 | 3"
+      ],
+      "answer": 4,
+      "explanation": "SELECT 절의 `PRIOR LOC_NM`은 계층 전개에서 **직전(부모) 행**의 LOC_NM을 돌려준다. 루트 행은 부모가 없으므로 NULL이다.\n\n평택센터에서 순방향으로 전개하면 평택센터 1, 구역 2, 랙 3, 셀 4 레벨이 된다. WHERE 절은 계층 전개가 끝난 뒤 적용되어 LEVEL 3 이상만 남긴다.\n\n| LOC_NM | UP_NM | LV |\n|---|---|---|\n| A-01랙 | A구역 | 3 |\n| A-01-1셀 | A-01랙 | 4 |\n| A-01-2셀 | A-01랙 | 4 |\n| A-02랙 | A구역 | 3 |\n| B-01랙 | B구역 | 3 |\n\n따라서 ④가 포함된다. ①·③은 부모를 잘못 짝지었고, ②는 LEVEL 2라 WHERE 조건에서 제외된다."
+    },
+    {
+      "id": 40,
+      "subject": 2,
+      "theory": "pivot-unpivot",
+      "question": "다음 [OUTBOUND] 테이블에 SQL을 실행한 결과로 옳은 것은? (Oracle, (WH, CJ, HJ)를 출력 순서대로 표기)\n\n[OUTBOUND]\n\n| OB_NO | WH | CARRIER |\n|---|---|---|\n| 1 | W1 | CJ |\n| 2 | W1 | CJ |\n| 3 | W1 | 한진 |\n| 4 | W2 | 한진 |\n| 5 | W3 | 롯데 |",
+      "code": "SELECT *\n  FROM (SELECT WH, CARRIER FROM OUTBOUND)\n PIVOT (COUNT(*) FOR CARRIER IN ('CJ' AS CJ, '한진' AS HJ))\n ORDER BY WH;",
+      "choices": [
+        "(W1, 2, 1), (W2, NULL, 1)",
+        "(W1, 2, 1), (W2, 0, 1)",
+        "(W1, 2, 1), (W2, 0, 1), (W3, 0, 0)",
+        "(W1, 2, 1), (W2, NULL, 1), (W3, NULL, NULL)"
+      ],
+      "answer": 3,
+      "explanation": "인라인 뷰가 WH와 CARRIER만 넘기므로, PIVOT의 FOR 컬럼(CARRIER)과 집계 대상을 뺀 나머지 컬럼인 **WH로 암시적 GROUP BY**가 된다. W3도 원본에 행이 있으므로 결과 행이 만들어진다. '롯데'는 IN 목록에 없어 새 열로 만들어지지 않을 뿐이다.\n\n집계 함수가 COUNT이므로 해당 값이 없는 칸은 NULL이 아니라 **0**이다.\n- W1: CJ 2, 한진 1\n- W2: CJ 0, 한진 1\n- W3: CJ 0, 한진 0\n\n①·②는 W3 행을 빠뜨렸고, ①·④는 SUM처럼 NULL이 된다고 본 오답이다(SUM이나 MAX였다면 빈 칸이 NULL이다). 인라인 뷰 없이 OB_NO까지 넘기면 OB_NO도 그룹 기준이 되어 결과가 5행으로 늘어나므로 주의한다."
+    },
+    {
+      "id": 41,
+      "subject": 2,
+      "theory": "regex",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle, A / B / C 순서)",
+      "code": "SELECT REGEXP_SUBSTR('WH-A12-R03-S7', '[A-Z][0-9]+', 1, 2) AS A,\n       REGEXP_COUNT('WH-A12-R03-S7', '[0-9]{2}')         AS B,\n       REGEXP_REPLACE('WH-A12-R03-S7', '[^0-9]', '')      AS C\n  FROM DUAL;",
+      "choices": [
+        "R03 / 2 / 12037",
+        "A12 / 2 / 12037",
+        "R03 / 3 / 12037",
+        "R03 / 2 / WHARS"
+      ],
+      "answer": 1,
+      "explanation": "- A: `[A-Z][0-9]+`는 대문자 1개 뒤에 숫자가 1개 이상 이어지는 패턴이다. 'W'와 'H'는 뒤에 숫자가 없어 매칭되지 않고 A12(1번째), R03(2번째), S7(3번째)이 매칭된다. 두 번째 매칭은 **R03**이다.\n- B: `[0-9]{2}`는 숫자 2개 연속이다. 매칭된 부분 다음부터 이어서 찾으므로 '12', '03'이 매칭되고 '7'은 한 자리라 매칭되지 않는다 → **2**\n- C: `[^0-9]`는 숫자가 아닌 문자다. 이를 빈 문자열로 바꾸면(대체 문자열 생략과 같음) 숫자만 남아 **'12037'**이다.\n\n②는 첫 번째 매칭을, ③은 한 자리 숫자까지 센 오답이며, ④는 C에서 반대로 숫자를 지운 결과다."
+    },
+    {
+      "id": 42,
+      "subject": 2,
+      "theory": "regex",
+      "question": "운송장번호 형식을 검증하기 위해 다음 SQL을 실행하였다. 결과 건수는? (Oracle)\n\n[WAYBILL]\n\n| WB_NO |\n|---|\n| CJ1234567890 |\n| cj1234567890 |\n| HJ12345678 |\n| LT123456789012 |\n| CJ12345A7890 |",
+      "code": "SELECT WB_NO\n  FROM WAYBILL\n WHERE REGEXP_LIKE(WB_NO, '^(CJ|LT)[0-9]{10,12}$');",
+      "choices": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "answer": 2,
+      "explanation": "패턴 `^(CJ|LT)[0-9]{10,12}$`는 문자열이 'CJ' 또는 'LT'로 **시작**하고, 이어서 숫자만 10~12개 나온 뒤 **끝나야** 한다.\n\n- CJ1234567890: CJ + 숫자 10개 → 일치\n- cj1234567890: 기본적으로 대소문자를 구분하므로 불일치(`'i'` 옵션이 있어야 일치)\n- HJ12345678: 접두어가 다름 → 불일치\n- LT123456789012: LT + 숫자 12개 → 일치\n- CJ12345A7890: 중간에 'A'가 있어 `[0-9]{10,12}$`를 만족하지 못함 → 불일치\n\n결과는 **2건**이다."
+    },
+    {
+      "id": 43,
+      "subject": 2,
+      "theory": "dml",
+      "question": "다음 [STOCK] 테이블에 아래 문장을 순서대로 실행한 후 `SELECT COUNT(*), SUM(QTY) FROM STOCK;`의 결과로 옳은 것은?\n\n[STOCK]\n\n| ITEM | WH | QTY |\n|---|---|---|\n| A | W1 | 10 |\n| A | W2 | 0 |\n| B | W1 | 5 |\n| C | W2 | 0 |\n| C | W3 | 8 |",
+      "code": "UPDATE STOCK\n   SET QTY = CASE WHEN QTY = 0 THEN NULL\n                  ELSE QTY - 2\n             END;\n\nDELETE FROM STOCK\n WHERE QTY < 5;",
+      "choices": [
+        "2, 14",
+        "5, 17",
+        "3, 14",
+        "4, 14"
+      ],
+      "answer": 4,
+      "explanation": "1. UPDATE: 수량이 0인 행은 NULL로, 나머지는 2를 뺀다. → A-W1 8, A-W2 NULL, B-W1 3, C-W2 NULL, C-W3 6\n2. DELETE: `QTY < 5`가 참인 행만 삭제한다. B-W1(3)이 삭제된다. NULL 행은 비교 결과가 UNKNOWN이므로 **삭제되지 않는다**.\n\n남은 행은 A-W1 8, A-W2 NULL, C-W2 NULL, C-W3 6의 **4건**이고, SUM은 NULL을 무시하여 **14**이다. ①은 NULL 행도 삭제된다고 본 오답이다."
+    },
+    {
+      "id": 44,
+      "subject": 2,
+      "theory": "dml",
+      "question": "비어 있는 DAILY_SUM 테이블에 아래 INSERT 문을 실행한 후 `SELECT COUNT(*), SUM(TOT_QTY), SUM(CNT) FROM DAILY_SUM;`의 결과로 옳은 것은?\n\n[OUTBOUND]\n\n| OB_DT | WH | QTY |\n|---|---|---|\n| 0301 | W1 | 10 |\n| 0301 | W1 | 5 |\n| 0301 | W2 | 7 |\n| 0302 | W1 | 3 |\n| 0302 | W2 | NULL |",
+      "code": "INSERT INTO DAILY_SUM (OB_DT, WH, TOT_QTY, CNT)\nSELECT OB_DT, WH, SUM(QTY), COUNT(QTY)\n  FROM OUTBOUND\n GROUP BY OB_DT, WH;",
+      "choices": [
+        "4, 25, 4",
+        "3, 25, 4",
+        "4, 25, 5",
+        "5, 25, 5"
+      ],
+      "answer": 1,
+      "explanation": "INSERT ... SELECT는 VALUES 절 없이 SELECT 결과 전체를 한 번에 입력한다. SELECT는 (OB_DT, WH)별로 그룹화하므로 4개 그룹이 입력된다.\n\n| OB_DT | WH | TOT_QTY | CNT |\n|---|---|---|---|\n| 0301 | W1 | 15 | 2 |\n| 0301 | W2 | 7 | 1 |\n| 0302 | W1 | 3 | 1 |\n| 0302 | W2 | NULL | 0 |\n\n0302-W2 그룹은 QTY가 NULL뿐이므로 SUM은 NULL, COUNT(QTY)는 0이지만 **행 자체는 입력된다**. 따라서 COUNT(*)는 4, SUM(TOT_QTY)는 15 + 7 + 3 = 25, SUM(CNT)는 4이다. ②는 NULL 그룹이 입력되지 않는다고 보았고, ③은 COUNT(QTY)가 NULL을 센다고 착각했다."
+    },
+    {
+      "id": 45,
+      "subject": 2,
+      "theory": "tcl",
+      "question": "STOCK 테이블은 `QTY NUMBER CHECK (QTY >= 0)`로 정의되어 있고, ('A', 10), ('B', 5) 두 행이 커밋되어 있다. Oracle에서 아래 문장을 순서대로 실행한 후 STOCK의 데이터로 옳은 것은? (오류가 발생한 문장은 무시하고 다음 문장이 실행된다고 가정한다.)",
+      "code": "UPDATE STOCK SET QTY = QTY - 3;\nUPDATE STOCK SET QTY = QTY - 3;\nSAVEPOINT SP1;\nUPDATE STOCK SET QTY = QTY - 2 WHERE ITEM = 'A';\nROLLBACK TO SP1;\nUPDATE STOCK SET QTY = QTY + 1 WHERE ITEM = 'B';\nCOMMIT;",
+      "choices": [
+        "A 4, B 3",
+        "A 10, B 6",
+        "A 7, B 3",
+        "A 5, B 3"
+      ],
+      "answer": 3,
+      "explanation": "1. 첫 UPDATE → A 7, B 2\n2. 두 번째 UPDATE → B가 −1이 되어 CHECK 제약을 위반한다. Oracle은 **문장 단위로 원자성**을 보장하므로 이 UPDATE 문장 전체가 취소된다. A도 7에서 4로 바뀌지 않고, 앞선 첫 UPDATE도 그대로 유지된다(트랜잭션 전체가 롤백되지 않는다). → A 7, B 2\n3. SAVEPOINT SP1 → A 5 → ROLLBACK TO SP1로 A 7 복구\n4. B + 1 → B 3, COMMIT\n\n최종 결과는 **A 7, B 3**이다. ①은 실패한 문장이 A에는 반영된다고 본 오답이고, ②는 오류로 트랜잭션 전체가 롤백된다고 본 오답이다."
+    },
+    {
+      "id": 46,
+      "subject": 2,
+      "theory": "tcl",
+      "question": "재고 조회 트랜잭션 TX1과 출고 트랜잭션 TX2가 다음 순서로 실행되었다.\n\n1. TX1: 품목 A의 재고를 조회 → 10\n2. TX2: 품목 A의 재고를 4로 UPDATE하고 COMMIT\n3. TX1: 같은 조건으로 품목 A의 재고를 다시 조회 → 4\n\nTX1에서 나타난 현상과, 이 현상을 방지할 수 있는 **가장 낮은** 격리 수준(ANSI 표준)의 짝으로 옳은 것은?",
+      "choices": [
+        "Dirty Read – READ COMMITTED",
+        "Non-Repeatable Read – REPEATABLE READ",
+        "Phantom Read – SERIALIZABLE",
+        "Non-Repeatable Read – READ COMMITTED"
+      ],
+      "answer": 2,
+      "explanation": "한 트랜잭션 안에서 **같은 행**을 두 번 읽는 사이 다른 트랜잭션이 그 행을 **수정하고 커밋**하여 값이 달라졌으므로 **Non-Repeatable Read**이다. 이 현상은 READ COMMITTED에서는 발생하고 **REPEATABLE READ** 이상에서 방지된다.\n\n① Dirty Read는 커밋되지 않은 값을 읽는 현상인데, 여기서는 TX2가 커밋한 뒤 읽었다. ③ Phantom Read는 새 행이 **삽입**되어 조회 결과의 행 수가 달라지는 현상이다. ④ READ COMMITTED는 Non-Repeatable Read를 막지 못한다."
+    },
+    {
+      "id": 47,
+      "subject": 2,
+      "theory": "ddl",
+      "question": "VIEW, INDEX, SEQUENCE에 대한 설명으로 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "뷰는 데이터를 직접 저장하지 않는 가상 테이블이며, 기반 테이블의 데이터가 바뀌면 뷰 조회 결과에도 반영된다.",
+        "SQL Server에서는 순차 번호를 만들 때 시퀀스 대신 IDENTITY 속성을 주로 사용한다.",
+        "인덱스는 조회 속도를 높일 수 있지만, INSERT·UPDATE·DELETE 시 인덱스도 함께 갱신되어 DML 부하가 늘어난다.",
+        "Oracle에서 뷰의 SELECT 정의를 바꿀 때는 ALTER VIEW 문으로 정의 내용을 직접 수정한다."
+      ],
+      "answer": 4,
+      "explanation": "Oracle에서는 ALTER VIEW로 뷰의 SELECT 정의를 바꿀 수 없으므로 **CREATE OR REPLACE VIEW**로 다시 생성한다. 따라서 ④가 적절하지 않다. ① 뷰는 저장된 SELECT 문일 뿐이라 조회할 때마다 기반 테이블을 읽으므로 변경 사항이 반영된다. ② SQL Server는 IDENTITY 속성을 주로 쓴다. ③ 인덱스는 조회 성능과 DML 부하 사이의 트레이드오프가 있다."
+    },
+    {
+      "id": 48,
+      "subject": 2,
+      "theory": "ddl",
+      "question": "Oracle에서 STOCK 테이블이 아래 첫 번째 문장으로 정의되어 있고 데이터도 들어 있다. 이어서 나머지 문장을 순서대로 실행했을 때, 마지막 SELECT의 결과로 옳은 것은? (오류가 발생한 문장은 무시하고 진행한다.)",
+      "code": "CREATE TABLE STOCK (\n  ITEM_CD  VARCHAR2(10) PRIMARY KEY,\n  WH_CD    VARCHAR2(5)  NOT NULL,\n  QTY      NUMBER       DEFAULT 0 CHECK (QTY >= 0)\n);\n\nCREATE TABLE STOCK_TMP AS SELECT * FROM STOCK WHERE 1 = 2;\n\nINSERT INTO STOCK_TMP VALUES ('A', 'W1', -5);               -- ㄱ\nINSERT INTO STOCK_TMP VALUES ('A', 'W2', 3);                -- ㄴ\nINSERT INTO STOCK_TMP (ITEM_CD, WH_CD) VALUES ('B', 'W1');  -- ㄷ\nINSERT INTO STOCK_TMP (ITEM_CD, QTY) VALUES ('C', 1);       -- ㄹ\n\nSELECT COUNT(*), SUM(QTY), COUNT(QTY) FROM STOCK_TMP;",
+      "choices": [
+        "3, -2, 2",
+        "2, 3, 2",
+        "3, -2, 3",
+        "4, -1, 3"
+      ],
+      "answer": 1,
+      "explanation": "CTAS(`CREATE TABLE ... AS SELECT`)는 컬럼명·데이터 타입·데이터를 복사하지만, 제약조건은 **NOT NULL만** 복사한다. `WHERE 1 = 2`이므로 데이터 없이 구조만 복사된다.\n\n- ㄱ: CHECK가 복사되지 않으므로 −5도 입력된다 → 성공\n- ㄴ: PK가 복사되지 않으므로 ITEM_CD 'A' 중복도 입력된다 → 성공\n- ㄷ: DEFAULT도 복사되지 않으므로 QTY는 0이 아니라 **NULL** → 성공\n- ㄹ: WH_CD의 NOT NULL은 복사되므로 → **실패**\n\n남은 행은 3건, SUM(QTY) = −5 + 3 = **−2**, COUNT(QTY) = **2**(ㄷ 행의 NULL 제외)이다. ②는 PK·CHECK·DEFAULT까지 복사된다고 본 경우, ③은 DEFAULT만 복사된다고 본 경우, ④는 NOT NULL도 복사되지 않는다고 본 경우다."
+    },
+    {
+      "id": 49,
+      "subject": 2,
+      "theory": "dcl",
+      "question": "KIM 사용자는 CREATE SESSION, CREATE TABLE 시스템 권한만 가지고 있다. KIM이 아래 테이블을 만들려고 하자 권한 부족 오류가 발생했다. SCOTT가 KIM에게 부여해야 할 권한으로 가장 적절한 것은? (Oracle)",
+      "code": "-- KIM 실행\nCREATE TABLE kim.dock_slot (\n  slot_id  NUMBER PRIMARY KEY,\n  wh_cd    VARCHAR2(5) REFERENCES scott.warehouse (wh_cd)\n);",
+      "choices": [
+        "`GRANT SELECT ON scott.warehouse TO kim;`",
+        "`GRANT INDEX ON scott.warehouse TO kim;`",
+        "`GRANT REFERENCES ON scott.warehouse TO kim;`",
+        "`GRANT ALTER ON scott.warehouse TO kim;`"
+      ],
+      "answer": 3,
+      "explanation": "다른 사용자의 테이블을 참조하는 FK 제약조건을 만들려면 그 테이블에 대한 **REFERENCES** 오브젝트 권한이 필요하다. ① SELECT는 조회 권한일 뿐 FK 생성 권한이 아니다. ② INDEX는 해당 테이블에 인덱스를 만드는 권한이다. ④ ALTER는 해당 테이블의 구조를 변경하는 권한이다. 오브젝트 권한은 객체 소유자(SCOTT)나 GRANT OPTION 보유자가 부여한다."
+    },
+    {
+      "id": 50,
+      "subject": 2,
+      "theory": "dcl",
+      "question": "SCOTT가 W1 창고의 재고만 KIM에게 공개하려고 아래 문장을 실행하였다. 이후 KIM이 실행한 문장 중 **오류 없이 수행되는** 것은? (Oracle, KIM은 이 문장들 외에 SCOTT 객체에 대한 권한이 없다.)",
+      "code": "-- SCOTT 실행\nCREATE OR REPLACE VIEW v_stock_w1 AS\nSELECT item, qty\n  FROM stock\n WHERE wh = 'W1';\n\nGRANT SELECT ON v_stock_w1 TO kim;",
+      "choices": [
+        "`SELECT * FROM scott.stock;`",
+        "`SELECT item, qty FROM scott.v_stock_w1;`",
+        "`SELECT wh FROM scott.v_stock_w1;`",
+        "`UPDATE scott.v_stock_w1 SET qty = 0;`"
+      ],
+      "answer": 2,
+      "explanation": "뷰는 필요한 행·컬럼만 보이게 하는 **보안성** 수단으로 쓰인다. KIM은 뷰 V_STOCK_W1에 대한 SELECT 권한만 받았으므로 뷰에 정의된 컬럼(ITEM, QTY)을 조회하는 ②만 성공한다. ① 기반 테이블 STOCK에 대한 권한은 받지 않았으므로 오류다. ③ WH 컬럼은 뷰 정의에 없으므로 오류다. ④ 뷰에 대한 UPDATE 권한을 받지 않았으므로 오류다."
+    }
+  ]
+}

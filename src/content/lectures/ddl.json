@@ -1,0 +1,1388 @@
+{
+  "slug": "ddl",
+  "title": "DDL",
+  "tables": {
+    "넣을 행": {
+      "columns": [
+        "ID",
+        "EMAIL"
+      ],
+      "rows": [
+        [
+          "1",
+          "a@x"
+        ],
+        [
+          "2",
+          "NULL"
+        ],
+        [
+          "3",
+          "NULL"
+        ],
+        [
+          "1",
+          "b@x"
+        ],
+        [
+          "NULL",
+          "c@x"
+        ]
+      ]
+    },
+    "DEPT": {
+      "columns": [
+        "DEPTNO",
+        "DNAME"
+      ],
+      "rows": [
+        [
+          "10",
+          "영업"
+        ],
+        [
+          "20",
+          "개발"
+        ]
+      ]
+    },
+    "EMP": {
+      "columns": [
+        "ENAME",
+        "DEPTNO"
+      ],
+      "rows": [
+        [
+          "김",
+          "10"
+        ],
+        [
+          "이",
+          "10"
+        ],
+        [
+          "박",
+          "10"
+        ],
+        [
+          "최",
+          "20"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "DDL",
+      "subtitle": "테이블의 뼈대를 만들고 바꾸기",
+      "icon": "building",
+      "steps": [
+        {
+          "say": "DDL 강의를 시작할게요."
+        },
+        {
+          "say": "테이블 같은 객체의 구조를 다루는 명령이에요."
+        },
+        {
+          "say": "오라클에선 실행 즉시 자동 커밋돼요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "cards",
+      "section": "데이터 타입",
+      "title": "주요 데이터 타입",
+      "cols": 2,
+      "items": [
+        {
+          "title": "CHAR",
+          "desc": "고정 길이 문자",
+          "icon": "ruler"
+        },
+        {
+          "title": "VARCHAR2",
+          "desc": "가변 길이 문자",
+          "icon": "file"
+        },
+        {
+          "title": "NUMBER",
+          "desc": "전체 자릿수, 소수",
+          "icon": "tag"
+        },
+        {
+          "title": "DATE",
+          "desc": "날짜와 초까지",
+          "icon": "checklist"
+        }
+      ],
+      "steps": [
+        {
+          "say": "자주 쓰는 데이터 타입이에요."
+        },
+        {
+          "say": "CHAR는 고정 길이 문자예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "VARCHAR2는 가변 길이 문자예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "SQL Server에선 VARCHAR라고 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "NUMBER는 전체 자릿수와 소수 자릿수를 정해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "NUMBER 7, 2는 정수 다섯 자리, 소수 두 자리예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "오라클 DATE는 초 단위 시각까지 담아요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "compare",
+      "section": "데이터 타입",
+      "title": "CHAR와 VARCHAR",
+      "left": {
+        "title": "CHAR",
+        "icon": "ruler",
+        "items": [
+          "남는 칸은 공백",
+          "공백 무시 비교",
+          "성별, 코드"
+        ]
+      },
+      "right": {
+        "title": "VARCHAR",
+        "icon": "file",
+        "items": [
+          "입력한 만큼만",
+          "공백까지 비교",
+          "이름, 주소"
+        ]
+      },
+      "steps": [
+        {
+          "say": "CHAR와 VARCHAR를 비교해 볼게요."
+        },
+        {
+          "say": "CHAR는 남는 칸을 공백으로 채워요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "CHAR 10에 ABC를 넣어도 길이는 10이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "VARCHAR는 입력한 만큼만 저장해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "비교 방식도 달라요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "CHAR는 뒤 공백을 맞춰서 같다고 봐요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "VARCHAR는 공백도 문자라서 다르다고 봐요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "quiz",
+      "section": "데이터 타입",
+      "question": "CHAR 비교에서 'AB'와 'AB  '는?",
+      "choices": [
+        "같다",
+        "다르다",
+        "오류가 난다",
+        "NULL이 된다"
+      ],
+      "answer": 1,
+      "explanation": "CHAR는 공백을 채워 맞춘 뒤 비교해요. 그래서 같아요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. CHAR로 비교하면 AB와 AB 공백 두 칸은 같을까요?"
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "cards",
+      "section": "명명 규칙",
+      "title": "이름 짓는 규칙",
+      "cols": 2,
+      "items": [
+        {
+          "title": "문자로 시작",
+          "desc": "숫자 시작 불가",
+          "icon": "tag"
+        },
+        {
+          "title": "허용 문자",
+          "desc": "문자 숫자 _ $ #",
+          "icon": "check"
+        },
+        {
+          "title": "예약어 불가",
+          "desc": "SELECT 같은 것",
+          "icon": "lock",
+          "tone": "bad"
+        },
+        {
+          "title": "중복 불가",
+          "desc": "스키마, 테이블 안",
+          "icon": "copy",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "테이블과 컬럼 이름에는 규칙이 있어요."
+        },
+        {
+          "say": "첫째, 문자로 시작해야 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 문자, 숫자, 밑줄, 달러, 샵만 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 예약어는 쓸 수 없어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 같은 이름은 중복될 수 없어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "길이 제한도 있어요. 오라클은 전통적으로 30바이트예요.",
+          "focus": [
+            0
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "compare",
+      "section": "명명 규칙",
+      "title": "되는 이름, 안 되는 이름",
+      "left": {
+        "title": "불가",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "10_emp",
+          "emp-name",
+          "SELECT"
+        ]
+      },
+      "right": {
+        "title": "가능",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "emp_10",
+          "emp$",
+          "emp#"
+        ]
+      },
+      "steps": [
+        {
+          "say": "시험에 나오는 이름을 볼게요."
+        },
+        {
+          "say": "숫자로 시작하면 안 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "하이픈도 안 되고, 예약어도 안 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "밑줄, 달러, 샵은 괜찮아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "큰따옴표로 감싸면 예외 규칙을 따라요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "cards",
+      "section": "제약조건",
+      "title": "제약조건 5가지",
+      "cols": 3,
+      "items": [
+        {
+          "title": "PK",
+          "desc": "유일 + NOT NULL",
+          "icon": "target"
+        },
+        {
+          "title": "UNIQUE",
+          "desc": "중복 불가, NULL 허용",
+          "icon": "copy"
+        },
+        {
+          "title": "NOT NULL",
+          "desc": "컬럼 레벨만",
+          "icon": "lock"
+        },
+        {
+          "title": "CHECK",
+          "desc": "값의 범위 제한",
+          "icon": "filter"
+        },
+        {
+          "title": "FK",
+          "desc": "부모 키 참조",
+          "icon": "link"
+        }
+      ],
+      "steps": [
+        {
+          "say": "제약조건은 다섯 가지예요."
+        },
+        {
+          "say": "PK는 행을 유일하게 식별해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "UNIQUE에 NOT NULL을 더한 거예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "테이블당 하나고, 인덱스가 자동으로 생겨요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "UNIQUE는 중복만 막아요. NULL은 허용해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "NOT NULL은 컬럼 레벨로만 정의해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "CHECK는 값의 범위를 제한해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "FK는 다른 테이블의 키를 참조해요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "FK도 NULL을 허용하고, 여러 개 둘 수 있어요.",
+          "focus": [
+            4
+          ]
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "id": "s08",
+      "section": "제약조건",
+      "type": "data",
+      "title": "PK와 UNIQUE에 넣어 보기",
+      "tables": [
+        "넣을 행"
+      ],
+      "steps": [
+        {
+          "say": "ID는 PK, EMAIL은 UNIQUE라고 해 볼게요.",
+          "t": {
+            "넣을 행": {
+              "cols": [
+                "ID",
+                "EMAIL"
+              ]
+            }
+          }
+        },
+        {
+          "say": "네 번째 행은 ID 1이 중복이라 거부돼요.",
+          "t": {
+            "넣을 행": {
+              "cells": [
+                [
+                  0,
+                  "ID"
+                ],
+                [
+                  3,
+                  "ID"
+                ]
+              ],
+              "notes": [
+                [
+                  3,
+                  "ID",
+                  "중복!"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "다섯 번째 행은 ID가 NULL이라 거부돼요.",
+          "t": {
+            "넣을 행": {
+              "cells": [
+                [
+                  4,
+                  "ID"
+                ]
+              ],
+              "notes": [
+                [
+                  4,
+                  "ID",
+                  "NULL!"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "PK는 중복도 NULL도 안 되니까요.",
+          "t": {
+            "넣을 행": {
+              "filter": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "UNIQUE에 NULL은 몇 건 들어갈까요?",
+          "t": {
+            "넣을 행": {
+              "cells": [
+                [
+                  1,
+                  "EMAIL"
+                ],
+                [
+                  2,
+                  "EMAIL"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "오라클은 여러 건, SQL Server는 한 건이에요.",
+          "t": {
+            "넣을 행": {
+              "cells": [
+                [
+                  1,
+                  "EMAIL"
+                ],
+                [
+                  2,
+                  "EMAIL"
+                ]
+              ],
+              "notes": [
+                [
+                  1,
+                  "EMAIL",
+                  "오라클 OK"
+                ],
+                [
+                  2,
+                  "EMAIL",
+                  "SQL Server 거부"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "복합 PK는 테이블 레벨로 정의해요."
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "제약조건",
+      "question": "PRIMARY KEY에 대한 설명으로 **틀린** 것은?",
+      "choices": [
+        "테이블당 하나다",
+        "중복을 막는다",
+        "NULL을 허용한다",
+        "인덱스가 생긴다"
+      ],
+      "answer": 3,
+      "explanation": "PK는 UNIQUE에 NOT NULL이에요. NULL은 안 돼요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. PK 설명으로 틀린 것은?"
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "flow",
+      "section": "FK 참조 동작",
+      "title": "부모와 자식",
+      "direction": "right",
+      "edges": [
+        "자식이 부모를 참조"
+      ],
+      "nodes": [
+        {
+          "title": "DEPT",
+          "desc": "부모 · deptno PK",
+          "icon": "building"
+        },
+        {
+          "title": "EMP",
+          "desc": "자식 · deptno FK",
+          "icon": "users"
+        }
+      ],
+      "steps": [
+        {
+          "say": "부서가 부모, 사원이 자식이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "사원의 부서번호가 부서를 참조해요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "그럼 부모 행을 지우면 어떻게 될까요?",
+          "focus": [
+            0,
+            1
+          ]
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "id": "s11",
+      "section": "FK 참조 동작",
+      "type": "data",
+      "title": "10번 부서를 지우면",
+      "tables": [
+        "DEPT",
+        "EMP"
+      ],
+      "steps": [
+        {
+          "say": "10번 부서에 사원이 세 명 있어요.",
+          "t": {
+            "DEPT": {
+              "rows": [
+                0
+              ],
+              "tint": [
+                [
+                  0
+                ]
+              ]
+            },
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2
+              ],
+              "tint": [
+                [
+                  0,
+                  1,
+                  2
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "CASCADE면 사원 셋도 함께 지워져요.",
+          "t": {
+            "DEPT": {
+              "filter": [
+                1
+              ]
+            },
+            "EMP": {
+              "filter": [
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "SET NULL이면 사원은 남고 부서번호만 비워요.",
+          "t": {
+            "EMP": {
+              "filter": null,
+              "set": [
+                [
+                  0,
+                  "DEPTNO",
+                  "NULL"
+                ],
+                [
+                  1,
+                  "DEPTNO",
+                  "NULL"
+                ],
+                [
+                  2,
+                  "DEPTNO",
+                  "NULL"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "NO ACTION이면 삭제가 오류로 실패해요.",
+          "t": {
+            "DEPT": {
+              "filter": null,
+              "cells": [
+                [
+                  0,
+                  "DEPTNO"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "DEPTNO",
+                  "삭제 오류"
+                ]
+              ]
+            },
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2
+              ],
+              "set": [
+                [
+                  0,
+                  "DEPTNO",
+                  "10"
+                ],
+                [
+                  1,
+                  "DEPTNO",
+                  "10"
+                ],
+                [
+                  2,
+                  "DEPTNO",
+                  "10"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "아무것도 안 적으면 이게 기본이에요.",
+          "t": {
+            "DEPT": {
+              "notes": [
+                [
+                  0,
+                  "DEPTNO",
+                  "기본: 삭제 제한"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "section": "FK 참조 동작",
+      "title": "DBMS별 지원",
+      "left": {
+        "title": "Oracle",
+        "icon": "database",
+        "items": [
+          "ON DELETE만",
+          "CASCADE",
+          "SET NULL"
+        ]
+      },
+      "right": {
+        "title": "SQL Server",
+        "icon": "database",
+        "items": [
+          "삭제와 수정 모두",
+          "SET DEFAULT 포함",
+          "네 가지 모두"
+        ]
+      },
+      "steps": [
+        {
+          "say": "지원 범위가 달라요."
+        },
+        {
+          "say": "오라클은 ON DELETE만 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "CASCADE와 SET NULL 두 가지예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL Server는 삭제와 수정 모두 지원해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "SET DEFAULT까지 네 가지 다 돼요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "callout",
+      "section": "FK 참조 동작",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "FK가 여러 단계로 이어지면 **연쇄 삭제**를 끝까지 따라가 행 수를 센다. 부모 없는 자식 INSERT는 **오류**.",
+      "steps": [
+        {
+          "say": "FK가 여러 단계로 이어질 수 있어요."
+        },
+        {
+          "say": "그럼 연쇄 삭제를 끝까지 따라가 세요."
+        },
+        {
+          "say": "부모 키가 없는 자식 입력은 기본적으로 오류예요."
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "flow",
+      "section": "CTAS",
+      "title": "CTAS로 복사하기",
+      "direction": "right",
+      "edges": [
+        "CREATE TABLE AS SELECT"
+      ],
+      "nodes": [
+        {
+          "title": "원본 테이블",
+          "desc": "구조 + 데이터",
+          "icon": "table"
+        },
+        {
+          "title": "새 테이블",
+          "desc": "컬럼, 타입, 데이터",
+          "icon": "copy"
+        }
+      ],
+      "steps": [
+        {
+          "say": "CTAS는 셀렉트 결과로 테이블을 만들어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "컬럼, 타입, 데이터가 복사돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "항상 거짓인 조건을 주면 구조만 복사돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "1과 2가 같다, 이런 조건이죠.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "SQL Server는 SELECT INTO를 써요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "compare",
+      "section": "CTAS",
+      "title": "제약조건은?",
+      "left": {
+        "title": "따라옴",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "NOT NULL"
+        ]
+      },
+      "right": {
+        "title": "안 따라옴",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "PK, UNIQUE",
+          "CHECK, FK",
+          "DEFAULT, 인덱스"
+        ]
+      },
+      "steps": [
+        {
+          "say": "제약조건은 어떻게 될까요?"
+        },
+        {
+          "say": "NOT NULL만 따라와요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "나머지는 복사되지 않아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "PK가 필요하면 ALTER로 다시 추가해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "quiz",
+      "section": "CTAS",
+      "question": "CTAS로 복사할 때 함께 복사되는 제약조건은?",
+      "choices": [
+        "PRIMARY KEY",
+        "FOREIGN KEY",
+        "CHECK",
+        "NOT NULL"
+      ],
+      "answer": 4,
+      "explanation": "NOT NULL만 복사돼요. 나머지는 다시 추가해야 해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. CTAS에서 따라오는 제약조건은?"
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "cards",
+      "section": "ALTER TABLE",
+      "title": "ALTER TABLE",
+      "cols": 3,
+      "items": [
+        {
+          "title": "ADD",
+          "desc": "컬럼 추가, 맨 뒤",
+          "icon": "file"
+        },
+        {
+          "title": "MODIFY",
+          "desc": "타입, 크기 변경",
+          "icon": "ruler"
+        },
+        {
+          "title": "DROP",
+          "desc": "컬럼 삭제",
+          "icon": "warning"
+        },
+        {
+          "title": "RENAME",
+          "desc": "이름 변경",
+          "icon": "tag"
+        },
+        {
+          "title": "제약조건",
+          "desc": "추가와 삭제",
+          "icon": "lock"
+        }
+      ],
+      "steps": [
+        {
+          "say": "ALTER TABLE로 구조를 바꿔요."
+        },
+        {
+          "say": "ADD는 컬럼을 추가해요. 항상 맨 뒤에 붙어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "MODIFY는 타입, 크기, 기본값을 바꿔요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "DROP COLUMN은 컬럼을 지워요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "RENAME으로 이름을 바꿔요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "제약조건도 추가하고 지울 수 있어요.",
+          "focus": [
+            4
+          ]
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "cards",
+      "section": "ALTER TABLE",
+      "title": "MODIFY의 제약",
+      "cols": 2,
+      "items": [
+        {
+          "title": "크기 축소",
+          "desc": "기존 값보다 작게 불가",
+          "icon": "ruler",
+          "tone": "bad"
+        },
+        {
+          "title": "타입 변경",
+          "desc": "비었거나 NULL만",
+          "icon": "shapes",
+          "tone": "warn"
+        },
+        {
+          "title": "NOT NULL",
+          "desc": "NULL 있으면 불가",
+          "icon": "lock",
+          "tone": "bad"
+        },
+        {
+          "title": "DEFAULT",
+          "desc": "이후 행부터 적용",
+          "icon": "idea"
+        }
+      ],
+      "steps": [
+        {
+          "say": "데이터가 있으면 마음대로 못 바꿔요."
+        },
+        {
+          "say": "기존 값보다 작게 줄일 수 없어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "타입은 비어 있거나 NULL만 있을 때 바꿔요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "NULL이 있으면 NOT NULL로 못 바꿔요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "기본값 변경은 이후 입력부터 적용돼요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "compare",
+      "section": "ALTER TABLE",
+      "title": "문법 차이",
+      "left": {
+        "title": "Oracle",
+        "icon": "database",
+        "items": [
+          "MODIFY",
+          "RENAME COLUMN",
+          "여러 컬럼 한 번에"
+        ]
+      },
+      "right": {
+        "title": "SQL Server",
+        "icon": "database",
+        "items": [
+          "ALTER COLUMN",
+          "sp_rename",
+          "한 번에 한 컬럼"
+        ]
+      },
+      "steps": [
+        {
+          "say": "오라클과 SQL Server는 문법이 달라요."
+        },
+        {
+          "say": "컬럼 변경은 오라클이 MODIFY예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL Server는 ALTER COLUMN이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "이름 변경은 오라클이 RENAME이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL Server는 sp_rename을 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "SQL Server는 한 번에 한 컬럼만 바꿔요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "quiz",
+      "section": "ALTER TABLE",
+      "question": "SQL Server에서 컬럼 이름을 바꿀 때 쓰는 것은?",
+      "choices": [
+        "RENAME COLUMN",
+        "sp_rename",
+        "MODIFY",
+        "ALTER NAME"
+      ],
+      "answer": 2,
+      "explanation": "SQL Server는 sp_rename을 써요. RENAME COLUMN은 오라클이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. SQL Server에서 컬럼 이름을 바꾸려면?"
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "compare",
+      "section": "DROP과 TRUNCATE",
+      "title": "DROP과 TRUNCATE",
+      "left": {
+        "title": "DROP",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "구조와 데이터 삭제",
+          "부모는 CASCADE",
+          "CONSTRAINTS 필요"
+        ]
+      },
+      "right": {
+        "title": "TRUNCATE",
+        "icon": "table",
+        "items": [
+          "데이터만 전체 삭제",
+          "구조는 유지"
+        ]
+      },
+      "steps": [
+        {
+          "say": "DROP은 구조와 데이터를 모두 지워요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "자식이 참조하는 부모는 그냥 못 지워요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "CASCADE CONSTRAINTS를 붙여야 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "TRUNCATE는 데이터만 지우고 구조는 남겨요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "오라클에선 둘 다 롤백할 수 없어요.",
+          "focus": [
+            0,
+            1
+          ]
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "cards",
+      "section": "VIEW · INDEX · SEQUENCE",
+      "title": "다른 DDL 객체",
+      "cols": 3,
+      "items": [
+        {
+          "title": "VIEW",
+          "desc": "저장된 SELECT",
+          "icon": "eye"
+        },
+        {
+          "title": "INDEX",
+          "desc": "검색 속도 향상",
+          "icon": "search"
+        },
+        {
+          "title": "SEQUENCE",
+          "desc": "순차 번호 생성",
+          "icon": "workflow"
+        }
+      ],
+      "steps": [
+        {
+          "say": "테이블 말고도 만드는 객체가 있어요."
+        },
+        {
+          "say": "뷰는 저장된 셀렉트예요. 데이터가 없는 가상 테이블이죠.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "뷰는 ALTER로 정의를 못 바꿔요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그래서 OR REPLACE로 다시 만들어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "인덱스는 조회를 빠르게 해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "대신 DML 때 인덱스도 갱신해서 부하가 생겨요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "시퀀스는 순번을 만들어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "SQL Server는 주로 IDENTITY를 써요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "CHAR 공백 무시, VARCHAR 공백 비교",
+        "이름은 문자로 시작, 예약어 불가",
+        "PK는 UNIQUE + NOT NULL, 하나",
+        "오라클 FK: CASCADE, SET NULL",
+        "CTAS는 NOT NULL만 복사",
+        "SQL Server는 ALTER COLUMN"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "CHAR는 공백을 무시하고, VARCHAR는 따져요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "이름은 문자로 시작하고 예약어는 안 돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "PK는 UNIQUE에 NOT NULL, 테이블당 하나예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "오라클 FK는 CASCADE와 SET NULL만 돼요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "CTAS는 NOT NULL만 따라와요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "SQL Server 컬럼 변경은 ALTER COLUMN.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "이름 변경은 sp_rename이에요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s23"
+    }
+  ]
+}

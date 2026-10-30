@@ -1,0 +1,1830 @@
+{
+  "slug": "group-by-having",
+  "title": "GROUP BY · HAVING 절",
+  "tables": {
+    "사원 4명": {
+      "columns": [
+        "ENAME",
+        "DEPTNO",
+        "COMM"
+      ],
+      "rows": [
+        [
+          "A",
+          "10",
+          "NULL"
+        ],
+        [
+          "B",
+          "20",
+          "100"
+        ],
+        [
+          "C",
+          "20",
+          "NULL"
+        ],
+        [
+          "D",
+          "30",
+          "300"
+        ]
+      ]
+    },
+    "사원 3명": {
+      "columns": [
+        "ENAME",
+        "SAL",
+        "COMM"
+      ],
+      "rows": [
+        [
+          "A",
+          "100",
+          "NULL"
+        ],
+        [
+          "B",
+          "200",
+          "100"
+        ],
+        [
+          "C",
+          "300",
+          "NULL"
+        ]
+      ]
+    },
+    "EMP": {
+      "columns": [
+        "ENAME",
+        "DEPTNO",
+        "SAL"
+      ],
+      "rows": [
+        [
+          "A",
+          "10",
+          "100"
+        ],
+        [
+          "B",
+          "10",
+          "200"
+        ],
+        [
+          "C",
+          "20",
+          "100"
+        ],
+        [
+          "D",
+          "20",
+          "200"
+        ],
+        [
+          "E",
+          "20",
+          "300"
+        ],
+        [
+          "F",
+          "30",
+          "50"
+        ],
+        [
+          "G",
+          "30",
+          "50"
+        ],
+        [
+          "H",
+          "30",
+          "100"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "GROUP BY와 HAVING",
+      "subtitle": "행을 묶어 집계하고, 그룹에 조건 걸기",
+      "icon": "layers",
+      "steps": [
+        {
+          "say": "GROUP BY와 HAVING을 배워 볼게요."
+        },
+        {
+          "say": "핵심은 집계 함수가 NULL을 다루는 방식이에요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "cards",
+      "section": "집계 함수",
+      "title": "집계 함수 5총사",
+      "cols": 3,
+      "items": [
+        {
+          "title": "COUNT",
+          "desc": "행 수 세기",
+          "icon": "checklist"
+        },
+        {
+          "title": "SUM",
+          "desc": "합계",
+          "icon": "box"
+        },
+        {
+          "title": "AVG",
+          "desc": "평균",
+          "icon": "scale"
+        },
+        {
+          "title": "MAX·MIN",
+          "desc": "문자, 날짜도 OK",
+          "icon": "ruler"
+        },
+        {
+          "title": "STDDEV",
+          "desc": "표준편차, 분산",
+          "icon": "shapes"
+        }
+      ],
+      "steps": [
+        {
+          "say": "여러 행을 하나로 줄이는 게 집계 함수예요."
+        },
+        {
+          "say": "COUNT는 행 수를 세요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SUM은 합계, AVG는 평균이에요.",
+          "focus": [
+            1,
+            2
+          ]
+        },
+        {
+          "say": "MAX와 MIN은 최댓값과 최솟값이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "문자와 날짜에도 쓸 수 있어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "STDDEV와 VARIANCE는 표준편차와 분산이에요.",
+          "focus": [
+            4
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "compare",
+      "section": "집계 함수",
+      "title": "NULL은 어떻게 셀까?",
+      "left": {
+        "title": "COUNT(*)",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "행 자체를 셈",
+          "NULL 행도 1건"
+        ]
+      },
+      "right": {
+        "title": "나머지 전부",
+        "icon": "filter",
+        "items": [
+          "NULL은 건너뜀",
+          "없는 값처럼 계산"
+        ]
+      },
+      "steps": [
+        {
+          "say": "NULL 처리는 딱 하나만 기억하면 돼요."
+        },
+        {
+          "say": "COUNT 스타만 예외예요. 행 자체를 세요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "모든 컬럼이 NULL인 행도 1건이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "나머지는 NULL을 건너뛰고 계산해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "COUNT 컬럼, SUM, AVG, MAX 모두 그래요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "callout",
+      "section": "집계 함수",
+      "tone": "info",
+      "title": "DISTINCT 옵션",
+      "text": "**DISTINCT**를 붙이면 중복을 없앤 뒤 집계해요. 기본값은 **ALL**이에요.",
+      "steps": [
+        {
+          "say": "DISTINCT를 붙이면 중복을 지우고 집계해요."
+        },
+        {
+          "say": "아무것도 안 쓰면 기본값은 ALL이에요."
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "id": "s05",
+      "section": "집계 함수",
+      "type": "data",
+      "title": "사원 4명 집계해 보기",
+      "tables": [
+        "사원 4명"
+      ],
+      "steps": [
+        {
+          "say": "사원 4명 중 COMM이 있는 사람은 두 명이에요.",
+          "t": {
+            "사원 4명": {
+              "cols": [
+                "COMM"
+              ],
+              "rows": [
+                1,
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "COUNT 스타는 행 수라서 4건이에요.",
+          "t": {
+            "사원 4명": {
+              "rows": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "result": {
+                "title": "COUNT(*)",
+                "columns": [
+                  "COUNT(*)"
+                ],
+                "rows": [
+                  [
+                    "4"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "COUNT COMM은 NULL을 빼서 2건이에요.",
+          "t": {
+            "사원 4명": {
+              "cells": [
+                [
+                  1,
+                  "COMM"
+                ],
+                [
+                  3,
+                  "COMM"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "COMM",
+                  "빠짐"
+                ],
+                [
+                  2,
+                  "COMM",
+                  "빠짐"
+                ]
+              ],
+              "result": {
+                "title": "COUNT(COMM)",
+                "columns": [
+                  "COUNT(COMM)"
+                ],
+                "rows": [
+                  [
+                    "2"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "부서 번호를 중복 없이 세면 3개예요.",
+          "t": {
+            "사원 4명": {
+              "group": "DEPTNO",
+              "result": {
+                "title": "COUNT(DISTINCT DEPTNO)",
+                "columns": [
+                  "COUNT(DISTINCT DEPTNO)"
+                ],
+                "rows": [
+                  [
+                    "3"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "COMM 합계는 100 더하기 300, 400이에요.",
+          "t": {
+            "사원 4명": {
+              "group": null,
+              "cells": [
+                [
+                  1,
+                  "COMM"
+                ],
+                [
+                  3,
+                  "COMM"
+                ]
+              ],
+              "result": {
+                "title": "SUM(COMM)",
+                "columns": [
+                  "SUM(COMM)"
+                ],
+                "rows": [
+                  [
+                    "400"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s06",
+      "section": "집계 함수",
+      "type": "data",
+      "title": "평균의 분모를 보세요",
+      "tables": [
+        "사원 4명"
+      ],
+      "steps": [
+        {
+          "say": "COMM이 100, 300, 그리고 NULL 두 개예요.",
+          "t": {
+            "사원 4명": {
+              "cols": [
+                "COMM"
+              ]
+            }
+          }
+        },
+        {
+          "say": "평균은 분모가 몇 건인지가 핵심이에요."
+        },
+        {
+          "say": "AVG COMM은 NULL을 분모에서도 빼요.",
+          "t": {
+            "사원 4명": {
+              "rows": [
+                1,
+                3
+              ],
+              "notes": [
+                [
+                  0,
+                  "COMM",
+                  "분모 제외"
+                ],
+                [
+                  2,
+                  "COMM",
+                  "분모 제외"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 400 나누기 2, 200이에요.",
+          "t": {
+            "사원 4명": {
+              "rows": [
+                1,
+                3
+              ],
+              "result": {
+                "title": "AVG(COMM) = 400 ÷ 2",
+                "columns": [
+                  "AVG(COMM)"
+                ],
+                "rows": [
+                  [
+                    "200"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "NVL로 NULL을 0으로 바꾸면 4건이 다 들어가요.",
+          "t": {
+            "사원 4명": {
+              "add": [
+                "NVL(COMM,0)",
+                [
+                  "0",
+                  "100",
+                  "0",
+                  "300"
+                ]
+              ],
+              "cols": [
+                "NVL(COMM,0)"
+              ],
+              "result": null
+            }
+          }
+        },
+        {
+          "say": "400 나누기 4, 100이에요.",
+          "t": {
+            "사원 4명": {
+              "rows": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "result": {
+                "title": "AVG(NVL(COMM,0)) = 400 ÷ 4",
+                "columns": [
+                  "AVG(NVL(COMM,0))"
+                ],
+                "rows": [
+                  [
+                    "100"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "정리하면 두 결과는 달라요. 분모를 꼭 확인하세요.",
+          "t": {
+            "사원 4명": {
+              "cols": [
+                "COMM",
+                "NVL(COMM,0)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "집계 함수",
+      "question": "COMM이 200, 400, NULL, NULL일 때 **AVG(COMM)**은?",
+      "choices": [
+        "300",
+        "150",
+        "600",
+        "NULL"
+      ],
+      "answer": 1,
+      "explanation": "NULL을 뺀 2건으로 나눠요. 600 나누기 2, 300이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. COMM이 200, 400, NULL 둘이면 평균은?"
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "id": "s08",
+      "section": "집계 함수",
+      "type": "data",
+      "title": "행 단위 덧셈의 함정",
+      "tables": [
+        "사원 3명"
+      ],
+      "code": "SELECT SUM(SAL + COMM) FROM EMP;",
+      "steps": [
+        {
+          "say": "SUM 안에서 SAL 플러스 COMM을 하면요?",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "행마다 먼저 더하기를 해요.",
+          "t": {
+            "사원 3명": {
+              "add": [
+                "SAL+COMM",
+                [
+                  "NULL",
+                  "300",
+                  "NULL"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "B는 200 더하기 100, 300이에요.",
+          "t": {
+            "사원 3명": {
+              "cells": [
+                [
+                  1,
+                  "SAL"
+                ],
+                [
+                  1,
+                  "COMM"
+                ],
+                [
+                  1,
+                  "SAL+COMM"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "COMM이 NULL이면 더한 값도 NULL이에요.",
+          "t": {
+            "사원 3명": {
+              "cells": [
+                [
+                  0,
+                  "SAL+COMM"
+                ],
+                [
+                  2,
+                  "SAL+COMM"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그 행은 합계에서 빠져요.",
+          "t": {
+            "사원 3명": {
+              "filter": [
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "결국 B만 남아 합계는 300이에요.",
+          "t": {
+            "사원 3명": {
+              "rows": [
+                1
+              ],
+              "result": {
+                "title": "SUM(SAL+COMM)",
+                "columns": [
+                  "SUM(SAL+COMM)"
+                ],
+                "rows": [
+                  [
+                    "300"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s09",
+      "section": "집계 함수",
+      "type": "data",
+      "title": "더하는 순서가 다르면",
+      "tables": [
+        "사원 3명"
+      ],
+      "code": "SELECT SUM(SAL) + SUM(COMM) FROM EMP;",
+      "steps": [
+        {
+          "say": "같은 세 명이에요. 급여는 100, 200, 300이에요.",
+          "t": {
+            "사원 3명": {
+              "cols": [
+                "SAL"
+              ]
+            }
+          }
+        },
+        {
+          "say": "COMM은 B 한 명만 100이에요.",
+          "t": {
+            "사원 3명": {
+              "cells": [
+                [
+                  1,
+                  "COMM"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "이번엔 컬럼마다 따로 합쳐요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "SAL 합계는 600이에요. 세 행이 다 들어가요.",
+          "t": {
+            "사원 3명": {
+              "cols": [
+                "SAL"
+              ],
+              "result": {
+                "title": "따로 합치기",
+                "columns": [
+                  "SUM(SAL)",
+                  "SUM(COMM)",
+                  "더하면"
+                ],
+                "rows": [
+                  [
+                    "600",
+                    "",
+                    ""
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "COMM 합계는 NULL을 건너뛰어 100이에요.",
+          "t": {
+            "사원 3명": {
+              "cells": [
+                [
+                  1,
+                  "COMM"
+                ]
+              ],
+              "result": {
+                "title": "따로 합치기",
+                "columns": [
+                  "SUM(SAL)",
+                  "SUM(COMM)",
+                  "더하면"
+                ],
+                "rows": [
+                  [
+                    "600",
+                    "100",
+                    ""
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "더하면 700이 나와요.",
+          "t": {
+            "사원 3명": {
+              "result": {
+                "title": "따로 합치기",
+                "columns": [
+                  "SUM(SAL)",
+                  "SUM(COMM)",
+                  "더하면"
+                ],
+                "rows": [
+                  [
+                    "600",
+                    "100",
+                    "700"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "행마다 먼저 더한 결과와 달라요."
+        }
+      ]
+    },
+    {
+      "id": "s10",
+      "section": "GROUP BY 절",
+      "type": "data",
+      "title": "GROUP BY가 하는 일",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT DEPTNO, COUNT(*), SUM(SAL)\nFROM EMP\nGROUP BY DEPTNO;",
+      "steps": [
+        {
+          "say": "사원 8명이 한 줄씩 있어요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ]
+            }
+          }
+        },
+        {
+          "say": "GROUP BY는 같은 부서끼리 묶어요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "group": "DEPTNO"
+            }
+          }
+        },
+        {
+          "say": "그리고 묶음마다 한 행씩 돌려줘요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "EMP": {
+              "result": {
+                "title": "결과 3행",
+                "columns": [
+                  "DEPTNO",
+                  "COUNT(*)",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "2",
+                    "300"
+                  ],
+                  [
+                    "20",
+                    "3",
+                    "600"
+                  ],
+                  [
+                    "30",
+                    "3",
+                    "200"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s11",
+      "section": "GROUP BY 절",
+      "type": "data",
+      "title": "부서별 급여 합계",
+      "tables": [
+        "EMP"
+      ],
+      "steps": [
+        {
+          "say": "부서별 급여 합계를 하나씩 볼게요.",
+          "t": {
+            "EMP": {
+              "group": "DEPTNO"
+            }
+          }
+        },
+        {
+          "say": "10번 부서는 2명, 합계 300이에요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1
+              ],
+              "result": {
+                "title": "SUM(SAL)",
+                "columns": [
+                  "DEPTNO",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "300"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "20번 부서는 3명, 합계 600이에요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                2,
+                3,
+                4
+              ],
+              "result": {
+                "title": "SUM(SAL)",
+                "columns": [
+                  "DEPTNO",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "300"
+                  ],
+                  [
+                    "20",
+                    "600"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "30번 부서는 3명, 합계 200이에요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                5,
+                6,
+                7
+              ],
+              "result": {
+                "title": "SUM(SAL)",
+                "columns": [
+                  "DEPTNO",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "300"
+                  ],
+                  [
+                    "20",
+                    "600"
+                  ],
+                  [
+                    "30",
+                    "200"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "부서마다 결과는 딱 한 행이에요."
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "GROUP BY 절",
+      "title": "GROUP BY 규칙 6가지",
+      "cols": 3,
+      "items": [
+        {
+          "title": "SELECT절",
+          "desc": "그룹 컬럼, 집계만",
+          "icon": "lock"
+        },
+        {
+          "title": "생략 자유",
+          "desc": "SELECT에 안 써도 됨",
+          "icon": "check"
+        },
+        {
+          "title": "별칭 불가",
+          "desc": "SELECT보다 먼저",
+          "icon": "tag",
+          "tone": "warn"
+        },
+        {
+          "title": "NULL 그룹",
+          "desc": "NULL끼리 한 그룹",
+          "icon": "box"
+        },
+        {
+          "title": "HAVING",
+          "desc": "집계 조건은 여기",
+          "icon": "filter"
+        },
+        {
+          "title": "정렬 없음",
+          "desc": "ORDER BY 필요",
+          "icon": "warning",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "GROUP BY 규칙은 여섯 가지예요."
+        },
+        {
+          "say": "첫째, SELECT에는 그룹 컬럼과 집계 함수만 와요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 그룹 컬럼을 SELECT에 안 써도 돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, GROUP BY에는 별칭을 못 써요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "SELECT보다 먼저 실행되기 때문이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, NULL 값들은 한 그룹으로 묶여요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "다섯째, 집계 조건은 HAVING에 써요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "여섯째, 정렬은 보장되지 않아요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "순서가 필요하면 ORDER BY를 쓰세요.",
+          "focus": [
+            5
+          ]
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "id": "s13",
+      "section": "GROUP BY 절",
+      "type": "data",
+      "title": "누구 이름을 쓸까?",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT DEPTNO, ENAME, SUM(SAL)\nFROM EMP\nGROUP BY DEPTNO;",
+      "steps": [
+        {
+          "say": "SELECT에 ENAME을 넣으면 오류가 나요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "EMP": {
+              "group": "DEPTNO",
+              "cols": [
+                "ENAME"
+              ]
+            }
+          }
+        },
+        {
+          "say": "20번 그룹은 한 행인데 사원은 세 명이에요.",
+          "t": {
+            "EMP": {
+              "cells": [
+                [
+                  2,
+                  "ENAME"
+                ],
+                [
+                  3,
+                  "ENAME"
+                ],
+                [
+                  4,
+                  "ENAME"
+                ]
+              ],
+              "notes": [
+                [
+                  3,
+                  "ENAME",
+                  "누구?"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "누구 이름을 보여줄지 정할 수 없어요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                2,
+                3,
+                4
+              ],
+              "result": {
+                "title": "20번 결과 행",
+                "columns": [
+                  "DEPTNO",
+                  "ENAME",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "20",
+                    "C? D? E?",
+                    "600"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "반면 ENAME을 빼고 SUM만 쓰는 건 정상이에요.",
+          "t": {
+            "EMP": {
+              "result": null,
+              "cols": [
+                "SAL"
+              ]
+            }
+          }
+        },
+        {
+          "say": "시험에선 이 오류부터 먼저 찾으세요.",
+          "focus": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "GROUP BY 절",
+      "question": "**GROUP BY DEPTNO**일 때 SELECT에 올 수 **없는** 것은?",
+      "choices": [
+        "DEPTNO",
+        "SUM(SAL)",
+        "ENAME",
+        "COUNT(*)"
+      ],
+      "answer": 3,
+      "explanation": "ENAME은 그룹 컬럼도 집계 함수도 아니에요. 그래서 오류예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. SELECT에 올 수 없는 것은?"
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "flow",
+      "section": "HAVING 절",
+      "title": "실행 순서",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "FROM",
+          "desc": "테이블 읽기",
+          "icon": "table"
+        },
+        {
+          "title": "WHERE",
+          "desc": "개별 행 거르기",
+          "icon": "filter"
+        },
+        {
+          "title": "GROUP BY",
+          "desc": "그룹 만들기",
+          "icon": "layers"
+        },
+        {
+          "title": "HAVING",
+          "desc": "그룹 거르기",
+          "icon": "filter"
+        },
+        {
+          "title": "SELECT",
+          "desc": "컬럼 출력",
+          "icon": "eye"
+        }
+      ],
+      "steps": [
+        {
+          "say": "WHERE와 HAVING은 실행 시점이 달라요."
+        },
+        {
+          "say": "먼저 FROM에서 테이블을 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "WHERE가 개별 행을 걸러요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그다음 GROUP BY로 묶어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "HAVING은 묶은 그룹을 걸러요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "마지막으로 SELECT가 출력해요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "정리하면 WHERE는 묶기 전, HAVING은 묶은 뒤예요.",
+          "focus": [
+            1,
+            3
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "compare",
+      "section": "HAVING 절",
+      "title": "WHERE와 HAVING",
+      "left": {
+        "title": "WHERE",
+        "icon": "user",
+        "items": [
+          "대상은 개별 행",
+          "집계 함수 불가",
+          "성능에 유리"
+        ]
+      },
+      "right": {
+        "title": "HAVING",
+        "icon": "users",
+        "items": [
+          "대상은 그룹",
+          "집계 함수 가능",
+          "집계 후라 불리"
+        ]
+      },
+      "steps": [
+        {
+          "say": "WHERE는 개별 행을 걸러요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "묶기 전이라 집계 함수를 못 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "데이터를 미리 줄여서 성능에 유리해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "HAVING은 그룹을 걸러요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "묶은 뒤라 집계 함수를 쓸 수 있어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "id": "s17",
+      "section": "HAVING 절",
+      "type": "data",
+      "title": "두 번 거르기 예제",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT DEPTNO, SUM(SAL)\nFROM EMP\nWHERE SAL >= 100\nGROUP BY DEPTNO\nHAVING SUM(SAL) > 200;",
+      "steps": [
+        {
+          "say": "WHERE와 HAVING을 함께 써 볼게요."
+        },
+        {
+          "say": "먼저 WHERE가 급여 100 미만인 행을 빼요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "filter": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                7
+              ],
+              "cells": [
+                [
+                  5,
+                  "SAL"
+                ],
+                [
+                  6,
+                  "SAL"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "남은 행을 부서별로 묶어요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP": {
+              "group": "DEPTNO"
+            }
+          }
+        },
+        {
+          "say": "부서 합계는 300, 600, 100이에요.",
+          "t": {
+            "EMP": {
+              "result": {
+                "title": "GROUP BY 후",
+                "columns": [
+                  "DEPTNO",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "300"
+                  ],
+                  [
+                    "20",
+                    "600"
+                  ],
+                  [
+                    "30",
+                    "100"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "HAVING이 합계 200 이하인 그룹을 빼요.",
+          "focus": [
+            5
+          ],
+          "t": {
+            "EMP": {
+              "rows": [
+                7
+              ],
+              "result": {
+                "title": "HAVING 후",
+                "columns": [
+                  "DEPTNO",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "300"
+                  ],
+                  [
+                    "20",
+                    "600"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "결과는 두 행이에요."
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "HAVING 절",
+      "title": "HAVING 더 알기",
+      "cols": 3,
+      "items": [
+        {
+          "title": "SELECT 밖",
+          "desc": "SELECT에 없어도 OK",
+          "icon": "eye"
+        },
+        {
+          "title": "GROUP 생략",
+          "desc": "전체가 한 그룹",
+          "icon": "box"
+        },
+        {
+          "title": "그룹 컬럼",
+          "desc": "조건은 WHERE로",
+          "icon": "idea"
+        }
+      ],
+      "steps": [
+        {
+          "say": "HAVING에 대해 세 가지 더 알아 둬요."
+        },
+        {
+          "say": "첫째, SELECT에 없는 집계 함수도 쓸 수 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "부서만 출력하고 COUNT로 걸러도 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, GROUP BY 없이 쓰면 전체가 한 그룹이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 그룹 컬럼 조건은 WHERE가 효율적이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "집계 대상이 미리 줄어들기 때문이에요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "callout",
+      "section": "HAVING 절",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "집계 함수 조건은 **HAVING**에만 써요. WHERE에 쓰면 **오류**예요.",
+      "steps": [
+        {
+          "say": "집계 함수 조건은 HAVING에만 써요."
+        },
+        {
+          "say": "WHERE에 쓰면 오류예요."
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "quiz",
+      "section": "HAVING 절",
+      "question": "부서 합계가 300, 500, 100이에요. **HAVING SUM(SAL) > 200**이면 결과는 몇 행?",
+      "choices": [
+        "1행",
+        "2행",
+        "3행",
+        "0행"
+      ],
+      "answer": 2,
+      "explanation": "100인 부서만 빠져요. 300과 500, 2행이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. HAVING을 거치면 몇 행이 남을까요?"
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "id": "s21",
+      "section": "집계 함수 중첩",
+      "type": "data",
+      "title": "MAX(SUM(SAL))",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT MAX(SUM(SAL))\nFROM EMP\nGROUP BY DEPTNO;",
+      "steps": [
+        {
+          "say": "오라클은 집계 함수를 한 번 겹칠 수 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "먼저 부서별로 묶어 합계를 내요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "group": "DEPTNO",
+              "result": {
+                "title": "안쪽 SUM",
+                "columns": [
+                  "DEPTNO",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "300"
+                  ],
+                  [
+                    "20",
+                    "600"
+                  ],
+                  [
+                    "30",
+                    "200"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "합계는 300, 600, 200이에요. 그중 MAX를 골라요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                2,
+                3,
+                4
+              ]
+            }
+          }
+        },
+        {
+          "say": "결과는 600, 딱 한 행이에요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "EMP": {
+              "result": {
+                "title": "바깥 MAX",
+                "columns": [
+                  "MAX(SUM(SAL))"
+                ],
+                "rows": [
+                  [
+                    "600"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "집계 함수 중첩",
+      "title": "중첩 집계 규칙",
+      "cols": 2,
+      "items": [
+        {
+          "title": "한 번만",
+          "desc": "오라클 1회 중첩",
+          "icon": "copy"
+        },
+        {
+          "title": "그룹 필수",
+          "desc": "GROUP BY 필요",
+          "icon": "layers"
+        },
+        {
+          "title": "컬럼 불가",
+          "desc": "DEPTNO 함께 X",
+          "icon": "warning",
+          "tone": "warn"
+        },
+        {
+          "title": "SQL서버",
+          "desc": "중첩 미지원",
+          "icon": "lock",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "중첩 집계 규칙은 네 가지예요."
+        },
+        {
+          "say": "첫째, 중첩은 한 번만 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, GROUP BY가 꼭 있어야 해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 결과가 1행이라 DEPTNO를 같이 못 써요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "같이 쓰면 오류예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, SQL 서버는 중첩을 지원하지 않아요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "인라인 뷰로 해결해요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "quiz",
+      "section": "집계 함수 중첩",
+      "question": "SELECT DEPTNO, MAX(SUM(SAL)) FROM EMP GROUP BY DEPTNO 의 결과는?",
+      "choices": [
+        "최대 합계 1행",
+        "부서별 3행",
+        "NULL",
+        "오류"
+      ],
+      "answer": 4,
+      "explanation": "중첩 집계는 결과가 1행이에요. DEPTNO를 같이 쓰면 오류예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 중첩 집계에 DEPTNO를 함께 쓰면?"
+        }
+      ],
+      "id": "s23"
+    },
+    {
+      "type": "compare",
+      "section": "빈 결과 집계",
+      "title": "행이 하나도 없을 때",
+      "left": {
+        "title": "GROUP BY 없음",
+        "icon": "box",
+        "items": [
+          "항상 1행",
+          "COUNT는 0",
+          "SUM, MAX는 NULL"
+        ]
+      },
+      "right": {
+        "title": "GROUP BY 있음",
+        "icon": "layers",
+        "items": [
+          "만들 그룹이 없음",
+          "0행, 공집합"
+        ]
+      },
+      "steps": [
+        {
+          "say": "조건에 맞는 행이 하나도 없다면요?"
+        },
+        {
+          "say": "GROUP BY가 없으면 항상 1행이 나와요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "COUNT는 0, SUM과 MAX는 NULL이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "GROUP BY가 있으면 만들 그룹이 없어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래서 0행, 공집합이에요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s24"
+    },
+    {
+      "type": "callout",
+      "section": "빈 결과 집계",
+      "tone": "tip",
+      "title": "0으로 보이려면",
+      "text": "합계가 없을 때 0을 보이려면 **NVL(SUM(SAL), 0)**. NVL은 집계 **바깥**에 써요.",
+      "steps": [
+        {
+          "say": "합계 대신 0을 보이고 싶다면요?"
+        },
+        {
+          "say": "NVL을 집계 함수 바깥에 씌워요."
+        }
+      ],
+      "id": "s25"
+    },
+    {
+      "type": "quiz",
+      "section": "빈 결과 집계",
+      "question": "행이 없는 테이블에서 **SELECT SUM(SAL)**의 결과는?",
+      "choices": [
+        "0이 1행",
+        "NULL이 1행",
+        "0행",
+        "오류"
+      ],
+      "answer": 2,
+      "explanation": "GROUP BY가 없으면 1행이 나와요. SUM은 NULL이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 빈 테이블에서 SUM의 결과는?"
+        }
+      ],
+      "id": "s26"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "COUNT(*)만 NULL 행도 셈",
+        "AVG는 NULL을 분모에서도 뺌",
+        "SELECT엔 그룹 컬럼과 집계만",
+        "WHERE는 묶기 전, HAVING은 뒤",
+        "중첩 집계는 한 번, 1행 결과",
+        "빈 결과: GROUP BY 없으면 1행"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "COUNT 스타만 NULL 행도 세요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "AVG는 NULL을 분모에서도 빼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "SELECT에는 그룹 컬럼과 집계 함수만 와요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "WHERE는 묶기 전, HAVING은 묶은 뒤예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "중첩 집계는 한 번만, 결과는 1행이에요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "빈 결과는 GROUP BY가 없으면 1행이에요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s27"
+    }
+  ]
+}

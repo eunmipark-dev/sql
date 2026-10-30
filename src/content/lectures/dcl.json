@@ -1,0 +1,1107 @@
+{
+  "slug": "dcl",
+  "title": "DCL",
+  "tables": {
+    "권한 현황": {
+      "columns": [
+        "사용자",
+        "권한",
+        "객체",
+        "상태"
+      ],
+      "rows": [
+        [
+          "kim",
+          "SELECT",
+          "scott.emp",
+          "없음"
+        ],
+        [
+          "kim",
+          "INSERT",
+          "scott.emp",
+          "없음"
+        ],
+        [
+          "kim",
+          "UPDATE(sal)",
+          "scott.emp",
+          "없음"
+        ],
+        [
+          "lee",
+          "ALL",
+          "scott.dept",
+          "없음"
+        ],
+        [
+          "PUBLIC",
+          "SELECT",
+          "scott.emp",
+          "없음"
+        ]
+      ]
+    },
+    "오브젝트 권한": {
+      "columns": [
+        "사용자",
+        "받은 곳",
+        "상태"
+      ],
+      "rows": [
+        [
+          "A",
+          "소유자",
+          "보유"
+        ],
+        [
+          "B",
+          "A",
+          "없음"
+        ],
+        [
+          "C",
+          "B",
+          "없음"
+        ]
+      ]
+    },
+    "시스템 권한": {
+      "columns": [
+        "사용자",
+        "받은 곳",
+        "상태"
+      ],
+      "rows": [
+        [
+          "DBA",
+          "-",
+          "보유"
+        ],
+        [
+          "B",
+          "DBA",
+          "없음"
+        ],
+        [
+          "C",
+          "B",
+          "없음"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "DCL",
+      "subtitle": "누구에게 무엇을 허락할까",
+      "icon": "shield",
+      "steps": [
+        {
+          "say": "DCL 강의를 시작할게요."
+        },
+        {
+          "say": "권한을 주고 빼앗는 명령이에요."
+        },
+        {
+          "say": "원칙은 하나예요. 필요한 권한만 줘요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "flow",
+      "section": "사용자와 권한",
+      "title": "새 사용자 만들기",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "CREATE USER",
+          "desc": "계정 생성 · 접속 불가",
+          "icon": "user"
+        },
+        {
+          "title": "CREATE SESSION",
+          "desc": "이제 접속 가능",
+          "icon": "link"
+        },
+        {
+          "title": "CREATE TABLE 등",
+          "desc": "필요한 작업 권한",
+          "icon": "checklist"
+        }
+      ],
+      "steps": [
+        {
+          "say": "새 사용자를 만들어 볼게요."
+        },
+        {
+          "say": "CREATE USER로 계정을 만들어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "이 상태로는 접속조차 못 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "CREATE SESSION 권한을 줘야 접속돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그다음 필요한 작업 권한을 하나씩 줘요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "cards",
+      "section": "사용자와 권한",
+      "title": "알아 둘 사실",
+      "cols": 3,
+      "items": [
+        {
+          "title": "소유자",
+          "desc": "자기 객체 모든 권한",
+          "icon": "user"
+        },
+        {
+          "title": "남의 객체",
+          "desc": "권한 받아야 사용",
+          "icon": "lock"
+        },
+        {
+          "title": "두 단계",
+          "desc": "SQL Server",
+          "icon": "users"
+        }
+      ],
+      "steps": [
+        {
+          "say": "몇 가지 더 알아 둘게요."
+        },
+        {
+          "say": "객체 소유자는 자기 객체에 모든 권한이 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "남의 객체는 권한을 받아야 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "SQL Server는 두 단계예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "서버 로그인과 DB 사용자를 따로 만들어요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "quiz",
+      "section": "사용자와 권한",
+      "question": "새 사용자가 **접속**하려면 최소한 필요한 권한은?",
+      "choices": [
+        "CREATE TABLE",
+        "RESOURCE",
+        "SELECT",
+        "CREATE SESSION"
+      ],
+      "answer": 4,
+      "explanation": "CREATE SESSION이 있어야 접속해요. 새 사용자는 권한이 없어요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 새 사용자가 접속하려면 어떤 권한이 필요할까요?"
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "compare",
+      "section": "권한의 종류",
+      "title": "시스템과 오브젝트 권한",
+      "left": {
+        "title": "시스템 권한",
+        "icon": "database",
+        "items": [
+          "DB 전반 작업",
+          "CREATE TABLE 등",
+          "DBA가 부여"
+        ]
+      },
+      "right": {
+        "title": "오브젝트 권한",
+        "icon": "table",
+        "items": [
+          "특정 객체 조작",
+          "SELECT 등",
+          "소유자가 부여"
+        ]
+      },
+      "steps": [
+        {
+          "say": "권한은 두 종류예요."
+        },
+        {
+          "say": "시스템 권한은 DB 전반의 작업 권한이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "CREATE TABLE 같은 거예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "DBA나 ADMIN OPTION 보유자가 줘요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "오브젝트 권한은 특정 객체를 다루는 권한이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "특정 테이블의 SELECT, INSERT 같은 거죠.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "소유자나 GRANT OPTION 보유자가 줘요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "cards",
+      "section": "권한의 종류",
+      "title": "헷갈리는 오브젝트 권한",
+      "cols": 3,
+      "items": [
+        {
+          "title": "FK 참조",
+          "desc": "REFERENCES",
+          "icon": "link"
+        },
+        {
+          "title": "INDEX",
+          "desc": "인덱스 생성 권한",
+          "icon": "search"
+        },
+        {
+          "title": "EXECUTE",
+          "desc": "프로시저 실행",
+          "icon": "workflow"
+        }
+      ],
+      "steps": [
+        {
+          "say": "이름이 헷갈리는 권한 세 개예요."
+        },
+        {
+          "say": "REFERENCES는 그 테이블을 참조하는 FK를 만들어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "INDEX는 그 테이블에 인덱스를 만들어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "EXECUTE는 프로시저를 실행해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "시퀀스엔 SELECT와 ALTER만 있어요.",
+          "focus": [
+            0,
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "compare",
+      "section": "GRANT와 REVOKE",
+      "title": "부여와 회수",
+      "left": {
+        "title": "GRANT",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "권한 ON 객체",
+          "TO 사용자"
+        ]
+      },
+      "right": {
+        "title": "REVOKE",
+        "icon": "recycle",
+        "tone": "bad",
+        "items": [
+          "권한 ON 객체",
+          "FROM 사용자"
+        ]
+      },
+      "steps": [
+        {
+          "say": "문법은 짝으로 외워요."
+        },
+        {
+          "say": "GRANT는 TO를 써요. 누구에게 줘요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "REVOKE는 FROM을 써요. 누구에게서 빼앗아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "둘을 바꿔치기한 보기가 자주 나와요.",
+          "focus": [
+            0,
+            1
+          ]
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "id": "s08",
+      "section": "GRANT와 REVOKE",
+      "type": "data",
+      "title": "GRANT 예시",
+      "tables": [
+        "권한 현황"
+      ],
+      "code": "GRANT SELECT, INSERT ON scott.emp TO kim;\nGRANT UPDATE (sal) ON scott.emp TO kim;\nGRANT ALL ON scott.dept TO lee;\nGRANT SELECT ON scott.emp TO PUBLIC;\nREVOKE INSERT ON scott.emp FROM kim;",
+      "steps": [
+        {
+          "say": "예시를 볼게요. 권한 여러 개를 한 번에 줄 수 있어요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "권한 현황": {
+              "set": [
+                [
+                  0,
+                  "상태",
+                  "보유"
+                ],
+                [
+                  1,
+                  "상태",
+                  "보유"
+                ]
+              ],
+              "rows": [
+                0,
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "특정 컬럼에만 UPDATE를 줄 수도 있어요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "권한 현황": {
+              "set": [
+                [
+                  2,
+                  "상태",
+                  "보유"
+                ]
+              ],
+              "notes": [
+                [
+                  2,
+                  "권한",
+                  "sal 컬럼만"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "ALL은 모든 오브젝트 권한이에요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "권한 현황": {
+              "set": [
+                [
+                  3,
+                  "상태",
+                  "보유"
+                ]
+              ],
+              "rows": [
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "PUBLIC은 모든 사용자를 뜻해요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "권한 현황": {
+              "set": [
+                [
+                  4,
+                  "상태",
+                  "보유"
+                ]
+              ],
+              "notes": [
+                [
+                  4,
+                  "사용자",
+                  "모든 사용자"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "회수는 FROM이에요. kim의 INSERT가 빠져요.",
+          "focus": [
+            5
+          ],
+          "t": {
+            "권한 현황": {
+              "set": [
+                [
+                  1,
+                  "상태",
+                  "회수"
+                ]
+              ],
+              "rows": [
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "남의 객체는 소유자 점 객체명으로 써요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "권한 현황": {
+              "cols": [
+                "객체"
+              ]
+            }
+          }
+        },
+        {
+          "say": "오라클에서 GRANT와 REVOKE는 자동 커밋돼요."
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "GRANT와 REVOKE",
+      "question": "권한 회수 문법으로 올바른 것은?",
+      "choices": [
+        "REVOKE ... TO kim",
+        "GRANT ... FROM kim",
+        "REVOKE ... FROM kim",
+        "DROP ... FROM kim"
+      ],
+      "answer": 3,
+      "explanation": "회수는 REVOKE와 FROM이에요. 부여는 GRANT와 TO예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 권한을 회수하는 올바른 문법은?"
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "compare",
+      "section": "두 가지 옵션",
+      "title": "재부여 옵션 2가지",
+      "left": {
+        "title": "GRANT OPTION",
+        "icon": "table",
+        "items": [
+          "오브젝트 권한",
+          "연쇄 회수",
+          "준 사람만 회수"
+        ]
+      },
+      "right": {
+        "title": "ADMIN OPTION",
+        "icon": "database",
+        "items": [
+          "시스템 권한, 롤",
+          "연쇄 회수 없음",
+          "보유자 누구나"
+        ]
+      },
+      "steps": [
+        {
+          "say": "받은 권한을 남에게 다시 주는 옵션이 둘 있어요."
+        },
+        {
+          "say": "WITH GRANT OPTION은 오브젝트 권한에 붙어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "WITH ADMIN OPTION은요?",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "시스템 권한과 롤에 붙어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "차이는 회수할 때 나타나요.",
+          "focus": [
+            0,
+            1
+          ]
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "id": "s11",
+      "section": "두 가지 옵션",
+      "type": "data",
+      "title": "GRANT OPTION 회수",
+      "tables": [
+        "오브젝트 권한"
+      ],
+      "steps": [
+        {
+          "say": "A가 B에게 오브젝트 권한을 줘요.",
+          "t": {
+            "오브젝트 권한": {
+              "set": [
+                [
+                  1,
+                  "상태",
+                  "보유"
+                ]
+              ],
+              "notes": [
+                [
+                  1,
+                  "상태",
+                  "GRANT OPTION"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "B는 그걸 다시 C에게 줘요.",
+          "t": {
+            "오브젝트 권한": {
+              "set": [
+                [
+                  2,
+                  "상태",
+                  "보유"
+                ]
+              ],
+              "rows": [
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "이제 A가 B의 권한을 회수해요.",
+          "t": {
+            "오브젝트 권한": {
+              "set": [
+                [
+                  1,
+                  "상태",
+                  "회수"
+                ]
+              ],
+              "rows": [
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "그러면 C의 권한까지 함께 사라져요.",
+          "t": {
+            "오브젝트 권한": {
+              "set": [
+                [
+                  2,
+                  "상태",
+                  "상실"
+                ]
+              ],
+              "notes": [
+                [
+                  2,
+                  "상태",
+                  "함께 상실"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "이게 연쇄 회수예요.",
+          "t": {
+            "오브젝트 권한": {
+              "cells": [
+                [
+                  1,
+                  "상태"
+                ],
+                [
+                  2,
+                  "상태"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s12",
+      "section": "두 가지 옵션",
+      "type": "data",
+      "title": "ADMIN OPTION 회수",
+      "tables": [
+        "시스템 권한"
+      ],
+      "steps": [
+        {
+          "say": "이번엔 시스템 권한이에요. DBA가 B에게 줘요.",
+          "t": {
+            "시스템 권한": {
+              "set": [
+                [
+                  1,
+                  "상태",
+                  "보유"
+                ]
+              ],
+              "notes": [
+                [
+                  1,
+                  "상태",
+                  "ADMIN OPTION"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "B가 다시 C에게 줬어요.",
+          "t": {
+            "시스템 권한": {
+              "set": [
+                [
+                  2,
+                  "상태",
+                  "보유"
+                ]
+              ],
+              "rows": [
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "DBA가 B의 권한을 회수해요.",
+          "t": {
+            "시스템 권한": {
+              "set": [
+                [
+                  1,
+                  "상태",
+                  "회수"
+                ]
+              ],
+              "rows": [
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "B만 잃고, C는 그대로 유지해요.",
+          "t": {
+            "시스템 권한": {
+              "cells": [
+                [
+                  2,
+                  "상태"
+                ]
+              ],
+              "notes": [
+                [
+                  2,
+                  "상태",
+                  "그대로 유지"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "정리하면 ADMIN OPTION은 연쇄되지 않아요.",
+          "t": {
+            "시스템 권한": {
+              "cols": [
+                "상태"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "두 가지 옵션",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "**권한 종류부터** 구분. 오브젝트 권한은 연쇄 회수, 시스템 권한은 연쇄 없음.",
+      "steps": [
+        {
+          "say": "문제를 보면 권한 종류부터 구분하세요."
+        },
+        {
+          "say": "오브젝트 권한이면 연쇄 회수예요."
+        },
+        {
+          "say": "시스템 권한이면 연쇄되지 않아요."
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "quiz",
+      "section": "두 가지 옵션",
+      "question": "CREATE TABLE을 ADMIN OPTION으로 받은 A가 B에게 줬다. A의 권한을 회수하면 B는?",
+      "choices": [
+        "B도 상실한다",
+        "B는 유지한다",
+        "B는 오류가 난다",
+        "B는 읽기만 된다"
+      ],
+      "answer": 2,
+      "explanation": "시스템 권한은 연쇄 회수되지 않아요. B는 그대로예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. ADMIN OPTION으로 받은 권한을 B에게 줬어요. A를 회수하면 B는요?"
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "flow",
+      "section": "ROLE",
+      "title": "ROLE로 묶어 주기",
+      "direction": "right",
+      "edges": [
+        "담기",
+        "부여"
+      ],
+      "nodes": [
+        {
+          "title": "권한 여러 개",
+          "desc": "SESSION, TABLE…",
+          "icon": "checklist"
+        },
+        {
+          "title": "ROLE",
+          "desc": "dev_role",
+          "icon": "box"
+        },
+        {
+          "title": "사용자",
+          "desc": "kim, lee",
+          "icon": "users"
+        }
+      ],
+      "steps": [
+        {
+          "say": "ROLE은 권한을 묶은 그룹이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "여러 권한을 롤에 담아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "사용자에겐 롤 하나만 주면 돼요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "cards",
+      "section": "ROLE",
+      "title": "ROLE의 장점",
+      "cols": 2,
+      "items": [
+        {
+          "title": "관리 쉬움",
+          "desc": "하나하나 안 줘도 됨",
+          "icon": "idea"
+        },
+        {
+          "title": "한 번에 반영",
+          "desc": "모든 사용자에게",
+          "icon": "users"
+        },
+        {
+          "title": "중첩 가능",
+          "desc": "롤 안에 롤",
+          "icon": "layers"
+        },
+        {
+          "title": "혼합 가능",
+          "desc": "시스템과 오브젝트",
+          "icon": "puzzle"
+        }
+      ],
+      "steps": [
+        {
+          "say": "롤의 장점은 네 가지예요."
+        },
+        {
+          "say": "첫째, 관리가 쉬워요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 롤 권한을 바꾸면 모두에게 반영돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 롤 안에 롤을 넣을 수 있어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 두 종류 권한을 함께 담아요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "layers",
+      "section": "ROLE",
+      "title": "오라클 기본 롤",
+      "layers": [
+        {
+          "title": "CONNECT",
+          "desc": "접속 권한",
+          "icon": "link"
+        },
+        {
+          "title": "RESOURCE",
+          "desc": "객체 생성 · 개발자용",
+          "icon": "shapes"
+        },
+        {
+          "title": "DBA",
+          "desc": "거의 모든 시스템 권한",
+          "icon": "shield"
+        }
+      ],
+      "steps": [
+        {
+          "say": "오라클은 기본 롤을 제공해요."
+        },
+        {
+          "say": "CONNECT는 접속 권한이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "RESOURCE는 테이블 같은 객체 생성 권한이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "DBA는 거의 모든 시스템 권한이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "보통 새 사용자에게 CONNECT와 RESOURCE를 줘요.",
+          "focus": [
+            0,
+            1
+          ]
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "quiz",
+      "section": "ROLE",
+      "question": "오라클 RESOURCE 롤의 주된 용도는?",
+      "choices": [
+        "객체 생성",
+        "DB 접속",
+        "사용자 생성",
+        "권한 회수"
+      ],
+      "answer": 1,
+      "explanation": "RESOURCE는 객체 생성 권한이에요. 접속은 CONNECT예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. RESOURCE 롤은 무엇을 위한 걸까요?"
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "새 사용자는 CREATE SESSION부터",
+        "GRANT는 TO, REVOKE는 FROM",
+        "GRANT OPTION은 연쇄 회수",
+        "ADMIN OPTION은 연쇄 회수 없음",
+        "ROLE은 권한 묶음, 즉시 반영",
+        "CONNECT 접속, RESOURCE 생성"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "새 사용자는 접속 권한부터 받아야 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "부여는 TO, 회수는 FROM이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "GRANT OPTION은 연쇄 회수돼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "ADMIN OPTION은 연쇄되지 않아요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "롤은 권한 묶음이에요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "CONNECT는 접속, RESOURCE는 생성이에요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s19"
+    }
+  ]
+}

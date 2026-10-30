@@ -1,0 +1,1335 @@
+{
+  "slug": "top-n",
+  "title": "Top N 쿼리",
+  "tables": {
+    "EMP": {
+      "columns": [
+        "ENAME",
+        "SAL"
+      ],
+      "rows": [
+        [
+          "김민",
+          "300"
+        ],
+        [
+          "이준",
+          "200"
+        ],
+        [
+          "박솔",
+          "200"
+        ],
+        [
+          "최윤",
+          "400"
+        ],
+        [
+          "정하",
+          "300"
+        ],
+        [
+          "한결",
+          "100"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "Top N 쿼리",
+      "subtitle": "상위 N건만 뽑기와 페이징",
+      "icon": "target",
+      "steps": [
+        {
+          "say": "Top N 쿼리를 시작할게요."
+        },
+        {
+          "say": "정렬된 결과에서 상위 몇 건만 가져오는 쿼리예요."
+        },
+        {
+          "say": "오라클 ROWNUM 함정이 시험에 자주 나와요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "cards",
+      "section": "Top N 쿼리란",
+      "title": "DBMS별 세 가지 방법",
+      "cols": 3,
+      "items": [
+        {
+          "title": "ROWNUM",
+          "desc": "오라클 가상 컬럼",
+          "icon": "tag"
+        },
+        {
+          "title": "TOP",
+          "desc": "SQL Server",
+          "icon": "target"
+        },
+        {
+          "title": "FETCH",
+          "desc": "표준 문법",
+          "icon": "book-open"
+        }
+      ],
+      "steps": [
+        {
+          "say": "방법은 세 가지예요."
+        },
+        {
+          "say": "첫째, 오라클의 ROWNUM이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, SQL Server의 TOP이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 표준 문법인 FETCH FIRST예요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "id": "s03",
+      "section": "예제 데이터",
+      "type": "data",
+      "title": "EMP 저장 순서",
+      "tables": [
+        "EMP"
+      ],
+      "steps": [
+        {
+          "say": "예제는 사원 여섯 명이에요. 저장된 순서대로예요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            }
+          }
+        },
+        {
+          "say": "앞의 세 명은 김민, 이준, 박솔이에요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "최고 급여자 최윤은 네 번째에 있어요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                3
+              ],
+              "cells": [
+                [
+                  3,
+                  "SAL"
+                ]
+              ],
+              "notes": [
+                [
+                  3,
+                  "SAL",
+                  "최고"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그 뒤로 정하, 한결이에요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                4,
+                5
+              ]
+            }
+          }
+        },
+        {
+          "say": "급여 순으로 줄 세우면 최윤이 1등이에요.",
+          "t": {
+            "EMP": {
+              "sort": [
+                [
+                  "SAL",
+                  "desc"
+                ]
+              ],
+              "rows": [
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "그다음 김민과 정하가 300으로 같아요.",
+          "t": {
+            "EMP": {
+              "cells": [
+                [
+                  0,
+                  "SAL"
+                ],
+                [
+                  4,
+                  "SAL"
+                ]
+              ],
+              "notes": [
+                [
+                  4,
+                  "SAL",
+                  "동점"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "flow",
+      "section": "ROWNUM 동작 원리",
+      "title": "ROWNUM이 붙는 시점",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "FROM, WHERE",
+          "desc": "읽으며 번호 부여",
+          "icon": "filter"
+        },
+        {
+          "title": "SELECT 등",
+          "desc": "집계와 컬럼 선택",
+          "icon": "table"
+        },
+        {
+          "title": "ORDER BY",
+          "desc": "맨 마지막에 정렬",
+          "icon": "ruler"
+        }
+      ],
+      "steps": [
+        {
+          "say": "ROWNUM은 행마다 1부터 붙는 가상 컬럼이에요."
+        },
+        {
+          "say": "WHERE에서 행을 읽으며 번호를 붙여요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그다음 집계와 SELECT를 처리하고,",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "맨 마지막에 정렬해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "정리하면, 번호가 정렬보다 먼저 붙어요.",
+          "focus": [
+            0,
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "id": "s05",
+      "section": "ROWNUM 동작 원리",
+      "type": "data",
+      "title": "함정 1: 정렬 전에 잘림",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT ENAME, SAL\nFROM   EMP\nWHERE  ROWNUM <= 3\nORDER  BY SAL DESC;",
+      "steps": [
+        {
+          "say": "급여 상위 세 명을 뽑아 볼게요. 한 블록에 함께 써요.",
+          "focus": [
+            3,
+            4
+          ]
+        },
+        {
+          "say": "읽는 순서대로 ROWNUM이 붙어요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "add": [
+                "ROWNUM",
+                [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6"
+                ]
+              ],
+              "cols": [
+                "ROWNUM"
+              ]
+            }
+          }
+        },
+        {
+          "say": "ROWNUM 3 이하라 아무 세 건을 먼저 골라요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "filter": [
+                0,
+                1,
+                2
+              ],
+              "notes": [
+                [
+                  3,
+                  "SAL",
+                  "최고인데 빠짐"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그다음에 정렬해요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP": {
+              "sort": [
+                [
+                  "SAL",
+                  "desc"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "최고 급여자가 4번째에 있어서 빠졌어요.",
+          "t": {
+            "EMP": {
+              "result": {
+                "title": "결과",
+                "columns": [
+                  "ENAME",
+                  "SAL"
+                ],
+                "rows": [
+                  [
+                    "김민",
+                    "300"
+                  ],
+                  [
+                    "이준",
+                    "200"
+                  ],
+                  [
+                    "박솔",
+                    "200"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "인라인 뷰 안에서 먼저 정렬해야 해요."
+        }
+      ]
+    },
+    {
+      "id": "s06",
+      "section": "ROWNUM 동작 원리",
+      "type": "data",
+      "title": "올바른 Top 3",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT ENAME, SAL\nFROM   (SELECT ENAME, SAL\n        FROM   EMP\n        ORDER  BY SAL DESC, ENAME)\nWHERE  ROWNUM <= 3;",
+      "steps": [
+        {
+          "say": "코드로 보면 이래요. 안쪽에서 급여 순으로 먼저 정렬해요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP": {
+              "sort": [
+                [
+                  "SAL",
+                  "desc"
+                ],
+                [
+                  "ENAME",
+                  "asc"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "정렬된 순서대로 ROWNUM이 붙어요.",
+          "focus": [
+            5
+          ],
+          "t": {
+            "EMP": {
+              "add": [
+                "ROWNUM",
+                [
+                  "2",
+                  "5",
+                  "4",
+                  "1",
+                  "3",
+                  "6"
+                ]
+              ],
+              "cols": [
+                "ROWNUM"
+              ]
+            }
+          }
+        },
+        {
+          "say": "바깥에서 ROWNUM 3 이하를 걸어요.",
+          "focus": [
+            5
+          ],
+          "t": {
+            "EMP": {
+              "filter": [
+                3,
+                0,
+                4
+              ]
+            }
+          }
+        },
+        {
+          "say": "이제 최윤, 김민, 정하가 나와요.",
+          "t": {
+            "EMP": {
+              "result": {
+                "title": "결과 3행",
+                "columns": [
+                  "ENAME",
+                  "SAL"
+                ],
+                "rows": [
+                  [
+                    "최윤",
+                    "400"
+                  ],
+                  [
+                    "김민",
+                    "300"
+                  ],
+                  [
+                    "정하",
+                    "300"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "ROWNUM 동작 원리",
+      "question": "Oracle에서 급여 상위 3명을 **정확히** 구하는 방법은?",
+      "choices": [
+        "ROWNUM 후 ORDER BY",
+        "인라인 뷰 정렬 후 ROWNUM",
+        "HAVING ROWNUM <= 3",
+        "ORDER BY 뒤 WHERE"
+      ],
+      "answer": 2,
+      "explanation": "ROWNUM은 정렬 전에 붙어요. 인라인 뷰에서 먼저 정렬해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 급여 상위 세 명을 정확히 구하는 방법은?"
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "id": "s08",
+      "section": "ROWNUM 동작 원리",
+      "type": "data",
+      "title": "함정 2: 0건 조건",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT ENAME\nFROM   EMP\nWHERE  ROWNUM > 1;",
+      "steps": [
+        {
+          "say": "이번엔 ROWNUM 1 초과 조건이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "첫 행은 ROWNUM 1을 받아요.",
+          "t": {
+            "EMP": {
+              "add": [
+                "ROWNUM",
+                [
+                  "1",
+                  "?",
+                  "?",
+                  "?",
+                  "?",
+                  "?"
+                ]
+              ],
+              "rows": [
+                0
+              ]
+            }
+          }
+        },
+        {
+          "say": "1 초과가 아니니 탈락해요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "cells": [
+                [
+                  0,
+                  "ROWNUM"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "ROWNUM",
+                  "탈락"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "탈락한 행은 번호를 쓰지 않아요. 그래서 다음 행도 다시 1을 받아요.",
+          "t": {
+            "EMP": {
+              "set": [
+                [
+                  1,
+                  "ROWNUM",
+                  "1"
+                ]
+              ],
+              "rows": [
+                1
+              ],
+              "notes": [
+                [
+                  1,
+                  "ROWNUM",
+                  "또 1, 탈락"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "끝까지 모든 행이 1을 받고 탈락해요.",
+          "t": {
+            "EMP": {
+              "set": [
+                [
+                  2,
+                  "ROWNUM",
+                  "1"
+                ],
+                [
+                  3,
+                  "ROWNUM",
+                  "1"
+                ],
+                [
+                  4,
+                  "ROWNUM",
+                  "1"
+                ],
+                [
+                  5,
+                  "ROWNUM",
+                  "1"
+                ]
+              ],
+              "filter": []
+            }
+          }
+        },
+        {
+          "say": "결국 결과는 0건이에요.",
+          "t": {
+            "EMP": {
+              "result": {
+                "title": "결과 0건",
+                "columns": [
+                  "ENAME"
+                ],
+                "rows": []
+              }
+            }
+          }
+        },
+        {
+          "say": "ROWNUM 같다 2도 똑같이 0건이에요."
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "section": "ROWNUM 동작 원리",
+      "title": "ROWNUM 조건 정리",
+      "left": {
+        "title": "결과 있음",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "ROWNUM = 1",
+          "ROWNUM < n",
+          "ROWNUM <= n"
+        ]
+      },
+      "right": {
+        "title": "항상 0건",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "ROWNUM = 2",
+          "ROWNUM > 1",
+          "1이 빠진 조건"
+        ]
+      },
+      "steps": [
+        {
+          "say": "같다 1, 미만, 이하는 정상이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "1을 포함하지 않으면 항상 0건이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "정리하면, ROWNUM은 1부터 세야 해요.",
+          "focus": [
+            0,
+            1
+          ]
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "quiz",
+      "section": "ROWNUM 동작 원리",
+      "question": "Oracle에서 결과가 **항상 0건**인 조건은?",
+      "choices": [
+        "ROWNUM = 1",
+        "ROWNUM <= 2",
+        "ROWNUM < 5",
+        "ROWNUM = 2"
+      ],
+      "answer": 4,
+      "explanation": "탈락한 행은 번호를 쓰지 않아요. 그래서 2번 행이 생기지 않아요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 결과가 항상 0건인 조건은?"
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "type": "code",
+      "section": "SQL Server TOP",
+      "title": "SQL Server TOP",
+      "code": "SELECT TOP (3) ENAME, SAL\nFROM   EMP\nORDER  BY SAL DESC;",
+      "caption": "결과: 최윤, 김민, 정하",
+      "steps": [
+        {
+          "say": "SQL Server는 SELECT 절에 TOP을 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "TOP은 정렬이 끝난 뒤에 적용돼요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "그래서 인라인 뷰가 필요 없어요.",
+          "focus": [
+            1,
+            3
+          ]
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "id": "s12",
+      "section": "SQL Server TOP",
+      "type": "data",
+      "title": "WITH TIES",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT TOP (2) WITH TIES ENAME, SAL\nFROM   EMP\nORDER  BY SAL DESC;",
+      "steps": [
+        {
+          "say": "WITH TIES는 동점까지 함께 가져와요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "먼저 급여 순으로 정렬해요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "sort": [
+                [
+                  "SAL",
+                  "desc"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "두 건을 요청하면 최윤, 김민이에요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "EMP": {
+              "rows": [
+                3,
+                0
+              ]
+            }
+          }
+        },
+        {
+          "say": "그런데 정하도 김민과 같은 300이에요.",
+          "t": {
+            "EMP": {
+              "cells": [
+                [
+                  0,
+                  "SAL"
+                ],
+                [
+                  4,
+                  "SAL"
+                ]
+              ],
+              "notes": [
+                [
+                  4,
+                  "SAL",
+                  "동점"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 세 건이 나와요.",
+          "t": {
+            "EMP": {
+              "filter": [
+                3,
+                0,
+                4
+              ],
+              "result": {
+                "title": "결과 3건",
+                "columns": [
+                  "ENAME",
+                  "SAL"
+                ],
+                "rows": [
+                  [
+                    "최윤",
+                    "400"
+                  ],
+                  [
+                    "김민",
+                    "300"
+                  ],
+                  [
+                    "정하",
+                    "300"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "결과가 요청보다 많을 수 있어요."
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "SQL Server TOP",
+      "tone": "warning",
+      "title": "TOP 주의",
+      "text": "**WITH TIES는 ORDER BY 필수**. ORDER BY 없는 TOP은 어떤 행이 나올지 보장 안 됨.",
+      "steps": [
+        {
+          "say": "WITH TIES는 ORDER BY 없이 못 써요."
+        },
+        {
+          "say": "ORDER BY 없이 TOP만 쓰면 결과가 보장되지 않아요."
+        },
+        {
+          "say": "TOP 뒤에 PERCENT를 붙이면 비율로 가져와요."
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "cards",
+      "section": "FETCH FIRST와 OFFSET",
+      "title": "표준 문법 구성",
+      "cols": 2,
+      "items": [
+        {
+          "title": "OFFSET",
+          "desc": "앞 m건 건너뜀",
+          "icon": "filter"
+        },
+        {
+          "title": "FETCH",
+          "desc": "n건만 가져옴",
+          "icon": "target"
+        },
+        {
+          "title": "동점 포함",
+          "desc": "WITH TIES",
+          "icon": "scale"
+        },
+        {
+          "title": "PERCENT",
+          "desc": "비율, 오라클",
+          "icon": "ruler"
+        }
+      ],
+      "steps": [
+        {
+          "say": "표준 문법은 FETCH FIRST예요."
+        },
+        {
+          "say": "오라클 12c, SQL Server 2012부터 써요."
+        },
+        {
+          "say": "OFFSET은 앞의 몇 건을 건너뛰어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "FETCH는 몇 건만 가져와요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "FIRST와 NEXT는 같은 뜻이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "WITH TIES를 붙이면 동점까지 와요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "PERCENT로 비율도 돼요. 오라클 문법이에요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "callout",
+      "section": "FETCH FIRST와 OFFSET",
+      "tone": "tip",
+      "title": "SQL Server 주의",
+      "text": "SQL Server는 **OFFSET 절이 필수**. 처음부터면 OFFSET 0 ROWS.",
+      "steps": [
+        {
+          "say": "SQL Server에선 OFFSET이 꼭 있어야 해요."
+        },
+        {
+          "say": "처음부터라면 OFFSET 0 ROWS라고 써요."
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "cards",
+      "section": "ROW_NUMBER 활용",
+      "title": "윈도우 함수로 Top N",
+      "cols": 2,
+      "items": [
+        {
+          "title": "고유 번호",
+          "desc": "ROW_NUMBER",
+          "icon": "tag"
+        },
+        {
+          "title": "동점 포함",
+          "desc": "RANK",
+          "icon": "scale"
+        },
+        {
+          "title": "그룹별",
+          "desc": "PARTITION BY",
+          "icon": "layers"
+        },
+        {
+          "title": "인라인 뷰",
+          "desc": "WHERE에 직접 불가",
+          "icon": "box",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "윈도우 함수로도 Top N을 해요. DBMS와 상관없어요."
+        },
+        {
+          "say": "ROW NUMBER는 고유 번호를 매겨요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "동점을 포함하려면 RANK를 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "RANK는 동점에 같은 등수를 줘요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그룹별 상위는 PARTITION BY를 더해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "윈도우 함수는 WHERE에 바로 못 써요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "그래서 꼭 인라인 뷰로 감싸요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "quiz",
+      "section": "ROW_NUMBER 활용",
+      "question": "급여가 400, 300, 300, 200이다. 내림차순 **RANK가 2 이하**인 행은 몇 건?",
+      "choices": [
+        "1건",
+        "2건",
+        "3건",
+        "4건"
+      ],
+      "answer": 3,
+      "explanation": "300 두 건이 공동 2등이에요. 그래서 3건이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. RANK 2 이하는 몇 건일까요?"
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "id": "s18",
+      "section": "페이징",
+      "type": "data",
+      "title": "2페이지: ROWNUM 세 겹",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT ENAME, SAL\nFROM  (SELECT ROWNUM RN, ENAME, SAL\n       FROM  (SELECT ENAME, SAL FROM EMP\n              ORDER BY SAL DESC, ENAME)\n       WHERE ROWNUM <= 4)\nWHERE RN >= 3;",
+      "steps": [
+        {
+          "say": "이제 페이징이에요. 한 페이지에 두 건씩, 2페이지를 구해요."
+        },
+        {
+          "say": "오라클 ROWNUM으로는 세 겹으로 써요. 안쪽에서 먼저 정렬해요.",
+          "focus": [
+            3,
+            4
+          ],
+          "t": {
+            "EMP": {
+              "sort": [
+                [
+                  "SAL",
+                  "desc"
+                ],
+                [
+                  "ENAME",
+                  "asc"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "가운데서 ROWNUM에 RN이라는 별칭을 붙여요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "add": [
+                "RN",
+                [
+                  "2",
+                  "5",
+                  "4",
+                  "1",
+                  "3",
+                  "6"
+                ]
+              ],
+              "cols": [
+                "RN"
+              ]
+            }
+          }
+        },
+        {
+          "say": "그리고 4 이하로 끝 번호까지 잘라요.",
+          "focus": [
+            5
+          ],
+          "t": {
+            "EMP": {
+              "filter": [
+                3,
+                0,
+                4,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "바깥에서 RN 3 이상을 걸어요.",
+          "focus": [
+            6
+          ],
+          "t": {
+            "EMP": {
+              "filter": [
+                4,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "RN은 값이 이미 정해진 일반 컬럼이라 이상 조건도 잘 동작해요.",
+          "focus": [
+            6
+          ],
+          "t": {
+            "EMP": {
+              "result": {
+                "title": "2페이지",
+                "columns": [
+                  "ENAME",
+                  "SAL"
+                ],
+                "rows": [
+                  [
+                    "정하",
+                    "300"
+                  ],
+                  [
+                    "박솔",
+                    "200"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "페이징",
+      "title": "같은 결과, 세 방법",
+      "cols": 3,
+      "items": [
+        {
+          "title": "ROWNUM",
+          "desc": "세 겹 인라인 뷰",
+          "icon": "layers"
+        },
+        {
+          "title": "윈도우",
+          "desc": "RN 3에서 4",
+          "icon": "tag"
+        },
+        {
+          "title": "OFFSET",
+          "desc": "2건 넘기고 2건",
+          "icon": "filter"
+        }
+      ],
+      "steps": [
+        {
+          "say": "같은 2페이지를 세 방법으로 구해요."
+        },
+        {
+          "say": "ROWNUM은 세 겹 인라인 뷰를 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "ROW NUMBER는 RN 3부터 4까지 골라요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "OFFSET은 두 건 넘기고 두 건 가져와요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "세 방법 모두 결과가 같아요.",
+          "focus": [
+            0,
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "compare",
+      "section": "페이징",
+      "title": "정렬 기준의 동점",
+      "left": {
+        "title": "SAL만 정렬",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "동점 순서가 바뀜",
+          "페이지 중복, 누락"
+        ]
+      },
+      "right": {
+        "title": "고유 컬럼 추가",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "EMPNO 등 추가",
+          "순서가 확정됨"
+        ]
+      },
+      "steps": [
+        {
+          "say": "페이징 함정이 하나 더 있어요."
+        },
+        {
+          "say": "급여만으로 정렬하면 동점끼리 순서가 바뀌어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그러면 행이 중복되거나 빠질 수 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "EMPNO 같은 고유 컬럼을 정렬에 더하세요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "quiz",
+      "section": "페이징",
+      "question": "한 페이지 2건씩, **3페이지**를 조회하는 표준 구문은?",
+      "choices": [
+        "OFFSET 4, FETCH 2",
+        "OFFSET 3, FETCH 2",
+        "OFFSET 2, FETCH 3",
+        "OFFSET 6, FETCH 2"
+      ],
+      "answer": 1,
+      "explanation": "3페이지는 5, 6번째 행이에요. 앞 4건을 건너뛰고 2건이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 한 페이지 두 건씩, 3페이지의 OFFSET과 FETCH는?"
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "ROWNUM은 정렬보다 먼저 부여",
+        "인라인 뷰에서 정렬 후 ROWNUM",
+        "ROWNUM > 1, = 2는 항상 0건",
+        "TOP은 정렬 후, WITH TIES는 동점",
+        "OFFSET m ROWS FETCH NEXT n",
+        "페이징엔 고유 컬럼까지 정렬"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "ROWNUM은 정렬보다 먼저 붙어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그래서 인라인 뷰에서 먼저 정렬해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "1 초과, 같다 2는 항상 0건이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "TOP은 정렬 뒤에, WITH TIES는 동점까지예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "표준은 OFFSET과 FETCH NEXT예요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "페이징엔 고유 컬럼까지 정렬해요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s22"
+    }
+  ]
+}

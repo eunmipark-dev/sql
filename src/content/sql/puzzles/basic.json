@@ -1,0 +1,328 @@
+[
+  {
+    "id": "eq-null",
+    "topic": "NULL 비교",
+    "sql": "SELECT ename\nFROM emp\nWHERE comm = NULL",
+    "ask": "rows",
+    "expect": "0",
+    "explain": "NULL 과의 비교(=, <>)는 참도 거짓도 아닌 '알 수 없음'이라 어떤 행도 나오지 않아요. NULL 을 찾으려면 comm IS NULL 로 써야 해요."
+  },
+  {
+    "id": "is-null",
+    "topic": "NULL 비교",
+    "sql": "SELECT ename\nFROM emp\nWHERE comm IS NULL",
+    "ask": "rows",
+    "expect": "10",
+    "explain": "comm 이 있는 사람은 ALLEN, WARD, MARTIN, TURNER 4명이에요. TURNER 의 0 은 NULL 이 아니라 값이에요. 그래서 14명 중 10명이 나와요."
+  },
+  {
+    "id": "ne-zero",
+    "topic": "NULL 비교",
+    "sql": "SELECT ename\nFROM emp\nWHERE comm <> 0",
+    "ask": "rows",
+    "expect": "3",
+    "explain": "comm 이 NULL 인 행은 '0 이 아니다'도 알 수 없음이라 빠져요. 300, 500, 1400 인 3명만 나와요."
+  },
+  {
+    "id": "count-col",
+    "topic": "집계와 NULL",
+    "sql": "SELECT COUNT(comm)\nFROM emp",
+    "ask": "value",
+    "distractors": ["14", "3", "10"],
+    "expect": "4",
+    "explain": "COUNT(컬럼)은 NULL 이 아닌 값만 세요. 0 도 값이라 TURNER 까지 4명이에요. COUNT(*) 였다면 14예요."
+  },
+  {
+    "id": "avg-null",
+    "topic": "집계와 NULL",
+    "sql": "SELECT ROUND(AVG(comm))\nFROM emp",
+    "ask": "value",
+    "distractors": ["157", "733", "2200"],
+    "expect": "550",
+    "explain": "AVG 는 NULL 을 빼고 평균을 내요. (300 + 500 + 1400 + 0) / 4 = 550. 14로 나누려면 AVG(NVL(comm, 0)) 처럼 써야 해요."
+  },
+  {
+    "id": "sum-all-null",
+    "topic": "집계와 NULL",
+    "sql": "SELECT SUM(comm)\nFROM emp\nWHERE deptno = 10",
+    "ask": "value",
+    "distractors": ["0", "5000", "에러"],
+    "expect": "NULL",
+    "explain": "10번 부서 사람들은 comm 이 모두 NULL 이에요. 더할 값이 하나도 없으면 SUM 은 0 이 아니라 NULL 을 돌려줘요."
+  },
+  {
+    "id": "plus-null",
+    "topic": "NULL 연산",
+    "sql": "SELECT sal + comm\nFROM emp\nWHERE ename = 'KING'",
+    "ask": "value",
+    "distractors": ["5000", "0", "에러"],
+    "expect": "NULL",
+    "explain": "NULL 이 섞인 산술 연산의 결과는 NULL 이에요. 5000 을 얻으려면 sal + NVL(comm, 0) 처럼 써야 해요."
+  },
+  {
+    "id": "max-empty",
+    "topic": "빈 집합의 집계",
+    "sql": "SELECT MAX(sal)\nFROM emp\nWHERE deptno = 40",
+    "ask": "rows",
+    "expect": "1",
+    "explain": "40번 부서에는 사원이 없지만, GROUP BY 없는 집계는 항상 한 행을 돌려줘요. 값은 NULL 이에요."
+  },
+  {
+    "id": "group-empty",
+    "topic": "빈 집합의 집계",
+    "sql": "SELECT deptno, MAX(sal)\nFROM emp\nWHERE deptno = 40\nGROUP BY deptno",
+    "ask": "rows",
+    "expect": "0",
+    "explain": "GROUP BY 가 있으면 그룹이 하나도 없을 때 결과도 0행이에요. GROUP BY 가 없을 때와 다른 점이에요."
+  },
+  {
+    "id": "having",
+    "topic": "GROUP BY · HAVING",
+    "sql": "SELECT deptno, COUNT(*)\nFROM emp\nGROUP BY deptno\nHAVING COUNT(*) >= 4",
+    "ask": "rows",
+    "expect": "2",
+    "explain": "부서별 인원은 10번 3명, 20번 5명, 30번 6명이에요. HAVING 이 4명 이상인 그룹만 남겨서 2행이에요."
+  },
+  {
+    "id": "distinct-2col",
+    "topic": "DISTINCT",
+    "sql": "SELECT DISTINCT deptno, job\nFROM emp",
+    "ask": "rows",
+    "expect": "9",
+    "explain": "DISTINCT 는 두 컬럼의 조합이 같을 때만 하나로 합쳐요. 부서마다 직무가 3가지씩이라 9행이에요."
+  },
+  {
+    "id": "count-case",
+    "topic": "CASE 와 COUNT",
+    "sql": "SELECT COUNT(CASE WHEN sal >= 3000 THEN 1 END)\nFROM emp",
+    "ask": "value",
+    "distractors": ["14", "2", "1"],
+    "expect": "3",
+    "explain": "ELSE 가 없으면 조건에 안 맞는 행은 NULL 이 되고, COUNT 는 NULL 을 세지 않아요. KING, SCOTT, FORD 3명이에요."
+  },
+  {
+    "id": "count-case-else",
+    "topic": "CASE 와 COUNT",
+    "sql": "SELECT COUNT(CASE WHEN sal >= 3000 THEN 1 ELSE 0 END)\nFROM emp",
+    "ask": "value",
+    "distractors": ["3", "11", "0"],
+    "expect": "14",
+    "explain": "ELSE 0 이 있으면 모든 행이 1 또는 0 이라는 값을 가져요. COUNT 는 0 도 세서 14예요. 조건에 맞는 수를 세려면 SUM 을 쓰거나 ELSE 를 빼야 해요."
+  },
+  {
+    "id": "like",
+    "topic": "LIKE",
+    "sql": "SELECT ename\nFROM emp\nWHERE ename LIKE '_A%'",
+    "ask": "rows",
+    "expect": "3",
+    "explain": "_ 는 정확히 한 글자, % 는 0글자 이상이에요. 두 번째 글자가 A 인 WARD, MARTIN, JAMES 3명이에요."
+  },
+  {
+    "id": "between",
+    "topic": "BETWEEN",
+    "sql": "SELECT ename\nFROM emp\nWHERE sal BETWEEN 1250 AND 1600",
+    "ask": "rows",
+    "expect": "5",
+    "explain": "BETWEEN 은 양 끝 값을 포함해요. ALLEN 1600, WARD 1250, MARTIN 1250, TURNER 1500, MILLER 1300 으로 5명이에요."
+  },
+  {
+    "id": "order-null",
+    "topic": "정렬과 NULL",
+    "sql": "SELECT comm\nFROM emp\nORDER BY comm DESC\nFETCH FIRST 1 ROWS ONLY",
+    "ask": "value",
+    "distractors": ["1400", "0", "300"],
+    "expect": "NULL",
+    "explain": "Oracle 에서 NULL 은 가장 큰 값처럼 정렬돼요. 그래서 내림차순이면 NULL 이 맨 앞에 와요. 뒤로 보내려면 NULLS LAST 를 써요."
+  },
+  {
+    "id": "not-in-null",
+    "topic": "NOT IN 과 NULL",
+    "sql": "SELECT c1\nFROM t1\nWHERE c1 NOT IN (SELECT c1 FROM t2)",
+    "ask": "rows",
+    "expect": "0",
+    "explain": "서브쿼리 결과에 NULL 이 있으면 NOT IN 은 어떤 행에도 참이 될 수 없어요. c1 <> 2 AND c1 <> 3 AND c1 <> 4 AND c1 <> NULL 에서 마지막 비교가 알 수 없음이라서예요."
+  },
+  {
+    "id": "not-exists",
+    "topic": "NOT EXISTS",
+    "sql": "SELECT a.c1\nFROM t1 a\nWHERE NOT EXISTS (\n  SELECT 1 FROM t2 b WHERE b.c1 = a.c1\n)",
+    "ask": "rows",
+    "expect": "2",
+    "explain": "NOT EXISTS 는 짝이 없는 행을 그대로 남겨요. t1 의 1 과 NULL 은 t2 에서 같은 값을 찾지 못해 2행이 나와요. 같은 뜻 같아도 NOT IN 과 결과가 달라요."
+  },
+  {
+    "id": "in-sub",
+    "topic": "IN 서브쿼리",
+    "sql": "SELECT c1\nFROM t1\nWHERE c1 IN (SELECT c1 FROM t2)",
+    "ask": "rows",
+    "expect": "3",
+    "explain": "t1 의 2, 2, 3 이 t2 에 있어요. IN 은 중복을 없애지 않아서 2 가 두 번 나와 3행이에요. NULL 은 IN 으로 찾을 수 없어요."
+  },
+  {
+    "id": "union",
+    "topic": "집합 연산자",
+    "sql": "SELECT c1 FROM t1\nUNION\nSELECT c1 FROM t2",
+    "ask": "rows",
+    "expect": "5",
+    "explain": "UNION 은 중복을 없애요. 1, 2, 3, 4, NULL 로 5행이에요. 집합 연산에서는 NULL 끼리도 같은 값으로 봐요."
+  },
+  {
+    "id": "union-all",
+    "topic": "집합 연산자",
+    "sql": "SELECT c1 FROM t1\nUNION ALL\nSELECT c1 FROM t2",
+    "ask": "rows",
+    "expect": "9",
+    "explain": "UNION ALL 은 중복을 그대로 둬요. 5행 + 4행 = 9행이에요."
+  },
+  {
+    "id": "intersect",
+    "topic": "집합 연산자",
+    "sql": "SELECT c1 FROM t1\nINTERSECT\nSELECT c1 FROM t2",
+    "ask": "rows",
+    "expect": "3",
+    "explain": "양쪽에 모두 있는 2, 3 과 NULL 이 나와요. WHERE 의 = 비교와 달리 집합 연산은 NULL 끼리 같다고 봐요."
+  },
+  {
+    "id": "except",
+    "topic": "집합 연산자",
+    "sql": "SELECT c1 FROM t1\nEXCEPT\nSELECT c1 FROM t2",
+    "ask": "rows",
+    "expect": "1",
+    "note": "Oracle 의 MINUS 를 이 엔진(PostgreSQL)에서는 EXCEPT 로 써요.",
+    "explain": "t1 에만 있는 값은 1 하나예요. NULL 은 t2 에도 있어서 빠지고, 결과의 중복도 없어져요."
+  },
+  {
+    "id": "left-join",
+    "topic": "OUTER JOIN",
+    "sql": "SELECT d.deptno, e.ename\nFROM dept d\nLEFT OUTER JOIN emp e\n  ON e.deptno = d.deptno",
+    "ask": "rows",
+    "expect": "15",
+    "explain": "사원 14명이 각자 부서와 이어지고, 사원이 없는 40번 부서도 ename 이 NULL 인 한 행으로 남아서 15행이에요."
+  },
+  {
+    "id": "left-join-where",
+    "topic": "OUTER JOIN",
+    "sql": "SELECT d.dname, e.ename\nFROM dept d\nLEFT OUTER JOIN emp e\n  ON e.deptno = d.deptno\nWHERE e.sal > 2000",
+    "ask": "rows",
+    "expect": "6",
+    "explain": "WHERE 는 조인이 끝난 뒤에 걸러요. 40번 부서 행은 e.sal 이 NULL 이라 빠져서, 결국 INNER JOIN 처럼 급여 2000 초과인 6명만 남아요."
+  },
+  {
+    "id": "left-join-on",
+    "topic": "OUTER JOIN",
+    "sql": "SELECT d.dname, e.ename\nFROM dept d\nLEFT OUTER JOIN emp e\n  ON e.deptno = d.deptno\n AND e.sal > 2000",
+    "ask": "rows",
+    "expect": "7",
+    "explain": "조건이 ON 에 있으면 짝 찾기에만 쓰이고, 부서는 모두 남아요. 급여 2000 초과인 6명 + 짝이 없는 40번 부서 1행 = 7행이에요."
+  },
+  {
+    "id": "outer-count-col",
+    "topic": "OUTER JOIN 과 COUNT",
+    "sql": "SELECT COUNT(e.empno)\nFROM dept d\nLEFT OUTER JOIN emp e\n  ON e.deptno = d.deptno\nWHERE d.deptno = 40",
+    "ask": "value",
+    "distractors": ["1", "NULL", "14"],
+    "expect": "0",
+    "explain": "40번 부서는 한 행이 남지만 e.empno 가 NULL 이에요. COUNT(컬럼)은 NULL 을 세지 않아 0이에요."
+  },
+  {
+    "id": "outer-count-star",
+    "topic": "OUTER JOIN 과 COUNT",
+    "sql": "SELECT COUNT(*)\nFROM dept d\nLEFT OUTER JOIN emp e\n  ON e.deptno = d.deptno\nWHERE d.deptno = 40",
+    "ask": "value",
+    "distractors": ["0", "NULL", "4"],
+    "expect": "1",
+    "explain": "COUNT(*) 는 행 자체를 세요. 사원이 없어도 OUTER JOIN 으로 남은 한 행이 있어서 1이에요. 부서별 인원을 셀 때 COUNT(*) 를 쓰면 틀리는 이유예요."
+  },
+  {
+    "id": "cross-join",
+    "topic": "CROSS JOIN",
+    "sql": "SELECT *\nFROM dept\nCROSS JOIN t2",
+    "ask": "rows",
+    "expect": "16",
+    "explain": "CROSS JOIN 은 모든 조합을 만들어요. 4행 × 4행 = 16행이에요."
+  },
+  {
+    "id": "self-join",
+    "topic": "SELF JOIN",
+    "sql": "SELECT e.ename, m.ename AS manager\nFROM emp e\nJOIN emp m\n  ON e.mgr = m.empno",
+    "ask": "rows",
+    "expect": "13",
+    "explain": "관리자가 없는 KING 은 짝이 없어 INNER JOIN 에서 빠져요. 14명 중 13명이에요."
+  },
+  {
+    "id": "rollup",
+    "topic": "ROLLUP",
+    "sql": "SELECT deptno, job, SUM(sal)\nFROM emp\nGROUP BY ROLLUP(deptno, job)",
+    "ask": "rows",
+    "expect": "13",
+    "explain": "(부서, 직무) 9행 + 부서별 소계 3행 + 전체 합계 1행 = 13행이에요. ROLLUP 은 오른쪽 컬럼부터 하나씩 빼며 소계를 내요."
+  },
+  {
+    "id": "cube",
+    "topic": "CUBE",
+    "sql": "SELECT deptno, job, SUM(sal)\nFROM emp\nGROUP BY CUBE(deptno, job)",
+    "ask": "rows",
+    "expect": "18",
+    "explain": "CUBE 는 가능한 모든 조합이에요. (부서, 직무) 9 + 부서별 3 + 직무별 5 + 전체 1 = 18행이에요."
+  },
+  {
+    "id": "grouping-sets",
+    "topic": "GROUPING SETS",
+    "sql": "SELECT deptno, job, SUM(sal)\nFROM emp\nGROUP BY GROUPING SETS (deptno, job)",
+    "ask": "rows",
+    "expect": "8",
+    "explain": "GROUPING SETS 는 적은 것만 따로 집계해요. 부서별 3행 + 직무별 5행 = 8행. 전체 합계는 () 를 넣어야 나와요."
+  },
+  {
+    "id": "rank",
+    "topic": "순위 함수",
+    "sql": "SELECT rnk\nFROM (\n  SELECT ename,\n         RANK() OVER (ORDER BY sal DESC) AS rnk\n  FROM emp\n  WHERE deptno = 20\n) t\nWHERE ename = 'JONES'",
+    "ask": "value",
+    "distractors": ["2", "1", "4"],
+    "expect": "3",
+    "explain": "20번 부서 급여는 3000, 3000, 2975 … 이에요. RANK 는 공동 1위가 둘이면 다음 순위를 건너뛰어 JONES 는 3위예요."
+  },
+  {
+    "id": "dense-rank",
+    "topic": "순위 함수",
+    "sql": "SELECT rnk\nFROM (\n  SELECT ename,\n         DENSE_RANK() OVER (ORDER BY sal DESC) AS rnk\n  FROM emp\n  WHERE deptno = 20\n) t\nWHERE ename = 'JONES'",
+    "ask": "value",
+    "distractors": ["3", "1", "4"],
+    "expect": "2",
+    "explain": "DENSE_RANK 는 공동 순위가 있어도 다음 순위를 건너뛰지 않아요. 공동 1위 다음이라 JONES 는 2위예요."
+  },
+  {
+    "id": "window-after-where",
+    "topic": "윈도우 함수 처리 시점",
+    "sql": "SELECT RANK() OVER (ORDER BY sal DESC)\nFROM emp\nWHERE ename = 'JONES'",
+    "ask": "value",
+    "distractors": ["3", "4", "NULL"],
+    "expect": "1",
+    "explain": "윈도우 함수는 WHERE 로 거른 뒤의 행만 봐요. 남은 행이 JONES 하나뿐이라 1위예요. 전체 중 순위를 보려면 인라인 뷰에서 먼저 순위를 매겨야 해요."
+  },
+  {
+    "id": "partition-sum",
+    "topic": "윈도우 함수",
+    "sql": "SELECT dept_sum\nFROM (\n  SELECT ename,\n         SUM(sal) OVER (PARTITION BY deptno) AS dept_sum\n  FROM emp\n) t\nWHERE ename = 'ADAMS'",
+    "ask": "value",
+    "distractors": ["1100", "29025", "8750"],
+    "expect": "10875",
+    "explain": "PARTITION BY 는 행을 줄이지 않고 같은 부서끼리의 합을 붙여요. ADAMS 가 속한 20번 부서의 급여 합 10875 가 나와요."
+  },
+  {
+    "id": "correlated",
+    "topic": "상관 서브쿼리",
+    "sql": "SELECT ename\nFROM emp e\nWHERE sal > (\n  SELECT AVG(sal) FROM emp\n  WHERE deptno = e.deptno\n)",
+    "ask": "rows",
+    "expect": "6",
+    "explain": "각 사원의 부서 평균과 비교해요. 10번 KING, 20번 JONES·SCOTT·FORD, 30번 BLAKE·ALLEN 으로 6명이에요."
+  },
+  {
+    "id": "with-ties",
+    "topic": "Top-N",
+    "sql": "SELECT ename, sal\nFROM emp\nORDER BY sal DESC\nFETCH FIRST 2 ROWS WITH TIES",
+    "ask": "rows",
+    "expect": "3",
+    "explain": "2위인 SCOTT 과 FORD 가 3000 으로 같아요. WITH TIES 는 마지막 순위와 같은 값을 함께 가져와서 3행이에요."
+  }
+]

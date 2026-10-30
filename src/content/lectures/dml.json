@@ -1,0 +1,1326 @@
+{
+  "slug": "dml",
+  "title": "DML",
+  "tables": {
+    "EMP": {
+      "columns": [
+        "EMPNO",
+        "ENAME",
+        "SAL"
+      ],
+      "rows": [
+        [
+          "101",
+          "A",
+          "100"
+        ],
+        [
+          "102",
+          "B",
+          "200"
+        ],
+        [
+          "103",
+          "C",
+          "300"
+        ]
+      ]
+    },
+    "NEW": {
+      "columns": [
+        "EMPNO",
+        "ENAME",
+        "SAL"
+      ],
+      "rows": [
+        [
+          "102",
+          "B",
+          "250"
+        ],
+        [
+          "104",
+          "D",
+          "400"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "DML",
+      "subtitle": "데이터를 넣고 고치고 지우기",
+      "icon": "database",
+      "steps": [
+        {
+          "say": "DML 강의를 시작할게요."
+        },
+        {
+          "say": "데이터를 넣고, 고치고, 지우는 명령이에요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "cards",
+      "section": "DML 명령어",
+      "title": "DML 4가지 명령",
+      "cols": 2,
+      "items": [
+        {
+          "title": "INSERT",
+          "desc": "행을 추가",
+          "icon": "file"
+        },
+        {
+          "title": "UPDATE",
+          "desc": "값을 변경",
+          "icon": "recycle"
+        },
+        {
+          "title": "DELETE",
+          "desc": "행을 삭제",
+          "icon": "warning"
+        },
+        {
+          "title": "MERGE",
+          "desc": "있으면 고치고 없으면 넣기",
+          "icon": "branch"
+        }
+      ],
+      "steps": [
+        {
+          "say": "DML 명령은 네 가지예요."
+        },
+        {
+          "say": "첫째, INSERT. 행을 추가해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, UPDATE. 값을 바꿔요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, DELETE. 행을 지워요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, MERGE. 조건에 따라 한 번에 처리해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "오라클은 커밋해야 영구 반영돼요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "compare",
+      "section": "INSERT",
+      "title": "컬럼 목록, 쓸까 말까",
+      "left": {
+        "title": "목록 명시",
+        "icon": "checklist",
+        "items": [
+          "순서와 개수 일치",
+          "빠진 컬럼은 기본값",
+          "기본값 없으면 NULL"
+        ]
+      },
+      "right": {
+        "title": "목록 생략",
+        "icon": "table",
+        "items": [
+          "모든 컬럼 값 필요",
+          "정의 순서대로",
+          "NULL도 직접 적기"
+        ]
+      },
+      "steps": [
+        {
+          "say": "INSERT는 컬럼 목록을 쓸 수도, 뺄 수도 있어요."
+        },
+        {
+          "say": "목록을 쓰면 값의 순서와 개수를 맞춰요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "빠진 컬럼엔 기본값이 들어가요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "기본값이 없으면 NULL이 들어가요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "목록을 빼면 모든 컬럼 값을 넣어야 해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "테이블 정의 순서대로요. 빈 칸은 NULL로 적어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "id": "s04",
+      "section": "INSERT",
+      "type": "data",
+      "title": "INSERT 해 보기",
+      "tables": [
+        "EMP"
+      ],
+      "code": "INSERT INTO EMP (EMPNO, ENAME)\nVALUES (104, 'D');",
+      "steps": [
+        {
+          "say": "사원 세 명이 있어요. 새 사원 D를 넣어 볼게요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "컬럼 목록에 EMPNO와 ENAME만 적었어요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "EMP": {
+              "cols": [
+                "EMPNO",
+                "ENAME"
+              ]
+            }
+          }
+        },
+        {
+          "say": "값도 두 개, 순서대로 맞춰요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "새 행이 생기고, 빠진 SAL에는 NULL이 들어가요.",
+          "focus": [
+            1,
+            2
+          ],
+          "t": {
+            "EMP": {
+              "cols": [
+                "SAL"
+              ],
+              "result": {
+                "title": "INSERT 후 EMP",
+                "columns": [
+                  "EMPNO",
+                  "ENAME",
+                  "SAL"
+                ],
+                "rows": [
+                  [
+                    "101",
+                    "A",
+                    "100"
+                  ],
+                  [
+                    "102",
+                    "B",
+                    "200"
+                  ],
+                  [
+                    "103",
+                    "C",
+                    "300"
+                  ],
+                  [
+                    "104",
+                    "D",
+                    "NULL"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "자동으로 NULL이 되는 건 목록을 쓸 때만이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "목록 없이 값을 덜 넣으면 오류예요."
+        },
+        {
+          "say": "빠진 컬럼이 NOT NULL이고 기본값도 없으면 오류예요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "SAL"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "INSERT",
+      "title": "여러 행 넣기",
+      "cols": 3,
+      "items": [
+        {
+          "title": "ALL",
+          "desc": "INSERT ALL 오라클",
+          "icon": "layers"
+        },
+        {
+          "title": "VALUES",
+          "desc": "여러 행 나열",
+          "icon": "copy"
+        },
+        {
+          "title": "SELECT",
+          "desc": "조회 결과 통째로",
+          "icon": "filter"
+        }
+      ],
+      "steps": [
+        {
+          "say": "여러 행을 한 번에 넣는 방법도 있어요."
+        },
+        {
+          "say": "오라클은 INSERT ALL을 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL Server는 VALUES 뒤에 여러 행을 나열해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셀렉트 결과를 통째로 넣을 수도 있어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "이때 컬럼 수와 타입이 맞아야 해요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "compare",
+      "section": "INSERT",
+      "title": "SELECT 입력과 CTAS",
+      "left": {
+        "title": "INSERT SELECT",
+        "icon": "table",
+        "items": [
+          "대상 테이블 필요",
+          "미리 있어야 함"
+        ]
+      },
+      "right": {
+        "title": "CTAS",
+        "icon": "shapes",
+        "items": [
+          "테이블을 새로 만듦",
+          "DDL 명령"
+        ]
+      },
+      "steps": [
+        {
+          "say": "헷갈리는 둘을 비교해 볼게요."
+        },
+        {
+          "say": "INSERT SELECT는 대상 테이블이 미리 있어야 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "CTAS는 테이블을 새로 만들면서 복사해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "quiz",
+      "section": "INSERT",
+      "question": "컬럼 목록을 **생략**한 INSERT에서 값 개수가 컬럼 수보다 적으면?",
+      "choices": [
+        "나머지는 NULL",
+        "오류가 발생한다",
+        "나머지는 기본값",
+        "앞 컬럼만 입력"
+      ],
+      "answer": 2,
+      "explanation": "목록을 생략하면 모든 컬럼 값이 필요해요. 값이 부족하면 오류예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 컬럼 목록 없이 값을 덜 넣으면 어떻게 될까요?"
+        }
+      ],
+      "id": "s06q"
+    },
+    {
+      "type": "flow",
+      "section": "UPDATE",
+      "title": "UPDATE 한 문장",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "UPDATE 테이블",
+          "desc": "어디를",
+          "icon": "table"
+        },
+        {
+          "title": "SET 새 값",
+          "desc": "무엇으로",
+          "icon": "recycle"
+        },
+        {
+          "title": "WHERE 조건",
+          "desc": "어떤 행만",
+          "icon": "filter"
+        }
+      ],
+      "steps": [
+        {
+          "say": "UPDATE는 세 부분이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SET에서 새 값을 정해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "서브쿼리로 값을 정할 수도 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "WHERE로 바꿀 행을 골라요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "id": "s08",
+      "section": "UPDATE",
+      "type": "data",
+      "title": "WHERE를 빠뜨리면",
+      "tables": [
+        "EMP"
+      ],
+      "code": "UPDATE EMP\nSET SAL = SAL * 2\nWHERE ENAME = 'B';",
+      "steps": [
+        {
+          "say": "B의 급여를 두 배로 바꿔 볼게요.",
+          "focus": [
+            1,
+            2
+          ]
+        },
+        {
+          "say": "WHERE가 B 행만 골라요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "rows": [
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "B의 SAL이 200에서 400으로 바뀌어요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "set": [
+                [
+                  1,
+                  "SAL",
+                  "400"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "WHERE를 빼면 모든 행이 바뀌어요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "set": [
+                [
+                  0,
+                  "SAL",
+                  "200"
+                ],
+                [
+                  2,
+                  "SAL",
+                  "600"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "SAL",
+                  "두 배"
+                ],
+                [
+                  2,
+                  "SAL",
+                  "두 배"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "SET의 서브쿼리는 한 행만 돌려줘야 해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "결과가 없으면 그 컬럼은 NULL이 돼요.",
+          "focus": [
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s08d",
+      "section": "DELETE",
+      "type": "data",
+      "title": "DELETE 해 보기",
+      "tables": [
+        "EMP"
+      ],
+      "code": "DELETE FROM EMP\nWHERE SAL >= 300;",
+      "steps": [
+        {
+          "say": "이번엔 행을 지워 볼게요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "SAL이 300보다 크거나 같은 행을 골라요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "cells": [
+                [
+                  2,
+                  "SAL"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "C 행이 통째로 지워져요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "EMP": {
+              "filter": [
+                0,
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "남은 행은 두 개예요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "DML이라 롤백하면 C가 다시 돌아와요.",
+          "t": {
+            "EMP": {
+              "filter": null,
+              "rows": [
+                2
+              ],
+              "notes": [
+                [
+                  2,
+                  "ENAME",
+                  "복구"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "DELETE",
+      "title": "DELETE의 성질",
+      "cols": 2,
+      "items": [
+        {
+          "title": "행 단위",
+          "desc": "WHERE로 골라 삭제",
+          "icon": "filter"
+        },
+        {
+          "title": "롤백 가능",
+          "desc": "언두 로그에 기록",
+          "icon": "recycle",
+          "tone": "good"
+        },
+        {
+          "title": "구조 유지",
+          "desc": "공간도 그대로",
+          "icon": "table"
+        },
+        {
+          "title": "값만 지울 땐",
+          "desc": "UPDATE로 NULL",
+          "icon": "tag"
+        }
+      ],
+      "steps": [
+        {
+          "say": "DELETE의 특징을 볼게요."
+        },
+        {
+          "say": "첫째, 행 단위로 골라서 지워요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 로그를 남겨서 롤백할 수 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 다 지워도 구조와 공간은 남아요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 컬럼 값만 지우려면 UPDATE를 써요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "그 컬럼을 NULL로 바꾸는 거죠.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "quiz",
+      "section": "DELETE",
+      "question": "UPDATE에서 WHERE를 생략하면?",
+      "choices": [
+        "오류가 난다",
+        "첫 행만 바뀐다",
+        "모든 행이 바뀐다",
+        "아무것도 안 바뀐다"
+      ],
+      "answer": 3,
+      "explanation": "WHERE가 없으면 테이블의 모든 행이 대상이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. UPDATE에서 WHERE를 빼면 어떻게 될까요?"
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "id": "s11",
+      "section": "MERGE",
+      "type": "data",
+      "title": "MERGE의 흐름",
+      "tables": [
+        "EMP",
+        "NEW"
+      ],
+      "code": "MERGE INTO EMP t USING NEW s\nON (t.EMPNO = s.EMPNO)\nWHEN MATCHED THEN\n  UPDATE SET t.SAL = s.SAL\nWHEN NOT MATCHED THEN\n  INSERT VALUES (s.EMPNO, s.ENAME, s.SAL);",
+      "steps": [
+        {
+          "say": "MERGE는 원본과 대상을 ON 조건으로 비교해요.",
+          "focus": [
+            1,
+            2
+          ],
+          "t": {
+            "EMP": {
+              "cols": [
+                "EMPNO"
+              ]
+            },
+            "NEW": {
+              "cols": [
+                "EMPNO"
+              ]
+            }
+          }
+        },
+        {
+          "say": "102번은 양쪽에 다 있어요. 짝이 맞아요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  1
+                ]
+              ]
+            },
+            "NEW": {
+              "tint": [
+                [
+                  0
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "일치하면 UPDATE해요. B의 SAL이 250이 돼요.",
+          "focus": [
+            3,
+            4
+          ],
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  1
+                ]
+              ],
+              "set": [
+                [
+                  1,
+                  "SAL",
+                  "250"
+                ]
+              ]
+            },
+            "NEW": {
+              "tint": [
+                [
+                  0
+                ]
+              ],
+              "cells": [
+                [
+                  0,
+                  "SAL"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "104번은 대상에 짝이 없어요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "NEW": {
+              "rows": [
+                1
+              ],
+              "notes": [
+                [
+                  1,
+                  "EMPNO",
+                  "짝 없음"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "일치하지 않으면 INSERT해요.",
+          "focus": [
+            5,
+            6
+          ],
+          "t": {
+            "NEW": {
+              "rows": [
+                1
+              ]
+            },
+            "EMP": {
+              "result": {
+                "title": "MERGE 후 EMP",
+                "columns": [
+                  "EMPNO",
+                  "ENAME",
+                  "SAL"
+                ],
+                "rows": [
+                  [
+                    "101",
+                    "A",
+                    "100"
+                  ],
+                  [
+                    "102",
+                    "B",
+                    "250"
+                  ],
+                  [
+                    "103",
+                    "C",
+                    "300"
+                  ],
+                  [
+                    "104",
+                    "D",
+                    "400"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "있으면 고치고, 없으면 넣는 거예요.",
+          "focus": [
+            3,
+            5
+          ],
+          "t": {
+            "EMP": {
+              "cells": [
+                [
+                  1,
+                  "SAL"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "MERGE",
+      "title": "MERGE 함정",
+      "cols": 3,
+      "items": [
+        {
+          "title": "삭제 범위",
+          "desc": "UPDATE된 행만",
+          "icon": "warning",
+          "tone": "warn"
+        },
+        {
+          "title": "비교 값",
+          "desc": "갱신 후의 값",
+          "icon": "eye",
+          "tone": "warn"
+        },
+        {
+          "title": "ON 컬럼",
+          "desc": "SET 변경 불가",
+          "icon": "lock",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "오라클 MERGE의 함정 세 가지예요."
+        },
+        {
+          "say": "첫째, DELETE WHERE는 갱신된 행만 지워요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "매칭 안 된 행은 지워지지 않아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 조건은 갱신 후의 값으로 따져요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, ON에 쓴 컬럼은 SET에서 못 바꿔요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "callout",
+      "section": "MERGE",
+      "tone": "info",
+      "title": "알아 두기",
+      "text": "두 분기 중 **하나만** 써도 된다. SQL Server MERGE는 끝에 **세미콜론 필수**.",
+      "steps": [
+        {
+          "say": "두 분기 중 하나만 써도 괜찮아요."
+        },
+        {
+          "say": "SQL Server는 끝에 세미콜론이 꼭 필요해요."
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "quiz",
+      "section": "MERGE",
+      "question": "오라클 MERGE의 DELETE WHERE가 지우는 행은?",
+      "choices": [
+        "매칭 안 된 행",
+        "원본의 모든 행",
+        "대상의 모든 행",
+        "UPDATE된 행 중 일부"
+      ],
+      "answer": 4,
+      "explanation": "UPDATE된 행 중 조건 맞는 행만 지워요. 비교는 갱신 후 값이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. MERGE의 DELETE WHERE는 어떤 행을 지울까요?"
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "cards",
+      "section": "삭제 3형제",
+      "title": "노트로 비유하면",
+      "cols": 3,
+      "items": [
+        {
+          "title": "DELETE",
+          "desc": "몇 줄만 지우개로",
+          "icon": "file"
+        },
+        {
+          "title": "TRUNCATE",
+          "desc": "내용만 찢어내기",
+          "icon": "copy"
+        },
+        {
+          "title": "DROP",
+          "desc": "노트를 버리기",
+          "icon": "warning",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "지우는 명령 셋을 노트로 비유해 볼게요."
+        },
+        {
+          "say": "DELETE는 몇 줄만 지우개로 지워요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "TRUNCATE는 내용을 통째로 찢어내요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "빈 노트는 남아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "DROP은 노트 자체를 버려요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "layers",
+      "section": "삭제 3형제",
+      "title": "지우는 범위",
+      "axis": {
+        "top": "좁게",
+        "bottom": "넓게"
+      },
+      "layers": [
+        {
+          "title": "DELETE",
+          "desc": "DML · 롤백 가능",
+          "icon": "filter"
+        },
+        {
+          "title": "TRUNCATE",
+          "desc": "DDL · 구조 유지",
+          "icon": "table"
+        },
+        {
+          "title": "DROP",
+          "desc": "DDL · 구조까지 삭제",
+          "icon": "warning"
+        }
+      ],
+      "steps": [
+        {
+          "say": "지우는 범위로 줄을 세워 볼게요."
+        },
+        {
+          "say": "DELETE는 DML이에요. 롤백할 수 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "공간은 반환하지 않고, 트리거도 동작해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "TRUNCATE는 DDL이에요. 롤백할 수 없어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "구조는 남고 공간은 반환해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "WHERE 절은 쓸 수 없어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "DROP은 구조까지 없애요. 역시 롤백 불가예요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "callout",
+      "section": "삭제 3형제",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "구조 유지, 롤백 불가 = **TRUNCATE**. 롤백 가능 = **DELETE**. 부하 최소 = TRUNCATE.",
+      "steps": [
+        {
+          "say": "구조는 남고 롤백이 안 되면 TRUNCATE예요."
+        },
+        {
+          "say": "롤백이 되면 DELETE예요."
+        },
+        {
+          "say": "부하가 가장 적은 전체 삭제는 TRUNCATE예요."
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "callout",
+      "section": "삭제 3형제",
+      "tone": "info",
+      "title": "예외 두 가지",
+      "text": "DROP 후 **FLASHBACK**은 롤백이 아님. SQL Server는 **BEGIN TRAN** 안이면 롤백 가능.",
+      "steps": [
+        {
+          "say": "오라클은 휴지통에서 플래시백으로 살릴 수 있어요."
+        },
+        {
+          "say": "하지만 이건 롤백과는 다른 기능이에요."
+        },
+        {
+          "say": "SQL Server는 BEGIN TRAN 안이면 돼요."
+        },
+        {
+          "say": "그 안에선 TRUNCATE도 롤백할 수 있어요."
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "quiz",
+      "section": "삭제 3형제",
+      "question": "구조는 남기고 데이터만 지우며 롤백이 안 되는 것은?",
+      "choices": [
+        "DELETE",
+        "TRUNCATE",
+        "DROP",
+        "UPDATE"
+      ],
+      "answer": 2,
+      "explanation": "TRUNCATE예요. 구조는 남고 공간은 반환돼요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 구조는 남기고 롤백은 안 되는 명령은?"
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "compare",
+      "section": "커밋 방식",
+      "title": "오라클과 SQL Server",
+      "left": {
+        "title": "Oracle",
+        "icon": "database",
+        "items": [
+          "수동 커밋",
+          "커밋 전엔 남이 못 봄",
+          "ROLLBACK으로 취소"
+        ]
+      },
+      "right": {
+        "title": "SQL Server",
+        "icon": "database",
+        "items": [
+          "자동 커밋",
+          "문장마다 즉시 확정",
+          "BEGIN TRAN 필요"
+        ]
+      },
+      "steps": [
+        {
+          "say": "두 DBMS는 커밋 방식이 달라요."
+        },
+        {
+          "say": "오라클은 수동 커밋이 기본이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "커밋 전엔 다른 세션에 안 보여요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL Server는 자동 커밋이 기본이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "롤백하려면 먼저 BEGIN TRAN을 해야 해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "callout",
+      "section": "커밋 방식",
+      "tone": "warning",
+      "title": "함정",
+      "text": "오라클은 DML 뒤에 DDL을 실행하면 앞의 DML까지 **암묵적 커밋**.",
+      "steps": [
+        {
+          "say": "오라클에서 DML 뒤에 DDL을 실행해 볼게요."
+        },
+        {
+          "say": "그러면 앞의 DML까지 커밋돼 버려요."
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "quiz",
+      "section": "커밋 방식",
+      "question": "SQL Server 기본 설정에서 DELETE 직후 ROLLBACK하면?",
+      "choices": [
+        "이미 확정되어 있다",
+        "삭제가 취소된다",
+        "테이블이 삭제된다",
+        "절반만 복구된다"
+      ],
+      "answer": 1,
+      "explanation": "기본이 자동 커밋이라 바로 확정돼요. BEGIN TRAN이 있어야 되돌려요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. SQL Server 기본 설정이에요. DELETE 직후 롤백하면 어떻게 될까요?"
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "DML 명령 4가지, MERGE 포함",
+        "목록 생략 INSERT는 모든 컬럼 값",
+        "WHERE 없으면 전체 행 대상",
+        "DELETE WHERE는 갱신된 행만",
+        "DELETE 롤백 · TRUNCATE 구조 유지",
+        "오라클 수동, SQL Server 자동 커밋"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "DML은 네 가지 명령이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "목록 없이 INSERT하면 모든 컬럼 값을 넣어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "WHERE가 없으면 전체 행이 대상이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "MERGE의 DELETE는 갱신된 행만 지워요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "DELETE는 롤백 가능, TRUNCATE는 구조만 남겨요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "오라클은 수동, SQL Server는 자동 커밋이에요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s23"
+    }
+  ]
+}

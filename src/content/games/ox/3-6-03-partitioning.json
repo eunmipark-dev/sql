@@ -1,0 +1,20 @@
+[
+  { "text": "파티셔닝은 논리적으로 하나인 테이블을 파티션 키 값에 따라 물리적으로 여러 세그먼트로 나누어 저장한다.", "answer": true, "explain": "논리적으로는 하나의 테이블이지만 저장은 파티션별 세그먼트로 따로 된다." },
+  { "text": "Range 파티션의 VALUES LESS THAN ('20240101')은 지정한 값 20240101을 포함하는 이하 범위를 뜻한다.", "answer": false, "explain": "VALUES LESS THAN은 지정한 값 미만이며, 그 값 자체는 다음 파티션에 들어간다." },
+  { "text": "오래된 데이터를 주기적으로 삭제·보관하는 관리 목적에는 일자 컬럼 기준 Range 파티셔닝이 적합하다.", "answer": true, "explain": "Range 파티션은 기간 단위로 DROP·TRUNCATE하기 쉬워 관리 목적에 유리하다." },
+  { "text": "Hash 파티션은 BETWEEN 같은 범위 조건으로도 파티션 Pruning이 일어난다.", "answer": false, "explain": "Hash 파티션은 = 조건과 IN-List 조건에서만 Pruning된다." },
+  { "text": "Hash 파티셔닝은 데이터를 고르게 분산하므로 동시 INSERT가 많은 테이블의 경합 분산에 활용된다.", "answer": true, "explain": "해시 값으로 분산되어 Hot Block 같은 경합을 줄이는 데 쓴다." },
+  { "text": "지역, 상태코드처럼 불연속적인 값 목록으로 데이터를 나눌 때는 List 파티셔닝을 사용한다.", "answer": true, "explain": "List 파티션은 값 목록 기준이며 DEFAULT 파티션도 지정할 수 있다." },
+  { "text": "Composite 파티셔닝에서 실제 데이터는 메인 파티션 세그먼트에 저장되고 서브 파티션은 논리적 구분만 한다.", "answer": false, "explain": "Composite 파티셔닝에서는 실제 데이터가 서브 파티션 세그먼트에 저장된다." },
+  { "text": "파티션 키 조건이 상수일 때는 정적 Pruning이 일어나 실행계획의 Pstart/Pstop에 파티션 번호가 표시된다.", "answer": true, "explain": "상수 조건은 하드파싱 시점에 읽을 파티션이 결정되는 정적 Pruning이다." },
+  { "text": "파티션 키 조건에 바인드 변수를 사용하면 파티션 Pruning이 일어나지 않고 전체 파티션을 읽는다.", "answer": false, "explain": "바인드 변수는 실행 시점에 파티션이 결정되는 동적 Pruning(Pstart/Pstop = KEY)으로 정상 Pruning된다." },
+  { "text": "실행계획에 PARTITION RANGE ALL이 나타나면 Pruning 없이 모든 파티션을 액세스한 것이다.", "answer": true, "explain": "SINGLE은 하나, ITERATOR는 연속 여러 개, ALL은 전체 파티션 액세스를 의미한다." },
+  { "text": "SUBSTR(주문일자, 1, 6) = '202403'처럼 파티션 키 컬럼을 가공하면 파티션 Pruning이 되지 않는다.", "answer": true, "explain": "파티션 키를 가공하거나 컬럼 쪽에 묵시적 형변환이 일어나면 Pruning이 실패한다." },
+  { "text": "로컬 파티션 인덱스는 테이블 파티션과 1:1로 대응하며 파티션 DDL 시 Oracle이 자동으로 함께 관리한다.", "answer": true, "explain": "로컬 인덱스는 테이블과 같은 기준으로 파티셔닝되어 관리 편의성이 높다." },
+  { "text": "테이블 파티션을 DROP하면 글로벌 인덱스도 로컬 인덱스처럼 자동으로 유지되어 Usable 상태를 유지한다.", "answer": false, "explain": "글로벌 인덱스는 Unusable이 되므로 재생성하거나 UPDATE GLOBAL INDEXES 옵션을 써야 한다." },
+  { "text": "Oracle은 글로벌 Non-prefixed 파티션 인덱스를 지원한다.", "answer": false, "explain": "Oracle은 로컬 Prefixed, 로컬 Non-prefixed, 글로벌 Prefixed만 지원하고 글로벌 Non-prefixed는 지원하지 않는다." },
+  { "text": "로컬 Unique 파티션 인덱스를 만들려면 파티션 키 컬럼이 인덱스 컬럼에 포함되어야 한다.", "answer": true, "explain": "파티션마다 따로 유일성을 검사하므로 파티션 키가 없으면 전체 유일성을 보장할 수 없다." },
+  { "text": "파티션 키 조건이 없는 소량 조회에는 비파티션 인덱스보다 로컬 Non-prefixed 인덱스가 유리하다.", "answer": false, "explain": "로컬 인덱스는 모든 인덱스 파티션을 수직 탐색해야 하므로 비파티션(글로벌) 인덱스가 유리하다." },
+  { "text": "EXCHANGE PARTITION은 실제 데이터를 복사하지 않고 세그먼트 소유 정보만 교환하므로 빠르게 끝난다.", "answer": true, "explain": "딕셔너리 정보만 바꾸므로 대량 데이터도 순식간에 교체된다." },
+  { "text": "TRUNCATE PARTITION으로 삭제한 파티션 데이터는 ROLLBACK 명령으로 되돌릴 수 있다.", "answer": false, "explain": "DROP·TRUNCATE·EXCHANGE PARTITION은 DDL이라 롤백할 수 없다." }
+]

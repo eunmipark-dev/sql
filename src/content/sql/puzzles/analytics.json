@@ -1,0 +1,481 @@
+[
+  {
+    "id": "an-group-2col-having",
+    "topic": "다중 컬럼 GROUP BY",
+    "sql": "SELECT deptno, job, COUNT(*)\nFROM emp\nGROUP BY deptno, job\nHAVING COUNT(*) >= 2",
+    "ask": "rows",
+    "expect": "3",
+    "explain": "그룹은 (부서, 직무) 조합 9개예요. 그중 2명 이상인 건 20번 ANALYST(2), 20번 CLERK(2), 30번 SALESMAN(4) 뿐이라 3행이에요. 직무별로만 묶을 때와 결과가 달라요."
+  },
+  {
+    "id": "an-where-then-having",
+    "topic": "WHERE vs HAVING",
+    "sql": "SELECT deptno\nFROM emp\nWHERE sal >= 2000\nGROUP BY deptno\nHAVING COUNT(*) >= 2",
+    "ask": "rows",
+    "expect": "2",
+    "explain": "WHERE 가 먼저 행을 거른 뒤에 그룹을 만들어요. 급여 2000 이상은 10번 2명(KING, CLARK), 20번 3명, 30번 1명(BLAKE)이라 HAVING 을 통과하는 건 10번과 20번, 2행이에요."
+  },
+  {
+    "id": "an-having-no-group",
+    "topic": "GROUP BY 없는 HAVING",
+    "sql": "SELECT COUNT(*)\nFROM emp\nHAVING COUNT(*) > 20",
+    "ask": "rows",
+    "expect": "0",
+    "explain": "GROUP BY 가 없으면 테이블 전체가 한 그룹이에요. 그 그룹의 COUNT(*) 는 14라서 HAVING 조건에 걸러지고 0행이 돼요. 집계는 항상 1행이라는 규칙도 HAVING 앞에서는 깨져요."
+  },
+  {
+    "id": "an-where-removes-group",
+    "topic": "WHERE vs HAVING",
+    "sql": "SELECT deptno, COUNT(*)\nFROM emp\nWHERE comm IS NOT NULL\nGROUP BY deptno",
+    "ask": "rows",
+    "expect": "1",
+    "explain": "WHERE 로 먼저 걸러서 comm 이 있는 ALLEN, WARD, MARTIN, TURNER 만 남아요. 모두 30번 부서라 그룹이 하나뿐이에요. 걸러진 부서는 0명 그룹으로도 남지 않아요."
+  },
+  {
+    "id": "an-group-by-null",
+    "topic": "GROUP BY 와 NULL",
+    "sql": "SELECT comm, COUNT(*)\nFROM emp\nGROUP BY comm",
+    "ask": "rows",
+    "expect": "5",
+    "explain": "GROUP BY 는 NULL 끼리를 한 그룹으로 묶어요. 300, 500, 1400, 0 에 NULL 그룹(10명)까지 5행이에요. 0 과 NULL 은 다른 그룹이에요."
+  },
+  {
+    "id": "an-group-null-count-col",
+    "topic": "GROUP BY 와 NULL",
+    "sql": "SELECT cnt\nFROM (\n  SELECT c1, COUNT(c1) AS cnt\n  FROM t1\n  GROUP BY c1\n) t\nWHERE c1 IS NULL",
+    "ask": "value",
+    "distractors": ["1", "NULL", "5"],
+    "expect": "0",
+    "explain": "NULL 도 한 그룹으로 남지만, 그 그룹 안에서 COUNT(c1) 은 NULL 을 세지 않아 0이에요. COUNT(*) 였다면 1이에요."
+  },
+  {
+    "id": "an-count-distinct-job",
+    "topic": "COUNT(DISTINCT)",
+    "sql": "SELECT COUNT(DISTINCT job)\nFROM emp",
+    "ask": "value",
+    "distractors": ["14", "9", "3"],
+    "expect": "5",
+    "explain": "DISTINCT 는 집계 안에서 중복을 먼저 없애요. 직무는 PRESIDENT, MANAGER, ANALYST, SALESMAN, CLERK 5가지예요."
+  },
+  {
+    "id": "an-count-distinct-null",
+    "topic": "COUNT(DISTINCT)",
+    "sql": "SELECT COUNT(DISTINCT c1)\nFROM t1",
+    "ask": "value",
+    "distractors": ["4", "5", "2"],
+    "expect": "3",
+    "explain": "t1 은 1, 2, 2, 3, NULL 이에요. 중복된 2 를 하나로 보고, NULL 은 COUNT 가 세지 않아서 1, 2, 3 의 3이에요."
+  },
+  {
+    "id": "an-sum-distinct",
+    "topic": "SUM(DISTINCT)",
+    "sql": "SELECT SUM(DISTINCT sal)\nFROM emp\nWHERE deptno = 30",
+    "ask": "value",
+    "distractors": ["9400", "10650", "6"],
+    "expect": "8150",
+    "explain": "30번 부서 급여 합은 9400 이지만, WARD 와 MARTIN 이 1250 으로 같아요. DISTINCT 는 사람이 아니라 값의 중복을 없애서 1250 을 한 번만 더해 8150 이에요."
+  },
+  {
+    "id": "an-count-minus-distinct",
+    "topic": "COUNT(DISTINCT)",
+    "sql": "SELECT COUNT(*) - COUNT(DISTINCT sal)\nFROM emp",
+    "ask": "value",
+    "distractors": ["0", "12", "4"],
+    "expect": "2",
+    "explain": "급여가 겹치는 건 3000(SCOTT, FORD)과 1250(WARD, MARTIN) 두 쌍이에요. 서로 다른 급여는 12가지라 14 - 12 = 2예요."
+  },
+  {
+    "id": "an-having-distinct",
+    "topic": "HAVING 과 DISTINCT",
+    "sql": "SELECT deptno\nFROM emp\nGROUP BY deptno\nHAVING COUNT(DISTINCT sal) < COUNT(*)",
+    "ask": "rows",
+    "expect": "2",
+    "explain": "부서 안에 급여가 같은 사람이 있으면 서로 다른 급여 수가 인원보다 적어요. 20번(3000 둘)과 30번(1250 둘)이 해당돼 2행이에요."
+  },
+  {
+    "id": "an-having-avg-job",
+    "topic": "GROUP BY · HAVING",
+    "sql": "SELECT job, ROUND(AVG(sal))\nFROM emp\nGROUP BY job\nHAVING AVG(sal) > 2000",
+    "ask": "rows",
+    "expect": "3",
+    "explain": "직무별 평균은 CLERK 약 1038, SALESMAN 1400, MANAGER 약 2758, ANALYST 3000, PRESIDENT 5000 이에요. 2000 을 넘는 건 3행이에요. 집계 조건은 WHERE 가 아니라 HAVING 에 써요."
+  },
+  {
+    "id": "an-rollup-partial",
+    "topic": "부분 ROLLUP",
+    "sql": "SELECT deptno, job, SUM(sal)\nFROM emp\nGROUP BY deptno, ROLLUP(job)",
+    "ask": "rows",
+    "expect": "12",
+    "explain": "ROLLUP 밖의 deptno 는 항상 묶여 있어요. (부서, 직무) 9행 + 부서별 소계 3행 = 12행이에요. 전체 합계 행은 나오지 않아요."
+  },
+  {
+    "id": "an-rollup-order",
+    "topic": "ROLLUP 순서",
+    "sql": "SELECT job, deptno, SUM(sal)\nFROM emp\nGROUP BY ROLLUP(job, deptno)",
+    "ask": "rows",
+    "expect": "15",
+    "explain": "ROLLUP 은 인자 순서가 중요해요. (직무, 부서) 9행 + 직무별 소계 5행 + 전체 1행 = 15행이에요. ROLLUP(deptno, job) 의 13행과 달라요."
+  },
+  {
+    "id": "an-rollup-composite",
+    "topic": "ROLLUP 괄호 묶음",
+    "sql": "SELECT deptno, job, SUM(sal)\nFROM emp\nGROUP BY ROLLUP((deptno, job))",
+    "ask": "rows",
+    "expect": "10",
+    "explain": "괄호로 묶은 (deptno, job) 은 한 덩어리로 취급돼요. 그래서 (부서, 직무) 9행 + 전체 합계 1행만 나와 10행이에요. 부서별 소계는 없어요."
+  },
+  {
+    "id": "an-rollup-where",
+    "topic": "ROLLUP",
+    "sql": "SELECT deptno, job, COUNT(*)\nFROM emp\nWHERE job = 'CLERK'\nGROUP BY ROLLUP(deptno, job)",
+    "ask": "rows",
+    "expect": "7",
+    "explain": "WHERE 로 CLERK 만 남기면 세 부서에 한 조합씩 있어요. (부서, 직무) 3행 + 부서별 소계 3행 + 전체 1행 = 7행이에요."
+  },
+  {
+    "id": "an-rollup-having",
+    "topic": "ROLLUP 과 HAVING",
+    "sql": "SELECT deptno, SUM(sal)\nFROM emp\nGROUP BY ROLLUP(deptno)\nHAVING SUM(sal) > 9000",
+    "ask": "rows",
+    "expect": "3",
+    "explain": "HAVING 은 소계·합계 행에도 적용돼요. 10번 8750 은 빠지고 20번 10875, 30번 9400, 전체 29025 가 남아 3행이에요."
+  },
+  {
+    "id": "an-rollup-total",
+    "topic": "ROLLUP 합계 행",
+    "sql": "SELECT s\nFROM (\n  SELECT deptno, SUM(sal) AS s\n  FROM emp\n  GROUP BY ROLLUP(deptno)\n) t\nWHERE deptno IS NULL",
+    "ask": "value",
+    "distractors": ["NULL", "8750", "0"],
+    "expect": "29025",
+    "explain": "ROLLUP 이 만든 전체 합계 행은 deptno 자리가 NULL 로 채워져요. 그래서 deptno IS NULL 로 그 행을 골라낼 수 있고, 값은 전체 급여 합 29025 예요."
+  },
+  {
+    "id": "an-rollup-null-data",
+    "topic": "ROLLUP 과 NULL 데이터",
+    "sql": "SELECT COUNT(*)\nFROM (\n  SELECT comm, COUNT(*) AS cnt\n  FROM emp\n  GROUP BY ROLLUP(comm)\n) t\nWHERE comm IS NULL",
+    "ask": "value",
+    "distractors": ["1", "10", "0"],
+    "expect": "2",
+    "explain": "comm 이 원래 NULL 인 그룹 1행과, ROLLUP 이 만든 합계 행 1행이 둘 다 comm 이 NULL 이에요. 그래서 2행이 걸려요. 둘을 구분하려면 GROUPING(comm) 을 써요."
+  },
+  {
+    "id": "an-grouping-fn",
+    "topic": "GROUPING 함수",
+    "sql": "SELECT COUNT(*)\nFROM (\n  SELECT deptno, job, GROUPING(job) AS g\n  FROM emp\n  GROUP BY ROLLUP(deptno, job)\n) t\nWHERE g = 1",
+    "ask": "value",
+    "distractors": ["3", "1", "9"],
+    "expect": "4",
+    "explain": "GROUPING(job) 은 job 이 집계돼 빠진 행에서 1이에요. 부서별 소계 3행과 전체 합계 1행 모두 job 이 빠져 있어 4예요."
+  },
+  {
+    "id": "an-cube-grouping",
+    "topic": "CUBE 와 GROUPING",
+    "sql": "SELECT COUNT(*)\nFROM (\n  SELECT GROUPING(deptno) AS gd\n  FROM emp\n  GROUP BY CUBE(deptno, job)\n) t\nWHERE gd = 1",
+    "ask": "value",
+    "distractors": ["5", "1", "3"],
+    "expect": "6",
+    "explain": "deptno 가 빠진 행은 직무별 소계 5행과 전체 합계 1행이에요. CUBE 는 ROLLUP 과 달리 직무별 소계도 만들어서 6이에요."
+  },
+  {
+    "id": "an-cube-one-dept",
+    "topic": "CUBE",
+    "sql": "SELECT deptno, job, SUM(sal)\nFROM emp\nWHERE deptno = 10\nGROUP BY CUBE(deptno, job)",
+    "ask": "rows",
+    "expect": "8",
+    "explain": "10번 부서만 남으면 (부서, 직무) 3행 + 부서 소계 1행 + 직무별 3행 + 전체 1행 = 8행이에요. 부서가 하나라도 CUBE 는 모든 조합을 따로 만들어요."
+  },
+  {
+    "id": "an-grouping-sets-total",
+    "topic": "GROUPING SETS",
+    "sql": "SELECT deptno, job, SUM(sal)\nFROM emp\nGROUP BY GROUPING SETS ((deptno, job), ())",
+    "ask": "rows",
+    "expect": "10",
+    "explain": "(deptno, job) 은 두 컬럼 조합 한 묶음이고, () 는 전체 합계예요. 9행 + 1행 = 10행이에요. 부서별·직무별 소계는 적지 않았으니 없어요."
+  },
+  {
+    "id": "an-grouping-sets-3",
+    "topic": "GROUPING SETS",
+    "sql": "SELECT deptno, job, SUM(sal)\nFROM emp\nGROUP BY GROUPING SETS (deptno, job, ())",
+    "ask": "rows",
+    "expect": "9",
+    "explain": "부서별 3행 + 직무별 5행 + 전체 합계 1행 = 9행이에요. (부서, 직무) 조합 단위의 행은 나오지 않아요."
+  },
+  {
+    "id": "an-rank-gap",
+    "topic": "RANK 건너뛰기",
+    "sql": "SELECT ename\nFROM (\n  SELECT ename,\n         RANK() OVER (ORDER BY sal) AS r\n  FROM emp\n) t\nWHERE r = 5",
+    "ask": "rows",
+    "expect": "0",
+    "explain": "급여 오름차순으로 800, 950, 1100 다음에 WARD·MARTIN 이 1250 으로 공동 4위예요. RANK 는 다음 순위를 6위로 건너뛰어 5위는 아무도 없어요."
+  },
+  {
+    "id": "an-dense-rank-max",
+    "topic": "DENSE_RANK",
+    "sql": "SELECT MAX(r)\nFROM (\n  SELECT DENSE_RANK() OVER (ORDER BY sal) AS r\n  FROM emp\n) t",
+    "ask": "value",
+    "distractors": ["14", "13", "11"],
+    "expect": "12",
+    "explain": "DENSE_RANK 는 순위를 건너뛰지 않아서 마지막 순위가 곧 서로 다른 급여의 개수예요. 3000 과 1250 이 겹쳐 12예요. RANK 였다면 KING 이 14위예요."
+  },
+  {
+    "id": "an-rank-partition-top",
+    "topic": "PARTITION BY 와 RANK",
+    "sql": "SELECT COUNT(*)\nFROM (\n  SELECT RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) AS r\n  FROM emp\n) t\nWHERE r = 1",
+    "ask": "value",
+    "distractors": ["3", "1", "2"],
+    "expect": "4",
+    "explain": "부서마다 순위를 따로 매겨요. 10번 KING, 30번 BLAKE 에 20번은 SCOTT·FORD 가 3000 으로 공동 1위라 4명이에요."
+  },
+  {
+    "id": "an-row-number-top2",
+    "topic": "그룹별 Top-N",
+    "sql": "SELECT deptno, ename, sal\nFROM (\n  SELECT deptno, ename, sal,\n         ROW_NUMBER() OVER (PARTITION BY deptno ORDER BY sal DESC) AS rn\n  FROM emp\n) t\nWHERE rn <= 2",
+    "ask": "rows",
+    "expect": "6",
+    "explain": "ROW_NUMBER 는 동점이어도 1, 2, 3 … 으로 다른 번호를 줘요. 세 부서에서 2명씩 정확히 6행이에요. 순위 조건은 인라인 뷰 밖 WHERE 에서 걸어야 해요."
+  },
+  {
+    "id": "an-dense-rank-top2",
+    "topic": "그룹별 Top-N",
+    "sql": "SELECT deptno, ename\nFROM (\n  SELECT deptno, ename,\n         DENSE_RANK() OVER (PARTITION BY deptno ORDER BY sal DESC) AS r\n  FROM emp\n) t\nWHERE r <= 2",
+    "ask": "rows",
+    "expect": "7",
+    "explain": "10번 KING·CLARK, 30번 BLAKE·ALLEN 은 2명씩이에요. 20번은 SCOTT·FORD 가 공동 1위, JONES 가 2위라 3명이에요. 2 + 3 + 2 = 7행이에요."
+  },
+  {
+    "id": "an-row-number-min-sum",
+    "topic": "그룹별 Top-N",
+    "sql": "SELECT SUM(sal)\nFROM (\n  SELECT sal,\n         ROW_NUMBER() OVER (PARTITION BY deptno ORDER BY sal) AS rn\n  FROM emp\n) t\nWHERE rn = 1",
+    "ask": "value",
+    "distractors": ["800", "13650", "29025"],
+    "expect": "3050",
+    "explain": "오름차순 1번은 부서별 최저 급여예요. 10번 MILLER 1300, 20번 SMITH 800, 30번 JAMES 950 을 더해 3050 이에요."
+  },
+  {
+    "id": "an-sum-over-ties",
+    "topic": "누적 합과 동점",
+    "sql": "SELECT running\nFROM (\n  SELECT ename,\n         SUM(sal) OVER (ORDER BY sal) AS running\n  FROM emp\n  WHERE deptno = 30\n) t\nWHERE ename = 'WARD'",
+    "ask": "value",
+    "distractors": ["2200", "1250", "9400"],
+    "expect": "3450",
+    "explain": "ORDER BY 만 쓰면 기본 범위가 RANGE UNBOUNDED PRECEDING 이라 같은 값(동점)을 한꺼번에 더해요. JAMES 950 + WARD 1250 + MARTIN 1250 = 3450 이에요."
+  },
+  {
+    "id": "an-sum-over-rows",
+    "topic": "ROWS 누적 합",
+    "sql": "SELECT running\nFROM (\n  SELECT ename,\n         SUM(sal) OVER (ORDER BY sal, empno\n                        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running\n  FROM emp\n  WHERE deptno = 30\n) t\nWHERE ename = 'WARD'",
+    "ask": "value",
+    "distractors": ["3450", "1250", "950"],
+    "expect": "2200",
+    "explain": "ROWS 는 물리적인 행 단위라 동점이어도 현재 행까지만 더해요. empno 가 작은 WARD(7521)가 MARTIN 보다 앞이라 950 + 1250 = 2200 이에요."
+  },
+  {
+    "id": "an-count-over-ties",
+    "topic": "누적 COUNT 와 동점",
+    "sql": "SELECT cnt\nFROM (\n  SELECT ename,\n         COUNT(*) OVER (ORDER BY sal DESC) AS cnt\n  FROM emp\n) t\nWHERE ename = 'SCOTT'",
+    "ask": "value",
+    "distractors": ["2", "1", "14"],
+    "expect": "3",
+    "explain": "기본 범위(RANGE)는 현재 행과 같은 값인 행까지 포함해요. KING 다음 SCOTT 과 FORD 가 3000 으로 같아서 SCOTT 의 누적 개수도 3이에요."
+  },
+  {
+    "id": "an-range-current-following",
+    "topic": "RANGE 와 동점",
+    "sql": "SELECT s\nFROM (\n  SELECT ename,\n         SUM(sal) OVER (ORDER BY sal\n                        RANGE BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS s\n  FROM emp\n) t\nWHERE ename = 'SCOTT'",
+    "ask": "value",
+    "distractors": ["8000", "3000", "29025"],
+    "expect": "11000",
+    "explain": "RANGE 의 CURRENT ROW 는 '현재 행과 같은 값 전체'예요. SCOTT·FORD 3000 둘에 그보다 큰 KING 5000 까지 더해 11000 이에요."
+  },
+  {
+    "id": "an-avg-over-job",
+    "topic": "PARTITION BY 평균",
+    "sql": "SELECT avg_sal\nFROM (\n  SELECT ename,\n         ROUND(AVG(sal) OVER (PARTITION BY job)) AS avg_sal\n  FROM emp\n) t\nWHERE ename = 'ALLEN'",
+    "ask": "value",
+    "distractors": ["1600", "1450", "2073"],
+    "expect": "1400",
+    "explain": "ALLEN 이 속한 SALESMAN 4명의 평균이에요. (1600 + 1250 + 1250 + 1500) / 4 = 1400. ORDER BY 가 없으니 파티션 전체가 대상이에요."
+  },
+  {
+    "id": "an-window-keeps-rows",
+    "topic": "윈도우 함수 행 수",
+    "sql": "SELECT deptno, MAX(sal) OVER (PARTITION BY deptno)\nFROM emp",
+    "ask": "rows",
+    "expect": "14",
+    "explain": "윈도우 함수는 GROUP BY 와 달리 행을 줄이지 않아요. 사원마다 자기 부서 최고 급여를 붙여서 14행 그대로예요. 3행을 원하면 GROUP BY 를 써요."
+  },
+  {
+    "id": "an-window-after-group",
+    "topic": "윈도우 함수 처리 시점",
+    "sql": "SELECT MAX(c)\nFROM (\n  SELECT deptno, COUNT(*) OVER () AS c\n  FROM emp\n  GROUP BY deptno\n) t",
+    "ask": "value",
+    "distractors": ["14", "6", "1"],
+    "expect": "3",
+    "explain": "윈도우 함수는 GROUP BY 가 끝난 뒤의 행을 봐요. 부서별로 묶여 3행이 남았으니 COUNT(*) OVER () 는 사원 수 14가 아니라 3이에요."
+  },
+  {
+    "id": "an-rows-first-row",
+    "topic": "ROWS BETWEEN 프레임",
+    "sql": "SELECT s\nFROM (\n  SELECT ename,\n         SUM(sal) OVER (ORDER BY empno\n                        ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) AS s\n  FROM emp\n) t\nWHERE ename = 'SMITH'",
+    "ask": "value",
+    "distractors": ["800", "NULL", "3650"],
+    "expect": "2400",
+    "explain": "SMITH(7369)는 empno 가 가장 작아 앞 행이 없어요. 없는 행은 그냥 빠지고, 자기 800 + 다음 ALLEN 1600 = 2400 이에요. NULL 이 되지 않아요."
+  },
+  {
+    "id": "an-rows-2-preceding",
+    "topic": "ROWS BETWEEN 프레임",
+    "sql": "SELECT s\nFROM (\n  SELECT ename,\n         SUM(sal) OVER (ORDER BY empno ROWS 2 PRECEDING) AS s\n  FROM emp\n) t\nWHERE ename = 'JONES'",
+    "ask": "value",
+    "distractors": ["4225", "6625", "2975"],
+    "expect": "5825",
+    "explain": "ROWS 2 PRECEDING 은 '2행 앞부터 현재 행까지' 3행이에요. empno 순으로 ALLEN 1600, WARD 1250, JONES 2975 를 더해 5825 예요."
+  },
+  {
+    "id": "an-range-offset",
+    "topic": "RANGE 값 범위",
+    "sql": "SELECT c\nFROM (\n  SELECT ename,\n         COUNT(*) OVER (ORDER BY sal\n                        RANGE BETWEEN 100 PRECEDING AND 100 FOLLOWING) AS c\n  FROM emp\n) t\nWHERE ename = 'TURNER'",
+    "ask": "value",
+    "distractors": ["3", "1", "201"],
+    "expect": "2",
+    "explain": "RANGE 의 100 은 행 수가 아니라 값의 차이예요. TURNER 1500 기준 1400 ~ 1600 사이 급여는 TURNER 와 ALLEN 1600 뿐이라 2예요. ROWS 였다면 3이에요."
+  },
+  {
+    "id": "an-lag-default",
+    "topic": "LAG 기본값",
+    "sql": "SELECT prev\nFROM (\n  SELECT ename,\n         LAG(sal, 1, 0) OVER (ORDER BY empno) AS prev\n  FROM emp\n) t\nWHERE ename = 'SMITH'",
+    "ask": "value",
+    "distractors": ["NULL", "800", "1600"],
+    "expect": "0",
+    "explain": "SMITH 는 empno 순으로 첫 행이라 앞 행이 없어요. 원래는 NULL 이지만 세 번째 인자로 기본값 0 을 줬으니 0 이에요."
+  },
+  {
+    "id": "an-lead-ties",
+    "topic": "LEAD",
+    "sql": "SELECT nxt\nFROM (\n  SELECT ename,\n         LEAD(sal, 2) OVER (ORDER BY sal DESC) AS nxt\n  FROM emp\n) t\nWHERE ename = 'KING'",
+    "ask": "value",
+    "distractors": ["2975", "5000", "NULL"],
+    "expect": "3000",
+    "explain": "LEAD(sal, 2) 는 두 행 뒤의 값이에요. 급여 내림차순은 5000, 3000, 3000, 2975 … 라 KING 의 두 행 뒤도 3000 이에요. '두 번째로 다른 값'이 아니에요."
+  },
+  {
+    "id": "an-lead-partition-end",
+    "topic": "LEAD 와 PARTITION",
+    "sql": "SELECT nxt\nFROM (\n  SELECT ename,\n         LEAD(ename) OVER (PARTITION BY deptno ORDER BY sal) AS nxt\n  FROM emp\n) t\nWHERE ename = 'KING'",
+    "ask": "value",
+    "distractors": ["MILLER", "CLARK", "JONES"],
+    "expect": "NULL",
+    "explain": "KING 은 10번 부서에서 급여가 가장 높아 오름차순 마지막이에요. LEAD 는 파티션 경계를 넘지 않고 처음으로 돌아가지도 않아서 NULL 이에요."
+  },
+  {
+    "id": "an-last-value-trap",
+    "topic": "LAST_VALUE 프레임 함정",
+    "sql": "SELECT lv\nFROM (\n  SELECT ename,\n         LAST_VALUE(sal) OVER (PARTITION BY deptno ORDER BY sal) AS lv\n  FROM emp\n) t\nWHERE ename = 'CLARK'",
+    "ask": "value",
+    "distractors": ["5000", "1300", "NULL"],
+    "expect": "2450",
+    "explain": "ORDER BY 가 있으면 기본 프레임은 처음부터 현재 행(과 동점)까지예요. 그래서 마지막 값은 부서 최고 급여 5000 이 아니라 CLARK 자신의 2450 이에요."
+  },
+  {
+    "id": "an-last-value-full",
+    "topic": "LAST_VALUE 프레임 함정",
+    "sql": "SELECT lv\nFROM (\n  SELECT ename,\n         LAST_VALUE(sal) OVER (PARTITION BY deptno ORDER BY sal\n                               ROWS BETWEEN UNBOUNDED PRECEDING\n                                        AND UNBOUNDED FOLLOWING) AS lv\n  FROM emp\n) t\nWHERE ename = 'CLARK'",
+    "ask": "value",
+    "distractors": ["2450", "1300", "8750"],
+    "expect": "5000",
+    "explain": "프레임을 UNBOUNDED FOLLOWING 까지 넓히면 파티션 전체를 봐요. 10번 부서를 급여 오름차순으로 볼 때 마지막은 KING 5000 이에요."
+  },
+  {
+    "id": "an-first-value-desc",
+    "topic": "FIRST_VALUE",
+    "sql": "SELECT fv\nFROM (\n  SELECT ename,\n         FIRST_VALUE(ename) OVER (PARTITION BY job ORDER BY sal DESC) AS fv\n  FROM emp\n) t\nWHERE ename = 'SMITH'",
+    "ask": "value",
+    "distractors": ["SMITH", "KING", "ADAMS"],
+    "expect": "MILLER",
+    "explain": "FIRST_VALUE 는 프레임의 첫 값이라 기본 프레임으로도 잘 동작해요. CLERK 중 급여가 가장 높은 MILLER(1300)가 맨 앞이에요."
+  },
+  {
+    "id": "an-ntile-first",
+    "topic": "NTILE",
+    "sql": "SELECT COUNT(*)\nFROM (\n  SELECT NTILE(4) OVER (ORDER BY sal DESC) AS grp\n  FROM emp\n) t\nWHERE grp = 1",
+    "ask": "value",
+    "distractors": ["3", "5", "2"],
+    "expect": "4",
+    "explain": "14행을 4묶음으로 나누면 몫 3, 나머지 2예요. 나머지는 앞 그룹부터 하나씩 더 가져가서 4, 4, 3, 3명이 돼요. 1그룹은 4명이에요."
+  },
+  {
+    "id": "an-ntile-last",
+    "topic": "NTILE",
+    "sql": "SELECT ename\nFROM (\n  SELECT ename,\n         NTILE(5) OVER (ORDER BY sal) AS grp\n  FROM emp\n) t\nWHERE grp = 5",
+    "ask": "rows",
+    "expect": "2",
+    "explain": "14행을 5묶음으로 나누면 몫 2, 나머지 4예요. 앞 4개 그룹이 3명씩 가져가고 마지막 5그룹은 2명만 남아요."
+  },
+  {
+    "id": "an-with-ties-group",
+    "topic": "Top-N WITH TIES",
+    "sql": "SELECT job, COUNT(*)\nFROM emp\nGROUP BY job\nORDER BY COUNT(*) DESC\nFETCH FIRST 1 ROWS WITH TIES",
+    "ask": "rows",
+    "expect": "2",
+    "explain": "직무별 인원은 SALESMAN 4, CLERK 4, MANAGER 3 … 이에요. 1위가 4명으로 둘이라 WITH TIES 가 동점을 함께 가져와 2행이에요."
+  },
+  {
+    "id": "an-with-ties-asc",
+    "topic": "Top-N WITH TIES",
+    "sql": "SELECT ename, sal\nFROM emp\nORDER BY sal\nFETCH FIRST 4 ROWS WITH TIES",
+    "ask": "rows",
+    "expect": "5",
+    "explain": "오름차순으로 800, 950, 1100, 1250 이 4번째예요. 그런데 5번째 MARTIN 도 1250 이라 WITH TIES 가 함께 가져와 5행이에요."
+  },
+  {
+    "id": "an-offset-fetch",
+    "topic": "OFFSET · FETCH",
+    "sql": "SELECT sal\nFROM emp\nORDER BY sal DESC\nOFFSET 2 ROWS\nFETCH NEXT 1 ROWS ONLY",
+    "ask": "value",
+    "distractors": ["2975", "2850", "5000"],
+    "expect": "3000",
+    "explain": "OFFSET 2 는 앞의 2행(5000, 3000)을 건너뛰어요. 세 번째 행은 또 다른 3000 이라 값은 3000 이에요. 행 단위로 세지 값 단위로 세지 않아요."
+  },
+  {
+    "id": "an-offset-past-end",
+    "topic": "OFFSET · FETCH",
+    "sql": "SELECT ename\nFROM emp\nORDER BY empno\nOFFSET 12 ROWS\nFETCH NEXT 5 ROWS ONLY",
+    "ask": "rows",
+    "expect": "2",
+    "explain": "14행 중 12행을 건너뛰면 2행만 남아요. FETCH NEXT 5 는 '최대 5행'이라 남은 행이 적으면 그만큼만 나와요. 에러가 나지 않아요."
+  },
+  {
+    "id": "an-with-avg-of-sums",
+    "topic": "WITH 절",
+    "sql": "WITH dept_sum AS (\n  SELECT deptno, SUM(sal) AS s\n  FROM emp\n  GROUP BY deptno\n)\nSELECT COUNT(*)\nFROM dept_sum\nWHERE s > (SELECT AVG(s) FROM dept_sum)",
+    "ask": "value",
+    "distractors": ["2", "0", "3"],
+    "expect": "1",
+    "explain": "부서별 합은 8750, 10875, 9400 이고 그 평균은 9675 예요. 이보다 큰 건 20번 10875 하나예요. WITH 로 만든 결과는 여러 번 다시 쓸 수 있어요."
+  },
+  {
+    "id": "an-with-self-cross",
+    "topic": "WITH 절",
+    "sql": "WITH d AS (\n  SELECT DISTINCT deptno\n  FROM emp\n)\nSELECT a.deptno, b.deptno\nFROM d a\nCROSS JOIN d b",
+    "ask": "rows",
+    "expect": "9",
+    "explain": "d 는 사원이 있는 부서 10, 20, 30 의 3행이에요. 같은 CTE 를 두 번 불러 CROSS JOIN 하면 3 × 3 = 9행이에요. 사원 없는 40번은 d 에 없어요."
+  },
+  {
+    "id": "an-with-left-join",
+    "topic": "WITH 절과 OUTER JOIN",
+    "sql": "WITH cnt AS (\n  SELECT deptno, COUNT(*) AS c\n  FROM emp\n  GROUP BY deptno\n)\nSELECT d.dname, cnt.c\nFROM dept d\nLEFT OUTER JOIN cnt\n  ON cnt.deptno = d.deptno\nWHERE cnt.c < 4",
+    "ask": "rows",
+    "expect": "1",
+    "explain": "40번 부서는 cnt 에 없어서 c 가 0 이 아니라 NULL 이에요. NULL < 4 는 알 수 없음이라 빠지고, 3명인 10번만 남아 1행이에요."
+  },
+  {
+    "id": "an-with-fetch-min",
+    "topic": "WITH 절과 Top-N",
+    "sql": "WITH top3 AS (\n  SELECT ename, sal\n  FROM emp\n  ORDER BY sal DESC\n  FETCH FIRST 3 ROWS ONLY\n)\nSELECT MIN(sal)\nFROM top3",
+    "ask": "value",
+    "distractors": ["2975", "5000", "2850"],
+    "expect": "3000",
+    "explain": "상위 3행은 KING 5000, SCOTT 3000, FORD 3000 이에요. 셋 중 최솟값은 3000 이에요. 동점 때문에 3번째로 다른 급여인 2975 는 들어오지 않아요."
+  }
+]

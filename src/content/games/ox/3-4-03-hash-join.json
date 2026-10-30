@@ -1,0 +1,20 @@
+[
+  { "text": "해시 조인은 작은 집합을 Build Input으로 하여 PGA에 해시 테이블을 만들고 큰 집합으로 탐색한다.", "answer": true, "explain": "Build 단계에서 해시 테이블을 만들고 Probe 단계에서 큰 집합을 읽으며 탐색한다." },
+  { "text": "해시 조인의 해시 테이블은 SGA의 공유 메모리에 생성되어 여러 세션이 함께 사용한다.", "answer": false, "explain": "해시 테이블은 PGA의 Hash Area에 만들며 쿼리 수행이 끝나면 소멸하는 일회성 자료구조다." },
+  { "text": "해시 조인은 등치 조인 조건에서만 사용할 수 있다.", "answer": true, "explain": "해시 함수는 값의 크고 작음을 보존하지 않으므로 비등치 조인에는 쓸 수 없다." },
+  { "text": "BETWEEN 조건의 비등치 조인에 USE_HASH 힌트를 주면 해시 조인으로 처리된다.", "answer": false, "explain": "비등치 조인은 해시 조인이 불가하여 힌트가 무시되고 NL 또는 소트 머지 조인으로 처리된다." },
+  { "text": "해시 조인을 하려면 조인 컬럼에 인덱스가 있어야 한다.", "answer": false, "explain": "해시 조인은 조인 컬럼 인덱스가 필요 없다. Inner를 인덱스로 탐색하지 않는다." },
+  { "text": "해시 조인의 Build Input 크기는 테이블 전체가 아니라 조건을 적용한 뒤 실제로 읽는 집합 크기가 기준이다.", "answer": true, "explain": "필터 조건 적용 후 Hash Area에 담길 만큼 작은 집합을 Build Input으로 둔다." },
+  { "text": "Build Input의 해시 키 컬럼에 중복 값이 많을수록 해시 조인 성능이 좋아진다.", "answer": false, "explain": "중복 값이 많으면 한 버킷의 체인이 길어져 Probe 때마다 긴 체인을 스캔해야 하므로 불리하다." },
+  { "text": "해시 조인은 해시 테이블을 매번 새로 만들므로 수행 빈도가 매우 높은 OLTP성 쿼리에는 불리하다.", "answer": true, "explain": "일회성 해시 테이블을 만들고 버리는 CPU·메모리 비용이 반복된다." },
+  { "text": "실행계획에서 HASH JOIN 아래 위쪽 자식이 Probe Input이다.", "answer": false, "explain": "HASH JOIN 아래 위쪽 자식이 Build Input, 아래쪽 자식이 Probe Input이다." },
+  { "text": "LEADING(D) USE_HASH(E) 힌트를 사용하면 D 테이블이 Build Input이 된다.", "answer": true, "explain": "해시 조인에서 LEADING이나 ORDERED로 먼저 오는 테이블이 Build Input이다." },
+  { "text": "SWAP_JOIN_INPUTS(T) 힌트는 T 테이블을 Probe Input으로 지정한다.", "answer": false, "explain": "SWAP_JOIN_INPUTS(T)는 T를 Build Input으로 지정하며, Probe Input 지정은 NO_SWAP_JOIN_INPUTS(T)이다." },
+  { "text": "In-Memory 해시 조인은 Build Input 전체가 Hash Area에 들어가는 경우로 디스크 I/O 없이 조인이 끝난다.", "answer": true, "explain": "메모리에서 조인이 끝나므로 가장 빠른 방식이다." },
+  { "text": "Grace 해시 조인은 양쪽 집합을 해시 값으로 파티션을 나눠 Temp에 저장한 뒤 같은 해시 값의 파티션 짝끼리 조인한다.", "answer": true, "explain": "Build Input이 메모리를 넘을 때 파티션 단계와 조인 단계로 나눠 처리한다." },
+  { "text": "Oracle은 Build Input이 Hash Area를 넘으면 순수한 Grace 해시 조인 방식만 사용한다.", "answer": false, "explain": "Oracle은 Grace 방식을 개선해 가능한 만큼은 메모리에서 바로 조인하는 Hybrid 방식을 사용한다." },
+  { "text": "Hybrid 해시 조인은 비트-벡터 필터링으로 조인 대상이 아닌 Probe 행을 미리 걸러 디스크 I/O를 줄인다.", "answer": true, "explain": "넘치는 파티션만 디스크에 내리고 비트-벡터로 불필요한 Probe 행을 거른다." },
+  { "text": "해시 조인은 양쪽 집합을 조인 컬럼 기준으로 정렬한 후 해시 테이블을 생성한다.", "answer": false, "explain": "해시 조인은 정렬 없이 작은 쪽으로 해시 테이블만 만들면 되므로 정렬 부담이 없다." },
+  { "text": "해시 조인은 Build가 완료되어야 Probe를 시작하므로 부분범위 처리에 불리하다.", "answer": true, "explain": "소량 결과를 빨리 보여 줘야 하는 부분범위 처리에는 NL 조인이 유리하다." },
+  { "text": "해시 조인은 인덱스가 있어도 NL 조인의 Inner 랜덤 액세스가 과다할 때 대안이 될 수 있다.", "answer": true, "explain": "Inner를 인덱스로 탐색하지 않으므로 랜덤 액세스 부담이 없다." }
+]

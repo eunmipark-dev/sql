@@ -1,0 +1,745 @@
+{
+  "id": "ai-14",
+  "kind": "ai",
+  "title": "모의고사 14회",
+  "round": 14,
+  "timeLimitMin": 90,
+  "questions": [
+    {
+      "id": 1,
+      "subject": 1,
+      "theory": "data-model",
+      "question": "도서관 시스템의 데이터 모델링을 진행하면서 데이터 모델링의 세 가지 관점과 그 분석 방법을 정리하였다. 다음 중 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "데이터 관점은 업무가 어떤 데이터와 관련이 있는지, 데이터 간의 관계는 무엇인지를 정적·구조적으로 분석한다.",
+        "프로세스 관점은 '도서 대출', '반납', '예약' 등 업무가 실제로 무엇을 하는지를 시나리오 분석·동적 분석으로 살펴본다.",
+        "상관 관점은 업무 처리 방법에 따라 데이터가 어떤 영향을 받는지를 살펴보며, 주로 정규화를 통해 분석한다.",
+        "'대출 처리' 업무가 `대출` 엔터티를 생성(C)하고 `도서` 엔터티의 대출상태를 수정(U)한다는 것을 표로 정리하는 것은 상관 관점의 분석이다."
+      ],
+      "answer": 3,
+      "explanation": "상관 관점(Interaction)은 업무 처리 방법에 따라 데이터가 받는 영향을 분석하며, 대표적인 분석 방법은 정규화가 아니라 **CRUD 매트릭스**다. 보기 4가 바로 CRUD 매트릭스 분석의 예다. 데이터 관점(What)은 정적·구조 분석, 프로세스 관점(How)은 시나리오·동적 분석이므로 보기 1, 2는 옳다."
+    },
+    {
+      "id": 2,
+      "subject": 1,
+      "theory": "entity",
+      "question": "도서관 시스템의 엔터티 이름을 검토하는 회의에서 다음 의견이 나왔다. 엔터티 명명 규칙에 가장 부합하는 의견은?",
+      "choices": [
+        "회원과 도서를 연결해 생기는 엔터티를 '회원도서'라고 부르기보다, 업무에서 생성되는 의미를 살려 '대출'로 명명한다.",
+        "도서 엔터티에는 여러 권의 도서 정보가 담기므로 '도서들'처럼 복수형 명사로 명명한다.",
+        "이름이 길면 불편하므로 '도서예약이력'은 'BK_RSV_HST'처럼 약어 위주로 명명한다.",
+        "열람실 좌석 예약과 도서 예약은 업무 성격이 비슷하므로 두 엔터티 모두 '예약'이라는 같은 이름을 사용한다."
+      ],
+      "answer": 1,
+      "explanation": "엔터티는 **생성되는 업무 의미대로** 이름을 부여해야 하므로 '회원도서'보다 '대출'이 적절하다. 엔터티 이름은 집합에 속한 한 개체의 의미를 나타내므로 **단수 명사**를 사용하고, 의미가 모호해지는 **약어는 지양**하며, 모델 안에서 엔터티 이름은 **유일**해야 하므로 서로 다른 두 엔터티에 같은 이름을 쓸 수 없다."
+    },
+    {
+      "id": 3,
+      "subject": 1,
+      "theory": "attribute",
+      "question": "엔터티, 인스턴스, 속성, 속성값의 관계에 대한 설명으로 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "하나의 엔터티는 두 개 이상의 인스턴스 집합이어야 한다.",
+        "하나의 엔터티는 두 개 이상의 속성을 갖는다.",
+        "하나의 속성은 하나의 인스턴스에서 하나의 속성값만 가진다.",
+        "`도서` 엔터티의 '저자' 속성에 공저자 여러 명을 'kim, lee, park'처럼 한 값으로 저장하는 것은 단일 속성이므로 바람직한 설계다."
+      ],
+      "answer": 4,
+      "explanation": "한 인스턴스의 한 속성에는 **하나의 속성값만** 와야 한다. 공저자처럼 여러 값이 들어가는 다중값 속성은 별도 엔터티(예: `도서저자`)로 분리하거나 관계로 표현해야 하며, 쉼표로 이어 붙여 저장하면 1정규형도 위배한다. 엔터티는 2개 이상의 인스턴스와 2개 이상의 속성을 가져야 한다는 보기 1, 2는 옳다."
+    },
+    {
+      "id": 4,
+      "subject": 1,
+      "theory": "relationship",
+      "question": "도서관 업무에서 다음 관계를 도출하였다.\n\n- (가) 사서는 하나의 자료실에 소속된다.\n- (나) 회원은 도서를 대출한다.\n- (다) 회원은 도서를 예약한다.\n- (라) 도서는 하나의 분류(주제)에 속한다.\n\n관계를 **존재에 의한 관계**와 **행위에 의한 관계**로 분류한 것으로 가장 적절한 것은?",
+      "choices": [
+        "존재: (가), (나) / 행위: (다), (라)",
+        "존재: (가), (라) / 행위: (나), (다)",
+        "존재: (나), (다) / 행위: (가), (라)",
+        "존재: (가) / 행위: (나), (다), (라)"
+      ],
+      "answer": 2,
+      "explanation": "소속, 분류처럼 어떤 행위 없이 **존재 자체로 연관되는** 관계는 존재에 의한 관계이므로 (가), (라)가 해당한다. 대출, 예약처럼 **업무 행위(이벤트)가 발생해야** 맺어지는 관계는 행위에 의한 관계이므로 (나), (다)가 해당한다. 도서가 분류에 속하는 것은 어떤 행위로 생기는 관계가 아니므로 (라)를 행위로 본 보기 4는 틀렸다."
+    },
+    {
+      "id": 5,
+      "subject": 1,
+      "theory": "identifier",
+      "question": "도서관은 같은 책(같은 ISBN)을 여러 권 소장하며, 대출은 책 한 권(소장본) 단위로 관리한다. 각 소장본에는 입수할 때 도서관이 고유한 등록번호를 부여해 바코드로 붙이고, 대출·반납 업무에서는 이 바코드를 찍는다.\n\n`소장도서` 엔터티의 주식별자로 가장 적절한 것은?",
+      "choices": [
+        "도서명",
+        "등록번호",
+        "ISBN",
+        "도서명 + 저자명"
+      ],
+      "answer": 2,
+      "explanation": "주식별자는 유일성·최소성·불변성·존재성을 만족하고 업무에서 자주 쓰이는 속성이어야 한다. 등록번호는 소장본마다 하나씩 부여되어 유일하고, 대출·반납 업무에서 실제로 사용되므로 가장 적절하다. ISBN은 같은 책의 여러 소장본이 같은 값을 가지므로 소장본을 구분하지 못하고(유일성 위배), 도서명이나 도서명+저자명도 동명 도서가 있을 수 있으며 명칭은 주식별자로 지양한다."
+    },
+    {
+      "id": 6,
+      "subject": 1,
+      "theory": "normalization",
+      "question": "다음 `대출` 테이블의 PK는 대출번호이며, 회원명은 회원번호에 의해, 도서명은 도서번호에 의해 결정된다.\n\n| 대출번호 | 회원번호 | 회원명 | 도서번호 | 도서명 | 대출일자 |\n|---|---|---|---|---|---|\n| 1001 | M01 | 한서윤 | B10 | 자료구조 | 2026-03-02 |\n| 1002 | M02 | 오지후 | B10 | 자료구조 | 2026-03-03 |\n| 1003 | M01 | 한서윤 | B20 | 운영체제 | 2026-03-05 |\n\n이 테이블에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "회원명이 바뀌어도 해당 회원의 대출 행 하나만 수정하면 되므로 갱신 이상은 발생하지 않는다.",
+        "PK가 단일 속성이지만 회원명이 회원번호에 종속되므로 부분 함수 종속이 존재하며 제2정규형을 위배한다.",
+        "B20 도서의 유일한 대출 행(1003)을 삭제해도 도서명 '운영체제'는 이 테이블에 그대로 남는다.",
+        "회원명과 도서명이 PK가 아닌 일반 속성을 거쳐 PK에 이행적으로 종속되므로, 회원·도서 정보를 별도 테이블로 분리하여 제3정규형으로 만든다."
+      ],
+      "answer": 4,
+      "explanation": "대출번호 → 회원번호 → 회원명, 대출번호 → 도서번호 → 도서명의 **이행 함수 종속**이 있으므로 제3정규형 위배이며, 회원·도서를 분리해야 한다. PK가 단일 속성이면 부분 함수 종속은 생길 수 없으므로 보기 2는 틀렸다. M01의 회원명은 두 행에 중복되어 있어 갱신 이상이 생기고(보기 1), 1003 행을 지우면 '운영체제'라는 도서 정보도 사라지는 삭제 이상이 생긴다(보기 3)."
+    },
+    {
+      "id": 7,
+      "subject": 1,
+      "theory": "relationship-and-join",
+      "question": "`MEMBER`와 `LOAN`은 1:M 관계이며 데이터는 다음과 같다. SQL의 실행 결과로 옳은 것은?\n\n[MEMBER]\n\n| MEM_ID | NAME | POINT |\n|---|---|---|\n| M1 | 한서윤 | 100 |\n| M2 | 오지후 | 200 |\n| M3 | 백도현 | 300 |\n\n[LOAN]\n\n| LOAN_ID | MEM_ID |\n|---|---|\n| 1 | M1 |\n| 2 | M1 |\n| 3 | M1 |\n| 4 | M2 |",
+      "code": "SELECT SUM(M.POINT)\n  FROM MEMBER M\n  JOIN LOAN L\n    ON M.MEM_ID = L.MEM_ID;",
+      "choices": [
+        "500",
+        "300",
+        "600",
+        "1100"
+      ],
+      "answer": 1,
+      "explanation": "1:M 관계에서 부모(MEMBER)와 자식(LOAN)을 조인하면 부모 행이 **자식 행 수만큼 복제**된다. M1은 대출 3건과 조인되어 100이 3번, M2는 1번 나타나고, 대출이 없는 M3는 내부 조인에서 빠진다. 따라서 100 × 3 + 200 × 1 = **500**이다. 300은 중복 없이 대출 회원의 포인트만 더한 값, 600은 전체 회원 포인트 합이다. 부모 속성을 집계할 때는 조인으로 인한 중복을 주의해야 한다."
+    },
+    {
+      "id": 8,
+      "subject": 1,
+      "theory": "transaction-model",
+      "question": "도서관의 대출 처리는 다음 세 작업으로 구성된다.\n\n1. `대출` 테이블에 대출 1건 INSERT\n2. `도서` 테이블의 대출상태를 '대출중'으로 UPDATE\n3. `회원` 테이블의 현재대출권수를 1 증가시키는 UPDATE\n\n이 처리에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "세 작업은 서로 다른 테이블을 변경하므로 작업마다 별도 트랜잭션으로 나누어 즉시 COMMIT하는 것이 원칙이다.",
+        "1번 INSERT가 성공하고 2번 UPDATE가 실패하면 1번만 COMMIT하고 도서 상태는 야간 배치로 보정하면 된다.",
+        "세 작업을 하나의 트랜잭션으로 묶어 모두 반영되거나 모두 취소되도록 해야 하며, 이는 원자성(Atomicity)과 관련된다.",
+        "COMMIT이 완료된 뒤 시스템 장애가 발생하면 대출 INSERT가 취소될 수 있는데, 이는 지속성(Durability) 때문이다."
+      ],
+      "answer": 3,
+      "explanation": "하나의 업무 단위를 이루는 작업들은 **하나의 트랜잭션**으로 묶어 All or Nothing으로 처리해야 하며, 이것이 원자성이다. 작업을 나누어 커밋하면 대출은 있는데 도서 상태는 '대출가능'인 불일치가 생길 수 있으므로 보기 1, 2는 틀렸다. 지속성은 COMMIT된 결과가 장애가 나도 **영구히 보존**된다는 성질이므로 보기 4는 반대로 설명하였다."
+    },
+    {
+      "id": 9,
+      "subject": 1,
+      "theory": "null-attribute",
+      "question": "다음 [MEMBER] 테이블에서 M3 행은 INSERT할 때 EMAIL에 `''`(빈 문자열)을 입력한 행이다. (가)~(다)의 결과로 옳은 것은? (Oracle 기준)\n\n[MEMBER]\n\n| MEM_ID | EMAIL |\n|---|---|\n| M1 | kim@lib.kr |\n| M2 | NULL |\n| M3 | (빈 문자열 입력) |\n| M4 | X |",
+      "code": "-- (가)\nSELECT COUNT(*) FROM MEMBER WHERE EMAIL IS NULL;\n\n-- (나)\nSELECT COUNT(*) FROM MEMBER WHERE EMAIL = '';\n\n-- (다)\nSELECT COUNT(*) FROM MEMBER WHERE NVL(EMAIL, 'X') = 'X';",
+      "choices": [
+        "(가) 1, (나) 1, (다) 2",
+        "(가) 2, (나) 1, (다) 3",
+        "(가) 1, (나) 0, (다) 2",
+        "(가) 2, (나) 0, (다) 3"
+      ],
+      "answer": 4,
+      "explanation": "Oracle은 길이가 0인 문자열 `''`을 **NULL로 저장**한다. 따라서 M2, M3 모두 EMAIL이 NULL이다.\n\n- (가) IS NULL → M2, M3 → **2**\n- (나) `EMAIL = ''`은 `EMAIL = NULL`과 같아 비교 결과가 항상 UNKNOWN → **0**\n- (다) NVL(EMAIL, 'X')가 'X'인 행 → M2, M3(NULL이 'X'로 바뀜)와 원래 값이 'X'인 M4 → **3**\n\n빈 문자열을 NULL과 다른 값으로 보는 SQL Server라면 결과가 달라진다."
+    },
+    {
+      "id": 10,
+      "subject": 1,
+      "theory": "natural-vs-surrogate-key",
+      "question": "`대출` 엔터티의 본질식별자는 (회원번호, 등록번호, 대출일시)이다. 설계자는 이 대신 시퀀스로 생성하는 `대출번호`를 PK로 사용하려 한다. 이에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "대출번호를 PK로 지정하면 같은 (회원번호, 등록번호, 대출일시) 조합이 중복 입력되는 것을 PK 제약이 자동으로 막아 준다.",
+        "조회가 주로 회원번호·등록번호 조건으로 이루어진다면, PK 인덱스와 별도로 이 컬럼들에 대한 인덱스가 추가로 필요해질 수 있다.",
+        "본질식별자는 업무와 무관하게 시스템이 기계적으로 부여하는 값이고, 인조식별자는 업무에 의해 자연스럽게 만들어지는 값이다.",
+        "인조식별자는 관계를 통해 자식 엔터티로 상속될 수 없으므로, 대출번호를 쓰면 자식 엔터티와의 관계를 정의할 수 없다."
+      ],
+      "answer": 2,
+      "explanation": "인조식별자를 PK로 쓰면 PK 인덱스는 대출번호에 생기지만 실제 조회는 본질 속성으로 이루어지는 경우가 많아 **불필요한 인덱스가 추가**될 수 있다. 또한 PK가 시퀀스 값이므로 본질 속성 조합의 **중복 입력을 막지 못하며**(보기 1), 이를 막으려면 별도 UNIQUE 제약이 필요하다. 보기 3은 두 식별자의 정의를 뒤바꿨고, 인조식별자도 FK로 자식에 상속될 수 있으므로 보기 4도 틀렸다."
+    },
+    {
+      "id": 11,
+      "subject": 2,
+      "theory": "rdb-overview",
+      "question": "`BOOK` 테이블의 BOOK_ID는 기본키(PK)이고, `LOAN` 테이블의 BOOK_ID는 BOOK.BOOK_ID를 참조하는 외래키(FK)이다. LOAN.BOOK_ID에는 NOT NULL 제약이 없다. 이에 대한 설명으로 **적절하지 않은** 것은?",
+      "choices": [
+        "LOAN.BOOK_ID는 외래키이므로 LOAN 테이블 안에서 같은 값이 두 번 이상 나타날 수 없다.",
+        "LOAN.BOOK_ID에는 NULL을 입력할 수 있다.",
+        "BOOK 테이블에 존재하지 않는 BOOK_ID 값은 LOAN.BOOK_ID에 입력할 수 없다.",
+        "BOOK.BOOK_ID에는 NULL을 입력할 수 없고 중복된 값도 입력할 수 없다."
+      ],
+      "answer": 1,
+      "explanation": "외래키는 참조 무결성을 보장하기 위한 키로 **중복을 허용**한다. 같은 도서가 여러 번 대출될 수 있으므로 LOAN.BOOK_ID 값은 여러 행에 반복될 수 있다. 외래키는 NOT NULL 제약을 따로 걸지 않으면 NULL을 허용하고(보기 2), 부모에 없는 값은 입력할 수 없다(보기 3). 기본키는 NULL과 중복을 모두 허용하지 않는다(보기 4)."
+    },
+    {
+      "id": 12,
+      "subject": 2,
+      "theory": "select",
+      "question": "Oracle에서 다음 SQL을 실행했을 때 결과 집합의 **컬럼 이름**을 순서대로 나열한 것으로 옳은 것은?",
+      "code": "SELECT TITLE       AS book_title,\n       PRICE * 1.1 \"Price+Tax\",\n       PUB_YEAR    yr\n  FROM BOOK;",
+      "choices": [
+        "book_title, Price+Tax, yr",
+        "BOOK_TITLE, PRICE+TAX, YR",
+        "BOOK_TITLE, Price+Tax, YR",
+        "특수문자 '+'가 포함된 별칭 때문에 오류가 발생한다."
+      ],
+      "answer": 3,
+      "explanation": "Oracle은 큰따옴표로 감싸지 않은 식별자를 **대문자로 변환**한다. 따라서 `book_title`은 BOOK_TITLE, `yr`은 YR이 된다(AS는 생략 가능). 큰따옴표로 감싼 별칭은 **대소문자와 특수문자, 공백을 그대로 유지**하므로 \"Price+Tax\"는 입력한 그대로 Price+Tax로 표시되고 오류도 발생하지 않는다."
+    },
+    {
+      "id": 13,
+      "subject": 2,
+      "theory": "select",
+      "question": "BOOK 테이블(BOOK_ID, TITLE, CATEGORY, PRICE)에 대해 Oracle에서 실행할 때 **오류가 발생하는** SQL은?",
+      "choices": [
+        "`SELECT B.*, PRICE * 2 AS DBL FROM BOOK B;`",
+        "`SELECT TITLE, 'KRW' AS UNIT FROM BOOK;`",
+        "`SELECT ALL CATEGORY FROM BOOK;`",
+        "`SELECT *, PRICE * 2 AS DBL FROM BOOK;`"
+      ],
+      "answer": 4,
+      "explanation": "Oracle에서는 `*`를 다른 컬럼이나 표현식과 함께 쓸 수 없다. 다른 항목과 함께 전체 컬럼을 조회하려면 보기 1처럼 `테이블별칭.*` 형태로 써야 한다. 문자 리터럴에 별칭을 붙인 보기 2, 중복을 제거하지 않는 기본 옵션 ALL을 명시한 보기 3은 모두 정상 실행된다."
+    },
+    {
+      "id": 14,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle, A / B / C 순서)",
+      "code": "SELECT LENGTH(REPLACE('978-89-6626-123-4', '-')) AS A,\n       SUBSTR('978-89-6626-123-4', -5, 3)         AS B,\n       INSTR('978-89-6626-123-4', '-', -1)       AS C\n  FROM DUAL;",
+      "choices": [
+        "13 / '23-' / 16",
+        "13 / '123' / 16",
+        "17 / '123' / 4",
+        "13 / '123' / 4"
+      ],
+      "answer": 2,
+      "explanation": "'978-89-6626-123-4'는 17글자이며 '-'는 4, 7, 12, 16번째에 있다.\n\n- A: REPLACE에 바꿀 문자열을 생략하면 '-'가 제거되어 '9788966261234'(13글자) → **13**\n- B: 시작 위치 -5는 뒤에서 5번째, 즉 13번째 글자이므로 13~15번째 3글자 → **'123'**\n- C: INSTR의 시작 위치가 음수이면 **뒤에서부터 역방향**으로 검색하므로 마지막 '-'의 위치 → **16** (반환값은 항상 앞에서부터 센 위치)"
+    },
+    {
+      "id": 15,
+      "subject": 2,
+      "theory": "functions",
+      "question": "도서관은 대출일로부터 14일 뒤를 반납예정일로 정한다. 다음 SQL의 실행 결과로 옳은 것은? (Oracle, A / B / C 순서)",
+      "code": "SELECT TO_CHAR(DATE '2026-02-20' + 14, 'YYYY-MM-DD')   AS A,\n       DATE '2026-03-10' - DATE '2026-02-20'          AS B,\n       TO_CHAR(LAST_DAY(DATE '2026-02-20'), 'DD')     AS C\n  FROM DUAL;",
+      "choices": [
+        "2026-03-06 / 18 / 28",
+        "2026-03-06 / 19 / 28",
+        "2026-03-05 / 18 / 29",
+        "2026-03-04 / 18 / 28"
+      ],
+      "answer": 1,
+      "explanation": "날짜에 숫자를 더하면 그 일수만큼 이후 날짜가 되고, 날짜끼리 빼면 두 날짜 사이의 **일수**가 나온다. 2026년은 윤년이 아니어서 2월은 28일까지다.\n\n- A: 2월 20일 + 14일 → 2월 28일까지 8일, 남은 6일 → **2026-03-06**\n- B: 2월 20일 → 3월 10일 = 8 + 10 = **18**\n- C: LAST_DAY는 해당 월의 마지막 날 → 2026-02-28 → **'28'**"
+    },
+    {
+      "id": 16,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 [LOAN] 테이블에 SQL을 실행한 결과로 옳은 것은? (DUE_DAY는 반납예정일, RET_DAY는 실제 반납일을 나타내는 일련번호이며 RET_DAY가 NULL이면 미반납이다. A / B / C 순서)\n\n[LOAN]\n\n| LOAN_ID | DUE_DAY | RET_DAY |\n|---|---|---|\n| L1 | 10 | 9 |\n| L2 | 10 | 13 |\n| L3 | 10 | NULL |\n| L4 | 12 | 20 |\n| L5 | 12 | 12 |",
+      "code": "SELECT SUM(CASE WHEN RET_DAY > DUE_DAY\n                THEN (RET_DAY - DUE_DAY) * 100 END) AS A,\n       MAX(RET_DAY - DUE_DAY)                       AS B,\n       COUNT(NULLIF(RET_DAY, DUE_DAY))              AS C\n  FROM LOAN;",
+      "choices": [
+        "1100 / 8 / 4",
+        "1000 / 8 / 3",
+        "1100 / 8 / 3",
+        "1100 / NULL / 3"
+      ],
+      "answer": 3,
+      "explanation": "- A: 연체된 L2(3일), L4(8일)만 THEN이 적용되고, 나머지는 ELSE가 없어 NULL이다. SUM은 NULL을 무시하므로 300 + 800 = **1100**\n- B: RET_DAY − DUE_DAY는 -1, 3, NULL, 8, 0이고 MAX는 NULL을 무시하므로 **8** (NULL이 섞여 있어도 결과가 NULL이 되지는 않는다)\n- C: NULLIF(a, b)는 a = b이면 NULL, 아니면 a를 반환한다. L3는 RET_DAY가 NULL이라 NULL, L5는 12 = 12라 NULL이므로 L1, L2, L4만 세어 **3**"
+    },
+    {
+      "id": 17,
+      "subject": 2,
+      "theory": "where",
+      "question": "다음 [BOOK] 테이블에 대해 (가), (나) SQL을 실행했을 때 결과로 옳은 것은?\n\n[BOOK]\n\n| BOOK_ID | PUB_YEAR |\n|---|---|\n| 1 | 2014 |\n| 2 | 2015 |\n| 3 | 2018 |\n| 4 | 2020 |\n| 5 | 2021 |\n| 6 | NULL |",
+      "code": "-- (가)\nSELECT COUNT(*) FROM BOOK WHERE PUB_YEAR BETWEEN 2020 AND 2015;\n\n-- (나)\nSELECT COUNT(*) FROM BOOK WHERE PUB_YEAR NOT BETWEEN 2015 AND 2020;",
+      "choices": [
+        "(가) 4, (나) 2",
+        "(가) 0, (나) 2",
+        "(가) 0, (나) 3",
+        "(가) 4, (나) 3"
+      ],
+      "answer": 2,
+      "explanation": "`A BETWEEN x AND y`는 `A >= x AND A <= y`와 같다.\n\n- (가) `PUB_YEAR >= 2020 AND PUB_YEAR <= 2015`를 동시에 만족하는 값은 없으므로 **0**이다. 하한과 상한을 바꿔 써도 자동으로 교정되지 않는다.\n- (나) `NOT BETWEEN 2015 AND 2020`은 2015 미만 또는 2020 초과이므로 2014, 2021의 **2**건이다. NULL은 비교 결과가 UNKNOWN이라 NOT을 붙여도 포함되지 않는다."
+    },
+    {
+      "id": 18,
+      "subject": 2,
+      "theory": "where",
+      "question": "다음 [SHELF] 테이블의 CALL_NO(청구기호, VARCHAR2)에 대해 (가), (나) SQL을 실행했을 때 결과로 옳은 것은?\n\n[SHELF]\n\n| CALL_NO |\n|---|\n| 005.1-김12 |\n| 005.13-이 |\n| 813.6-박 |\n| 005-최 |\n| 005. |",
+      "code": "-- (가)\nSELECT COUNT(*) FROM SHELF WHERE CALL_NO LIKE '005._%';\n\n-- (나)\nSELECT COUNT(*) FROM SHELF WHERE CALL_NO LIKE '0__%';",
+      "choices": [
+        "(가) 3, (나) 4",
+        "(가) 2, (나) 5",
+        "(가) 4, (나) 4",
+        "(가) 2, (나) 4"
+      ],
+      "answer": 4,
+      "explanation": "LIKE에서 와일드카드는 `%`(0개 이상의 문자)와 `_`(정확히 1개의 문자)뿐이며, `.`은 정규 표현식과 달리 **문자 그대로의 마침표**다.\n\n- (가) '005.' + 임의의 1글자 + 나머지: '005.1-김12', '005.13-이'만 해당. '005-최'는 네 번째 글자가 '.'이 아니고, '005.'은 마침표 뒤에 `_`가 요구하는 1글자가 없다 → **2**\n- (나) '0' + 임의의 2글자 + 나머지: '813.6-박'을 제외한 **4**건"
+    },
+    {
+      "id": 19,
+      "subject": 2,
+      "theory": "group-by-having",
+      "question": "다음 [LOAN] 테이블에 SQL을 실행한 결과로 옳은 것은? (MEM_ID(C1, C2) 형식으로 표기)\n\n[LOAN]\n\n| LOAN_ID | MEM_ID | BOOK_ID |\n|---|---|---|\n| 1 | M1 | B1 |\n| 2 | M1 | B2 |\n| 3 | M1 | B1 |\n| 4 | M2 | B3 |\n| 5 | M2 | B4 |\n| 6 | M3 | B5 |\n| 7 | M3 | B5 |\n| 8 | M3 | B5 |\n| 9 | M4 | B6 |",
+      "code": "SELECT MEM_ID,\n       COUNT(*)                AS C1,\n       COUNT(DISTINCT BOOK_ID) AS C2\n  FROM LOAN\n GROUP BY MEM_ID\nHAVING COUNT(*) > COUNT(DISTINCT BOOK_ID)\n ORDER BY MEM_ID;",
+      "choices": [
+        "M1(3, 2), M3(3, 1)",
+        "M1(3, 2)",
+        "M1(3, 2), M2(2, 2), M3(3, 1)",
+        "M3(3, 1)"
+      ],
+      "answer": 1,
+      "explanation": "회원별로 전체 대출 건수(C1)와 서로 다른 도서 수(C2)를 비교하여 **같은 도서를 두 번 이상 빌린 회원**만 남기는 쿼리다.\n\n- M1: 3건, 도서 B1·B2 → (3, 2) → 3 > 2 만족\n- M2: 2건, 도서 2종 → (2, 2) → 불만족\n- M3: 3건, 도서 B5 1종 → (3, 1) → 만족\n- M4: (1, 1) → 불만족\n\n따라서 결과는 M1(3, 2), M3(3, 1)이다."
+    },
+    {
+      "id": 20,
+      "subject": 2,
+      "theory": "group-by-having",
+      "question": "다음 [BOOK] 테이블에 SQL을 실행한 결과로 옳은 것은? (Oracle, (DECADE, CNT, AVG_P) 형식으로 표기)\n\n[BOOK]\n\n| BOOK_ID | PUB_YEAR | PRICE |\n|---|---|---|\n| 1 | 2008 | 10000 |\n| 2 | 2012 | 20000 |\n| 3 | 2015 | 16000 |\n| 4 | 2019 | NULL |\n| 5 | 2021 | 15000 |\n| 6 | 2023 | 12000 |\n| 7 | 2009 | 22000 |",
+      "code": "SELECT TRUNC(PUB_YEAR, -1) AS DECADE,\n       COUNT(*)              AS CNT,\n       AVG(PRICE)            AS AVG_P\n  FROM BOOK\n GROUP BY TRUNC(PUB_YEAR, -1)\nHAVING AVG(PRICE) >= 15000\n ORDER BY DECADE;",
+      "choices": [
+        "(2000, 2, 16000)",
+        "(2000, 2, 16000), (2010, 2, 18000)",
+        "(2000, 2, 16000), (2010, 3, 18000)",
+        "(2000, 2, 16000), (2010, 3, 18000), (2020, 2, 13500)"
+      ],
+      "answer": 3,
+      "explanation": "TRUNC(PUB_YEAR, -1)은 일의 자리를 버려 연대를 구한다. GROUP BY에 쓴 표현식은 SELECT 절에도 그대로 쓸 수 있다.\n\n- 2000: 10000, 22000 → CNT 2, 평균 16000 → 통과\n- 2010: 20000, 16000, NULL → COUNT(*)는 NULL 행도 세어 **3**, AVG는 NULL을 제외하고 (20000 + 16000) / 2 = **18000** → 통과\n- 2020: 15000, 12000 → 평균 13500 → HAVING에서 제외\n\nNULL을 0으로 보면 2010년대 평균이 12000이 되어 탈락하겠지만, 집계 함수는 NULL을 무시한다."
+    },
+    {
+      "id": 21,
+      "subject": 2,
+      "theory": "order-by",
+      "question": "BOOK 테이블(BOOK_ID, TITLE, CATEGORY, PRICE)에 대해 실행할 때 **오류가 발생하는** SQL은? (Oracle)",
+      "choices": [
+        "`SELECT TITLE FROM BOOK ORDER BY PRICE DESC;`",
+        "`SELECT DISTINCT CATEGORY FROM BOOK ORDER BY PRICE;`",
+        "`SELECT CATEGORY, COUNT(*) AS CNT FROM BOOK GROUP BY CATEGORY ORDER BY CNT DESC;`",
+        "`SELECT TITLE, PRICE FROM BOOK ORDER BY 2 DESC, TITLE;`"
+      ],
+      "answer": 2,
+      "explanation": "DISTINCT로 중복을 제거하면 한 CATEGORY 값에 여러 PRICE가 대응할 수 있어 정렬 기준 값을 정할 수 없다. 그래서 DISTINCT를 쓴 경우 **SELECT 목록에 없는 컬럼으로는 정렬할 수 없다**(ORA-01791). DISTINCT나 GROUP BY가 없으면 SELECT에 없는 컬럼으로도 정렬할 수 있고(보기 1), ORDER BY에서는 별칭(보기 3)과 컬럼 위치 번호(보기 4)를 사용할 수 있다."
+    },
+    {
+      "id": 22,
+      "subject": 2,
+      "theory": "order-by",
+      "question": "다음 [LOAN] 테이블에 SQL을 실행한 결과의 출력 순서로 옳은 것은? (Oracle)\n\n[LOAN]\n\n| LOAN_ID | MEM_ID | RET_DAY |\n|---|---|---|\n| L1 | M2 | 5 |\n| L2 | M1 | NULL |\n| L3 | M1 | 7 |\n| L4 | M2 | NULL |\n| L5 | M1 | 3 |",
+      "code": "SELECT LOAN_ID\n  FROM LOAN\n ORDER BY MEM_ID, RET_DAY DESC;",
+      "choices": [
+        "L3, L5, L2, L1, L4",
+        "L2, L3, L5, L1, L4",
+        "L5, L3, L2, L1, L4",
+        "L2, L3, L5, L4, L1"
+      ],
+      "answer": 4,
+      "explanation": "먼저 MEM_ID 오름차순으로 M1 그룹(L2, L3, L5), M2 그룹(L1, L4)이 나뉜다. 그룹 안에서는 RET_DAY 내림차순인데, Oracle은 **NULL을 가장 큰 값**으로 취급하므로 DESC 정렬에서 NULL이 맨 앞에 온다.\n\n- M1: NULL(L2) → 7(L3) → 3(L5)\n- M2: NULL(L4) → 5(L1)\n\n따라서 L2, L3, L5, L4, L1이다. 보기 1은 NULL을 가장 작은 값으로 본 SQL Server 방식의 결과다."
+    },
+    {
+      "id": 23,
+      "subject": 2,
+      "theory": "join",
+      "question": "다음 [MEMBER], [GRADE_RULE] 테이블에 SQL을 실행했을 때, 결과 건수와 GRADE가 '우수'인 행의 수로 옳은 것은?\n\n[MEMBER]\n\n| NAME | POINT |\n|---|---|\n| 가람 | 100 |\n| 나래 | 300 |\n| 다온 | 500 |\n| 라온 | 800 |\n\n[GRADE_RULE]\n\n| GRADE | LO | HI |\n|---|---|---|\n| 일반 | 0 | 300 |\n| 우수 | 300 | 700 |\n| VIP | 700 | 1000 |",
+      "code": "SELECT M.NAME, G.GRADE\n  FROM MEMBER M, GRADE_RULE G\n WHERE M.POINT BETWEEN G.LO AND G.HI;",
+      "choices": [
+        "4건, 1행",
+        "4건, 2행",
+        "5건, 2행",
+        "5건, 3행"
+      ],
+      "answer": 3,
+      "explanation": "BETWEEN을 이용한 비등가 조인이다. BETWEEN은 양 끝값을 포함하므로 등급 구간의 경계가 겹치면 한 행이 여러 등급과 조인된다.\n\n- 가람(100) → 일반\n- 나래(300) → 일반(0~300), 우수(300~700) **두 행**\n- 다온(500) → 우수\n- 라온(800) → VIP\n\n결과는 **5건**이며 '우수'는 나래, 다온의 **2행**이다. 비등가 조인에 쓰는 구간 테이블은 경계가 겹치지 않게 설계해야 한다."
+    },
+    {
+      "id": 24,
+      "subject": 2,
+      "theory": "join",
+      "question": "다음 [RESERVE] 테이블은 도서별 예약 대기 순번(RSV_SEQ)을 관리한다. SQL의 실행 결과로 옳은 것은?\n\n[RESERVE]\n\n| BOOK_ID | RSV_SEQ | MEM_ID |\n|---|---|---|\n| B1 | 1 | M1 |\n| B1 | 2 | M2 |\n| B1 | 3 | M3 |\n| B2 | 1 | M4 |\n| B2 | 2 | M1 |\n| B3 | 1 | M2 |",
+      "code": "SELECT COUNT(*)\n  FROM RESERVE A, RESERVE B\n WHERE A.BOOK_ID = B.BOOK_ID\n   AND A.RSV_SEQ < B.RSV_SEQ;",
+      "choices": [
+        "4",
+        "8",
+        "10",
+        "14"
+      ],
+      "answer": 1,
+      "explanation": "같은 테이블을 별칭 A, B로 두 번 사용하는 셀프 조인이다. 같은 도서의 예약끼리 짝을 짓되 `A.RSV_SEQ < B.RSV_SEQ`로 **앞 순번 → 뒤 순번** 방향의 쌍만 남긴다.\n\n- B1(3건): (1,2), (1,3), (2,3) → 3쌍\n- B2(2건): (1,2) → 1쌍\n- B3(1건): 짝 없음\n\n합계 **4**건이다. 조건이 `<>`이면 방향을 구분하지 않아 8건, 순번 조건이 없으면 자기 자신과의 짝까지 포함하여 9 + 4 + 1 = 14건이 된다."
+    },
+    {
+      "id": 25,
+      "subject": 2,
+      "theory": "standard-join",
+      "question": "다음 테이블에 대해 (가), (나) SQL을 실행했을 때 결과로 옳은 것은? (LOAN.BOOK_ID에는 FK 제약이 없다.)\n\n[MEMBER]\n\n| MEM_ID |\n|---|\n| M1 |\n| M2 |\n| M3 |\n\n[LOAN]\n\n| LOAN_ID | MEM_ID | BOOK_ID |\n|---|---|---|\n| L1 | M1 | B1 |\n| L2 | M1 | B2 |\n| L3 | M2 | B9 |\n\n[BOOK]\n\n| BOOK_ID |\n|---|\n| B1 |\n| B2 |",
+      "code": "-- (가)\nSELECT COUNT(*)\n  FROM MEMBER M\n  LEFT OUTER JOIN LOAN L ON M.MEM_ID = L.MEM_ID\n  LEFT OUTER JOIN BOOK B ON L.BOOK_ID = B.BOOK_ID;\n\n-- (나)\nSELECT COUNT(*)\n  FROM MEMBER M\n  LEFT OUTER JOIN LOAN L ON M.MEM_ID = L.MEM_ID\n  INNER JOIN      BOOK B ON L.BOOK_ID = B.BOOK_ID;",
+      "choices": [
+        "(가) 4, (나) 3",
+        "(가) 3, (나) 2",
+        "(가) 4, (나) 4",
+        "(가) 4, (나) 2"
+      ],
+      "answer": 4,
+      "explanation": "(가) MEMBER 기준 LEFT OUTER JOIN을 두 번 하므로 모든 회원이 유지된다: M1-L1-B1, M1-L2-B2, M2-L3-(NULL), M3-(NULL)-(NULL) → **4**건.\n\n(나) 첫 번째 LEFT JOIN 결과(4행)에 BOOK을 **INNER JOIN**한다. L3(B9)는 BOOK에 없고, M3 행은 L.BOOK_ID가 NULL이라 조인 조건을 만족하지 못해 모두 제거된다 → **2**건. 아우터 조인 뒤에 이너 조인을 이어 붙이면 앞에서 보존한 행이 다시 사라질 수 있다."
+    },
+    {
+      "id": 26,
+      "subject": 2,
+      "theory": "standard-join",
+      "question": "다음 Oracle 조인 SQL과 **항상 같은 결과**를 반환하는 ANSI 표준 SQL은? (행의 출력 순서는 고려하지 않는다.)",
+      "code": "SELECT M.NAME, L.LOAN_ID\n  FROM MEMBER M, LOAN L\n WHERE M.MEM_ID = L.MEM_ID(+)\n   AND L.STATUS(+) = '연체';",
+      "choices": [
+        "`SELECT M.NAME, L.LOAN_ID FROM MEMBER M LEFT OUTER JOIN LOAN L ON M.MEM_ID = L.MEM_ID WHERE L.STATUS = '연체';`",
+        "`SELECT M.NAME, L.LOAN_ID FROM MEMBER M LEFT OUTER JOIN LOAN L ON M.MEM_ID = L.MEM_ID AND L.STATUS = '연체';`",
+        "`SELECT M.NAME, L.LOAN_ID FROM MEMBER M RIGHT OUTER JOIN LOAN L ON M.MEM_ID = L.MEM_ID AND L.STATUS = '연체';`",
+        "`SELECT M.NAME, L.LOAN_ID FROM MEMBER M LEFT OUTER JOIN LOAN L ON M.MEM_ID = L.MEM_ID WHERE L.STATUS = '연체' OR L.STATUS IS NULL;`"
+      ],
+      "answer": 2,
+      "explanation": "Oracle에서 (+)가 붙은 쪽은 데이터가 없어도 NULL로 채워지는 쪽이므로 MEMBER 기준 LEFT OUTER JOIN이다. `L.STATUS(+) = '연체'`처럼 LOAN 쪽 조건에도 (+)를 붙이면 그 조건은 **조인 조건**으로 처리되므로, ANSI에서는 ON 절에 함께 써야 한다(보기 2).\n\n보기 1은 조건을 WHERE에 두어 연체 대출이 없는 회원이 제거되므로 내부 조인처럼 동작한다. 보기 4는 대출이 아예 없는 회원은 남기지만, 대출은 있으나 모두 연체가 아닌 회원은 제거하므로 결과가 다를 수 있다. 보기 3은 LOAN을 기준으로 하는 반대 방향 조인이다."
+    },
+    {
+      "id": 27,
+      "subject": 2,
+      "theory": "subquery",
+      "question": "다음 [LOAN] 테이블에 SQL을 실행한 결과로 옳은 것은? (Oracle)\n\n[LOAN]\n\n| LOAN_ID | MEM_ID |\n|---|---|\n| 1 | M1 |\n| 2 | M1 |\n| 3 | M1 |\n| 4 | M1 |\n| 5 | M2 |\n| 6 | M3 |\n| 7 | M3 |\n| 8 | M4 |",
+      "code": "SELECT MEM_ID\n  FROM LOAN\n GROUP BY MEM_ID\nHAVING COUNT(*) > (SELECT AVG(COUNT(*))\n                     FROM LOAN\n                    GROUP BY MEM_ID);",
+      "choices": [
+        "M1",
+        "M1, M3",
+        "M3",
+        "집계 함수를 중첩했으므로 오류가 발생한다."
+      ],
+      "answer": 1,
+      "explanation": "서브쿼리는 회원별 대출 건수(M1 4, M2 1, M3 2, M4 1)를 구한 뒤 그 평균을 계산한다. Oracle은 GROUP BY와 함께라면 `AVG(COUNT(*))`처럼 **집계 함수를 한 단계 중첩**할 수 있으므로 오류가 아니며 결과는 (4 + 1 + 2 + 1) / 4 = 2다. 메인 쿼리는 대출 건수가 2보다 **큰** 회원만 남기므로 **M1**만 출력된다. M3는 2건으로 평균과 같아 제외된다."
+    },
+    {
+      "id": 28,
+      "subject": 2,
+      "theory": "subquery",
+      "question": "다음 [LOAN] 테이블에 SQL을 실행했을 때 결과 건수는?\n\n[LOAN]\n\n| LOAN_ID | MEM_ID | LOAN_DAY |\n|---|---|---|\n| L1 | M1 | 5 |\n| L2 | M1 | 9 |\n| L3 | M2 | 3 |\n| L4 | M2 | 3 |\n| L5 | M3 | 7 |\n| L6 | M1 | 9 |",
+      "code": "SELECT L.LOAN_ID\n  FROM LOAN L\n WHERE L.LOAN_DAY = (SELECT MAX(X.LOAN_DAY)\n                       FROM LOAN X\n                      WHERE X.MEM_ID = L.MEM_ID);",
+      "choices": [
+        "3건",
+        "4건",
+        "5건",
+        "6건"
+      ],
+      "answer": 3,
+      "explanation": "상관 서브쿼리는 메인 쿼리의 각 행마다 **같은 회원의 최대 LOAN_DAY**를 구해 비교한다.\n\n- M1: 최댓값 9 → L2, L6 (동일 값 2건 모두 포함)\n- M2: 최댓값 3 → L3, L4\n- M3: 최댓값 7 → L5\n\n따라서 **5건**이다. '회원별 1건'이라고 생각해 3건으로 답하기 쉽지만, 최댓값이 같은 행이 여러 개면 모두 조건을 만족한다."
+    },
+    {
+      "id": 29,
+      "subject": 2,
+      "theory": "set-operators",
+      "question": "다음 세 테이블에 SQL을 실행했을 때 결과 건수는? (Oracle)\n\n[LOAN]\n\n| MEM_ID |\n|---|\n| M1 |\n| M1 |\n| M2 |\n\n[RESERVE]\n\n| MEM_ID |\n|---|\n| M2 |\n| M3 |\n| M4 |\n\n[BLACKLIST]\n\n| MEM_ID |\n|---|\n| M4 |",
+      "code": "SELECT MEM_ID FROM LOAN\nUNION ALL\nSELECT MEM_ID FROM RESERVE\nMINUS\nSELECT MEM_ID FROM BLACKLIST;",
+      "choices": [
+        "5건",
+        "3건",
+        "4건",
+        "6건"
+      ],
+      "answer": 2,
+      "explanation": "Oracle에서 집합 연산자는 우선순위가 같아 **위에서부터 차례로** 수행된다.\n\n1. LOAN UNION ALL RESERVE → M1, M1, M2, M2, M3, M4 (6행, 중복 유지)\n2. 그 결과 MINUS BLACKLIST → M4 제거, 그리고 MINUS는 **결과의 중복도 제거**하므로 M1, M2, M3\n\n따라서 **3건**이다. UNION ALL의 중복이 그대로 남을 것이라 보면 5건으로 잘못 계산하게 된다."
+    },
+    {
+      "id": 30,
+      "subject": 2,
+      "theory": "set-operators",
+      "question": "LOAN(대출)과 RESERVE(예약) 테이블에는 모두 MEM_ID 컬럼이 있고 NULL은 없으며, 한 회원이 여러 건을 대출·예약할 수 있다. '대출과 예약을 모두 한 적이 있는 회원'을 구할 때, 다음 중 결과 집합이 나머지 셋과 **다를 수 있는** SQL은?",
+      "choices": [
+        "`SELECT MEM_ID FROM LOAN INTERSECT SELECT MEM_ID FROM RESERVE;`",
+        "`SELECT DISTINCT L.MEM_ID FROM LOAN L WHERE EXISTS (SELECT 1 FROM RESERVE R WHERE R.MEM_ID = L.MEM_ID);`",
+        "`SELECT DISTINCT MEM_ID FROM LOAN WHERE MEM_ID IN (SELECT MEM_ID FROM RESERVE);`",
+        "`SELECT L.MEM_ID FROM LOAN L, RESERVE R WHERE L.MEM_ID = R.MEM_ID;`"
+      ],
+      "answer": 4,
+      "explanation": "INTERSECT는 두 결과의 교집합을 **중복 없이** 반환한다. 보기 2, 3은 EXISTS·IN으로 같은 조건을 걸고 DISTINCT로 중복을 제거하므로 같은 결과다. 보기 4는 조인을 사용하므로 한 회원이 대출 2건, 예약 3건이면 2 × 3 = 6행이 나오는 등 **중복 행**이 생겨 결과가 달라질 수 있다."
+    },
+    {
+      "id": 31,
+      "subject": 2,
+      "theory": "group-functions",
+      "question": "다음 [LOAN_STAT] 테이블에 SQL을 실행한 결과로 옳은 것은? ((BRANCH, CATEGORY, S) 형식으로 표기하며 행 순서는 고려하지 않는다.)\n\n[LOAN_STAT]\n\n| BRANCH | CATEGORY | CNT |\n|---|---|---|\n| 본관 | IT | 10 |\n| 본관 | 문학 | 20 |\n| 분관 | IT | 5 |\n| 분관 | 아동 | 15 |",
+      "code": "SELECT BRANCH, CATEGORY, SUM(CNT) AS S\n  FROM LOAN_STAT\n GROUP BY CUBE(BRANCH, CATEGORY)\nHAVING GROUPING(BRANCH) = 1;",
+      "choices": [
+        "(NULL, IT, 15), (NULL, 문학, 20), (NULL, 아동, 15)",
+        "(본관, NULL, 30), (분관, NULL, 20), (NULL, NULL, 50)",
+        "(NULL, IT, 15), (NULL, 문학, 20), (NULL, 아동, 15), (NULL, NULL, 50)",
+        "(NULL, IT, 10), (NULL, 문학, 20), (NULL, 아동, 15), (NULL, NULL, 50)"
+      ],
+      "answer": 3,
+      "explanation": "CUBE(BRANCH, CATEGORY)는 (BRANCH, CATEGORY), (BRANCH), (CATEGORY), () 네 가지 집계 수준을 만든다. HAVING `GROUPING(BRANCH) = 1`은 BRANCH가 집계되어 사라진 행, 즉 **(CATEGORY) 소계와 () 총계**만 남긴다.\n\n- IT: 10 + 5 = 15, 문학: 20, 아동: 15\n- 총계: 50\n\n보기 1은 총계 행이 빠졌고, 보기 2는 GROUPING(CATEGORY) = 1인 지점별 소계다."
+    },
+    {
+      "id": 32,
+      "subject": 2,
+      "theory": "group-functions",
+      "question": "다음 [BOOK] 테이블에 SQL을 실행했을 때, 결과에서 CATEGORY가 **NULL로 표시되는 행**에 대한 설명으로 옳은 것은? ((G, CNT) 형식으로 표기)\n\n[BOOK]\n\n| BOOK_ID | CATEGORY |\n|---|---|\n| B1 | IT |\n| B2 | IT |\n| B3 | NULL |\n| B4 | 문학 |",
+      "code": "SELECT CATEGORY,\n       GROUPING(CATEGORY) AS G,\n       COUNT(*)           AS CNT\n  FROM BOOK\n GROUP BY ROLLUP(CATEGORY);",
+      "choices": [
+        "2행이며 각각 (0, 1), (1, 4)이다.",
+        "1행이며 (1, 4)이다.",
+        "1행이며 (1, 3)이다.",
+        "2행이며 각각 (1, 1), (1, 4)이다."
+      ],
+      "answer": 1,
+      "explanation": "ROLLUP(CATEGORY)는 CATEGORY별 그룹과 전체 합계 행을 만든다. 결과는 (IT, 0, 2), (문학, 0, 1), (NULL, 0, 1), (NULL, 1, 4)이다.\n\n- 실제 데이터 값이 NULL인 B3도 하나의 그룹을 이루며, 집계로 생긴 행이 아니므로 GROUPING은 **0**이다.\n- 전체 합계 행은 ROLLUP이 만든 행이므로 GROUPING이 **1**이고 CNT는 전체 4건이다.\n\nGROUPING 함수로 '원래 NULL'과 '소계로 생긴 NULL'을 구분할 수 있다."
+    },
+    {
+      "id": 33,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 [LOAN] 테이블에 SQL을 실행했을 때 REMAIN 값을 출력 순서대로 나열한 것으로 옳은 것은?\n\n[LOAN]\n\n| MEM_ID | LOAN_DAY | QTY |\n|---|---|---|\n| M1 | 1 | 2 |\n| M1 | 3 | 1 |\n| M1 | 5 | 3 |\n| M2 | 2 | 4 |\n| M2 | 4 | 1 |",
+      "code": "SELECT MEM_ID, LOAN_DAY,\n       SUM(QTY) OVER (PARTITION BY MEM_ID\n                      ORDER BY LOAN_DAY\n                      ROWS BETWEEN CURRENT ROW\n                               AND UNBOUNDED FOLLOWING) AS REMAIN\n  FROM LOAN\n ORDER BY MEM_ID, LOAN_DAY;",
+      "choices": [
+        "2, 3, 6, 4, 5",
+        "6, 4, 3, 5, 1",
+        "6, 6, 6, 5, 5",
+        "3, 4, 6, 1, 5"
+      ],
+      "answer": 2,
+      "explanation": "`ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING`은 현재 행부터 파티션의 **마지막 행까지**를 합산한다(역방향 누적).\n\n- M1: 2 + 1 + 3 = 6, 1 + 3 = 4, 3\n- M2: 4 + 1 = 5, 1\n\n결과는 6, 4, 3, 5, 1이다. 보기 1은 처음부터 현재 행까지 누적한 값, 보기 3은 파티션 전체 합계다."
+    },
+    {
+      "id": 34,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "회원별로 다음 대출까지의 간격(GAP)을 구한 뒤 집계하는 SQL이다. 실행 결과로 옳은 것은? (C, S 순서)\n\n[LOAN]\n\n| MEM_ID | LOAN_DAY |\n|---|---|\n| M1 | 1 |\n| M1 | 4 |\n| M1 | 10 |\n| M2 | 2 |\n| M2 | 3 |",
+      "code": "SELECT COUNT(GAP) AS C, SUM(GAP) AS S\n  FROM (SELECT MEM_ID,\n               LEAD(LOAN_DAY) OVER (PARTITION BY MEM_ID\n                                    ORDER BY LOAN_DAY) - LOAN_DAY AS GAP\n          FROM LOAN);",
+      "choices": [
+        "5, 10",
+        "3, 9",
+        "4, 10",
+        "3, 10"
+      ],
+      "answer": 4,
+      "explanation": "LEAD(LOAN_DAY)는 같은 파티션에서 **다음 행**의 값을 가져오며, 다음 행이 없으면 기본값(생략 시 NULL)을 반환한다.\n\n- M1: 4 − 1 = 3, 10 − 4 = 6, 마지막 행은 NULL − 10 = NULL\n- M2: 3 − 2 = 1, 마지막 행은 NULL\n\nCOUNT(GAP)은 NULL을 제외하므로 **3**, SUM(GAP)은 3 + 6 + 1 = **10**이다. PARTITION BY 때문에 M1의 마지막 행이 M2의 첫 행 값을 가져오지 않는다는 점에 주의한다."
+    },
+    {
+      "id": 35,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 [BOOK_STAT] 테이블에 SQL을 실행했을 때, TITLE이 'E'와 'F'인 행의 (R1, R2) 값으로 옳은 것은?\n\n[BOOK_STAT]\n\n| TITLE | CATEGORY | LOAN_CNT |\n|---|---|---|\n| A | IT | 30 |\n| B | IT | 25 |\n| C | IT | 25 |\n| D | LIT | 40 |\n| E | LIT | 25 |\n| F | LIT | 10 |",
+      "code": "SELECT TITLE,\n       DENSE_RANK() OVER (PARTITION BY CATEGORY\n                          ORDER BY LOAN_CNT DESC) AS R1,\n       RANK()       OVER (ORDER BY LOAN_CNT DESC) AS R2\n  FROM BOOK_STAT;",
+      "choices": [
+        "E: (2, 3), F: (3, 6)",
+        "E: (2, 3), F: (3, 4)",
+        "E: (2, 5), F: (3, 6)",
+        "E: (3, 3), F: (3, 6)"
+      ],
+      "answer": 1,
+      "explanation": "- R1은 CATEGORY별 DENSE_RANK다. LIT 파티션은 D(40) 1, E(25) 2, F(10) 3이므로 E = 2, F = 3이다.\n- R2는 파티션 없이 전체에 대한 RANK다. 내림차순으로 40(D) 1위, 30(A) 2위, 25(B, C, E) 공동 3위, 그다음 10(F)은 공동 순위 3개를 건너뛰어 **6위**다.\n\n따라서 E: (2, 3), F: (3, 6)이다. F의 R2를 4로 본 보기 2는 DENSE_RANK 방식으로 계산한 것이다."
+    },
+    {
+      "id": 36,
+      "subject": 2,
+      "theory": "top-n",
+      "question": "다음 [BOOK_STAT] 테이블에 SQL을 실행했을 때 결과 건수는? (Oracle 12c 이상)\n\n[BOOK_STAT]\n\n| TITLE | LOAN_CNT |\n|---|---|\n| 가 | 50 |\n| 나 | 40 |\n| 다 | 40 |\n| 라 | 40 |\n| 마 | 30 |",
+      "code": "SELECT TITLE, LOAN_CNT\n  FROM BOOK_STAT\n ORDER BY LOAN_CNT DESC\n FETCH FIRST 2 ROWS WITH TIES;",
+      "choices": [
+        "2건",
+        "3건",
+        "5건",
+        "4건"
+      ],
+      "answer": 4,
+      "explanation": "`FETCH FIRST n ROWS WITH TIES`는 정렬 후 n번째 행과 **정렬 값이 같은 행까지 모두** 포함한다. LOAN_CNT 내림차순에서 2번째 행의 값은 40이고, 40인 행은 나, 다, 라 세 건이므로 결과는 가 + 나·다·라 = **4건**이다. `ROWS ONLY`였다면 2건이다."
+    },
+    {
+      "id": 37,
+      "subject": 2,
+      "theory": "top-n",
+      "question": "다음 [BOOK] 테이블에 SQL을 실행한 결과로 옳은 것은? (Oracle 기준, 테이블의 행은 표에 나온 순서대로 읽힌다고 가정한다.)\n\n[BOOK]\n\n| BOOK_ID | CATEGORY |\n|---|---|\n| B1 | IT |\n| B2 | LIT |\n| B3 | IT |\n| B4 | ART |\n| B5 | IT |\n| B6 | LIT |",
+      "code": "SELECT CATEGORY, COUNT(*) AS CNT\n  FROM BOOK\n WHERE ROWNUM <= 4\n GROUP BY CATEGORY;",
+      "choices": [
+        "IT 2, LIT 1, ART 1 (3행)",
+        "IT 3, LIT 2, ART 1 (3행)",
+        "IT 3, LIT 1 (2행)",
+        "ROWNUM과 GROUP BY를 함께 사용할 수 없어 오류가 발생한다."
+      ],
+      "answer": 1,
+      "explanation": "ROWNUM은 WHERE 절을 처리하며 행을 읽을 때 부여되므로 **GROUP BY보다 먼저** 적용된다. 먼저 읽힌 4건(B1 IT, B2 LIT, B3 IT, B4 ART)만 남은 뒤 그룹화되어 IT 2, LIT 1, ART 1이 된다. 전체 데이터로 집계한 결과(IT 3, LIT 2, ART 1)가 나오지 않으며, ROWNUM과 GROUP BY를 함께 써도 문법 오류는 아니다."
+    },
+    {
+      "id": 38,
+      "subject": 2,
+      "theory": "hierarchical-query",
+      "question": "다음 [CATEGORY] 테이블에 SQL을 실행한 결과로 옳은 것은? (Oracle 기준, 출력 순서대로 표기)\n\n[CATEGORY]\n\n| ID | NAME | PID |\n|---|---|---|\n| 1 | 전체 | NULL |\n| 2 | 인문 | 1 |\n| 3 | 과학 | 1 |\n| 4 | 철학 | 2 |\n| 5 | 문학 | 2 |\n| 6 | 물리 | 3 |\n| 7 | 기술 | 1 |",
+      "code": "SELECT NAME\n  FROM CATEGORY\n START WITH PID IS NULL\nCONNECT BY PRIOR ID = PID\n       AND LEVEL <= 2\n ORDER SIBLINGS BY ID DESC;",
+      "choices": [
+        "전체, 인문, 과학, 기술",
+        "전체, 기술, 과학, 물리, 인문, 문학, 철학",
+        "전체, 기술, 과학, 인문",
+        "기술, 과학, 인문, 전체"
+      ],
+      "answer": 3,
+      "explanation": "CONNECT BY 절에 쓴 `LEVEL <= 2`는 전개 자체를 제한하므로 LEVEL 3인 철학·문학·물리는 아예 전개되지 않는다.\n\n- LEVEL 1: 전체\n- LEVEL 2: 전체의 자식 인문(2), 과학(3), 기술(7)\n\nORDER SIBLINGS BY ID DESC는 계층 구조를 유지한 채 **형제끼리만** ID 내림차순으로 정렬하므로 전체 → 기술 → 과학 → 인문 순이다. 보기 2는 LEVEL 제한이 없을 때의 결과다."
+    },
+    {
+      "id": 39,
+      "subject": 2,
+      "theory": "hierarchical-query",
+      "question": "다음 [CATEGORY] 테이블에 SQL을 실행한 결과로 옳은 것은? (Oracle 기준)\n\n[CATEGORY]\n\n| ID | NAME | PID |\n|---|---|---|\n| 1 | 전체 | NULL |\n| 2 | 인문 | 1 |\n| 3 | 과학 | 1 |\n| 4 | 철학 | 2 |\n| 5 | 문학 | 2 |\n| 6 | 물리 | 3 |\n| 7 | 기술 | 1 |",
+      "code": "SELECT SYS_CONNECT_BY_PATH(NAME, '/') AS PATH\n  FROM CATEGORY\n WHERE CONNECT_BY_ISLEAF = 1\n START WITH NAME = '물리'\nCONNECT BY ID = PRIOR PID;",
+      "choices": [
+        "/전체/과학/물리",
+        "/물리/과학/전체",
+        "/물리",
+        "/과학/전체"
+      ],
+      "answer": 2,
+      "explanation": "`CONNECT BY ID = PRIOR PID`는 직전 행의 PID(부모 ID)를 ID로 가진 행을 찾으므로 **아래에서 위로** 올라가는 역방향 전개다.\n\n- LEVEL 1: 물리 (PID 3)\n- LEVEL 2: 과학 (PID 1)\n- LEVEL 3: 전체 (PID NULL) → 더 이상 전개할 행이 없다\n\n역방향에서는 마지막에 도달한 **전체**가 리프(CONNECT_BY_ISLEAF = 1)이며, SYS_CONNECT_BY_PATH는 시작 행부터 경로를 이어 붙이므로 **/물리/과학/전체**가 출력된다."
+    },
+    {
+      "id": 40,
+      "subject": 2,
+      "theory": "pivot-unpivot",
+      "question": "다음 SQL을 실행했을 때 결과 집합의 컬럼 목록으로 옳은 것은? (Oracle 기준, LOAN_STAT 테이블의 컬럼은 CATEGORY, BRANCH, CNT이다.)",
+      "code": "SELECT *\n  FROM (SELECT CATEGORY, BRANCH, CNT FROM LOAN_STAT)\n PIVOT (SUM(CNT) AS S, COUNT(*) AS C\n        FOR BRANCH IN ('본관' AS MAIN, '분관' AS SUB));",
+      "choices": [
+        "CATEGORY, MAIN_S, MAIN_C, SUB_S, SUB_C",
+        "CATEGORY, S_MAIN, C_MAIN, S_SUB, C_SUB",
+        "CATEGORY, MAIN, SUB",
+        "CATEGORY, BRANCH, S, C"
+      ],
+      "answer": 1,
+      "explanation": "PIVOT에서 FOR 절에 쓴 BRANCH와 집계 대상 CNT는 결과 컬럼에서 사라지고, 나머지 컬럼인 CATEGORY가 **암시적 GROUP BY** 기준으로 남는다. 집계 함수를 여러 개 쓰면 결과 컬럼 이름은 **'IN 절 값의 별칭_집계 함수의 별칭'** 형태가 되므로 MAIN_S, MAIN_C, SUB_S, SUB_C가 만들어진다."
+    },
+    {
+      "id": 41,
+      "subject": 2,
+      "theory": "regex",
+      "question": "다음 [MEMBER] 테이블에 대해 (가), (나) SQL을 실행했을 때 결과로 옳은 것은? (Oracle 기준)\n\n[MEMBER]\n\n| MEM_ID |\n|---|\n| LIB01 |\n| LIB001 |\n| LIB0001 |\n| lib01 |\n| LIB1 |",
+      "code": "-- (가)\nSELECT COUNT(*) FROM MEMBER\n WHERE REGEXP_LIKE(MEM_ID, '^LIB[0-9]{2,3}$');\n\n-- (나)\nSELECT COUNT(*) FROM MEMBER\n WHERE REGEXP_LIKE(MEM_ID, '^LIB[0-9]{2,3}$', 'i');",
+      "choices": [
+        "(가) 3, (나) 4",
+        "(가) 2, (나) 4",
+        "(가) 3, (나) 3",
+        "(가) 2, (나) 3"
+      ],
+      "answer": 4,
+      "explanation": "`^LIB[0-9]{2,3}$`는 'LIB'로 시작하고 숫자가 **2~3개** 온 뒤 문자열이 끝나는 값을 찾는다.\n\n- (가) LIB01(숫자 2개), LIB001(3개)만 해당. LIB0001은 4개, LIB1은 1개라 불일치, lib01은 대소문자가 달라 불일치 → **2**\n- (나) 매치 옵션 'i'는 대소문자를 구분하지 않으므로 lib01이 추가되어 **3**\n\nREGEXP_LIKE의 기본 동작은 대소문자를 구분한다."
+    },
+    {
+      "id": 42,
+      "subject": 2,
+      "theory": "regex",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle 기준, A / B 순서)",
+      "code": "SELECT REGEXP_SUBSTR('SQL,,DB,AI', '[^,]+', 1, 3) AS A,\n       REGEXP_COUNT('SQL,,DB,AI', '[^,]+')        AS B\n  FROM DUAL;",
+      "choices": [
+        "'DB' / 4",
+        "'AI' / 3",
+        "NULL / 3",
+        "'DB' / 3"
+      ],
+      "answer": 2,
+      "explanation": "`[^,]+`는 쉼표가 아닌 문자가 **1개 이상** 이어진 부분을 찾는다. 'SQL,,DB,AI'에서 두 쉼표 사이의 빈 값은 1글자 이상이라는 조건을 만족하지 못해 일치 대상이 아니므로, 일치하는 부분은 'SQL', 'DB', 'AI' 세 개뿐이다.\n\n- A: 세 번째 일치 → **'AI'** (빈 항목을 하나로 세면 'DB'라고 착각하기 쉽다)\n- B: 일치 횟수 → **3**"
+    },
+    {
+      "id": 43,
+      "subject": 2,
+      "theory": "dml",
+      "question": "다음 [MEMBER] 테이블에 아래 UPDATE 문을 실행한 뒤 `SELECT SUM(LOAN_CNT), SUM(PREV_CNT) FROM MEMBER;`를 실행한 결과로 옳은 것은? (Oracle)\n\n[MEMBER]\n\n| MEM_ID | LOAN_CNT | PREV_CNT |\n|---|---|---|\n| M1 | 3 | 0 |\n| M2 | 5 | 0 |\n| M3 | NULL | 0 |",
+      "code": "UPDATE MEMBER\n   SET LOAN_CNT = LOAN_CNT + 1,\n       PREV_CNT = LOAN_CNT;",
+      "choices": [
+        "10, 8",
+        "10, 10",
+        "11, 8",
+        "11, 11"
+      ],
+      "answer": 1,
+      "explanation": "UPDATE의 SET 절에 있는 모든 표현식은 **변경 전의 값**을 기준으로 계산된다. 따라서 PREV_CNT = LOAN_CNT에는 증가 전 값이 들어간다.\n\n- M1: LOAN_CNT 4, PREV_CNT 3\n- M2: LOAN_CNT 6, PREV_CNT 5\n- M3: NULL + 1 = NULL, PREV_CNT = NULL\n\nSUM은 NULL을 무시하므로 LOAN_CNT 합은 4 + 6 = **10**, PREV_CNT 합은 3 + 5 = **8**이다."
+    },
+    {
+      "id": 44,
+      "subject": 2,
+      "theory": "dml",
+      "question": "다음 두 테이블에 아래 UPDATE 문을 실행한 뒤 `SELECT SUM(PRICE) FROM BOOK;`을 실행한 결과로 옳은 것은?\n\n[BOOK]\n\n| BOOK_ID | PRICE |\n|---|---|\n| B1 | 10000 |\n| B2 | 20000 |\n| B3 | 30000 |\n| B4 | NULL |\n\n[LOAN]\n\n| LOAN_ID | BOOK_ID |\n|---|---|\n| 1 | B1 |\n| 2 | B1 |\n| 3 | B2 |\n| 4 | B3 |\n| 5 | B3 |\n| 6 | B3 |\n| 7 | B4 |\n| 8 | B4 |",
+      "code": "UPDATE BOOK\n   SET PRICE = PRICE * 1.1\n WHERE BOOK_ID IN (SELECT BOOK_ID\n                     FROM LOAN\n                    GROUP BY BOOK_ID\n                   HAVING COUNT(*) >= 2);",
+      "choices": [
+        "66000",
+        "60000",
+        "64000",
+        "NULL"
+      ],
+      "answer": 3,
+      "explanation": "서브쿼리는 대출이 2건 이상인 도서 B1(2건), B3(3건), B4(2건)를 반환한다. 이 도서들의 가격만 10% 인상된다.\n\n- B1: 11000, B3: 33000, B2는 그대로 20000\n- B4: NULL × 1.1 = NULL\n\nSUM은 NULL을 무시하므로 11000 + 20000 + 33000 = **64000**이다. 모든 도서를 인상했다고 보면 66000이 된다."
+    },
+    {
+      "id": 45,
+      "subject": 2,
+      "theory": "tcl",
+      "question": "다음 상황에서 TX1이 겪은 동시성 현상으로 가장 적절한 것은?\n\n> TX1이 도서 B10의 대출상태를 조회하여 '대출가능'을 확인하였다. 그 사이 TX2가 B10의 대출상태를 '대출중'으로 UPDATE하고 **COMMIT**하였다. TX1이 같은 트랜잭션 안에서 B10의 대출상태를 다시 조회하자 '대출중'이 조회되었다.",
+      "choices": [
+        "Dirty Read",
+        "Non-Repeatable Read",
+        "Phantom Read",
+        "Deadlock"
+      ],
+      "answer": 2,
+      "explanation": "한 트랜잭션 안에서 **같은 행을 두 번 읽었는데** 그 사이 다른 트랜잭션이 그 행을 수정·커밋하여 값이 달라진 현상은 Non-Repeatable Read다. Dirty Read는 **커밋되지 않은** 데이터를 읽는 현상이고, Phantom Read는 같은 조건으로 다시 조회했을 때 **새로운 행이 나타나는** 현상이다. Deadlock은 두 트랜잭션이 서로의 잠금 해제를 기다리며 멈춘 상태다."
+    },
+    {
+      "id": 46,
+      "subject": 2,
+      "theory": "tcl",
+      "question": "RESERVE 테이블에는 (RSV_ID, ST) = (1, '대기'), (2, '대기') 두 행이 커밋되어 있다. Oracle에서 아래 문장을 순서대로 실행한 뒤 마지막 SELECT의 결과는?",
+      "code": "UPDATE reserve SET st = '완료' WHERE rsv_id = 1;\nSAVEPOINT sp1;\nDELETE FROM reserve WHERE rsv_id = 2;\nROLLBACK TO sp1;\nINSERT INTO reserve VALUES (3, '대기');\nCOMMIT;\nUPDATE reserve SET st = '취소';\nROLLBACK;\nSELECT COUNT(*) FROM reserve WHERE st = '대기';",
+      "choices": [
+        "0",
+        "1",
+        "3",
+        "2"
+      ],
+      "answer": 4,
+      "explanation": "단계별 상태는 다음과 같다.\n\n1. 1번 행 '완료'로 변경 → SAVEPOINT sp1\n2. 2번 행 삭제 후 `ROLLBACK TO sp1` → 삭제만 취소, 1번 행의 '완료'는 유지\n3. 3번 행 '대기' 입력 후 COMMIT → (1 완료), (2 대기), (3 대기) 확정\n4. 전체를 '취소'로 변경 후 ROLLBACK → 마지막 COMMIT 시점으로 복귀\n\n따라서 ST가 '대기'인 행은 2번, 3번의 **2**건이다."
+    },
+    {
+      "id": 47,
+      "subject": 2,
+      "theory": "ddl",
+      "question": "VIEW, INDEX, SEQUENCE에 대한 설명으로 **적절하지 않은** 것은?",
+      "choices": [
+        "Oracle에서 뷰의 SELECT 정의를 바꾸려면 `ALTER VIEW 뷰명 AS SELECT ...` 문으로 정의를 수정한다.",
+        "뷰는 데이터를 직접 저장하지 않는 가상 테이블로, 필요한 컬럼만 보여 주어 보안성을 높일 수 있다.",
+        "인덱스를 생성하면 조회는 빨라질 수 있지만 INSERT·UPDATE·DELETE 시 인덱스도 함께 갱신되어 부하가 생긴다.",
+        "Oracle은 SEQUENCE 객체로 순번을 생성하고, SQL Server는 주로 컬럼의 IDENTITY 속성을 사용한다."
+      ],
+      "answer": 1,
+      "explanation": "Oracle에서는 ALTER VIEW로 뷰의 SELECT 정의를 바꿀 수 없다. 정의를 바꾸려면 `CREATE OR REPLACE VIEW`로 **다시 생성**한다. 뷰는 저장된 SELECT 문일 뿐 데이터를 갖지 않으며(보기 2), 인덱스는 조회 성능과 DML 부하 사이의 트레이드오프가 있고(보기 3), 순번 생성 방식은 DBMS마다 다르다(보기 4)."
+    },
+    {
+      "id": 48,
+      "subject": 2,
+      "theory": "ddl",
+      "question": "Oracle에서 다음과 같이 테이블을 생성하고 INSERT 문 6개를 순서대로 실행했다. 오류가 발생한 문장은 무시하고 진행했을 때 BOOK2 테이블의 최종 행 수는?",
+      "code": "CREATE TABLE book2 (\n  id    NUMBER       PRIMARY KEY,\n  price NUMBER       CHECK (price >= 0),\n  cat   VARCHAR2(5)  CHECK (cat IN ('IT', 'LIT'))\n);\nINSERT INTO book2 VALUES (1, 100,  'IT');   -- ①\nINSERT INTO book2 VALUES (2, NULL, 'LIT');  -- ②\nINSERT INTO book2 VALUES (3, -1,   'IT');   -- ③\nINSERT INTO book2 VALUES (4, 50,   NULL);   -- ④\nINSERT INTO book2 VALUES (1, 10,   'IT');   -- ⑤\nINSERT INTO book2 VALUES (5, 0,    'it');   -- ⑥",
+      "choices": [
+        "2건",
+        "4건",
+        "3건",
+        "5건"
+      ],
+      "answer": 3,
+      "explanation": "CHECK 제약은 조건이 **FALSE인 경우에만** 입력을 거부하며, NULL이 들어가 결과가 UNKNOWN이면 통과시킨다.\n\n- ① 정상\n- ② PRICE가 NULL → CHECK 결과 UNKNOWN → **통과**\n- ③ PRICE -1 → CHECK 위배로 실패\n- ④ CAT가 NULL → **통과**\n- ⑤ ID 1 중복 → PK 위배로 실패\n- ⑥ 'it'는 'IT'와 다른 값(대소문자 구분) → CHECK 위배로 실패\n\n따라서 ①, ②, ④의 **3건**이다. NULL을 막으려면 NOT NULL 제약을 따로 지정해야 한다."
+    },
+    {
+      "id": 49,
+      "subject": 2,
+      "theory": "dcl",
+      "question": "LIB 사용자가 소유한 LOAN 테이블(LOAN_ID, MEM_ID, DUE_DT, FEE)에 대해 아래와 같이 권한을 부여했다. 이후 KIM이 실행한 문장 중 **오류가 발생하는** 것은? (Oracle, KIM은 이 외에 다른 권한이 없다.)",
+      "code": "-- LIB 실행\nGRANT SELECT ON lib.loan TO kim;\nGRANT UPDATE (due_dt) ON lib.loan TO kim;",
+      "choices": [
+        "`SELECT * FROM lib.loan;`",
+        "`UPDATE lib.loan SET due_dt = due_dt + 7 WHERE loan_id = 1;`",
+        "`SELECT COUNT(*) FROM lib.loan WHERE fee > 0;`",
+        "`UPDATE lib.loan SET fee = 0 WHERE loan_id = 1;`"
+      ],
+      "answer": 4,
+      "explanation": "`GRANT UPDATE (due_dt)`처럼 컬럼 목록을 지정하면 **해당 컬럼만** 수정할 수 있다. KIM은 DUE_DT에 대한 UPDATE 권한만 있으므로 FEE를 수정하는 보기 4는 권한 부족 오류(ORA-01031)가 발생한다. SELECT 권한은 테이블 전체에 부여되었으므로 보기 1, 3은 정상이고, 보기 2는 허용된 DUE_DT 컬럼만 수정하므로 정상이다."
+    },
+    {
+      "id": 50,
+      "subject": 2,
+      "theory": "dcl",
+      "question": "LIB 사용자가 아래 문장을 순서대로 실행했다. 실행 후 LEE와 PARK가 LIB.BOOK 테이블에 대해 가진 권한으로 옳은 것은? (Oracle, LEE와 PARK는 이 문장들 외에 다른 권한이 없다.)",
+      "code": "CREATE ROLE librarian;\nGRANT SELECT, INSERT ON lib.book TO librarian;\nGRANT librarian TO lee, park;\nGRANT INSERT ON lib.book TO park;\nREVOKE INSERT ON lib.book FROM librarian;",
+      "choices": [
+        "LEE: SELECT, INSERT / PARK: SELECT, INSERT",
+        "LEE: SELECT / PARK: SELECT, INSERT",
+        "LEE: SELECT / PARK: SELECT",
+        "LEE: 권한 없음 / PARK: INSERT"
+      ],
+      "answer": 2,
+      "explanation": "롤에 부여된 권한은 롤을 받은 사용자에게 함께 적용되며, 롤에서 권한을 회수하면 그 롤을 가진 **모든 사용자에게서 함께 회수**된다.\n\n- LEE: 롤을 통한 SELECT, INSERT 중 INSERT가 회수되어 **SELECT**만 남는다.\n- PARK: 롤을 통한 SELECT가 남고, INSERT는 롤과 별개로 **직접** 받았으므로 롤에서 회수해도 유지된다 → **SELECT, INSERT**\n\n이처럼 롤을 이용하면 여러 사용자의 권한을 한 번에 관리할 수 있다."
+    }
+  ]
+}

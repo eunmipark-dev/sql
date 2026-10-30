@@ -1,0 +1,1544 @@
+{
+  "slug": "tcl",
+  "title": "TCL",
+  "tables": {
+    "계좌": {
+      "columns": [
+        "계좌",
+        "잔고"
+      ],
+      "rows": [
+        [
+          "A",
+          "100"
+        ],
+        [
+          "B",
+          "0"
+        ]
+      ]
+    },
+    "T": {
+      "columns": [
+        "COL",
+        "상태"
+      ],
+      "rows": [
+        [
+          "A",
+          "없음"
+        ],
+        [
+          "B",
+          "없음"
+        ],
+        [
+          "C",
+          "없음"
+        ],
+        [
+          "D",
+          "없음"
+        ],
+        [
+          "E",
+          "없음"
+        ]
+      ]
+    },
+    "내 세션": {
+      "columns": [
+        "계좌",
+        "잔고"
+      ],
+      "rows": [
+        [
+          "A",
+          "100"
+        ]
+      ]
+    },
+    "남 세션": {
+      "columns": [
+        "계좌",
+        "잔고"
+      ],
+      "rows": [
+        [
+          "A",
+          "100"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "TCL",
+      "subtitle": "변경을 확정하고 되돌리기",
+      "icon": "shield",
+      "steps": [
+        {
+          "say": "TCL 강의를 시작할게요."
+        },
+        {
+          "say": "DML로 바꾼 내용을 확정하거나 취소하는 명령이에요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "id": "s02",
+      "section": "트랜잭션",
+      "type": "data",
+      "title": "계좌이체 한 건",
+      "tables": [
+        "계좌"
+      ],
+      "code": "UPDATE 계좌 SET 잔고 = 잔고 - 30 WHERE 계좌 = 'A';\nUPDATE 계좌 SET 잔고 = 잔고 + 30 WHERE 계좌 = 'B';\nCOMMIT;",
+      "steps": [
+        {
+          "say": "트랜잭션은 하나의 논리적 작업 단위예요.",
+          "t": {
+            "계좌": {
+              "rows": [
+                0,
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "계좌이체를 볼게요. 먼저 A에서 30을 출금해요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "계좌": {
+              "set": [
+                [
+                  0,
+                  "잔고",
+                  "70"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그리고 B에 30을 입금해요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "계좌": {
+              "set": [
+                [
+                  1,
+                  "잔고",
+                  "30"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "둘 다 성공해야 커밋해요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "계좌": {
+              "rows": [
+                0,
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "하나라도 실패하면 모두 롤백해요. 원래 잔고로 돌아가요.",
+          "focus": [
+            1,
+            2
+          ],
+          "t": {
+            "계좌": {
+              "set": [
+                [
+                  0,
+                  "잔고",
+                  "100"
+                ],
+                [
+                  1,
+                  "잔고",
+                  "0"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "잔고",
+                  "롤백"
+                ],
+                [
+                  1,
+                  "잔고",
+                  "롤백"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "오라클은 첫 DML에서 트랜잭션이 시작돼요.",
+          "focus": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "ACID",
+      "title": "트랜잭션의 4가지 특성",
+      "cols": 2,
+      "items": [
+        {
+          "title": "원자성",
+          "desc": "전부 아니면 전무",
+          "icon": "puzzle"
+        },
+        {
+          "title": "일관성",
+          "desc": "전후 무결성 유지",
+          "icon": "scale"
+        },
+        {
+          "title": "고립성",
+          "desc": "중간 결과 비공개",
+          "icon": "lock"
+        },
+        {
+          "title": "지속성",
+          "desc": "커밋은 영구 보존",
+          "icon": "disk"
+        }
+      ],
+      "steps": [
+        {
+          "say": "트랜잭션의 특성은 ACID예요."
+        },
+        {
+          "say": "원자성. 모두 되거나, 하나도 안 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "출금만 되고 입금이 안 되는 일은 없어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "일관성. 실행 전후 무결성이 지켜져요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "고립성. 중간 결과를 남이 볼 수 없어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "지속성. 커밋한 건 장애가 나도 남아요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "quiz",
+      "section": "ACID",
+      "question": "중간 결과를 다른 트랜잭션이 볼 수 없다. 어떤 특성?",
+      "choices": [
+        "원자성",
+        "일관성",
+        "고립성",
+        "지속성"
+      ],
+      "answer": 3,
+      "explanation": "고립성이에요. 커밋 전 데이터는 남에게 안 보여요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 중간 결과를 남이 볼 수 없다면 어떤 특성일까요?"
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "cards",
+      "section": "동시성 문제",
+      "title": "고립성이 약하면",
+      "cols": 3,
+      "items": [
+        {
+          "title": "Dirty",
+          "desc": "커밋 안 된 값 읽기",
+          "icon": "eye",
+          "tone": "warn"
+        },
+        {
+          "title": "Non-Rep",
+          "desc": "수정·삭제로 값 변화",
+          "icon": "recycle",
+          "tone": "warn"
+        },
+        {
+          "title": "Phantom",
+          "desc": "삽입으로 새 행 등장",
+          "icon": "copy",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "고립성이 약하면 세 가지 문제가 생겨요."
+        },
+        {
+          "say": "Dirty Read. 커밋 안 된 값을 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그 값이 롤백되면 없던 값을 읽은 셈이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Non-Repeatable Read. 두 번 읽는 사이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "남이 수정이나 삭제 후 커밋해서 값이 달라져요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Phantom Read. 같은 조건으로 두 번 조회해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "남이 새 행을 넣어서 없던 행이 나타나요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "layers",
+      "section": "동시성 문제",
+      "title": "격리 수준 4단계",
+      "axis": {
+        "top": "동시성 높음",
+        "bottom": "안전성 높음"
+      },
+      "layers": [
+        {
+          "title": "READ UNCOMMITTED",
+          "desc": "셋 다 발생",
+          "icon": "warning"
+        },
+        {
+          "title": "READ COMMITTED",
+          "desc": "Dirty만 방지 · 기본값",
+          "icon": "check"
+        },
+        {
+          "title": "REPEATABLE READ",
+          "desc": "Phantom만 발생",
+          "icon": "lock"
+        },
+        {
+          "title": "SERIALIZABLE",
+          "desc": "셋 다 방지",
+          "icon": "shield"
+        }
+      ],
+      "steps": [
+        {
+          "say": "격리 수준은 네 단계예요."
+        },
+        {
+          "say": "READ UNCOMMITTED는 세 문제가 다 생겨요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "READ COMMITTED는 Dirty Read만 막아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "오라클과 SQL Server의 기본값이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "REPEATABLE READ는 Phantom만 남아요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "SERIALIZABLE은 셋 다 막아요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "높을수록 안전하지만 동시 처리량은 줄어요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "quiz",
+      "section": "동시성 문제",
+      "question": "다른 트랜잭션의 **삽입**으로 없던 행이 보이는 현상은?",
+      "choices": [
+        "Dirty Read",
+        "Phantom Read",
+        "Non-Repeatable Read",
+        "Deadlock"
+      ],
+      "answer": 2,
+      "explanation": "삽입은 Phantom Read예요. 수정이나 삭제면 Non-Repeatable Read예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 남이 새 행을 넣어서 없던 행이 보여요. 무엇일까요?"
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "cards",
+      "section": "TCL 명령어",
+      "title": "TCL 명령 4가지",
+      "cols": 2,
+      "items": [
+        {
+          "title": "확정",
+          "desc": "COMMIT",
+          "icon": "check",
+          "tone": "good"
+        },
+        {
+          "title": "전체 취소",
+          "desc": "ROLLBACK",
+          "icon": "recycle"
+        },
+        {
+          "title": "저장점",
+          "desc": "SAVEPOINT",
+          "icon": "tag"
+        },
+        {
+          "title": "부분 취소",
+          "desc": "ROLLBACK TO",
+          "icon": "arrow-left-right"
+        }
+      ],
+      "steps": [
+        {
+          "say": "TCL 명령은 네 가지예요."
+        },
+        {
+          "say": "COMMIT. 변경을 영구 반영하고 끝내요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "ROLLBACK. 마지막 커밋 이후를 모두 취소해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "SAVEPOINT. 중간에 돌아갈 지점을 저장해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "ROLLBACK TO. 그 지점 이후만 취소해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "이때 트랜잭션은 계속 이어져요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "cards",
+      "section": "TCL 명령어",
+      "title": "저장점 규칙",
+      "cols": 3,
+      "items": [
+        {
+          "title": "여러 개",
+          "desc": "얼마든지 생성",
+          "icon": "copy"
+        },
+        {
+          "title": "뒤쪽 소멸",
+          "desc": "앞으로 롤백 시",
+          "icon": "warning",
+          "tone": "warn"
+        },
+        {
+          "title": "같은 이름",
+          "desc": "나중 것으로 대체",
+          "icon": "tag"
+        },
+        {
+          "title": "그냥 롤백",
+          "desc": "전체 취소",
+          "icon": "recycle"
+        },
+        {
+          "title": "COMMIT",
+          "desc": "저장점 모두 삭제",
+          "icon": "check"
+        }
+      ],
+      "steps": [
+        {
+          "say": "저장점 규칙은 다섯 가지예요."
+        },
+        {
+          "say": "첫째, 저장점은 여러 개 둘 수 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 앞 저장점으로 롤백하면 뒤 저장점은 사라져요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 같은 이름이면 나중 것이 대체해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 그냥 ROLLBACK은 전체를 취소해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "다섯째, 커밋하면 저장점이 모두 사라져요.",
+          "focus": [
+            4
+          ]
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "id": "s10",
+      "section": "저장점 예제",
+      "type": "data",
+      "title": "몇 건이 남을까?",
+      "tables": [
+        "T"
+      ],
+      "code": "INSERT INTO t VALUES ('A'); COMMIT;\nINSERT INTO t VALUES ('B'); SAVEPOINT sp1;\nINSERT INTO t VALUES ('C'); SAVEPOINT sp2;\nDELETE FROM t WHERE col = 'A';\nROLLBACK TO sp2;\nINSERT INTO t VALUES ('D');\nROLLBACK TO sp1;\nINSERT INTO t VALUES ('E'); COMMIT;",
+      "steps": [
+        {
+          "say": "빈 테이블에서 차례로 실행해 볼게요.",
+          "t": {
+            "T": {
+              "cols": [
+                "상태"
+              ]
+            }
+          }
+        },
+        {
+          "say": "A를 넣고 커밋해요. A는 확정이에요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "T": {
+              "set": [
+                [
+                  0,
+                  "상태",
+                  "확정"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "B를 넣고 sp1을 저장해요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "T": {
+              "set": [
+                [
+                  1,
+                  "상태",
+                  "미확정"
+                ]
+              ],
+              "notes": [
+                [
+                  1,
+                  "상태",
+                  "sp1"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "C를 넣고 sp2를 저장해요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "T": {
+              "set": [
+                [
+                  2,
+                  "상태",
+                  "미확정"
+                ]
+              ],
+              "notes": [
+                [
+                  2,
+                  "상태",
+                  "sp2"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "A를 지워요. 아직 커밋 전이에요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "T": {
+              "set": [
+                [
+                  0,
+                  "상태",
+                  "삭제"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "sp2로 되돌리면 A가 다시 살아나요.",
+          "focus": [
+            5
+          ],
+          "t": {
+            "T": {
+              "set": [
+                [
+                  0,
+                  "상태",
+                  "확정"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "상태",
+                  "복구"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s11",
+      "section": "저장점 예제",
+      "type": "data",
+      "title": "테이블 상태 따라가기",
+      "tables": [
+        "T"
+      ],
+      "code": "INSERT INTO t VALUES ('A'); COMMIT;\nINSERT INTO t VALUES ('B'); SAVEPOINT sp1;\nINSERT INTO t VALUES ('C'); SAVEPOINT sp2;\nDELETE FROM t WHERE col = 'A';\nROLLBACK TO sp2;\nINSERT INTO t VALUES ('D');\nROLLBACK TO sp1;\nINSERT INTO t VALUES ('E'); COMMIT;",
+      "steps": [
+        {
+          "say": "sp2로 되감은 뒤예요. A, B, C가 있어요.",
+          "focus": [
+            5
+          ],
+          "t": {
+            "T": {
+              "set": [
+                [
+                  0,
+                  "상태",
+                  "확정"
+                ],
+                [
+                  1,
+                  "상태",
+                  "미확정"
+                ],
+                [
+                  2,
+                  "상태",
+                  "미확정"
+                ]
+              ],
+              "notes": [
+                [
+                  1,
+                  "상태",
+                  "sp1"
+                ],
+                [
+                  2,
+                  "상태",
+                  "sp2"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "D를 넣으면 네 건이 돼요.",
+          "focus": [
+            6
+          ],
+          "t": {
+            "T": {
+              "set": [
+                [
+                  3,
+                  "상태",
+                  "미확정"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "sp1로 되감으면 C와 D가 취소돼요.",
+          "focus": [
+            7
+          ],
+          "t": {
+            "T": {
+              "set": [
+                [
+                  2,
+                  "상태",
+                  "없음"
+                ],
+                [
+                  3,
+                  "상태",
+                  "없음"
+                ]
+              ],
+              "notes": [
+                [
+                  1,
+                  "상태",
+                  "sp1"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "sp2도 함께 사라져요. A, B만 남아요.",
+          "focus": [
+            7
+          ],
+          "t": {
+            "T": {
+              "rows": [
+                0,
+                1
+              ],
+              "notes": [
+                [
+                  2,
+                  "상태",
+                  "sp2 소멸"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "E를 넣고 커밋하면 A, B, E예요.",
+          "focus": [
+            8
+          ],
+          "t": {
+            "T": {
+              "set": [
+                [
+                  1,
+                  "상태",
+                  "확정"
+                ],
+                [
+                  4,
+                  "상태",
+                  "확정"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "정리하면 결과는 3건이에요.",
+          "t": {
+            "T": {
+              "rows": [
+                0,
+                1,
+                4
+              ],
+              "result": {
+                "title": "최종 T",
+                "columns": [
+                  "COL"
+                ],
+                "rows": [
+                  [
+                    "A"
+                  ],
+                  [
+                    "B"
+                  ],
+                  [
+                    "E"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s12",
+      "section": "저장점 예제",
+      "type": "data",
+      "title": "커밋 대신 롤백하면",
+      "tables": [
+        "T"
+      ],
+      "code": "INSERT INTO t VALUES ('A'); COMMIT;\nINSERT INTO t VALUES ('B');\nINSERT INTO t VALUES ('C');\nROLLBACK;",
+      "steps": [
+        {
+          "say": "A만 커밋하고, B와 C를 더 넣었어요.",
+          "focus": [
+            1,
+            2,
+            3
+          ],
+          "t": {
+            "T": {
+              "set": [
+                [
+                  0,
+                  "상태",
+                  "확정"
+                ],
+                [
+                  1,
+                  "상태",
+                  "미확정"
+                ],
+                [
+                  2,
+                  "상태",
+                  "미확정"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "마지막에 커밋 대신 롤백했다면요?",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "첫 커밋 시점으로 돌아가요. A 한 건이에요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "T": {
+              "set": [
+                [
+                  1,
+                  "상태",
+                  "없음"
+                ],
+                [
+                  2,
+                  "상태",
+                  "없음"
+                ]
+              ],
+              "rows": [
+                0
+              ]
+            }
+          }
+        },
+        {
+          "say": "그리고 사라진 저장점으로는 돌아갈 수 없어요."
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "저장점 예제",
+      "question": "앞쪽 저장점으로 롤백하면 뒤쪽 저장점은?",
+      "choices": [
+        "그대로 남는다",
+        "자동 커밋된다",
+        "앞쪽과 합쳐진다",
+        "사라진다"
+      ],
+      "answer": 4,
+      "explanation": "뒤에 만든 저장점은 사라져요. 다시 돌아갈 수 없어요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 앞쪽 저장점으로 롤백하면 뒤쪽 저장점은 어떻게 될까요?"
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "id": "s14",
+      "section": "커밋 전과 후",
+      "type": "data",
+      "title": "커밋 전과 후",
+      "tables": [
+        "내 세션",
+        "남 세션"
+      ],
+      "code": "UPDATE 계좌 SET 잔고 = 70\nWHERE 계좌 = 'A';\nCOMMIT;",
+      "steps": [
+        {
+          "say": "커밋 전과 후를 비교해 볼게요. 둘 다 잔고 100을 봐요.",
+          "t": {
+            "내 세션": {
+              "cols": [
+                "잔고"
+              ]
+            },
+            "남 세션": {
+              "cols": [
+                "잔고"
+              ]
+            }
+          }
+        },
+        {
+          "say": "내가 70으로 바꿨어요. 커밋 전엔 나만 결과를 봐요.",
+          "focus": [
+            1,
+            2
+          ],
+          "t": {
+            "내 세션": {
+              "set": [
+                [
+                  0,
+                  "잔고",
+                  "70"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "다른 사람은 이전 값 100을 봐요.",
+          "t": {
+            "남 세션": {
+              "cells": [
+                [
+                  0,
+                  "잔고"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "잔고",
+                  "이전 값"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "변경 중인 행은 잠겨 있어요.",
+          "t": {
+            "내 세션": {
+              "rows": [
+                0
+              ],
+              "notes": [
+                [
+                  0,
+                  "계좌",
+                  "잠금"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "커밋하면 모두가 결과를 봐요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "남 세션": {
+              "set": [
+                [
+                  0,
+                  "잔고",
+                  "70"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "잠금도 풀려요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "내 세션": {
+              "notes": [
+                [
+                  0,
+                  "계좌",
+                  "잠금 해제"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "롤백해도 이전 상태로 돌아가고 잠금이 풀려요."
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "자동 커밋",
+      "title": "오라클 자동 처리",
+      "cols": 2,
+      "items": [
+        {
+          "title": "DDL 실행",
+          "desc": "암묵적 커밋",
+          "icon": "check",
+          "tone": "good"
+        },
+        {
+          "title": "DCL 실행",
+          "desc": "암묵적 커밋",
+          "icon": "check",
+          "tone": "good"
+        },
+        {
+          "title": "정상 종료",
+          "desc": "커밋",
+          "icon": "check",
+          "tone": "good"
+        },
+        {
+          "title": "비정상 종료",
+          "desc": "롤백",
+          "icon": "warning",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "오라클이 알아서 커밋하는 경우가 있어요."
+        },
+        {
+          "say": "DDL을 실행하면 커밋돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "GRANT 같은 DCL도 커밋돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "도구를 정상 종료해도 커밋돼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "반대로 장애나 강제 종료는 롤백이에요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "callout",
+      "section": "자동 커밋",
+      "tone": "warning",
+      "title": "함정",
+      "text": "DML 후 DDL을 실행하면 DML도 커밋. 이후 ROLLBACK은 **소용없음**. DDL이 실패해도 같음.",
+      "steps": [
+        {
+          "say": "INSERT 후에 CREATE TABLE을 실행했어요."
+        },
+        {
+          "say": "이 순간 INSERT도 커밋돼요."
+        },
+        {
+          "say": "그 뒤에 롤백해도 취소되지 않아요."
+        },
+        {
+          "say": "DDL이 실패해도 커밋된 걸로 봐요."
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "quiz",
+      "section": "자동 커밋",
+      "question": "오라클에서 INSERT 후 CREATE TABLE, 그다음 ROLLBACK하면?",
+      "choices": [
+        "INSERT는 커밋돼 있다",
+        "INSERT가 취소된다",
+        "둘 다 취소된다",
+        "오류가 난다"
+      ],
+      "answer": 1,
+      "explanation": "DDL이 암묵적으로 커밋해요. 그래서 INSERT는 남아요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. INSERT 후 테이블을 만들고 롤백하면 INSERT는요?"
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "compare",
+      "section": "오라클과 SQL Server",
+      "title": "트랜잭션 방식",
+      "left": {
+        "title": "Oracle",
+        "icon": "database",
+        "items": [
+          "수동 커밋",
+          "첫 DML로 시작",
+          "DDL 롤백 불가"
+        ]
+      },
+      "right": {
+        "title": "SQL Server",
+        "icon": "database",
+        "items": [
+          "자동 커밋",
+          "BEGIN TRAN 시작",
+          "DDL도 롤백 가능"
+        ]
+      },
+      "steps": [
+        {
+          "say": "두 DBMS를 비교해 볼게요."
+        },
+        {
+          "say": "오라클은 수동 커밋이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "첫 DML에서 트랜잭션이 시작돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL Server는 문장마다 자동 커밋해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "묶으려면 BEGIN TRAN으로 시작해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그 안이면 DDL도 롤백할 수 있어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "compare",
+      "section": "오라클과 SQL Server",
+      "title": "저장점 문법",
+      "left": {
+        "title": "Oracle",
+        "icon": "tag",
+        "items": [
+          "SAVEPOINT",
+          "ROLLBACK TO"
+        ]
+      },
+      "right": {
+        "title": "SQL Server",
+        "icon": "tag",
+        "items": [
+          "SAVE TRAN",
+          "ROLLBACK TRAN"
+        ]
+      },
+      "steps": [
+        {
+          "say": "저장점 문법도 달라요."
+        },
+        {
+          "say": "오라클은 SAVEPOINT와 ROLLBACK TO예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL Server는 SAVE TRAN이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "되돌릴 땐 ROLLBACK TRAN이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "둘을 섞은 보기는 오답이에요.",
+          "focus": [
+            0,
+            1
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "cards",
+      "section": "오라클과 SQL Server",
+      "title": "SQL Server 방식",
+      "cols": 3,
+      "items": [
+        {
+          "title": "자동 커밋",
+          "desc": "기본값",
+          "icon": "check"
+        },
+        {
+          "title": "암시적",
+          "desc": "오라클처럼 동작",
+          "icon": "idea"
+        },
+        {
+          "title": "명시적",
+          "desc": "BEGIN TRAN",
+          "icon": "workflow"
+        }
+      ],
+      "steps": [
+        {
+          "say": "SQL Server엔 방식이 세 가지 있어요."
+        },
+        {
+          "say": "자동 커밋이 기본이에요. 오류면 자동 롤백해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "암시적 트랜잭션은 오라클처럼 동작해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "명시적 트랜잭션은 BEGIN TRAN으로 시작해요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "quiz",
+      "section": "오라클과 SQL Server",
+      "question": "SQL Server에서 저장점을 만드는 문법은?",
+      "choices": [
+        "SAVEPOINT sp1",
+        "ROLLBACK TO sp1",
+        "SAVE TRAN sp1",
+        "BEGIN sp1"
+      ],
+      "answer": 3,
+      "explanation": "SQL Server는 SAVE TRAN이에요. SAVEPOINT는 오라클이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. SQL Server에서 저장점을 만드는 문법은?"
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "compare",
+      "section": "잠금",
+      "title": "공유 잠금과 배타 잠금",
+      "left": {
+        "title": "공유 잠금",
+        "icon": "users",
+        "items": [
+          "읽기용",
+          "여럿이 동시에"
+        ]
+      },
+      "right": {
+        "title": "배타 잠금",
+        "icon": "lock",
+        "items": [
+          "변경용",
+          "한 트랜잭션만"
+        ]
+      },
+      "steps": [
+        {
+          "say": "잠금은 동시 변경을 막는 장치예요."
+        },
+        {
+          "say": "공유 잠금은 읽기용이에요. 여럿이 걸 수 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "배타 잠금은 변경용이에요. 하나만 걸 수 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "잠금은 커밋이나 롤백 때 풀려요.",
+          "focus": [
+            0,
+            1
+          ]
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "flow",
+      "section": "잠금",
+      "title": "교착 상태",
+      "direction": "right",
+      "edges": [
+        "서로 기다림"
+      ],
+      "nodes": [
+        {
+          "title": "트랜잭션 1",
+          "desc": "2의 잠금 대기",
+          "icon": "user"
+        },
+        {
+          "title": "트랜잭션 2",
+          "desc": "1의 잠금 대기",
+          "icon": "user"
+        }
+      ],
+      "steps": [
+        {
+          "say": "서로의 잠금을 기다리면 끝없이 멈춰요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "이걸 교착 상태, 데드락이라고 해요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "오라클은 문제 문장만 취소해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL Server는 희생자 트랜잭션 전체를 롤백해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s23"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "ACID: 원자 · 일관 · 고립 · 지속",
+        "삽입은 Phantom Read",
+        "ROLLBACK TO는 저장점 이후만",
+        "앞 저장점 롤백 시 뒤 저장점 소멸",
+        "오라클 DDL·DCL은 암묵적 커밋",
+        "SQL Server 저장점은 SAVE TRAN"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "ACID는 원자성, 일관성, 고립성, 지속성.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "수정과 삭제는 Non-Repeatable Read예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "삽입은 Phantom Read예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "ROLLBACK TO는 저장점 이후만 취소해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "앞으로 되감으면 뒤 저장점은 사라져요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "오라클은 DDL과 DCL에서 자동 커밋돼요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "SQL Server 저장점은 SAVE TRAN이에요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s24"
+    }
+  ]
+}

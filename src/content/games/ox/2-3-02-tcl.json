@@ -1,0 +1,97 @@
+[
+  {
+    "text": "트랜잭션의 원자성(Atomicity)은 트랜잭션의 연산이 모두 실행되거나 전혀 실행되지 않아야 함을 뜻한다.",
+    "answer": true,
+    "explain": "원자성은 All or Nothing 특성이다. 이체에서 출금만 되고 입금이 안 되는 상황을 막는다."
+  },
+  {
+    "text": "실행 중인 트랜잭션의 중간 결과를 다른 트랜잭션이 볼 수 없어야 한다는 특성은 일관성(Consistency)이다.",
+    "answer": false,
+    "explain": "중간 결과를 다른 트랜잭션이 볼 수 없다는 것은 고립성(Isolation)이다."
+  },
+  {
+    "text": "커밋된 트랜잭션의 결과가 장애가 발생해도 영구히 보존되어야 한다는 특성은 지속성(Durability)이다.",
+    "answer": true,
+    "explain": "지속성은 커밋된 결과가 시스템 장애 후에도 유지되어야 한다는 특성이다."
+  },
+  {
+    "text": "Dirty Read는 다른 트랜잭션이 커밋하지 않은 데이터를 읽는 현상이다.",
+    "answer": true,
+    "explain": "커밋 전 데이터를 읽었는데 그 트랜잭션이 롤백하면 존재한 적 없는 값을 읽은 셈이 된다."
+  },
+  {
+    "text": "Oracle과 SQL Server의 기본 격리 수준은 모두 READ COMMITTED이다.",
+    "answer": true,
+    "explain": "두 DBMS 모두 기본 격리 수준으로 READ COMMITTED를 사용한다."
+  },
+  {
+    "text": "Oracle에서 저장점을 지정하지 않고 ROLLBACK만 실행하면 마지막 COMMIT 이후의 변경 전체가 취소된다.",
+    "answer": true,
+    "explain": "저장점 없는 ROLLBACK은 트랜잭션 전체를 취소하고 트랜잭션을 종료한다."
+  },
+  {
+    "text": "COMMIT을 실행해도 그 트랜잭션에서 만든 저장점은 남아 있어 이후 ROLLBACK TO로 사용할 수 있다.",
+    "answer": false,
+    "explain": "COMMIT하면 모든 저장점이 사라진다."
+  },
+  {
+    "text": "SQL Server에서 SET IMPLICIT_TRANSACTIONS ON을 설정하면 Oracle처럼 명시적 COMMIT 또는 ROLLBACK이 필요하다.",
+    "answer": true,
+    "explain": "암시적 트랜잭션 모드에서는 AUTO COMMIT 대신 명시적으로 트랜잭션을 끝내야 한다."
+  },
+  {
+    "text": "ROLLBACK TO 저장점을 실행하면 해당 저장점 이후의 변경이 취소되고 트랜잭션도 함께 종료된다.",
+    "answer": false,
+    "explain": "ROLLBACK TO는 저장점 이후의 변경만 취소하고 트랜잭션은 계속 진행된다."
+  },
+  {
+    "text": "앞선 저장점으로 롤백하면 그 뒤에 만든 저장점들은 사라진다.",
+    "answer": true,
+    "explain": "앞쪽 저장점으로 되돌아가면 뒤쪽 저장점은 소멸해 다시 그 저장점으로 롤백할 수 없다."
+  },
+  {
+    "text": "같은 이름으로 저장점을 다시 만들면 먼저 만든 저장점이 유지되고 나중 것은 무시된다.",
+    "answer": false,
+    "explain": "같은 이름으로 저장점을 다시 만들면 나중 것이 앞의 것을 대체한다."
+  },
+  {
+    "text": "COMMIT 이전에는 변경한 사용자 본인만 SELECT로 변경 결과를 볼 수 있다.",
+    "answer": true,
+    "explain": "다른 사용자는 마지막으로 커밋된 데이터를 보며, 변경 중인 행은 잠금이 걸려 있다."
+  },
+  {
+    "text": "Oracle에서 INSERT 후 CREATE TABLE을 실행하고 ROLLBACK하면 앞선 INSERT가 취소된다.",
+    "answer": false,
+    "explain": "Oracle에서 DDL은 실행 전후로 암묵적 COMMIT되므로 앞선 INSERT는 이미 확정되어 취소되지 않는다."
+  },
+  {
+    "text": "Oracle에서 세션이 비정상 종료되면 커밋되지 않은 트랜잭션은 롤백된다.",
+    "answer": true,
+    "explain": "비정상 종료, 시스템 장애, 세션 강제 종료 시에는 미커밋 변경이 ROLLBACK된다."
+  },
+  {
+    "text": "SQL Server는 기본적으로 수동 커밋 방식이어서 문장마다 명시적으로 COMMIT해야 한다.",
+    "answer": false,
+    "explain": "SQL Server는 AUTO COMMIT이 기본이다. 수동 커밋이 기본인 것은 Oracle이다."
+  },
+  {
+    "text": "SQL Server에서 저장점을 만드는 명령은 SAVE TRAN이다.",
+    "answer": true,
+    "explain": "SQL Server는 SAVE TRAN으로 저장점을 만들고 ROLLBACK TRAN으로 되돌린다. Oracle은 SAVEPOINT를 쓴다."
+  },
+  {
+    "text": "SQL Server에서는 명시적 트랜잭션 안에서 실행한 DDL도 롤백할 수 있다.",
+    "answer": true,
+    "explain": "SQL Server는 BEGIN TRAN 안이면 DDL도 롤백 가능하지만, Oracle은 DDL이 암묵적 커밋이라 롤백할 수 없다."
+  },
+  {
+    "text": "공유 잠금(Shared Lock)은 한 트랜잭션만 걸 수 있으며 다른 잠금과 공존할 수 없다.",
+    "answer": false,
+    "explain": "설명은 배타 잠금이다. 공유 잠금은 읽기용으로 여러 트랜잭션이 동시에 걸 수 있다."
+  },
+  {
+    "text": "Oracle은 교착 상태가 감지되면 교착 상태를 일으킨 문장만 취소하고 트랜잭션은 유지한다.",
+    "answer": true,
+    "explain": "Oracle은 ORA-00060과 함께 해당 문장만 취소하며, SQL Server는 희생자 트랜잭션 전체를 롤백한다."
+  }
+]

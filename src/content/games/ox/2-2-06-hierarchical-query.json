@@ -1,0 +1,21 @@
+[
+  { "text": "Oracle 계층형 질의에서 START WITH는 전개를 시작할 루트 행을 지정한다.", "answer": true, "explain": "START WITH로 루트를 정하고 CONNECT BY로 다음 행과의 연결 조건을 정한다." },
+  { "text": "CONNECT BY PRIOR EMPNO = MGR은 자식에서 부모 방향으로 올라가는 역방향 전개이다.", "answer": false, "explain": "PRIOR가 자식 쪽 키(EMPNO)에 붙었으므로 부하 직원을 찾아 내려가는 순방향이다." },
+  { "text": "CONNECT BY EMPNO = PRIOR MGR은 CONNECT BY PRIOR MGR = EMPNO와 같은 역방향 전개이다.", "answer": true, "explain": "방향은 등호 좌우가 아니라 PRIOR가 어느 컬럼에 붙었는지로 결정된다." },
+  { "text": "계층형 질의에서 루트 행의 LEVEL 값은 1이다.", "answer": true, "explain": "루트가 1이고 한 단계 내려갈 때마다 1씩 증가한다." },
+  { "text": "CONNECT_BY_ISLEAF는 자식이 있는 행에서 1을 반환한다.", "answer": false, "explain": "CONNECT_BY_ISLEAF는 자식이 없는 리프 행이면 1, 아니면 0이다." },
+  { "text": "SYS_CONNECT_BY_PATH는 루트부터 현재 행까지의 경로를 문자열로 반환한다.", "answer": true, "explain": "예: SYS_CONNECT_BY_PATH(ENAME, '/') → /한대표/김부장/박과장" },
+  { "text": "CONNECT_BY_ROOT 컬럼은 현재 행의 직속 부모 행의 컬럼 값을 반환한다.", "answer": false, "explain": "CONNECT_BY_ROOT는 현재 행이 속한 루트 행의 컬럼 값을 반환한다." },
+  { "text": "계층형 질의에서 일반 ORDER BY를 쓰면 계층 구조를 유지한 채 형제끼리만 정렬된다.", "answer": false, "explain": "일반 ORDER BY는 계층 순서를 깨뜨린다. 형제끼리만 정렬하려면 ORDER SIBLINGS BY를 쓴다." },
+  { "text": "Oracle 계층형 질의의 결과는 깊이 우선 순서로 출력된다.", "answer": true, "explain": "한 행의 하위를 모두 출력한 뒤 다음 형제로 넘어간다." },
+  { "text": "계층형 질의에서 WHERE 조건은 CONNECT BY 전개보다 먼저 적용된다.", "answer": false, "explain": "WHERE는 START WITH, CONNECT BY로 전개가 끝난 뒤 맨 마지막에 행 단위로 적용된다." },
+  { "text": "CONNECT BY 절에 조건을 추가하면 조건에 맞지 않는 행의 하위 가지도 함께 제외된다.", "answer": true, "explain": "CONNECT BY 조건은 그 행으로의 전개 자체를 막는다." },
+  { "text": "계층형 질의의 WHERE 절로 특정 행을 제외하면 그 행의 하위 행들도 결과에서 함께 사라진다.", "answer": false, "explain": "WHERE는 전개 후 해당 행만 제거하므로 하위 행은 원래 LEVEL 그대로 남는다." },
+  { "text": "CONNECT BY에 NOCYCLE을 쓰면 순환이 발생해도 오류 없이 그 지점에서 전개를 멈춘다.", "answer": true, "explain": "CONNECT_BY_ISCYCLE과 함께 순환 지점을 확인할 수 있다." },
+  { "text": "START WITH 조건을 만족한 루트 행도 CONNECT BY 조건을 만족하지 않으면 결과에서 제외된다.", "answer": false, "explain": "START WITH를 만족한 루트 행은 CONNECT BY 조건과 관계없이 결과에 포함된다." },
+  { "text": "SQL Server의 재귀 CTE는 앵커 멤버와 재귀 멤버를 UNION으로 연결한다.", "answer": false, "explain": "앵커 멤버와 재귀 멤버는 UNION ALL로 연결한다." },
+  { "text": "계층형 질의의 역방향 전개에서는 시작한 행이 LEVEL 1이 되고 위로 올라갈수록 LEVEL이 커진다.", "answer": true, "explain": "LEVEL은 전개를 시작한 행 기준이므로 역방향에서는 시작 행이 1이다." },
+  { "text": "셀프 조인은 같은 테이블에 서로 다른 별칭을 붙여 조인하는 방식이다.", "answer": true, "explain": "한 단계 위·아래처럼 깊이가 정해진 계층 조회에 적합하다." },
+  { "text": "사원과 상사를 셀프 조인할 때 INNER JOIN을 쓰면 상사가 없는 최상위 사원도 결과에 포함된다.", "answer": false, "explain": "INNER JOIN에서는 MGR이 NULL인 최상위 사원이 빠진다. 포함하려면 OUTER JOIN을 쓴다." },
+  { "text": "Oracle의 CONNECT_BY_ISCYCLE은 NOCYCLE 키워드 없이도 사용할 수 있다.", "answer": false, "explain": "CONNECT_BY_ISCYCLE은 CONNECT BY NOCYCLE과 함께 사용해야 한다." }
+]

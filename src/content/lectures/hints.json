@@ -1,0 +1,1490 @@
+{
+  "slug": "hints",
+  "title": "힌트 활용",
+  "tables": {
+    "주문_X01": {
+      "columns": [
+        "고객",
+        "주문일"
+      ],
+      "rows": [
+        [
+          "A",
+          "09-01"
+        ],
+        [
+          "A",
+          "09-15"
+        ],
+        [
+          "A",
+          "10-03"
+        ],
+        [
+          "A",
+          "10-20"
+        ],
+        [
+          "B",
+          "09-10"
+        ],
+        [
+          "B",
+          "10-05"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "힌트 활용",
+      "subtitle": "옵티마이저에게 직접 지시하기",
+      "icon": "target",
+      "steps": [
+        {
+          "say": "힌트 활용을 시작할게요."
+        },
+        {
+          "say": "옵티마이저에게 실행 방법을 직접 알려 주는 법이에요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "flow",
+      "section": "시작",
+      "title": "왜 힌트를 쓸까",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "통계 부족",
+          "desc": "옵티마이저 한계",
+          "icon": "warning",
+          "tone": "warn"
+        },
+        {
+          "title": "나쁜 계획",
+          "desc": "비효율 실행",
+          "icon": "help",
+          "tone": "bad"
+        },
+        {
+          "title": "힌트",
+          "desc": "직접 지시",
+          "icon": "target",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "옵티마이저도 통계 부족으로 틀릴 때가 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그러면 비효율적인 계획이 나와요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "이때 힌트로 직접 지시해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "Oracle 힌트는 참고 의견이 아니에요. 지시예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "문법이 맞고 실행 가능하면 반드시 따라요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "code",
+      "section": "힌트 문법",
+      "title": "힌트 쓰는 자리",
+      "code": "SELECT /*+ LEADING(e) USE_NL(d)\n           INDEX(e emp_deptno_idx) */\n       e.ename, d.dname\nFROM   emp e, dept d\nWHERE  e.deptno = d.deptno;",
+      "steps": [
+        {
+          "say": "힌트는 주석 안에 써요.",
+          "focus": [
+            1,
+            2
+          ]
+        },
+        {
+          "say": "SELECT 바로 뒤, 별 뒤에 플러스를 붙여 시작해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "한 줄 주석 형태도 쓸 수 있어요.",
+          "focus": [
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "cards",
+      "section": "힌트 문법",
+      "title": "작성 규칙 4가지",
+      "cols": 2,
+      "items": [
+        {
+          "title": "붙여 쓰기",
+          "desc": "띄우면 일반 주석",
+          "icon": "link"
+        },
+        {
+          "title": "위치",
+          "desc": "키워드 바로 뒤",
+          "icon": "target"
+        },
+        {
+          "title": "공백 구분",
+          "desc": "힌트 사이 콤마 X",
+          "icon": "ruler"
+        },
+        {
+          "title": "Alias 사용",
+          "desc": "테이블명은 무시",
+          "icon": "tag",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "작성 규칙은 네 가지예요."
+        },
+        {
+          "say": "첫째, 별과 플러스는 붙여 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "띄우면 그냥 주석이 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, SELECT 같은 키워드 바로 뒤에 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "INSERT, UPDATE, DELETE도 같아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 힌트끼리는 공백으로 구분해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "힌트 사이에 콤마를 쓰면 뒤 힌트가 무시될 수 있어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, Alias를 줬다면 Alias로 써야 해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "스키마명을 붙인 표기도 틀려요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "cards",
+      "section": "무시되는 경우",
+      "title": "힌트가 무시될 때",
+      "cols": 3,
+      "items": [
+        {
+          "title": "문법 오류",
+          "desc": "철자 · 괄호",
+          "icon": "warning",
+          "tone": "warn"
+        },
+        {
+          "title": "잘못된 참조",
+          "desc": "Alias 대신 테이블명",
+          "icon": "tag",
+          "tone": "warn"
+        },
+        {
+          "title": "의미 불일치",
+          "desc": "엉뚱한 UNNEST",
+          "icon": "help",
+          "tone": "warn"
+        },
+        {
+          "title": "논리적 불가",
+          "desc": "등치 없이 해시",
+          "icon": "lock",
+          "tone": "warn"
+        },
+        {
+          "title": "상충 힌트",
+          "desc": "서로 모순",
+          "icon": "arrow-left-right",
+          "tone": "warn"
+        },
+        {
+          "title": "쿼리 변환",
+          "desc": "블록 구조 바뀜",
+          "icon": "recycle",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "힌트가 무시되는 경우는 여섯 가지예요."
+        },
+        {
+          "say": "문법 오류. 철자나 괄호가 틀린 경우예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "잘못된 참조. Alias 대신 테이블명을 쓴 경우예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "없는 인덱스명을 쓴 경우도 그래요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "의미가 안 맞는 경우. 서브쿼리가 아닌데 UNNEST를 쓴 거죠.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "논리적으로 불가능한 경우.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "등치 조인 조건이 없는데 해시 조인을 시킨 거예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "상충하는 힌트도 무시돼요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "뷰 Merging으로 힌트 대상이 사라지기도 해요.",
+          "focus": [
+            5
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "compare",
+      "section": "무시되는 경우",
+      "title": "못 따를 때의 반응",
+      "left": {
+        "title": "Oracle",
+        "icon": "database",
+        "items": [
+          "에러 없이 무시",
+          "자체 판단 실행"
+        ]
+      },
+      "right": {
+        "title": "SQL Server",
+        "icon": "warning",
+        "items": [
+          "없는 인덱스 지정",
+          "오류 발생"
+        ]
+      },
+      "steps": [
+        {
+          "say": "Oracle은 힌트를 못 따르면 조용히 무시해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "에러가 없으니 실행계획으로 꼭 확인하세요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL Server는 달라요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "없는 인덱스를 지정하면 오류가 나요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "callout",
+      "section": "무시되는 경우",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "\"힌트를 잘못 쓰면 에러가 난다\"는 Oracle 기준 **틀린** 보기예요.",
+      "steps": [
+        {
+          "say": "힌트를 잘못 쓰면 에러가 난다."
+        },
+        {
+          "say": "이 보기는 Oracle 기준으로 틀렸어요."
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "quiz",
+      "section": "무시되는 경우",
+      "question": "`FROM emp e`로 Alias를 준 쿼리에 `/*+ FULL(emp) */`를 쓰면? (Oracle)",
+      "choices": [
+        "ORA 오류가 발생한다",
+        "에러 없이 무시된다",
+        "Full Scan이 적용된다",
+        "RBO로 실행된다"
+      ],
+      "answer": 2,
+      "explanation": "Alias를 줬다면 힌트에도 Alias를 써야 해요. 테이블명을 쓰면 조용히 무시돼요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. Alias를 줬는데 테이블명으로 힌트를 쓰면 어떻게 될까요?"
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "cards",
+      "section": "힌트의 종류",
+      "title": "힌트 6가지 분류",
+      "cols": 3,
+      "items": [
+        {
+          "title": "최적화 목표",
+          "desc": "ALL_ROWS 등",
+          "icon": "target"
+        },
+        {
+          "title": "액세스 경로",
+          "desc": "FULL · INDEX",
+          "icon": "search"
+        },
+        {
+          "title": "조인 순서",
+          "desc": "LEADING 등",
+          "icon": "workflow"
+        },
+        {
+          "title": "조인 방식",
+          "desc": "USE_NL 등",
+          "icon": "link"
+        },
+        {
+          "title": "쿼리 변환",
+          "desc": "UNNEST · MERGE",
+          "icon": "recycle"
+        },
+        {
+          "title": "병렬 · 기타",
+          "desc": "PARALLEL 등",
+          "icon": "layers"
+        }
+      ],
+      "steps": [
+        {
+          "say": "힌트는 크게 여섯 종류예요."
+        },
+        {
+          "say": "최적화 목표와 액세스 경로.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "목표 힌트는 ALL ROWS와 FIRST ROWS n.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "조인 순서와 조인 방식.",
+          "focus": [
+            2,
+            3
+          ]
+        },
+        {
+          "say": "쿼리 변환, 그리고 병렬과 기타예요.",
+          "focus": [
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "cards",
+      "section": "힌트의 종류",
+      "title": "액세스 경로 힌트",
+      "cols": 3,
+      "items": [
+        {
+          "title": "FULL",
+          "desc": "테이블 전체 읽기",
+          "icon": "table"
+        },
+        {
+          "title": "INDEX",
+          "desc": "인덱스 스캔",
+          "icon": "search"
+        },
+        {
+          "title": "INDEX_DESC",
+          "desc": "거꾸로 스캔",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "INDEX_FFS",
+          "desc": "멀티블록 · 무순서",
+          "icon": "layers"
+        },
+        {
+          "title": "INDEX_SS",
+          "desc": "선두 조건 없을 때",
+          "icon": "filter"
+        },
+        {
+          "title": "NO_INDEX",
+          "desc": "인덱스 사용 금지",
+          "icon": "lock",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "액세스 경로 힌트예요."
+        },
+        {
+          "say": "FULL은 테이블 전체를 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "INDEX는 인덱스로 읽어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "스캔 방식은 옵티마이저가 정해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "INDEX DESC는 인덱스를 거꾸로 읽어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "INDEX FFS는 멀티블록으로 빠르게 읽어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "대신 정렬 순서는 보장하지 않아요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "INDEX SS는 선두 컬럼 조건이 없을 때 써요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "NO INDEX는 그 인덱스를 쓰지 말라는 뜻이에요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "인덱스명 대신 컬럼 목록으로도 지정해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "id": "s11",
+      "section": "힌트의 종류",
+      "type": "data",
+      "title": "INDEX_DESC 활용",
+      "tables": [
+        "주문_X01"
+      ],
+      "code": "SELECT /*+ INDEX_DESC(o 주문_X01) */ 주문일\nFROM   주문 o\nWHERE  고객 = 'A'\nAND    ROWNUM <= 1;",
+      "steps": [
+        {
+          "say": "고객의 최근 주문 한 건이 필요해요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "주문_X01": {
+              "rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            }
+          }
+        },
+        {
+          "say": "인덱스는 고객, 주문일 순이라 A의 주문이 날짜순으로 모여 있어요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "주문_X01": {
+              "filter": [
+                0,
+                1,
+                2,
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "인덱스를 거꾸로 읽으면 최신 주문이 먼저 나와요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "주문_X01": {
+              "sort": [
+                [
+                  "주문일",
+                  "desc"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "ROWNUM으로 첫 건, 10월 20일에서 바로 멈춰요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "주문_X01": {
+              "rows": [
+                3
+              ],
+              "notes": [
+                [
+                  3,
+                  "주문일",
+                  "첫 건"
+                ]
+              ],
+              "result": {
+                "title": "결과 1건",
+                "columns": [
+                  "주문일"
+                ],
+                "rows": [
+                  [
+                    "10-20"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "나머지 주문은 읽지도 않아요. 정렬도 필요 없어요.",
+          "t": {
+            "주문_X01": {
+              "filter": [
+                3
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "힌트의 종류",
+      "question": "**선두 컬럼 조건이 없을 때** 쓰는 인덱스 힌트는?",
+      "choices": [
+        "INDEX_FFS",
+        "INDEX_DESC",
+        "INDEX_SS",
+        "NO_INDEX"
+      ],
+      "answer": 3,
+      "explanation": "INDEX SS는 인덱스 스킵 스캔을 유도해요. 선두 컬럼 조건이 없을 때 써요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 선두 컬럼 조건이 없을 때 쓰는 인덱스 힌트는?"
+        }
+      ],
+      "id": "s11q"
+    },
+    {
+      "type": "compare",
+      "section": "조인 힌트",
+      "title": "ORDERED vs LEADING",
+      "left": {
+        "title": "ORDERED",
+        "icon": "checklist",
+        "items": [
+          "FROM 절 순서대로"
+        ]
+      },
+      "right": {
+        "title": "LEADING",
+        "icon": "workflow",
+        "items": [
+          "괄호 안 순서대로",
+          "FROM 순서와 무관"
+        ]
+      },
+      "steps": [
+        {
+          "say": "조인 순서 힌트는 두 가지예요."
+        },
+        {
+          "say": "ORDERED는 FROM 절에 쓴 순서대로 조인해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "LEADING은 괄호 안 순서대로 조인해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "둘을 같이 쓰면 ORDERED가 이겨요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "LEADING은 무시돼요.",
+          "focus": [
+            0
+          ]
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "cards",
+      "section": "조인 힌트",
+      "title": "조인 방식 힌트",
+      "cols": 3,
+      "items": [
+        {
+          "title": "USE_NL",
+          "desc": "t를 Inner로 NL",
+          "icon": "link"
+        },
+        {
+          "title": "USE_HASH",
+          "desc": "t를 Probe로 해시",
+          "icon": "puzzle"
+        },
+        {
+          "title": "USE_MERGE",
+          "desc": "소트 머지 조인",
+          "icon": "shapes"
+        },
+        {
+          "title": "NL_SJ 등",
+          "desc": "세미 조인",
+          "icon": "filter"
+        },
+        {
+          "title": "NL_AJ 등",
+          "desc": "안티 조인",
+          "icon": "branch"
+        }
+      ],
+      "steps": [
+        {
+          "say": "조인 방식 힌트예요."
+        },
+        {
+          "say": "USE NL은 NL 조인이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "USE HASH는 해시 조인이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Build 쪽은 SWAP JOIN INPUTS로 정해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "USE MERGE는 소트 머지 조인이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "세미 조인과 안티 조인 힌트는 서브쿼리 안에 써요.",
+          "focus": [
+            3,
+            4
+          ]
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "code",
+      "section": "조인 힌트",
+      "title": "조인 힌트 예시",
+      "code": "SELECT /*+ LEADING(d e b)\n           USE_NL(e) USE_HASH(b) */ ...\nFROM   emp e, dept d, bonus b\nWHERE  ...",
+      "steps": [
+        {
+          "say": "이 힌트를 함께 읽어 볼게요.",
+          "focus": [
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "flow",
+      "section": "조인 힌트",
+      "title": "LEADING(d e b)",
+      "direction": "right",
+      "edges": [
+        "NL 조인",
+        "해시 조인"
+      ],
+      "nodes": [
+        {
+          "title": "d",
+          "desc": "dept · 드라이빙",
+          "icon": "building"
+        },
+        {
+          "title": "e",
+          "desc": "USE_NL(e) · Inner",
+          "icon": "users"
+        },
+        {
+          "title": "b",
+          "desc": "USE_HASH(b)",
+          "icon": "file"
+        }
+      ],
+      "steps": [
+        {
+          "say": "LEADING에 따라 d, e, b 순서예요."
+        },
+        {
+          "say": "d가 먼저 드라이빙해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "e는 NL 조인의 안쪽 테이블이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그 결과와 b는 해시 조인해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "USE NL e는 e부터 읽으라는 뜻이 아니에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "e를 안쪽 테이블로 쓰라는 뜻이에요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "callout",
+      "section": "조인 힌트",
+      "tone": "warning",
+      "title": "방식만으론 순서 X",
+      "text": "USE_NL(A B)는 A, B가 **Inner일 때** NL을 쓰라는 뜻. 순서는 **ORDERED나 LEADING**으로.",
+      "steps": [
+        {
+          "say": "조인 방식 힌트만으로는 순서가 안 정해져요."
+        },
+        {
+          "say": "USE NL A B는 각각 안쪽일 때 NL이란 뜻이에요."
+        },
+        {
+          "say": "순서는 ORDERED나 LEADING을 같이 써요."
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "quiz",
+      "section": "조인 힌트",
+      "question": "`FROM emp e, dept d`에 `/*+ LEADING(d) USE_NL(e) */`의 의미는?",
+      "choices": [
+        "e 먼저, d가 Inner인 NL",
+        "FROM 순서대로 e부터",
+        "d 먼저, e가 Inner인 NL",
+        "d와 e를 해시 조인"
+      ],
+      "answer": 3,
+      "explanation": "LEADING(d)로 d가 드라이빙이에요. USE_NL(e)의 e는 Inner 테이블이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. LEADING d, USE NL e. 무슨 뜻일까요?"
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "cards",
+      "section": "쿼리 변환 힌트",
+      "title": "쿼리 변환 힌트",
+      "cols": 3,
+      "items": [
+        {
+          "title": "UNNEST",
+          "desc": "서브쿼리 풀기",
+          "icon": "puzzle"
+        },
+        {
+          "title": "MERGE",
+          "desc": "뷰 합치기",
+          "icon": "layers"
+        },
+        {
+          "title": "PUSH_PRED",
+          "desc": "조인 조건 밀기",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "PUSH_SUBQ",
+          "desc": "서브쿼리 먼저 필터",
+          "icon": "filter"
+        },
+        {
+          "title": "USE_CONCAT",
+          "desc": "OR-Expansion",
+          "icon": "branch"
+        },
+        {
+          "title": "MATERIALIZE",
+          "desc": "WITH절 임시 테이블",
+          "icon": "table"
+        }
+      ],
+      "steps": [
+        {
+          "say": "쿼리 변환 힌트예요. NO를 붙이면 억제예요."
+        },
+        {
+          "say": "UNNEST는 서브쿼리를 조인으로 풀어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "서브쿼리 안에 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "MERGE는 뷰를 메인 쿼리와 합쳐요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "PUSH PRED는 조인 조건을 뷰 안에 넣어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "PUSH SUBQ는 서브쿼리 필터를 먼저 해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "USE CONCAT은 OR-Expansion이에요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "억제는 NO EXPAND예요. 이름이 달라요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "MATERIALIZE는 WITH 절을 임시 테이블로 써요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "반대로 INLINE은 인라인 뷰로 처리해요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "모든 변환을 한 번에 막을 수도 있어요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "NO QUERY TRANSFORMATION이에요.",
+          "focus": [
+            5
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "cards",
+      "section": "병렬과 기타",
+      "title": "병렬과 기타 힌트",
+      "cols": 3,
+      "items": [
+        {
+          "title": "PARALLEL",
+          "desc": "병렬도 n으로",
+          "icon": "users"
+        },
+        {
+          "title": "APPEND",
+          "desc": "Direct Path 삽입",
+          "icon": "disk"
+        },
+        {
+          "title": "CARDINALITY",
+          "desc": "건수를 n으로 가정",
+          "icon": "tag"
+        },
+        {
+          "title": "RESULT_CACHE",
+          "desc": "결과 캐시 저장",
+          "icon": "database"
+        },
+        {
+          "title": "QB_NAME",
+          "desc": "쿼리 블록 이름",
+          "icon": "file"
+        },
+        {
+          "title": "DRIVING_SITE",
+          "desc": "원격 조인 위치",
+          "icon": "network"
+        }
+      ],
+      "steps": [
+        {
+          "say": "병렬과 기타 힌트예요."
+        },
+        {
+          "say": "PARALLEL은 병렬도를 정해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "APPEND는 Direct Path Insert예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "CARDINALITY는 건수를 가정해 줘요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "RESULT CACHE는 결과를 캐시에 저장해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "QB NAME은 쿼리 블록에 이름을 붙여요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "DRIVING SITE는 원격 조인 장소를 정해요.",
+          "focus": [
+            5
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "callout",
+      "section": "병렬과 기타",
+      "tone": "warning",
+      "title": "APPEND와 병렬 DML",
+      "text": "APPEND는 **Exclusive TM Lock**으로 다른 DML을 막아요. 병렬 DML은 **ENABLE PARALLEL DML**부터.",
+      "steps": [
+        {
+          "say": "APPEND는 테이블에 배타적 Lock을 걸어요."
+        },
+        {
+          "say": "다른 트랜잭션의 DML을 막아요."
+        },
+        {
+          "say": "병렬 DML은 세션에서 먼저 활성화해야 해요."
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "compare",
+      "section": "상충 힌트",
+      "title": "상충 vs 비상충",
+      "left": {
+        "title": "상충",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "ORDERED+LEADING",
+          "FULL+INDEX",
+          "USE_NL+USE_HASH"
+        ]
+      },
+      "right": {
+        "title": "비상충",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "인덱스 여러 개",
+          "그중 싼 것 사용"
+        ]
+      },
+      "steps": [
+        {
+          "say": "모순된 힌트를 같이 쓰면 무시돼요."
+        },
+        {
+          "say": "일부만 무시될 수도, 전부 무시될 수도 있어요."
+        },
+        {
+          "say": "같은 테이블에 FULL과 INDEX를 함께 준 경우,",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "NL과 해시 조인을 함께 준 경우가 그래요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "인덱스 여러 개를 나열하는 건 괜찮아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그중 비용이 낮은 걸 골라 써요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "quiz",
+      "section": "상충 힌트",
+      "question": "`/*+ ORDERED LEADING(d) */`를 함께 지정하면?",
+      "choices": [
+        "LEADING이 우선한다",
+        "오류가 발생한다",
+        "비용이 낮은 쪽을 고른다",
+        "ORDERED가 우선한다"
+      ],
+      "answer": 4,
+      "explanation": "ORDERED가 우선하고 LEADING은 무시돼요. FROM 절 순서로 조인해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. ORDERED와 LEADING을 함께 쓰면 어떻게 될까요?"
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "cards",
+      "section": "상충 힌트",
+      "title": "힌트는 빠짐없이",
+      "cols": 3,
+      "items": [
+        {
+          "title": "조인 순서",
+          "desc": "LEADING",
+          "icon": "workflow"
+        },
+        {
+          "title": "액세스 경로",
+          "desc": "INDEX · FULL",
+          "icon": "search"
+        },
+        {
+          "title": "조인 방식",
+          "desc": "USE_NL 등",
+          "icon": "link"
+        }
+      ],
+      "steps": [
+        {
+          "say": "힌트를 일부만 주면 나머지는 옵티마이저 몫이에요."
+        },
+        {
+          "say": "의도와 다른 계획이 나올 수 있어요."
+        },
+        {
+          "say": "조인 순서,",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "각 테이블 액세스 경로,",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "조인 방식까지 함께 주세요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s23"
+    },
+    {
+      "type": "flow",
+      "section": "쿼리 블록 이름",
+      "title": "QB_NAME 쓰는 법",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "이름 붙이기",
+          "desc": "QB_NAME(sub)",
+          "icon": "tag"
+        },
+        {
+          "title": "블록 넘어 참조",
+          "desc": "d@sub",
+          "icon": "link"
+        },
+        {
+          "title": "이름이 없으면",
+          "desc": "SEL$1, SEL$2",
+          "icon": "help"
+        }
+      ],
+      "steps": [
+        {
+          "say": "서브쿼리 안 테이블을 밖에서 지정하고 싶을 때요."
+        },
+        {
+          "say": "QB NAME으로 쿼리 블록에 이름을 붙여요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Alias 골뱅이 블록 이름으로 참조해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "이름을 안 주면 시스템이 이름을 붙여요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "SEL 달러 1 같은 이름이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "인라인 뷰는 뷰 Alias 점 테이블 Alias로도 돼요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s24"
+    },
+    {
+      "type": "cards",
+      "section": "SQL Server 비교",
+      "title": "SQL Server 힌트",
+      "cols": 2,
+      "items": [
+        {
+          "title": "인덱스",
+          "desc": "WITH (INDEX)",
+          "icon": "search"
+        },
+        {
+          "title": "조인 방식",
+          "desc": "LOOP · HASH JOIN",
+          "icon": "link"
+        },
+        {
+          "title": "순서 고정",
+          "desc": "FORCE ORDER",
+          "icon": "workflow"
+        },
+        {
+          "title": "병렬도",
+          "desc": "MAXDOP n",
+          "icon": "users"
+        }
+      ],
+      "steps": [
+        {
+          "say": "SQL Server 힌트도 비교해 봐요."
+        },
+        {
+          "say": "인덱스는 테이블 뒤 WITH 절로 지정해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "조인 방식은 LOOP, HASH, MERGE JOIN이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "순서 고정은 OPTION 절의 FORCE ORDER예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "병렬도는 MAXDOP이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "NOLOCK 같은 잠금 힌트도 있어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "Oracle과 달리 따를 수 없으면 오류가 날 수 있어요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "id": "s25"
+    },
+    {
+      "type": "quiz",
+      "section": "SQL Server 비교",
+      "question": "SQL Server에서 조인 순서를 고정하는 힌트는?",
+      "choices": [
+        "OPTION (FORCE ORDER)",
+        "WITH (NOLOCK)",
+        "LEADING",
+        "OPTION (MAXDOP 1)"
+      ],
+      "answer": 1,
+      "explanation": "FORCE ORDER가 조인 순서를 고정해요. LEADING은 Oracle 힌트예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. SQL Server에서 조인 순서를 고정하는 힌트는?"
+        }
+      ],
+      "id": "s26"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "/*+ */ 는 키워드 바로 뒤, Alias로",
+        "Oracle은 못 따르면 에러 없이 무시",
+        "ORDERED는 FROM 순서, ORDERED 우선",
+        "USE_NL(t)의 t는 Inner 테이블",
+        "방식 힌트만으론 순서가 안 정해짐",
+        "SQL Server: WITH · OPTION, 오류 가능"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "힌트는 키워드 바로 뒤에, Alias로 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Oracle은 못 따르면 조용히 무시해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "ORDERED는 FROM 순서, LEADING보다 우선해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "USE NL 괄호 안 테이블은 안쪽 테이블이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "순서는 LEADING이나 ORDERED로 정해요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "SQL Server는 오류가 날 수 있어요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s27"
+    }
+  ]
+}

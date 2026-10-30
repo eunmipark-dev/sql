@@ -1,0 +1,22 @@
+[
+  {"text": "Index Range Scan을 하려면 인덱스 선두 컬럼을 가공하지 않은 상태로 조건절에 사용해야 한다.", "answer": true, "explain": "선두 컬럼이 가공되면 스캔 시작점을 찾을 수 없어 Range Scan이 불가능하다."},
+  {"text": "Index Full Scan은 리프 블록 전체를 읽으므로 결과 집합이 인덱스 키 순으로 정렬되지 않는다.", "answer": false, "explain": "Index Full Scan은 리프 링크를 따라 논리적 순서대로 읽으므로 결과가 인덱스 키 순으로 정렬된다."},
+  {"text": "Index Full Scan은 ORDER BY 소트 연산을 생략하거나 first_rows 모드에서 부분범위 처리를 위해 선택되기도 한다.", "answer": true, "explain": "인덱스 순으로 정렬된 결과를 주므로 소트 생략과 부분범위 처리에 활용된다."},
+  {"text": "Unique 결합 인덱스의 일부 컬럼만 = 조건으로 검색하면 Index Unique Scan으로 처리된다.", "answer": false, "explain": "Unique 인덱스라도 일부 컬럼만 = 조건으로 주면 Index Range Scan으로 처리된다."},
+  {"text": "Index Unique Scan은 수직적 탐색만으로 데이터를 찾는다.", "answer": true, "explain": "Unique 인덱스 전 컬럼을 = 조건으로 탐색하므로 수평적 탐색이 필요 없다."},
+  {"text": "Index Skip Scan은 선두 컬럼의 Distinct Value 개수가 많을수록 효과적이다.", "answer": false, "explain": "선두 컬럼의 Distinct Value 개수가 적고 후행 컬럼의 Distinct Value가 많을 때 효과적이다."},
+  {"text": "Index Skip Scan은 인덱스 선두 컬럼이 조건절에 없어도 인덱스를 활용할 수 있는 방식이다.", "answer": true, "explain": "루트·브랜치 블록 정보로 조건을 만족할 가능성이 있는 리프 블록만 골라 액세스한다."},
+  {"text": "Index Skip Scan을 유도하는 힌트는 INDEX_SS이다.", "answer": true, "explain": "INDEX_SS(테이블 인덱스) 힌트로 유도하고, NO_INDEX_SS로 막을 수 있다."},
+  {"text": "Index Full Scan은 리프 블록을 Multiblock I/O 방식으로 읽는다.", "answer": false, "explain": "Index Full Scan은 리프 링크를 따라 Single Block I/O로 읽는다. Multiblock I/O는 Index Fast Full Scan의 특징이다."},
+  {"text": "MAX 값을 구할 때 인덱스를 거꾸로 읽어 첫 레코드만 읽고 멈추는 처리가 가능하다.", "answer": true, "explain": "실행계획에 FIRST ROW와 INDEX RANGE SCAN (MIN/MAX)으로 나타난다."},
+  {"text": "Index Fast Full Scan은 쿼리에 필요한 컬럼이 인덱스에 없어도 테이블을 액세스하여 사용할 수 있다.", "answer": false, "explain": "쿼리에 필요한 컬럼이 모두 인덱스에 있을 때만 Index Fast Full Scan을 사용할 수 있다."},
+  {"text": "Index Fast Full Scan은 병렬 스캔이 가능하다.", "answer": true, "explain": "Table Full Scan처럼 세그먼트를 Multiblock I/O로 읽으므로 병렬 스캔이 가능하다."},
+  {"text": "Index Range Scan Descending은 리프 블록이 양방향 연결 리스트이기 때문에 가능하다.", "answer": true, "explain": "리프 블록을 뒤에서 앞으로 스캔하여 별도 소트 없이 내림차순 결과를 얻는다."},
+  {"text": "Index Combine은 여러 B*Tree 인덱스의 ROWID 목록을 해시 조인으로 결합하는 방식이다.", "answer": false, "explain": "Index Combine은 ROWID 목록을 비트맵으로 변환해 AND/OR 비트 연산으로 결합한다. 해시 조인으로 결합하는 것은 Index Join이다."},
+  {"text": "Oracle에서 VARCHAR2 컬럼을 숫자 상수와 비교하면 컬럼 쪽이 숫자형으로 변환되어 Range Scan이 불가능하다.", "answer": true, "explain": "문자형과 숫자형을 비교하면 문자형을 숫자형으로 변환하므로 TO_NUMBER(컬럼)이 된다."},
+  {"text": "숫자형 컬럼을 문자 상수와 = 조건으로 비교하면 컬럼이 문자형으로 변환되어 인덱스 Range Scan이 불가능하다.", "answer": false, "explain": "이 경우 상수 쪽이 숫자형으로 변환되므로 인덱스 사용에 문제가 없다."},
+  {"text": "숫자형 컬럼에 LIKE 조건을 사용하면 숫자형 컬럼이 문자형으로 변환된다.", "answer": true, "explain": "LIKE는 문자 비교 연산자이므로 TO_CHAR(컬럼) LIKE 형태가 되어 Range Scan이 불가능하다."},
+  {"text": "ENAME LIKE '%민' 조건은 ENAME 인덱스로 Range Scan 할 수 있다.", "answer": false, "explain": "LIKE 앞에 와일드카드가 오면 시작점을 찾을 수 없어 Range Scan이 불가능하다."},
+  {"text": "Oracle 단일 컬럼 인덱스로는 IS NULL 조건을 Range Scan으로 찾을 수 없다.", "answer": true, "explain": "Oracle은 모든 인덱스 컬럼이 NULL인 레코드를 인덱스에 저장하지 않는다."},
+  {"text": "DEPTNO <> 30 같은 부정형 조건은 DEPTNO 인덱스를 Range Scan 할 수 있다.", "answer": false, "explain": "부정형 조건은 범위의 시작점과 끝점을 정할 수 없어 Range Scan이 불가능하다."}
+]

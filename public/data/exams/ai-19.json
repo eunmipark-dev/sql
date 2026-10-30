@@ -1,0 +1,747 @@
+{
+  "id": "ai-19",
+  "kind": "ai",
+  "title": "모의고사 19회",
+  "round": 19,
+  "timeLimitMin": 90,
+  "questions": [
+    {
+      "id": 1,
+      "subject": 1,
+      "theory": "data-model",
+      "question": "영화관 예매 시스템을 설계하면서 업무를 여러 관점에서 분석하고 있다. 데이터 모델링의 세 가지 관점과 그 분석 활동을 짝지은 것으로 가장 적절한 것은?",
+      "choices": [
+        "데이터 관점 - 예매 접수부터 결제·발권까지 업무가 어떤 순서로 처리되는지 시나리오로 분석한다.",
+        "상관 관점 - '예매 취소' 업무가 수행될 때 `좌석` 데이터의 상태가 어떻게 바뀌는지 CRUD 매트릭스로 분석한다.",
+        "프로세스 관점 - `관객`과 `예매` 엔터티 사이에 어떤 관계가 있는지 정의한다.",
+        "상관 관점 - `관객` 엔터티가 가져야 할 속성(이름, 생년월일 등)을 도출한다."
+      ],
+      "answer": 2,
+      "explanation": "데이터 모델링의 세 관점은 **데이터 관점(What)**: 업무와 관련된 데이터와 데이터 간 관계, **프로세스 관점(How)**: 업무가 실제로 하는 일, **상관 관점(Interaction)**: 업무 처리에 따라 데이터가 받는 영향(CRUD 매트릭스)이다. '예매 취소가 좌석 데이터를 어떻게 바꾸는가'는 상관 관점이다. 업무 처리 순서 분석은 프로세스 관점, 엔터티 간 관계 정의와 속성 도출은 데이터 관점이므로 나머지 짝은 모두 틀렸다."
+    },
+    {
+      "id": 2,
+      "subject": 1,
+      "theory": "entity",
+      "question": "공연 예매 시스템의 엔터티 이름을 정하려고 한다. 엔터티 명명 원칙에 대한 설명으로 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "가능하면 현업에서 실제로 쓰는 업무 용어를 사용한다.",
+        "약어 사용은 가급적 제한하여 `PRF_SCH`보다 `공연회차`처럼 의미가 드러나게 한다.",
+        "엔터티는 여러 인스턴스의 집합이지만 이름은 `관객들`이 아닌 `관객`처럼 단수 명사로 쓴다.",
+        "같은 의미의 엔터티라도 사용하는 부서가 다르면 `영업예매`, `고객센터예매`처럼 부서별로 다른 이름을 부여해 구분한다."
+      ],
+      "answer": 4,
+      "explanation": "엔터티 명명 원칙은 현업 용어 사용, 약어 지양, 단수 명사 사용, **모든 엔터티에서 유일한 이름**, 생성 의미대로 부여이다. 같은 의미의 엔터티를 부서마다 다른 이름으로 만들면 하나의 집합이 중복 정의되어 통합성이 깨진다. 따라서 부서별로 이름을 달리하라는 ④가 원칙에 어긋난다. ①②③은 모두 명명 원칙 그대로다."
+    },
+    {
+      "id": 3,
+      "subject": 1,
+      "theory": "attribute",
+      "question": "`상영` 엔터티에 상영번호, 영화코드, 상영관번호, 상영시작시각 속성이 정의되어 있다. 엔터티·인스턴스·속성·속성값의 관계에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "하나의 상영 인스턴스에서 '상영시작시각' 속성은 하나의 속성값만 가진다.",
+        "`상영` 엔터티는 인스턴스가 1건만 존재하더라도 엔터티로 성립하는 데 문제가 없다.",
+        "하나의 상영 인스턴스는 엔터티에 정의된 속성 중 업무상 필요한 일부 속성만 선택적으로 가진다.",
+        "한 상영의 상영시작시각이 여러 개 필요하다면 하나의 속성에 '10:00,13:30'처럼 여러 값을 함께 저장하는 것이 원칙이다."
+      ],
+      "answer": 1,
+      "explanation": "한 인스턴스에서 **하나의 속성은 하나의 속성값만** 가진다. 엔터티는 2개 이상의 인스턴스를 가져야 하므로 ②는 틀리고, 한 인스턴스는 엔터티에 정의된 **모든 속성**을 가지므로(값이 NULL일 수는 있어도 속성 자체는 존재) ③도 틀렸다. 하나의 속성에 여러 값이 필요하면 다중값 속성이므로 별도 엔터티로 분리해야 하며(제1정규형), ④처럼 한 칸에 여러 값을 넣는 것은 원칙에 어긋난다."
+    },
+    {
+      "id": 4,
+      "subject": 1,
+      "theory": "relationship",
+      "question": "다음 중 관계(Relationship)와 관계 페어링(Pairing)에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "관계 페어링은 엔터티와 엔터티 사이의 연관성을 뜻하고, 관계는 개별 인스턴스 사이의 연결을 뜻한다.",
+        "한 엔터티에 속한 인스턴스들은 모두 동일한 관계 페어링을 가져야 한다.",
+        "관객 '김영희'가 예매 'B001'을 신청한 것처럼 인스턴스 간의 개별 연결이 관계 페어링이며, 관계 페어링의 집합이 관계이다.",
+        "두 엔터티 사이에는 오직 하나의 관계만 정의할 수 있다."
+      ],
+      "answer": 3,
+      "explanation": "인스턴스와 인스턴스 사이의 개별 연결이 **관계 페어링**이고, 이 페어링들의 집합을 엔터티 수준에서 표현한 것이 **관계**다. ①은 둘의 정의를 뒤바꿨다. 인스턴스마다 연결된 상대가 다를 수 있으므로(어떤 관객은 예매 3건, 어떤 관객은 0건) ②는 틀렸다. 또한 `관객`-`예매` 사이에 '신청한다', '대리 수령한다'처럼 의미가 다른 관계를 여러 개 정의할 수 있으므로 ④도 틀렸다."
+    },
+    {
+      "id": 5,
+      "subject": 1,
+      "theory": "identifier",
+      "question": "`예매` 엔터티의 속성이 다음과 같다.\n\n- 예매번호: 예매 시 시스템이 순차적으로 부여하는 번호. 다른 엔터티(결제, 발권)가 이 값을 참조한다.\n- 모바일티켓번호: 예매마다 유일하게 발급되며 예매번호 대신 인스턴스를 식별할 수도 있다. 다른 엔터티가 참조하지 않는다.\n- 관객번호: `관객` 엔터티의 주식별자를 관계를 통해 받아온 속성\n\n식별자 분류에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "예매번호는 다른 엔터티와 관계를 연결하는 데 쓰일 수 없으므로 보조식별자이다.",
+        "모바일티켓번호는 인스턴스를 유일하게 식별할 수 있지만 대표성을 갖지 못하므로 보조식별자이다.",
+        "관객번호는 `예매` 엔터티 내부에서 스스로 만들어진 내부식별자이다.",
+        "예매번호는 시스템이 순차적으로 부여한 값이므로 본질식별자에 해당한다."
+      ],
+      "answer": 2,
+      "explanation": "모바일티켓번호는 유일하게 식별할 수 있지만 다른 엔터티와의 참조 관계 연결에 쓰이지 않아 **대표성이 없는 보조식별자**다. 예매번호는 다른 엔터티가 참조하는 대표 식별자이므로 주식별자이며(①X), 시스템이 순번으로 만든 값이므로 대체 여부 기준으로는 **인조식별자**다(④X). 관객번호는 다른 엔터티와의 관계를 통해 받아온 **외부식별자**이므로 ③도 틀렸다."
+    },
+    {
+      "id": 6,
+      "subject": 1,
+      "theory": "normalization",
+      "question": "다음 `상영` 테이블의 PK는 상영ID 단일 컬럼이다. 업무 규칙상 영화제목과 러닝타임은 영화코드에 의해 결정된다.\n\n| 상영ID | 영화코드 | 영화제목 | 러닝타임 | 상영관번호 | 상영일시 |\n|---|---|---|---|---|---|\n| S01 | M10 | 파묘 | 134 | 1 | 2026-10-20 10:00 |\n| S02 | M10 | 파묘 | 134 | 2 | 2026-10-20 13:00 |\n| S03 | M20 | 듄 | 166 | 1 | 2026-10-20 14:00 |\n\n영화 '듄'의 유일한 상영 일정인 S03을 삭제하자 '듄'의 제목과 러닝타임 정보까지 함께 사라졌다. 이 현상과 그 해결 방법을 짝지은 것으로 가장 적절한 것은?",
+      "choices": [
+        "삽입 이상 - 다중값 종속을 제거하는 제4정규화",
+        "삭제 이상 - 부분 함수 종속을 제거하는 제2정규화",
+        "갱신 이상 - 이행 함수 종속을 제거하는 제3정규화",
+        "삭제 이상 - 이행 함수 종속을 제거하는 제3정규화"
+      ],
+      "answer": 4,
+      "explanation": "행을 지웠더니 지우려 하지 않은 정보(영화제목, 러닝타임)까지 사라졌으므로 **삭제 이상**이다. 원인은 상영ID → 영화코드 → 영화제목·러닝타임으로 이어지는 **이행 함수 종속**이며, 영화코드를 PK로 하는 `영화` 테이블을 분리하는 **제3정규화**로 해결한다. PK가 단일 컬럼이므로 부분 함수 종속은 존재할 수 없어 제2정규화(②)는 해당하지 않고, 갱신 이상이나 삽입 이상은 이 사례에서 일어난 현상이 아니다."
+    },
+    {
+      "id": 7,
+      "subject": 1,
+      "theory": "relationship-and-join",
+      "question": "`상영관` → `상영` → `예매`로 이어지는 1:M 관계를 두 가지 방식으로 설계하였다. 예매 건별로 상영관명을 조회하려 할 때의 설명으로 가장 적절한 것은?",
+      "code": "-- (A) 식별 관계로 설계\n상영관 (상영관번호 PK, 상영관명)\n상영   (상영관번호 PK/FK, 상영순번 PK, 영화코드, 시작시각)\n예매   (상영관번호 PK/FK, 상영순번 PK/FK, 좌석번호 PK, 관객번호)\n\n-- (B) 비식별 관계로 설계\n상영관 (상영관번호 PK, 상영관명)\n상영   (상영ID PK, 상영관번호 FK, 영화코드, 시작시각)\n예매   (예매ID PK, 상영ID FK, 좌석번호, 관객번호)",
+      "choices": [
+        "두 설계 모두 `예매`와 `상영관`을 연결하려면 반드시 `상영` 테이블을 거쳐 조인해야 한다.",
+        "(B) 설계에서는 `예매`에 상영관번호가 있으므로 `상영`을 거치지 않고 `상영관`과 바로 조인할 수 있다.",
+        "(A) 설계에서는 `예매`의 PK에 상영관번호가 상속되어 있으므로 `상영`을 거치지 않고 `예매`와 `상영관`을 직접 조인할 수 있다.",
+        "(A) 설계는 (B) 설계보다 `예매`의 PK 컬럼 수가 적어 하위 테이블로의 조인 조건이 더 단순하다."
+      ],
+      "answer": 3,
+      "explanation": "(A)는 식별 관계로 부모의 PK가 계속 상속되어 `예매`에 상영관번호가 들어 있다. 따라서 `예매 R JOIN 상영관 H ON R.상영관번호 = H.상영관번호`처럼 중간의 `상영`을 건너뛰고 직접 조인할 수 있다(①X). (B)는 비식별 관계로 `예매`에는 상영ID만 있어 상영관번호를 얻으려면 `상영`을 반드시 거쳐야 한다(②X). 식별 관계로 상속되면 PK 컬럼 수는 오히려 늘어나 조인 조건이 길어지므로 ④도 틀렸다."
+    },
+    {
+      "id": 8,
+      "subject": 1,
+      "theory": "transaction-model",
+      "question": "공연 예매 트랜잭션과 관련된 상황을 트랜잭션의 특성(ACID)과 짝지었다. 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "좌석 2매를 예매하던 중 두 번째 좌석 INSERT가 실패하자 이미 입력된 첫 번째 좌석까지 모두 취소되었다. - 일관성(Consistency)",
+        "결제 완료 후 COMMIT 응답을 받은 직후 서버가 다운되었지만, 재기동 후에도 예매 내역이 그대로 남아 있었다. - 지속성(Durability)",
+        "관객 A의 예매 트랜잭션이 끝나기 전에는 관객 B가 '좌석은 점유되었으나 결제는 안 된' 중간 상태를 볼 수 없다. - 고립성(Isolation)",
+        "'한 회차의 한 좌석에는 유효한 예매가 1건만 존재한다'는 규칙이 트랜잭션 수행 전후에 모두 지켜진다. - 일관성(Consistency)"
+      ],
+      "answer": 1,
+      "explanation": "①은 트랜잭션 안의 작업이 **전부 반영되거나 전부 취소되는(All or Nothing)** 상황이므로 **원자성(Atomicity)**에 해당한다. 커밋된 결과가 장애 후에도 보존되는 것은 지속성(②), 진행 중인 트랜잭션의 중간 결과를 다른 트랜잭션이 볼 수 없는 것은 고립성(③), 트랜잭션 전후로 무결성 규칙이 유지되는 것은 일관성(④)이므로 나머지 짝은 모두 옳다."
+    },
+    {
+      "id": 9,
+      "subject": 1,
+      "theory": "null-attribute",
+      "question": "Oracle에서 다음과 같이 테이블을 만들고 데이터를 입력하였다. SQL의 결과로 옳은 것은? (결과는 C1 / C2 / C3 순서)",
+      "code": "CREATE TABLE AUD_MEMO (ID NUMBER, NOTE VARCHAR2(10));\nINSERT INTO AUD_MEMO VALUES (1, 'VIP');\nINSERT INTO AUD_MEMO VALUES (2, '');\nINSERT INTO AUD_MEMO VALUES (3, NULL);\nINSERT INTO AUD_MEMO VALUES (4, ' ');\n\nSELECT COUNT(NOTE)                                AS C1,\n       SUM(CASE WHEN NOTE IS NULL THEN 1 ELSE 0 END) AS C2,\n       SUM(NVL(LENGTH(NOTE), 0))                    AS C3\n  FROM AUD_MEMO;",
+      "choices": [
+        "3 / 1 / 4",
+        "2 / 2 / 3",
+        "3 / 1 / 3",
+        "2 / 2 / 4"
+      ],
+      "answer": 4,
+      "explanation": "Oracle은 **길이 0인 문자열 ''을 NULL로 취급**한다. 따라서 NOTE 값은 'VIP', NULL, NULL, ' '(공백 1칸)이다.\n\n- C1: COUNT(NOTE)는 NULL이 아닌 값만 세므로 'VIP'와 ' ' → **2**\n- C2: NULL인 행은 ''로 입력한 2번과 NULL로 입력한 3번 → **2**\n- C3: LENGTH('VIP')=3, LENGTH(NULL)=NULL→NVL로 0, LENGTH(' ')=1 → 3+0+0+1 = **4**\n\n''을 빈 문자열 값으로 보면 C1=3, C2=1로 착각하게 된다. 공백 한 칸 ' '은 NULL이 아닌 길이 1의 문자열이라는 점도 함정이다."
+    },
+    {
+      "id": 10,
+      "subject": 1,
+      "theory": "natural-vs-surrogate-key",
+      "question": "`예매좌석` 엔터티의 본질식별자는 (예매번호, 상영ID, 좌석번호)이다. 이 식별자가 하위 엔터티(`발권`, `입장기록`)로 계속 상속되어 설계자가 인조식별자 `예매좌석ID`(시퀀스)를 PK로 도입하려 한다. 이에 대한 설명으로 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "하위 엔터티로 상속되는 FK 컬럼 수가 줄어 조인 조건과 SQL이 단순해진다.",
+        "PK가 `예매좌석ID` 하나로 바뀌어도 같은 상영의 같은 좌석이 중복 입력되는 것은 PK 제약이 막아 주므로 별도의 제약은 필요 없다.",
+        "실제 조회가 주로 (상영ID, 좌석번호) 조건으로 이루어진다면 PK 인덱스 외에 별도의 인덱스가 추가로 필요해질 수 있다.",
+        "본질식별자를 구성하는 컬럼이 많아 하위로 계속 상속되는 경우는 인조식별자 도입을 검토할 만한 상황이다."
+      ],
+      "answer": 2,
+      "explanation": "인조식별자는 값이 항상 새로 생성되므로, 같은 (상영ID, 좌석번호) 조합이 다시 들어와도 `예매좌석ID`가 달라 PK 제약에 걸리지 않는다. 즉 **중복 데이터가 생길 수 있다**는 것이 인조식별자의 대표적 단점이며, 이를 막으려면 본질식별자 컬럼에 별도 UNIQUE 제약을 걸어야 한다. 따라서 ②가 틀렸다. ①④는 인조식별자 도입 효과와 검토 상황, ③은 '불필요한 인덱스 추가'라는 또 다른 단점을 바르게 설명한다."
+    },
+    {
+      "id": 11,
+      "subject": 2,
+      "theory": "rdb-overview",
+      "question": "다음 두 릴레이션에 대해 **'모든 상영관에서 한 번 이상 상영된 영화'**를 구하려고 한다. 이 요구에 해당하는 관계 연산과 그 결과로 가장 적절한 것은?\n\n[상영실적]\n\n| 영화 | 상영관 |\n|---|---|\n| A | 1 |\n| A | 2 |\n| A | 3 |\n| B | 1 |\n| B | 2 |\n| C | 1 |\n| C | 2 |\n| C | 3 |\n\n[상영관목록]\n\n| 상영관 |\n|---|\n| 1 |\n| 2 |\n| 3 |",
+      "choices": [
+        "곱집합(Product) - A, C",
+        "조인(Join) - A, B, C",
+        "나누기(Division) - A, C",
+        "나누기(Division) - A, B, C"
+      ],
+      "answer": 3,
+      "explanation": "기준 집합(상영관목록)의 값을 **모두** 만족하는 행을 구하는 연산은 **나누기(Division)**이다. 영화 A와 C는 상영관 1, 2, 3에서 모두 상영되었지만 B는 3관 실적이 없으므로 결과는 **A, C**다. 곱집합은 모든 조합을 만드는 연산이고, 조인은 공통 속성으로 결합만 하므로 '모두 만족'이라는 조건을 표현하지 못한다. 참고로 나누기는 SQL에 직접 대응하는 연산자가 없어 NOT EXISTS 이중 부정이나 GROUP BY + COUNT로 구현한다."
+    },
+    {
+      "id": 12,
+      "subject": 2,
+      "theory": "select",
+      "question": "다음 [TICKET] 테이블에 SQL을 실행했을 때 AMT 값을 TID 순서대로 나열한 것으로 옳은 것은?\n\n[TICKET]\n\n| TID | PRICE | QTY | DISC |\n|---|---|---|---|\n| 1 | 12000 | 2 | 1000 |\n| 2 | 15000 | 1 | NULL |\n| 3 | NULL | 3 | 0 |\n| 4 | 10000 | 2 | 500 |",
+      "code": "SELECT TID, PRICE * QTY - DISC * 2 AS AMT\n  FROM TICKET\n ORDER BY TID;",
+      "choices": [
+        "22000, NULL, NULL, 19000",
+        "22000, 15000, NULL, 19000",
+        "46000, NULL, 0, 39000",
+        "22000, 15000, 0, 19000"
+      ],
+      "answer": 1,
+      "explanation": "곱셈이 뺄셈보다 먼저 계산되므로 식은 `(PRICE * QTY) - (DISC * 2)`이다.\n\n- TID 1: 24000 - 2000 = **22000**\n- TID 2: DISC가 NULL이므로 DISC * 2 = NULL, 전체 **NULL**\n- TID 3: PRICE가 NULL이므로 **NULL** (DISC가 0이어도 결과는 NULL)\n- TID 4: 20000 - 1000 = **19000**\n\nNULL이 포함된 산술 연산은 결과가 항상 NULL이다. NULL을 0처럼 계산한 ②④와, 연산자 우선순위를 무시하고 왼쪽부터 계산한 ③은 틀렸다."
+    },
+    {
+      "id": 13,
+      "subject": 2,
+      "theory": "select",
+      "question": "다음 [BOOKING] 테이블에 대해 (가)~(다) SQL을 실행했을 때 결과로 옳은 것은? ((가)와 (다)는 결과 행 수, (나)는 결과 값)\n\n[BOOKING]\n\n| SHOW_ID | SEAT_GRADE |\n|---|---|\n| S1 | R |\n| S1 | R |\n| S1 | NULL |\n| S2 | S |\n| S2 | NULL |\n| S2 | NULL |\n| S1 | S |",
+      "code": "-- (가)\nSELECT DISTINCT SHOW_ID, SEAT_GRADE FROM BOOKING;\n\n-- (나)\nSELECT COUNT(DISTINCT SEAT_GRADE) FROM BOOKING;\n\n-- (다)\nSELECT DISTINCT SEAT_GRADE FROM BOOKING;",
+      "choices": [
+        "(가) 5 / (나) 3 / (다) 3",
+        "(가) 7 / (나) 2 / (다) 3",
+        "(가) 5 / (나) 2 / (다) 2",
+        "(가) 5 / (나) 2 / (다) 3"
+      ],
+      "answer": 4,
+      "explanation": "DISTINCT는 NULL끼리도 같은 값으로 보아 하나로 묶지만, 집계 함수 COUNT는 NULL을 세지 않는다.\n\n- (가) 서로 다른 (SHOW_ID, SEAT_GRADE) 조합: (S1,R), (S1,NULL), (S2,S), (S2,NULL), (S1,S) → **5행**\n- (나) COUNT(DISTINCT SEAT_GRADE)는 NULL을 제외한 R, S → **2**\n- (다) DISTINCT SEAT_GRADE는 R, S, NULL → **3행** (NULL 행도 한 행으로 출력)\n\n(나)와 (다)를 같은 값으로 생각하거나, NULL을 DISTINCT 결과에서 빼 버리는 것이 대표적인 실수다."
+    },
+    {
+      "id": 14,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle, 결과는 A / B / C 순서)",
+      "code": "SELECT SUBSTR('SEAT-H12', -3, 2)                        AS A,\n       REPLACE('2026-10-20', '-')                       AS B,\n       UPPER(SUBSTR('imax', 1, 1)) || LOWER(SUBSTR('IMAX', 2)) AS C\n  FROM DUAL;",
+      "choices": [
+        "`12` / `20261020` / `Imax`",
+        "`H1` / `20261020` / `Imax`",
+        "`H1` / `2026 10 20` / `IMAX`",
+        "`-H` / NULL / `Imax`"
+      ],
+      "answer": 2,
+      "explanation": "- A: 시작 위치가 음수이면 **뒤에서부터** 센다. 'SEAT-H12'(8자)에서 뒤에서 3번째 문자는 'H'(6번째)이고, 거기서 2글자를 자르면 **'H1'**이다.\n- B: REPLACE에서 세 번째 인수를 생략하면 찾은 문자열을 **삭제**한다. → **'20261020'**\n- C: UPPER('i') || LOWER('MAX') = 'I' || 'max' = **'Imax'**\n\n음수 위치를 앞에서 센 것처럼 계산하거나, 대체 문자열 생략 시 NULL이 되거나 공백으로 바뀐다고 생각하면 오답을 고르게 된다."
+    },
+    {
+      "id": 15,
+      "subject": 2,
+      "theory": "functions",
+      "question": "영화의 러닝타임 135분을 여러 형태로 표시하려고 한다. 다음 SQL의 실행 결과로 옳은 것은? (Oracle, 결과는 A / B / C 순서)",
+      "code": "SELECT TRUNC(135 / 60) || '시간 ' || MOD(135, 60) || '분' AS A,\n       CEIL(135 / 60)                                      AS B,\n       ROUND(135 / 60, 1)                                  AS C\n  FROM DUAL;",
+      "choices": [
+        "`2시간 15분` / 2 / 2.2",
+        "`2.25시간 15분` / 3 / 2.3",
+        "`2시간 15분` / 3 / 2.3",
+        "`2시간 15분` / 3 / 2.2"
+      ],
+      "answer": 3,
+      "explanation": "135 / 60 = 2.25이다.\n\n- A: TRUNC(2.25) = 2, MOD(135, 60) = 15 → **'2시간 15분'** (숫자는 || 연결 시 문자로 자동 변환)\n- B: CEIL(2.25)는 2.25 이상인 가장 작은 정수 → **3**\n- C: ROUND(2.25, 1)은 소수 둘째 자리 5를 반올림 → **2.3**\n\nTRUNC를 쓰지 않으면 '2.25시간'이 되지만 문제에서는 TRUNC를 사용했다. CEIL을 버림으로, ROUND를 버림으로 계산하면 각각 2, 2.2라는 오답이 나온다."
+    },
+    {
+      "id": 16,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 [SHOW] 테이블에 SQL을 실행했을 때 GB 값을 ID 순서대로 나열한 것으로 옳은 것은? (Oracle, 문자열 비교는 대소문자를 구분한다.)\n\n[SHOW]\n\n| ID | DT | HH |\n|---|---|---|\n| 1 | SAT | 9 |\n| 2 | SUN | 14 |\n| 3 | MON | 23 |\n| 4 | TUE | 15 |\n| 5 | sat | 20 |",
+      "code": "SELECT ID,\n       CASE WHEN HH < 11  THEN '조조'\n            WHEN HH >= 22 THEN '심야'\n            ELSE DECODE(DT, 'SAT', '주말',\n                            'SUN', '주말',\n                                   '일반')\n       END AS GB\n  FROM SHOW\n ORDER BY ID;",
+      "choices": [
+        "조조, 주말, 심야, 일반, 일반",
+        "조조, 주말, 심야, 일반, 주말",
+        "주말, 주말, 심야, 일반, 일반",
+        "조조, 주말, 일반, 일반, 일반"
+      ],
+      "answer": 1,
+      "explanation": "CASE는 위에서부터 **처음 만족하는 WHEN 하나만** 적용한다.\n\n- ID 1: HH=9 < 11 → **조조** (토요일이지만 첫 조건에서 결정되어 DECODE까지 가지 않음)\n- ID 2: 14는 조조·심야가 아님 → DECODE('SUN') → **주말**\n- ID 3: 23 >= 22 → **심야**\n- ID 4: DECODE('TUE')는 일치 값이 없어 기본값 → **일반**\n- ID 5: 'sat'는 'SAT'와 대소문자가 달라 일치하지 않음 → **일반**\n\n소문자 'sat'를 주말로 본 ②, 첫 WHEN보다 요일을 먼저 본 ③, 23시를 심야로 분류하지 않은 ④는 틀렸다."
+    },
+    {
+      "id": 17,
+      "subject": 2,
+      "theory": "where",
+      "question": "다음 [BOOKING] 테이블에 대해 (가)~(다) SQL을 실행했을 때 결과로 옳은 것은?\n\n[BOOKING]\n\n| ID | PRICE | GRADE |\n|---|---|---|\n| 1 | 15000 | VIP |\n| 2 | 12000 | R |\n| 3 | 9000 | NULL |\n| 4 | 13000 | S |\n| 5 | 8000 | R |",
+      "code": "-- (가)\nSELECT COUNT(*) FROM BOOKING WHERE PRICE BETWEEN 13000 AND 9000;\n\n-- (나)\nSELECT COUNT(*) FROM BOOKING WHERE GRADE NOT IN ('VIP', 'S');\n\n-- (다)\nSELECT COUNT(*) FROM BOOKING WHERE NOT (GRADE = 'R' OR PRICE > 13000);",
+      "choices": [
+        "(가) 2 / (나) 2 / (다) 2",
+        "(가) 0 / (나) 3 / (다) 2",
+        "(가) 2 / (나) 2 / (다) 1",
+        "(가) 0 / (나) 2 / (다) 1"
+      ],
+      "answer": 4,
+      "explanation": "- (가) `BETWEEN a AND b`는 `>= a AND <= b`이다. 13000 이상이면서 9000 이하인 값은 없으므로 **0**이다. 작은 값을 먼저 써야 한다.\n- (나) `NOT IN ('VIP','S')`는 `GRADE <> 'VIP' AND GRADE <> 'S'`이다. NULL과의 비교는 UNKNOWN이라 3번 행은 제외되고 R인 2, 5번만 → **2**\n- (다) 각 행의 괄호 안 조건: 1번 T(15000>13000), 2번 T(R), 3번 UNKNOWN(NULL='R'은 UNKNOWN, 9000>13000은 F), 4번 F(S이고 13000>13000은 F), 5번 T(R). NOT을 적용하면 4번만 TRUE이고 3번은 NOT UNKNOWN = UNKNOWN으로 제외 → **1**"
+    },
+    {
+      "id": 18,
+      "subject": 2,
+      "theory": "where",
+      "question": "[BOOKING] 테이블의 PRICE 컬럼 값이 다음과 같다. 아래 SQL의 빈칸에 각 조건을 넣었을 때, 결과 값이 **나머지 셋과 다른** 조건은? (Oracle)\n\n| PRICE |\n|---|\n| 8000 |\n| 10000 |\n| 12000 |\n| NULL |\n| 15000 |",
+      "code": "SELECT COUNT(*)\n  FROM BOOKING\n WHERE ________ ;",
+      "choices": [
+        "`NOT PRICE < 10000`",
+        "`NVL(PRICE, 10000) >= 10000`",
+        "`PRICE BETWEEN 10000 AND 15000`",
+        "`PRICE IN (10000, 12000, 15000)`"
+      ],
+      "answer": 2,
+      "explanation": "①③④는 모두 10000, 12000, 15000 세 행을 반환하여 결과가 **3**이다. NULL 행은 비교 결과가 UNKNOWN이므로 `NOT PRICE < 10000`에서도 NOT UNKNOWN = UNKNOWN이 되어 제외된다.\n\n②는 NVL로 NULL을 10000으로 바꾼 뒤 비교하므로 NULL 행도 조건을 만족해 결과가 **4**가 된다. 따라서 결과가 다른 조건은 ②이다."
+    },
+    {
+      "id": 19,
+      "subject": 2,
+      "theory": "group-by-having",
+      "question": "다음 [BOOKING] 테이블에 SQL을 실행한 결과로 옳은 것은?\n\n[BOOKING]\n\n| MOVIE | CUST | QTY |\n|---|---|---|\n| 파묘 | C1 | 2 |\n| 파묘 | C1 | 1 |\n| 파묘 | C2 | 1 |\n| 듄 | C1 | 4 |\n| 듄 | C1 | 1 |\n| 웡카 | C2 | 1 |\n| 웡카 | C3 | 1 |\n| 웡카 | C4 | 1 |",
+      "code": "SELECT MOVIE, COUNT(*) AS CNT, SUM(QTY) AS TOT\n  FROM BOOKING\n GROUP BY MOVIE\nHAVING COUNT(DISTINCT CUST) >= 2\n   AND SUM(QTY) > 3\n ORDER BY MOVIE;",
+      "choices": [
+        "파묘 | 3 | 4 (1행)",
+        "파묘 | 2 | 4 (1행)",
+        "웡카 | 3 | 3, 파묘 | 3 | 4 (2행)",
+        "듄 | 2 | 5, 파묘 | 3 | 4 (2행)"
+      ],
+      "answer": 1,
+      "explanation": "영화별로 그룹을 만든 뒤 HAVING의 두 조건을 모두 만족해야 한다.\n\n| MOVIE | COUNT(*) | 관객 수(DISTINCT) | SUM(QTY) | 통과 |\n|---|---|---|---|---|\n| 듄 | 2 | 1 | 5 | X (관객 1명) |\n| 웡카 | 3 | 3 | 3 | X (합계 3은 3 초과 아님) |\n| 파묘 | 3 | 2 | 4 | O |\n\n따라서 결과는 **파묘 | 3 | 4** 한 행이다. CNT는 COUNT(*)이므로 같은 관객의 중복 예매도 모두 세어 3이다(②X)."
+    },
+    {
+      "id": 20,
+      "subject": 2,
+      "theory": "group-by-having",
+      "question": "MOVIE(TITLE, GENRE, RATING, RUNTIME) 테이블에 대해 Oracle에서 실행할 때 **오류가 발생하는** SQL은?",
+      "code": "-- (가)\nSELECT GENRE, COUNT(*) FROM MOVIE GROUP BY GENRE, RATING;\n\n-- (나)\nSELECT COUNT(*) FROM MOVIE GROUP BY GENRE;\n\n-- (다)\nSELECT GENRE, RUNTIME, AVG(RUNTIME) FROM MOVIE GROUP BY GENRE;\n\n-- (라)\nSELECT GENRE, MAX(RUNTIME) - MIN(RUNTIME)\n  FROM MOVIE\n GROUP BY GENRE\nHAVING AVG(RUNTIME) > 100;",
+      "choices": [
+        "(가)",
+        "(나)",
+        "(다)",
+        "(라)"
+      ],
+      "answer": 3,
+      "explanation": "GROUP BY를 사용하면 SELECT 절에는 **GROUP BY에 쓴 컬럼(또는 그 표현식), 집계 함수, 상수**만 올 수 있다. (다)의 RUNTIME은 GROUP BY에 없고 집계 함수로 감싸지도 않았으므로 ORA-00979(GROUP BY 표현식이 아님) 오류가 발생한다.\n\n- (가) GROUP BY에 있는 컬럼(RATING)을 SELECT에서 생략하는 것은 허용된다.\n- (나) SELECT에 집계 함수만 있어도 된다(장르 수만큼 행 출력).\n- (라) 집계 함수끼리의 연산과 HAVING의 집계 조건은 정상이다."
+    },
+    {
+      "id": 21,
+      "subject": 2,
+      "theory": "order-by",
+      "question": "ORDER BY 절에 대한 설명으로 가장 적절한 것은? (Oracle 기준)",
+      "choices": [
+        "`ORDER BY 2`와 같은 위치 번호는 SELECT 목록에 없는 컬럼을 가리키는 데에도 사용할 수 있다.",
+        "ORDER BY 절은 SELECT 절보다 나중에 처리되므로 SELECT에서 정의한 별칭을 사용할 수 있고, 별칭·위치 번호·컬럼명을 섞어서 쓸 수도 있다.",
+        "인라인 뷰 안에서 ORDER BY 절을 사용하면 문법 오류가 발생한다.",
+        "ORDER BY 절을 생략하면 결과는 항상 PK 오름차순으로 정렬되어 출력된다."
+      ],
+      "answer": 2,
+      "explanation": "ORDER BY는 논리적으로 SELECT 이후에 처리되므로 SELECT 절의 별칭을 쓸 수 있고, `ORDER BY CNT DESC, 1, TITLE`처럼 별칭·위치 번호·컬럼명을 혼용해도 된다. 위치 번호는 **SELECT 목록의 순서**를 의미하므로 목록에 없는 컬럼은 가리킬 수 없다(①X). Oracle은 인라인 뷰 안의 ORDER BY를 허용하며, 이것이 ROWNUM Top-N 쿼리의 기본 형태다(③X). ORDER BY가 없으면 정렬 순서는 **보장되지 않는다**(④X)."
+    },
+    {
+      "id": 22,
+      "subject": 2,
+      "theory": "order-by",
+      "question": "다음 [SHOW] 테이블에 SQL을 실행한 결과의 ID 출력 순서로 옳은 것은? (Oracle, 문자는 '1관' < '2관' 순서로 정렬된다.)\n\n[SHOW]\n\n| ID | SCREEN | START_TM |\n|---|---|---|\n| 1 | 2관 | 14:00 |\n| 2 | 1관 | NULL |\n| 3 | 1관 | 10:30 |\n| 4 | 2관 | 09:00 |\n| 5 | NULL | 11:00 |",
+      "code": "SELECT ID\n  FROM SHOW\n ORDER BY SCREEN DESC, START_TM;",
+      "choices": [
+        "4, 1, 3, 2, 5",
+        "5, 1, 4, 2, 3",
+        "4, 1, 2, 3, 5",
+        "5, 4, 1, 3, 2"
+      ],
+      "answer": 4,
+      "explanation": "Oracle은 NULL을 **가장 큰 값**으로 취급한다. 따라서 오름차순에서는 NULL이 맨 뒤, 내림차순에서는 맨 앞에 온다.\n\n1. SCREEN DESC: NULL(5) → '2관'(1, 4) → '1관'(2, 3)\n2. 같은 SCREEN 안에서 START_TM ASC: 2관은 09:00(4), 14:00(1) / 1관은 10:30(3), NULL(2)이 맨 뒤\n\n결과는 **5, 4, 1, 3, 2**이다. SQL Server처럼 NULL을 가장 작은 값으로 보면 ①과 같은 오답이 나온다."
+    },
+    {
+      "id": 23,
+      "subject": 2,
+      "theory": "join",
+      "question": "좌석 배치도에서 **나란히 붙은 두 빈 좌석(연석)**을 찾으려고 한다. 다음 [SEAT] 테이블에 SQL을 실행했을 때 결과 행 수는?\n\n[SEAT]\n\n| ROW_CD | NO | ST |\n|---|---|---|\n| A | 1 | 빈 |\n| A | 2 | 빈 |\n| A | 3 | 빈 |\n| A | 4 | 예매 |\n| A | 5 | 빈 |\n| B | 1 | 예매 |\n| B | 2 | 빈 |\n| B | 3 | 빈 |\n| C | 1 | 빈 |",
+      "code": "SELECT A.ROW_CD, A.NO AS NO1, B.NO AS NO2\n  FROM SEAT A, SEAT B\n WHERE A.ROW_CD = B.ROW_CD\n   AND B.NO     = A.NO + 1\n   AND A.ST     = '빈'\n   AND B.ST     = '빈';",
+      "choices": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "answer": 1,
+      "explanation": "같은 테이블을 A, B로 두 번 사용하는 **셀프 조인**이다. 같은 열(ROW_CD)에서 B의 번호가 A의 번호 + 1이고 둘 다 빈 좌석인 쌍을 찾는다.\n\n- A열: (1,2), (2,3)은 성립, (3,4)는 4번이 예매, (4,5)는 4번이 예매 → 2쌍\n- B열: (1,2)는 1번이 예매, (2,3) 성립 → 1쌍\n- C열: 좌석이 하나뿐이라 짝이 없음\n\n따라서 **3행**이다. A1-A2-A3처럼 세 좌석이 연속되면 (1,2), (2,3) 두 쌍이 모두 나온다는 점에 주의한다."
+    },
+    {
+      "id": 24,
+      "subject": 2,
+      "theory": "join",
+      "question": "다음 세 테이블에 SQL을 실행한 결과로 옳은 것은?\n\n[AUDIENCE]\n\n| AID | NAME | AGE |\n|---|---|---|\n| 1 | 민수 | 8 |\n| 2 | 지영 | 17 |\n| 3 | 철수 | 35 |\n| 4 | 영희 | 70 |\n\n[AGE_RULE]\n\n| GB | MIN_AGE | MAX_AGE | RATE |\n|---|---|---|---|\n| 어린이 | 0 | 12 | 50 |\n| 청소년 | 13 | 18 | 30 |\n| 성인 | 19 | 64 | 0 |\n| 경로 | 65 | 120 | 40 |\n\n[BOOKING]\n\n| BID | AID | PRICE |\n|---|---|---|\n| B1 | 1 | 10000 |\n| B2 | 2 | 12000 |\n| B3 | 3 | 12000 |\n| B4 | 3 | 15000 |\n| B5 | 5 | 10000 |",
+      "code": "SELECT SUM(B.PRICE * (100 - R.RATE) / 100) AS PAY\n  FROM BOOKING B, AUDIENCE A, AGE_RULE R\n WHERE B.AID = A.AID\n   AND A.AGE BETWEEN R.MIN_AGE AND R.MAX_AGE;",
+      "choices": [
+        "34400",
+        "49000",
+        "40400",
+        "50400"
+      ],
+      "answer": 3,
+      "explanation": "BOOKING과 AUDIENCE는 EQUI JOIN, AUDIENCE와 AGE_RULE은 BETWEEN을 이용한 **NON-EQUI JOIN**이다.\n\n| BID | 관객(나이) | 구분 | 할인 후 금액 |\n|---|---|---|---|\n| B1 | 민수(8) | 어린이 50% | 5000 |\n| B2 | 지영(17) | 청소년 30% | 8400 |\n| B3 | 철수(35) | 성인 0% | 12000 |\n| B4 | 철수(35) | 성인 0% | 15000 |\n| B5 | AID 5 없음 | - | 조인 실패로 제외 |\n\n합계는 5000 + 8400 + 12000 + 15000 = **40400**이다. 할인을 적용하지 않으면 49000, B5까지 정가로 포함하면 50400이 된다."
+    },
+    {
+      "id": 25,
+      "subject": 2,
+      "theory": "standard-join",
+      "question": "다음 세 테이블에 대해 (가), (나) SQL을 실행했을 때 결과 값으로 옳은 것은?\n\n[MOVIE]\n\n| MID |\n|---|\n| M1 |\n| M2 |\n| M3 |\n\n[SHOW]\n\n| SID | MID | HID |\n|---|---|---|\n| S1 | M1 | H1 |\n| S2 | M1 | H2 |\n| S3 | M2 | H9 |\n\n[HALL]\n\n| HID |\n|---|\n| H1 |\n| H2 |\n| H3 |",
+      "code": "-- (가)\nSELECT COUNT(*)\n  FROM MOVIE M\n  LEFT OUTER JOIN SHOW S ON M.MID = S.MID\n  LEFT OUTER JOIN HALL H ON S.HID = H.HID;\n\n-- (나)\nSELECT COUNT(*)\n  FROM MOVIE M\n  LEFT OUTER JOIN SHOW S ON M.MID = S.MID\n INNER JOIN HALL H       ON S.HID = H.HID;",
+      "choices": [
+        "(가) 4 / (나) 4",
+        "(가) 3 / (나) 2",
+        "(가) 4 / (나) 3",
+        "(가) 4 / (나) 2"
+      ],
+      "answer": 4,
+      "explanation": "(가) MOVIE LEFT JOIN SHOW 결과는 M1-S1, M1-S2, M2-S3, M3-NULL의 4행이다. 다시 HALL과 LEFT JOIN하면 매칭되지 않는 행(S3의 H9, M3의 NULL)도 유지되므로 **4**이다.\n\n(나) 같은 4행에 HALL을 **INNER JOIN**하면 `S.HID = H.HID`가 성립하는 M1-S1-H1, M1-S2-H2만 남는다. M2(H9는 HALL에 없음)와 M3(HID가 NULL)는 제거되어 **2**이다. 앞에서 OUTER JOIN을 했더라도 뒤에 INNER JOIN을 이어 붙이면 보존했던 행이 사라질 수 있다."
+    },
+    {
+      "id": 26,
+      "subject": 2,
+      "theory": "standard-join",
+      "question": "다음 [MOVIE], [SHOW] 테이블에 SQL을 실행한 결과로 옳은 것은? (C1 / C2 순서)\n\n[MOVIE]\n\n| MID | GENRE |\n|---|---|\n| M1 | 액션 |\n| M2 | 드라마 |\n| M3 | 액션 |\n\n[SHOW]\n\n| SID | MID |\n|---|---|\n| S1 | M1 |\n| S2 | M2 |\n| S3 | M2 |\n| S4 | M3 |",
+      "code": "SELECT COUNT(*) AS C1, COUNT(S.SID) AS C2\n  FROM MOVIE M\n  LEFT OUTER JOIN SHOW S\n    ON M.MID   = S.MID\n   AND M.GENRE = '액션';",
+      "choices": [
+        "2 / 2",
+        "3 / 2",
+        "4 / 2",
+        "3 / 3"
+      ],
+      "answer": 2,
+      "explanation": "LEFT OUTER JOIN의 **ON 절 조건은 오른쪽(SHOW) 행의 매칭 여부만 결정**하고, 왼쪽(MOVIE) 행을 걸러내지 않는다. 왼쪽 테이블 컬럼에 대한 조건(`M.GENRE = '액션'`)을 ON에 써도 마찬가지다.\n\n- M1(액션): S1과 매칭 → 1행\n- M2(드라마): ON 조건이 거짓이라 S2, S3와 매칭되지 않음 → SHOW 컬럼이 NULL인 1행으로 보존\n- M3(액션): S4와 매칭 → 1행\n\n결과는 3행이고 SID가 NULL이 아닌 행은 2개이므로 **3 / 2**이다. 드라마 영화를 결과에서 빼려면 조건을 WHERE 절에 두어야 한다."
+    },
+    {
+      "id": 27,
+      "subject": 2,
+      "theory": "subquery",
+      "question": "다음 [BOOKING] 테이블에 대해 Oracle에서 실행할 때 **오류가 발생하는** SQL은?\n\n[BOOKING]\n\n| BID | MID | PRICE |\n|---|---|---|\n| B1 | M1 | 12000 |\n| B2 | M1 | 15000 |\n| B3 | M2 | 9000 |\n| B4 | M3 | 15000 |\n| B5 | M2 | 12000 |",
+      "code": "-- (가)\nSELECT BID FROM BOOKING\n WHERE PRICE = (SELECT PRICE FROM BOOKING WHERE MID = 'M1');\n\n-- (나)\nSELECT BID FROM BOOKING\n WHERE PRICE = (SELECT MAX(PRICE) FROM BOOKING WHERE MID = 'M1');\n\n-- (다)\nSELECT BID FROM BOOKING\n WHERE PRICE = (SELECT PRICE FROM BOOKING WHERE MID = 'M3');\n\n-- (라)\nSELECT BID FROM BOOKING\n WHERE PRICE = (SELECT PRICE FROM BOOKING WHERE MID = 'M9');",
+      "choices": [
+        "(가)",
+        "(나)",
+        "(다)",
+        "(라)"
+      ],
+      "answer": 1,
+      "explanation": "`=`는 단일 행 비교 연산자이므로 서브쿼리가 **2행 이상**을 반환하면 실행 시 ORA-01427(단일 행 하위 질의에 2개 이상의 행이 리턴됨) 오류가 난다.\n\n- (가) MID = 'M1'인 행이 2건(12000, 15000) → **오류**\n- (나) MAX로 집계하여 1행(15000) 반환 → 정상 (B2, B4 출력)\n- (다) MID = 'M3'인 행은 1건(15000) → 정상\n- (라) MID = 'M9'인 행이 없으면 서브쿼리 결과는 NULL로 취급되어 비교가 성립하지 않을 뿐, 오류 없이 **0건**이 반환된다.\n\n여러 행을 비교하려면 IN, ANY, ALL 같은 다중 행 연산자를 써야 한다."
+    },
+    {
+      "id": 28,
+      "subject": 2,
+      "theory": "subquery",
+      "question": "다음 [MOVIE], [SHOW] 테이블에 SQL을 실행한 결과로 옳은 것은? (출력 순서대로 표기)\n\n[MOVIE]\n\n| MID | TITLE |\n|---|---|\n| M1 | 파묘 |\n| M2 | 듄 |\n| M3 | 웡카 |\n| M4 | 범죄도시 |\n\n[SHOW]\n\n| MID | HID |\n|---|---|\n| M1 | H1 |\n| M1 | H2 |\n| M2 | H1 |\n| M2 | H3 |\n| M3 | H2 |\n| M4 | H1 |\n| M4 | H1 |",
+      "code": "SELECT M.TITLE\n  FROM MOVIE M\n WHERE EXISTS     (SELECT 1 FROM SHOW S\n                    WHERE S.MID = M.MID AND S.HID = 'H1')\n   AND NOT EXISTS (SELECT 1 FROM SHOW S\n                    WHERE S.MID = M.MID AND S.HID = 'H2')\n ORDER BY M.MID;",
+      "choices": [
+        "듄",
+        "파묘, 듄, 범죄도시",
+        "듄, 범죄도시",
+        "듄, 범죄도시, 범죄도시"
+      ],
+      "answer": 3,
+      "explanation": "'H1관에서 상영된 적이 있고(EXISTS), H2관에서는 상영된 적이 없는(NOT EXISTS)' 영화를 찾는 상관 서브쿼리다.\n\n- 파묘: H1 있음, H2도 있음 → 제외\n- 듄: H1 있음, H2 없음 → **포함**\n- 웡카: H1 없음 → 제외\n- 범죄도시: H1 있음(2건), H2 없음 → **포함**\n\nEXISTS는 조건을 만족하는 행이 있는지만 확인하므로 SHOW에 H1 상영이 2건 있어도 MOVIE 행은 **한 번만** 출력된다. 따라서 ④처럼 중복되지 않는다."
+    },
+    {
+      "id": 29,
+      "subject": 2,
+      "theory": "set-operators",
+      "question": "온라인 예매 고객과 현장 예매 고객 테이블이 다음과 같다. (가)~(다) SQL의 결과 행 수로 옳은 것은? (Oracle)\n\n[ONLINE_BK]\n\n| CUST |\n|---|\n| C1 |\n| C2 |\n| C2 |\n| C3 |\n\n[OFFLINE_BK]\n\n| CUST |\n|---|\n| C3 |\n| C4 |\n| C4 |",
+      "code": "-- (가)\nSELECT CUST FROM ONLINE_BK\nUNION\nSELECT CUST FROM OFFLINE_BK WHERE 1 = 2;\n\n-- (나)\nSELECT CUST FROM ONLINE_BK\nMINUS\nSELECT CUST FROM OFFLINE_BK;\n\n-- (다)\nSELECT CUST FROM OFFLINE_BK\nINTERSECT\nSELECT CUST FROM ONLINE_BK;",
+      "choices": [
+        "(가) 4 / (나) 3 / (다) 1",
+        "(가) 3 / (나) 2 / (다) 1",
+        "(가) 3 / (나) 3 / (다) 2",
+        "(가) 4 / (나) 2 / (다) 1"
+      ],
+      "answer": 2,
+      "explanation": "- (가) 아래쪽 SELECT는 `WHERE 1 = 2`로 0행이지만, UNION은 **최종 결과 전체에서 중복을 제거**하므로 ONLINE_BK 안의 C2 중복도 제거된다. C1, C2, C3 → **3행**\n- (나) MINUS도 결과의 중복을 제거한다. {C1, C2, C3} - {C3, C4} = C1, C2 → **2행**\n- (다) 양쪽에 모두 있는 값은 C3 → **1행**\n\n(가)를 UNION ALL처럼 4행으로 생각하는 것이 대표적인 실수다."
+    },
+    {
+      "id": 30,
+      "subject": 2,
+      "theory": "set-operators",
+      "question": "두 이벤트의 쿠폰 사용 기록이 다음과 같다. (가), (나) SQL의 결과로 옳은 것은? (Oracle, 행의 순서는 고려하지 않는다.)\n\n[EVENT_A]\n\n| COUPON_CD |\n|---|\n| A10 |\n| NULL |\n| B20 |\n| B20 |\n\n[EVENT_B]\n\n| COUPON_CD |\n|---|\n| NULL |\n| B20 |\n| C30 |",
+      "code": "-- (가)\nSELECT COUPON_CD FROM EVENT_A\nINTERSECT\nSELECT COUPON_CD FROM EVENT_B;\n\n-- (나)\nSELECT COUPON_CD FROM EVENT_A\nMINUS\nSELECT COUPON_CD FROM EVENT_B;",
+      "choices": [
+        "(가) B20 (1행) / (나) A10, NULL (2행)",
+        "(가) B20 (1행) / (나) A10 (1행)",
+        "(가) B20, B20 (2행) / (나) A10 (1행)",
+        "(가) NULL, B20 (2행) / (나) A10 (1행)"
+      ],
+      "answer": 4,
+      "explanation": "WHERE 절의 `=` 비교와 달리 **집합 연산자는 NULL끼리를 같은 값으로 취급**하여 중복 판단을 한다.\n\n- (가) INTERSECT: 양쪽에 모두 있는 값은 NULL과 B20이며, 결과의 중복은 제거된다 → **NULL, B20 (2행)**\n- (나) MINUS: EVENT_A의 {A10, NULL, B20}에서 EVENT_B에 있는 NULL, B20을 빼면 → **A10 (1행)**\n\nNULL = NULL을 UNKNOWN으로 보고 NULL이 교집합에서 빠지고 차집합에 남는다고 생각한 ①이 대표적인 함정이다."
+    },
+    {
+      "id": 31,
+      "subject": 2,
+      "theory": "group-functions",
+      "question": "다음 [SALES] 테이블에 SQL을 실행했다. 결과에서 **MOVIE가 NULL로 출력되는 행의 수**와, 그중 **G가 0인 행의 TOT 값**으로 옳은 것은?\n\n[SALES]\n\n| THEATER | MOVIE | AMT |\n|---|---|---|\n| 강남 | 파묘 | 100 |\n| 강남 | 듄 | 200 |\n| 홍대 | 파묘 | 300 |\n| 홍대 | NULL | 50 |",
+      "code": "SELECT THEATER, MOVIE, SUM(AMT) AS TOT,\n       GROUPING(MOVIE) AS G\n  FROM SALES\n GROUP BY ROLLUP(THEATER, MOVIE);",
+      "choices": [
+        "4행 / 50",
+        "3행 / 50",
+        "4행 / 350",
+        "3행 / 350"
+      ],
+      "answer": 1,
+      "explanation": "ROLLUP(THEATER, MOVIE)는 (THEATER, MOVIE), (THEATER), () 세 수준을 만든다.\n\n| THEATER | MOVIE | TOT | G |\n|---|---|---|---|\n| 강남 | 듄 | 200 | 0 |\n| 강남 | 파묘 | 100 | 0 |\n| 강남 | NULL | 300 | 1 |\n| 홍대 | 파묘 | 300 | 0 |\n| 홍대 | NULL | 50 | 0 |\n| 홍대 | NULL | 350 | 1 |\n| NULL | NULL | 650 | 1 |\n\nMOVIE가 NULL로 보이는 행은 **4행**이다. 이 중 원래 데이터의 NULL(영화 정보가 없는 실제 매출)은 GROUPING(MOVIE)가 **0**이고, 소계·총계로 생긴 NULL은 1이다. 따라서 G = 0인 행의 TOT는 **50**이다. GROUPING 함수는 이처럼 실제 NULL과 집계로 생긴 NULL을 구분할 때 사용한다."
+    },
+    {
+      "id": 32,
+      "subject": 2,
+      "theory": "group-functions",
+      "question": "다음 [SALES] 테이블에 SQL을 실행했을 때 결과 행 수는?\n\n[SALES]\n\n| THEATER | MOVIE | GRADE | AMT |\n|---|---|---|---|\n| 강남 | 파묘 | 일반 | 10 |\n| 강남 | 파묘 | VIP | 20 |\n| 강남 | 듄 | 일반 | 30 |\n| 홍대 | 파묘 | 일반 | 40 |\n| 홍대 | 파묘 | 일반 | 50 |",
+      "code": "SELECT THEATER, MOVIE, GRADE, SUM(AMT)\n  FROM SALES\n GROUP BY THEATER, CUBE(MOVIE, GRADE);",
+      "choices": [
+        "10",
+        "11",
+        "12",
+        "14"
+      ],
+      "answer": 3,
+      "explanation": "`GROUP BY THEATER, CUBE(MOVIE, GRADE)`는 THEATER를 항상 포함한 채 CUBE의 4가지 조합을 만든다. 즉 (THEATER, MOVIE, GRADE), (THEATER, MOVIE), (THEATER, GRADE), (THEATER)이다. 전체 총계(())는 만들어지지 않는다.\n\n- (THEATER, MOVIE, GRADE): 강남-파묘-일반, 강남-파묘-VIP, 강남-듄-일반, 홍대-파묘-일반 → 4\n- (THEATER, MOVIE): 강남-파묘, 강남-듄, 홍대-파묘 → 3\n- (THEATER, GRADE): 강남-일반, 강남-VIP, 홍대-일반 → 3\n- (THEATER): 강남, 홍대 → 2\n\n합계 **12행**이다. 총계 행까지 있다고 생각하면 13, CUBE를 ROLLUP처럼 계산해 (THEATER, GRADE)를 빼면 9가 된다."
+    },
+    {
+      "id": 33,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 [REVIEW] 테이블에 SQL을 실행했을 때, **RID가 3인 행**의 RN, RK, CN 값으로 옳은 것은?\n\n[REVIEW]\n\n| RID | MOVIE | STAR |\n|---|---|---|\n| 1 | 파묘 | 5 |\n| 2 | 파묘 | 3 |\n| 3 | 파묘 | 5 |\n| 4 | 듄 | 4 |\n| 5 | 듄 | 2 |\n| 6 | 파묘 | 4 |",
+      "code": "SELECT RID,\n       ROW_NUMBER() OVER (PARTITION BY MOVIE ORDER BY STAR DESC, RID) AS RN,\n       RANK()       OVER (PARTITION BY MOVIE ORDER BY STAR DESC)      AS RK,\n       COUNT(*)     OVER (PARTITION BY MOVIE ORDER BY STAR DESC)      AS CN\n  FROM REVIEW;",
+      "choices": [
+        "2 / 1 / 1",
+        "1 / 1 / 2",
+        "2 / 2 / 2",
+        "2 / 1 / 2"
+      ],
+      "answer": 4,
+      "explanation": "파묘 파티션을 STAR DESC로 정렬하면 RID 1(5), 3(5), 6(4), 2(3) 순이다.\n\n- RN: ROW_NUMBER는 동점이어도 고유 번호를 준다. 동점은 RID 오름차순으로 정했으므로 RID 1이 1, RID 3이 **2**\n- RK: RANK는 동점에 같은 순위를 주므로 STAR 5인 RID 1, 3은 모두 **1**\n- CN: ORDER BY만 있고 윈도우 절이 없으면 기본값 `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`가 적용된다. RANGE는 현재 행과 **정렬 값이 같은 행까지 모두 포함**하므로 STAR 5인 두 행이 함께 세어져 **2**\n\nCN을 행 단위(ROWS)로 생각하면 RID 3에서 2, RID 1에서 1이 되겠지만, RANGE에서는 RID 1도 2가 된다."
+    },
+    {
+      "id": 34,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 [DAILY_AUD] 테이블에 SQL을 실행했을 때 S 값을 DAY 순서대로 나열한 것으로 옳은 것은? (DAY는 숫자형)\n\n[DAILY_AUD]\n\n| DAY | AUD |\n|---|---|\n| 1 | 100 |\n| 2 | 200 |\n| 4 | 300 |\n| 5 | 100 |\n| 8 | 400 |",
+      "code": "SELECT DAY,\n       SUM(AUD) OVER (ORDER BY DAY\n                      RANGE BETWEEN 2 PRECEDING AND CURRENT ROW) AS S\n  FROM DAILY_AUD\n ORDER BY DAY;",
+      "choices": [
+        "100, 300, 600, 600, 800",
+        "100, 300, 500, 400, 400",
+        "100, 300, 500, 600, 800",
+        "100, 300, 600, 400, 400"
+      ],
+      "answer": 2,
+      "explanation": "RANGE는 행의 개수가 아니라 **정렬 키 값의 범위**로 윈도우를 정한다. `RANGE BETWEEN 2 PRECEDING AND CURRENT ROW`는 'DAY - 2 이상 DAY 이하'인 행의 합이다.\n\n- DAY 1: 범위 -1~1 → 100\n- DAY 2: 범위 0~2 → 100 + 200 = 300\n- DAY 4: 범위 2~4 → 200 + 300 = 500 (DAY 1은 범위 밖)\n- DAY 5: 범위 3~5 → 300 + 100 = 400\n- DAY 8: 범위 6~8 → 400\n\n①은 `ROWS BETWEEN 2 PRECEDING AND CURRENT ROW`(앞의 두 행 + 현재 행)로 계산한 결과다. DAY 값에 빈 날(3, 6, 7)이 있어 두 방식의 결과가 달라진다."
+    },
+    {
+      "id": 35,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "MOVIE(TITLE, GENRE, AUD) 테이블에 대해 Oracle에서 실행할 때 **오류가 발생하는** SQL은?",
+      "code": "-- (가)\nSELECT TITLE FROM MOVIE\n WHERE RANK() OVER (ORDER BY AUD DESC) <= 3;\n\n-- (나)\nSELECT TITLE\n  FROM (SELECT TITLE, RANK() OVER (ORDER BY AUD DESC) AS RK FROM MOVIE)\n WHERE RK <= 3;\n\n-- (다)\nSELECT TITLE, AUD FROM MOVIE\n ORDER BY RANK() OVER (ORDER BY AUD DESC);\n\n-- (라)\nSELECT GENRE, SUM(AUD),\n       RANK() OVER (ORDER BY SUM(AUD) DESC) AS RK\n  FROM MOVIE\n GROUP BY GENRE;",
+      "choices": [
+        "(가)",
+        "(나)",
+        "(다)",
+        "(라)"
+      ],
+      "answer": 1,
+      "explanation": "윈도우 함수는 **SELECT 절과 ORDER BY 절**에서만 사용할 수 있다. WHERE 절은 윈도우 함수가 계산되기 전에 처리되므로 (가)처럼 WHERE에 직접 쓰면 ORA-30483(윈도우 함수는 여기에 사용할 수 없음) 오류가 발생한다. 순위로 필터링하려면 (나)처럼 인라인 뷰에서 순위를 먼저 구한 뒤 바깥 쿼리의 WHERE에서 걸러야 한다.\n\n(다)는 ORDER BY 절의 윈도우 함수로 정상이며, (라)는 GROUP BY로 집계한 결과(SUM(AUD))에 다시 윈도우 함수를 적용한 것으로 정상이다."
+    },
+    {
+      "id": 36,
+      "subject": 2,
+      "theory": "top-n",
+      "question": "SHOW_STAT(HALL, TITLE, AUD) 테이블에서 **상영관(HALL)별로 관객수(AUD)가 가장 많은 영화**를 조회하려 한다. 같은 상영관에서 최다 관객수가 동률이면 해당 영화를 **모두** 출력해야 한다. 요구사항을 만족하는 SQL은? (Oracle 12c 이상)",
+      "code": "-- (가)\nSELECT HALL, TITLE\n  FROM (SELECT HALL, TITLE,\n               ROW_NUMBER() OVER (PARTITION BY HALL ORDER BY AUD DESC) AS RN\n          FROM SHOW_STAT)\n WHERE RN = 1;\n\n-- (나)\nSELECT HALL, TITLE\n  FROM (SELECT HALL, TITLE FROM SHOW_STAT ORDER BY AUD DESC)\n WHERE ROWNUM <= 1;\n\n-- (다)\nSELECT HALL, TITLE\n  FROM (SELECT HALL, TITLE,\n               RANK() OVER (PARTITION BY HALL ORDER BY AUD DESC) AS RK\n          FROM SHOW_STAT)\n WHERE RK = 1;\n\n-- (라)\nSELECT HALL, TITLE\n  FROM SHOW_STAT\n ORDER BY AUD DESC\n FETCH FIRST 1 ROWS WITH TIES;",
+      "choices": [
+        "(가)",
+        "(나)",
+        "(다)",
+        "(라)"
+      ],
+      "answer": 3,
+      "explanation": "상영관별로 순위를 매기려면 `PARTITION BY HALL`이 필요하고, 동률을 모두 1위로 출력하려면 동점에 같은 순위를 주는 **RANK**(또는 DENSE_RANK)를 써야 한다. 따라서 (다)가 정답이다.\n\n- (가) ROW_NUMBER는 동점이어도 1, 2로 번호를 나누므로 상영관마다 1건만 나온다.\n- (나) 전체를 정렬한 뒤 ROWNUM으로 1건만 가져오므로 상영관별 결과가 아니다.\n- (라) FETCH FIRST ... WITH TIES는 **전체** 결과 기준의 Top-N이므로 상영관별 최댓값을 구하지 못한다."
+    },
+    {
+      "id": 37,
+      "subject": 2,
+      "theory": "top-n",
+      "question": "다음 [MOVIE] 테이블에 SQL을 실행한 결과로 옳은 것은? (Oracle 기준, 출력 순서대로 표기)\n\n[MOVIE]\n\n| TITLE | AUD |\n|---|---|\n| 파묘 | 1000 |\n| 듄 | NULL |\n| 웡카 | 800 |\n| 범죄도시 | 1200 |\n| 외계인 | 800 |",
+      "code": "SELECT TITLE\n  FROM (SELECT TITLE, AUD\n          FROM MOVIE\n         ORDER BY AUD DESC)\n WHERE ROWNUM <= 3;",
+      "choices": [
+        "범죄도시, 파묘, 웡카",
+        "범죄도시, 파묘, 웡카, 외계인",
+        "범죄도시, 파묘, 듄",
+        "듄, 범죄도시, 파묘"
+      ],
+      "answer": 4,
+      "explanation": "인라인 뷰에서 먼저 정렬한 뒤 ROWNUM으로 3건을 자르는 올바른 Top-N 형태다. 다만 Oracle은 NULL을 가장 큰 값으로 취급하므로 **내림차순 정렬 시 NULL이 맨 앞**에 온다.\n\n정렬 결과: 듄(NULL) → 범죄도시(1200) → 파묘(1000) → 웡카·외계인(800)\n\nROWNUM <= 3이므로 **듄, 범죄도시, 파묘**가 출력된다. NULL을 제외하고 관객수 상위 3편을 구하려면 `ORDER BY AUD DESC NULLS LAST`나 `WHERE AUD IS NOT NULL`이 필요하다. ROWNUM은 동점을 고려하지 않으므로 ②처럼 4건이 나오지도 않는다."
+    },
+    {
+      "id": 38,
+      "subject": 2,
+      "theory": "hierarchical-query",
+      "question": "다음 [VENUE] 테이블에 SQL을 실행했을 때 결과 행 수와 '강남1관'의 LV 값으로 옳은 것은? (Oracle 기준)\n\n[VENUE]\n\n| ID | NAME | PID |\n|---|---|---|\n| 1 | 전국 | NULL |\n| 2 | 서울 | 1 |\n| 3 | 부산 | 1 |\n| 4 | 강남점 | 2 |\n| 5 | 홍대점 | 2 |\n| 6 | 서면점 | 3 |\n| 7 | 강남1관 | 4 |\n| 8 | 강남2관 | 4 |\n| 9 | 홍대1관 | 5 |",
+      "code": "SELECT NAME, LEVEL AS LV\n  FROM VENUE\n START WITH NAME = '서울'\nCONNECT BY PRIOR ID = PID;",
+      "choices": [
+        "6행 / 4",
+        "6행 / 3",
+        "9행 / 3",
+        "5행 / 3"
+      ],
+      "answer": 2,
+      "explanation": "START WITH로 지정한 '서울'이 루트가 되어 **LEVEL 1**부터 시작한다. `PRIOR ID = PID`이므로 부모에서 자식 방향(순방향)으로 전개한다.\n\n- LEVEL 1: 서울\n- LEVEL 2: 강남점, 홍대점\n- LEVEL 3: 강남1관, 강남2관, 홍대1관\n\n결과는 **6행**이고 강남1관의 LEVEL은 **3**이다. 전국을 루트로 착각하면 LEVEL을 4로 계산하게 되며, 전국·부산·서면점은 서울의 하위가 아니므로 결과에 포함되지 않는다."
+    },
+    {
+      "id": 39,
+      "subject": 2,
+      "theory": "hierarchical-query",
+      "question": "다음 [VENUE] 테이블에 SQL을 실행한 결과로 옳은 것은? (Oracle 기준)\n\n[VENUE]\n\n| ID | NAME | PID |\n|---|---|---|\n| 1 | 전국 | NULL |\n| 2 | 서울 | 1 |\n| 3 | 부산 | 1 |\n| 4 | 강남점 | 2 |\n| 5 | 홍대점 | 2 |\n| 6 | 서면점 | 3 |\n| 7 | 강남1관 | 4 |\n| 8 | 강남2관 | 4 |\n| 9 | 홍대1관 | 5 |",
+      "code": "SELECT NAME\n  FROM VENUE\n WHERE CONNECT_BY_ISLEAF = 1\n START WITH NAME = '강남2관'\nCONNECT BY ID = PRIOR PID;",
+      "choices": [
+        "전국",
+        "강남2관",
+        "강남1관, 강남2관",
+        "서울"
+      ],
+      "answer": 1,
+      "explanation": "`CONNECT BY ID = PRIOR PID`는 '다음 행의 ID = 이전 행의 PID'이므로 자식에서 부모로 올라가는 **역방향** 전개다.\n\n강남2관(PID 4) → 강남점(ID 4, PID 2) → 서울(ID 2, PID 1) → 전국(ID 1, PID NULL)에서 더 올라갈 행이 없어 종료된다.\n\nCONNECT_BY_ISLEAF는 **전개 방향 기준**으로 더 이상 이어질 행이 없으면 1이다. 역방향에서는 맨 위 최상위 노드인 **전국**이 리프가 된다. 데이터 구조상의 말단(강남1관, 강남2관)을 리프로 생각하면 오답을 고르게 된다."
+    },
+    {
+      "id": 40,
+      "subject": 2,
+      "theory": "pivot-unpivot",
+      "question": "다음 [BOOKING] 테이블에 SQL을 실행한 결과로 옳은 것은? (Oracle 기준, THEATER | R | S 순서로 표기)\n\n[BOOKING]\n\n| BID | THEATER | GRADE | QTY |\n|---|---|---|---|\n| 1 | 강남 | R | 2 |\n| 2 | 강남 | S | 3 |\n| 3 | 강남 | R | 1 |\n| 4 | 홍대 | S | 4 |\n| 5 | 홍대 | A | 5 |",
+      "code": "SELECT *\n  FROM (SELECT THEATER, GRADE, QTY FROM BOOKING)\n PIVOT (SUM(QTY) FOR GRADE IN ('R' AS R, 'S' AS S))\n ORDER BY THEATER;",
+      "choices": [
+        "강남 | 3 | 3, 홍대 | 0 | 4",
+        "강남 | 3 | 3, 홍대 | NULL | 9",
+        "강남 | 3 | 3, 홍대 | NULL | 4",
+        "강남 | 2 | 3, 홍대 | NULL | 4"
+      ],
+      "answer": 3,
+      "explanation": "인라인 뷰에서 THEATER, GRADE, QTY만 남겼으므로 PIVOT은 FOR 절(GRADE)과 집계 대상(QTY)을 제외한 **THEATER로 그룹화**한다.\n\n- 강남: R = 2 + 1 = **3**, S = **3**\n- 홍대: R 데이터가 없으므로 SUM 결과는 **NULL**(0이 아님), S = **4**\n- GRADE가 'A'인 행은 IN 목록에 없으므로 어떤 열에도 집계되지 않고 버려진다.\n\n인라인 뷰 없이 BOOKING을 직접 PIVOT하면 BID까지 그룹화 기준이 되어 행 수가 늘어난다는 점도 함께 기억하자."
+    },
+    {
+      "id": 41,
+      "subject": 2,
+      "theory": "regex",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle 기준, C1 / C2 순서)",
+      "code": "SELECT REGEXP_SUBSTR('파묘,,듄,웡카', '[^,]+', 1, 2) AS C1,\n       REGEXP_COUNT('파묘,,듄,웡카', '[^,]+')        AS C2\n  FROM DUAL;",
+      "choices": [
+        "NULL / 4",
+        "`듄` / 3",
+        "NULL / 3",
+        "`듄` / 4"
+      ],
+      "answer": 2,
+      "explanation": "`[^,]+`는 '쉼표가 아닌 문자가 1개 이상 연속된 부분'이다. '+'는 1회 이상이므로 쉼표 두 개 사이의 **빈 항목은 일치하는 부분이 아니다**.\n\n'파묘,,듄,웡카'에서 패턴과 일치하는 부분은 '파묘', '듄', '웡카' 세 개다.\n\n- C1: 두 번째 일치 → **'듄'**\n- C2: 일치 횟수 → **3**\n\n빈 항목도 하나의 값으로 세어 두 번째를 NULL, 개수를 4로 생각하면 오답이다. CSV 분리에 이 패턴을 쓰면 빈 항목이 건너뛰어진다는 점이 실무에서도 함정이 된다."
+    },
+    {
+      "id": 42,
+      "subject": 2,
+      "theory": "regex",
+      "question": "예매번호 형식은 'B + 숫자 4자리 + 하이픈 + 구분코드(M 또는 E)'이다. 다음 [BOOKING] 테이블에 SQL을 실행했을 때 결과 값은? (Oracle 기준)\n\n[BOOKING]\n\n| BNO |\n|---|\n| B2026-M |\n| B026-E |\n| b2026-M |\n| B2026-ME |\n| B20261-E |\n| B1234-E |\n| B0000-M |\n| B9999-E |",
+      "code": "SELECT COUNT(*)\n  FROM BOOKING\n WHERE REGEXP_LIKE(BNO, '^B[0-9]{4}-(M|E)$');",
+      "choices": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "answer": 4,
+      "explanation": "`^B[0-9]{4}-(M|E)$`는 대문자 B로 시작(^)하고, 숫자가 **정확히 4개**, 하이픈, M 또는 E 한 글자로 **끝나야($)** 한다.\n\n| BNO | 판정 |\n|---|---|\n| B2026-M | O |\n| B026-E | X (숫자 3개) |\n| b2026-M | X (소문자 b, 기본은 대소문자 구분) |\n| B2026-ME | X ($ 앞에 문자가 하나 더 있음) |\n| B20261-E | X (숫자 5개) |\n| B1234-E | O |\n| B0000-M | O |\n| B9999-E | O |\n\n결과는 **4**이다."
+    },
+    {
+      "id": 43,
+      "subject": 2,
+      "theory": "dml",
+      "question": "다음 두 테이블에 대해 아래 MERGE 문을 실행(Oracle)한 후 `SELECT SUM(PRICE) FROM SEAT_PRICE;`의 결과는?\n\n[SEAT_PRICE]\n\n| GRADE | PRICE |\n|---|---|\n| R | 12000 |\n| S | 10000 |\n| A | 8000 |\n\n[NEW_PRICE]\n\n| GRADE | PRICE |\n|---|---|\n| R | 13000 |\n| S | 9000 |\n| VIP | 20000 |\n| B | 7000 |",
+      "code": "MERGE INTO SEAT_PRICE T\nUSING NEW_PRICE S\n   ON (T.GRADE = S.GRADE)\n WHEN MATCHED THEN\n      UPDATE SET T.PRICE = S.PRICE\n       WHERE S.PRICE > T.PRICE\n WHEN NOT MATCHED THEN\n      INSERT (GRADE, PRICE) VALUES (S.GRADE, S.PRICE)\n       WHERE S.PRICE >= 10000;",
+      "choices": [
+        "50000",
+        "57000",
+        "51000",
+        "58000"
+      ],
+      "answer": 3,
+      "explanation": "MERGE의 UPDATE·INSERT 절 뒤에 붙은 WHERE는 각 동작을 **조건부로** 수행하게 한다.\n\n- R: 매칭, 13000 > 12000 → **13000으로 UPDATE**\n- S: 매칭, 9000 > 10000은 거짓 → UPDATE 하지 않음, **10000 유지**\n- A: NEW_PRICE에 없으므로 그대로 **8000**\n- VIP: 매칭 안 됨, 20000 >= 10000 → **INSERT**\n- B: 매칭 안 됨, 7000 >= 10000은 거짓 → INSERT 하지 않음\n\n합계: 13000 + 10000 + 8000 + 20000 = **51000**. UPDATE의 WHERE를 무시해 S를 9000으로 바꾸면 50000, INSERT의 WHERE를 무시해 B까지 넣으면 58000, 두 조건을 모두 무시하면 57000이 된다."
+    },
+    {
+      "id": 44,
+      "subject": 2,
+      "theory": "dml",
+      "question": "Oracle에서 아래 문장을 순서대로 실행한 후 마지막 SELECT의 결과로 옳은 것은? (C1 / C2 / C3 순서)",
+      "code": "CREATE TABLE TICKET (\n  TID     NUMBER PRIMARY KEY,\n  PRICE   NUMBER  DEFAULT 10000,\n  STATUS  CHAR(1) DEFAULT 'N'\n);\n\nINSERT INTO TICKET (TID) VALUES (1);\nINSERT INTO TICKET VALUES (2, NULL, 'Y');\nINSERT INTO TICKET (TID, PRICE)\n  SELECT TID + 10, PRICE * 2 FROM TICKET;\nUPDATE TICKET SET PRICE = PRICE + 1000 WHERE STATUS = 'N';\n\nSELECT COUNT(*) AS C1, COUNT(PRICE) AS C2, SUM(PRICE) AS C3\n  FROM TICKET;",
+      "choices": [
+        "4 / 2 / 32000",
+        "4 / 4 / 63000",
+        "2 / 2 / 31000",
+        "4 / 2 / 31000"
+      ],
+      "answer": 1,
+      "explanation": "각 문장 실행 후 TICKET 상태를 추적한다.\n\n1. (1, 10000, 'N') : 컬럼을 생략한 PRICE, STATUS에 **DEFAULT** 적용\n2. (2, NULL, 'Y') : **NULL을 명시적으로 입력**하면 DEFAULT가 아니라 NULL이 저장된다\n3. 기존 2행을 읽어 (11, 20000, 'N'), (12, NULL, 'N') 입력. STATUS는 생략했으므로 DEFAULT 'N', NULL * 2 = NULL\n4. STATUS = 'N'인 TID 1, 11, 12의 PRICE + 1000 → 11000, 21000, NULL(NULL + 1000 = NULL)\n\n최종: (1, 11000), (2, NULL), (11, 21000), (12, NULL)\n\nC1 = **4**, C2 = NULL이 아닌 PRICE 수 **2**, C3 = 11000 + 21000 = **32000**이다. 명시적 NULL에도 DEFAULT가 적용된다고 생각하면 ②가 된다."
+    },
+    {
+      "id": 45,
+      "subject": 2,
+      "theory": "tcl",
+      "question": "SEAT 테이블에는 ('A1', '빈'), ('A2', '빈') 두 행이 커밋되어 있다. Oracle에서 아래 문장을 순서대로 실행하였다. 오류가 발생한 문장은 무시하고 진행했을 때, 최종적으로 SEAT의 **전체 행 수**와 **ST가 '예매'인 행 수**로 옳은 것은?",
+      "code": "UPDATE SEAT SET ST = '예매' WHERE NO = 'A1';\nSAVEPOINT SP1;\nUPDATE SEAT SET ST = '예매' WHERE NO = 'A2';\nSAVEPOINT SP2;\nDELETE FROM SEAT WHERE NO = 'A1';\nROLLBACK TO SP1;\nINSERT INTO SEAT VALUES ('A3', '예매');\nCOMMIT;\nROLLBACK TO SP2;\nDELETE FROM SEAT WHERE ST = '빈';\nROLLBACK;",
+      "choices": [
+        "2행 / 1행",
+        "3행 / 2행",
+        "3행 / 3행",
+        "2행 / 2행"
+      ],
+      "answer": 2,
+      "explanation": "1. A1 → '예매'\n2. SP1 저장\n3. A2 → '예매'\n4. SP2 저장\n5. A1 삭제\n6. `ROLLBACK TO SP1`: SP1 이후 작업(A2 변경, A1 삭제)이 취소된다. A1은 '예매', A2는 '빈'. SP1 이후에 만든 SP2도 함께 사라진다.\n7. A3 '예매' 입력\n8. COMMIT: A1 '예매', A2 '빈', A3 '예매'가 확정되고 모든 SAVEPOINT가 해제된다.\n9. `ROLLBACK TO SP2`: 존재하지 않는 SAVEPOINT이므로 **오류**(무시)\n10. A2 삭제\n11. ROLLBACK: 커밋 이후의 작업(A2 삭제)만 취소\n\n최종 결과는 A1 '예매', A2 '빈', A3 '예매'로 **3행 / 예매 2행**이다."
+    },
+    {
+      "id": 46,
+      "subject": 2,
+      "theory": "tcl",
+      "question": "두 트랜잭션이 아래 순서로 실행되었다. TX1에서 발생한 현상과, 이 현상을 방지할 수 있는 **가장 낮은** 격리 수준을 짝지은 것으로 옳은 것은? (ANSI 표준 기준)",
+      "code": "-- ① TX1\nSELECT PRICE FROM SEAT_PRICE WHERE GRADE = 'VIP';   -- 15000\n\n-- ② TX2\nUPDATE SEAT_PRICE SET PRICE = 18000 WHERE GRADE = 'VIP';\nCOMMIT;\n\n-- ③ TX1 (아직 같은 트랜잭션 안에서 다시 조회)\nSELECT PRICE FROM SEAT_PRICE WHERE GRADE = 'VIP';   -- 18000",
+      "choices": [
+        "Dirty Read - READ COMMITTED",
+        "Phantom Read - SERIALIZABLE",
+        "Non-Repeatable Read - READ COMMITTED",
+        "Non-Repeatable Read - REPEATABLE READ"
+      ],
+      "answer": 4,
+      "explanation": "TX1이 같은 행을 두 번 읽는 사이에 TX2가 그 행을 **수정하고 커밋**하여 값이 달라졌으므로 **Non-Repeatable Read**다. TX2가 커밋한 값을 읽었으므로 Dirty Read(커밋되지 않은 값 읽기)가 아니고, 새 행이 나타난 것이 아니므로 Phantom Read도 아니다.\n\nANSI 표준에서 READ COMMITTED는 Dirty Read만 막고 Non-Repeatable Read는 허용한다. Non-Repeatable Read를 막는 가장 낮은 수준은 **REPEATABLE READ**이다(Phantom Read는 이 수준에서도 발생 가능)."
+    },
+    {
+      "id": 47,
+      "subject": 2,
+      "theory": "ddl",
+      "question": "Oracle에서 아래와 같이 SHOW_T 테이블을 생성한 뒤 ㄱ~ㅁ의 INSERT 문을 각각 실행하였다. **성공한** INSERT 문을 모두 고른 것은?",
+      "code": "CREATE TABLE SHOW_T (\n  SID   NUMBER PRIMARY KEY,\n  ST    NUMBER,\n  ET    NUMBER,\n  HALL  VARCHAR2(5) DEFAULT 'H1' NOT NULL,\n  CONSTRAINT SHOW_T_CK CHECK (ET > ST)\n);\n\n-- ㄱ\nINSERT INTO SHOW_T (SID, ST, ET) VALUES (1, 900, 1100);\n-- ㄴ\nINSERT INTO SHOW_T VALUES (2, 1300, NULL, 'H2');\n-- ㄷ\nINSERT INTO SHOW_T VALUES (3, 1500, 1500, 'H2');\n-- ㄹ\nINSERT INTO SHOW_T VALUES (4, 1000, 1200, NULL);\n-- ㅁ\nINSERT INTO SHOW_T (SID, ET) VALUES (5, 800);",
+      "choices": [
+        "ㄱ",
+        "ㄱ, ㄹ",
+        "ㄱ, ㄴ, ㅁ",
+        "ㄱ, ㄴ, ㄹ, ㅁ"
+      ],
+      "answer": 3,
+      "explanation": "- ㄱ: HALL은 생략되어 DEFAULT 'H1' 적용, 1100 > 900 → **성공**\n- ㄴ: ET가 NULL이면 `ET > ST`는 UNKNOWN이다. CHECK 제약은 **FALSE인 경우만 거부**하므로 → **성공**\n- ㄷ: 1500 > 1500은 FALSE → CHECK 위반으로 **실패**\n- ㄹ: HALL에 NULL을 **명시적으로** 넣으면 DEFAULT가 적용되지 않고 NULL이 들어가려 하므로 NOT NULL 위반으로 **실패**\n- ㅁ: ST가 생략되어 NULL → CHECK 결과 UNKNOWN이라 통과, HALL은 DEFAULT 'H1' → **성공**\n\n따라서 **ㄱ, ㄴ, ㅁ**이다. WHERE 절에서는 UNKNOWN이 제외되지만 CHECK 제약에서는 통과된다는 차이가 핵심이다."
+    },
+    {
+      "id": 48,
+      "subject": 2,
+      "theory": "ddl",
+      "question": "공연 예매 DB에서 VIEW, INDEX, SEQUENCE를 활용하려 한다. 이에 대한 설명으로 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "관객용 뷰의 SELECT 정의를 바꿀 때는 `ALTER VIEW 뷰이름 AS SELECT ...` 문으로 기존 정의를 수정한다.",
+        "뷰는 데이터를 직접 저장하지 않는 가상 테이블이며, 관객의 연락처처럼 민감한 컬럼을 빼고 필요한 컬럼만 노출하는 보안 목적으로 활용할 수 있다.",
+        "예매 테이블의 공연일자 컬럼에 인덱스를 만들면 조회는 빨라질 수 있지만, INSERT·UPDATE·DELETE 시 인덱스도 함께 갱신되어 부하가 늘어난다.",
+        "Oracle에서는 SEQUENCE로 예매번호 같은 순번을 생성할 수 있고, SQL Server에서는 주로 IDENTITY 속성으로 자동 증가 값을 만든다."
+      ],
+      "answer": 1,
+      "explanation": "Oracle에서 뷰의 정의(SELECT 문)는 ALTER VIEW로 바꿀 수 없다. 정의를 바꾸려면 `CREATE OR REPLACE VIEW`로 **다시 생성**해야 한다. 따라서 ①이 틀렸다. ②는 뷰의 특징(가상 테이블, 보안성), ③은 인덱스의 장단점, ④는 Oracle SEQUENCE와 SQL Server IDENTITY의 차이를 바르게 설명한다."
+    },
+    {
+      "id": 49,
+      "subject": 2,
+      "theory": "dcl",
+      "question": "공연 예매 DB의 권한 관리에 대한 설명으로 가장 **적절하지 않은** 것은? (Oracle 기준)",
+      "choices": [
+        "테이블 소유자는 자신이 만든 테이블에 대해 별도의 GRANT 없이 모든 오브젝트 권한을 가진다.",
+        "시스템 권한을 다시 부여할 수 있게 하려면 WITH ADMIN OPTION을, 오브젝트 권한은 WITH GRANT OPTION을 사용한다.",
+        "ROLE에는 시스템 권한과 오브젝트 권한을 함께 담을 수 있고, ROLE을 다른 ROLE에 부여할 수도 있다.",
+        "WITH GRANT OPTION으로 받은 오브젝트 권한을 회수해도, 그 사용자가 다른 사용자에게 다시 부여한 권한은 회수되지 않고 그대로 남는다."
+      ],
+      "answer": 4,
+      "explanation": "WITH GRANT OPTION으로 받은 **오브젝트 권한**을 회수하면, 그 사용자가 다른 사용자에게 재부여한 권한도 **연쇄적으로 회수**된다. 따라서 ④가 틀렸다. 반대로 WITH ADMIN OPTION으로 받은 **시스템 권한**은 회수해도 재부여된 권한이 연쇄 회수되지 않는다. ①②③은 모두 옳은 설명이다."
+    },
+    {
+      "id": 50,
+      "subject": 2,
+      "theory": "dcl",
+      "question": "SCOTT와 사용자들이 아래 순서로 DCL을 실행했다. 모든 문장이 실행된 후 SCOTT.SHOW_T에 대해 **SELECT 권한을 가진 사용자**를 모두 고른 것은? (Oracle, SCOTT는 SHOW_T의 소유자이며 SCOTT 자신은 제외한다.)",
+      "code": "-- SCOTT 실행\nGRANT SELECT ON scott.show_t TO u1 WITH GRANT OPTION;\nGRANT SELECT ON scott.show_t TO u2 WITH GRANT OPTION;\n\n-- U1 실행\nGRANT SELECT ON scott.show_t TO u3;\n\n-- U2 실행\nGRANT SELECT ON scott.show_t TO u3;\n\n-- SCOTT 실행\nREVOKE SELECT ON scott.show_t FROM u1;",
+      "choices": [
+        "U2",
+        "U2, U3",
+        "U1, U2, U3",
+        "U3"
+      ],
+      "answer": 2,
+      "explanation": "오브젝트 권한의 연쇄 회수는 **회수 대상 사용자가 부여한 권한**에만 적용된다.\n\n- REVOKE로 U1의 SELECT 권한이 회수되고, U1이 U3에게 부여한 권한도 연쇄적으로 회수된다.\n- 그러나 U3는 **U2로부터도** 같은 권한을 받았고, U2의 권한은 회수되지 않았으므로 U3는 여전히 SELECT가 가능하다.\n\n따라서 SELECT 권한을 가진 사용자는 **U2, U3**이다. U1이 부여한 것만 생각해 U3까지 잃는다고 보면 ①, 연쇄 회수를 무시하면 ③이 된다."
+    }
+  ]
+}

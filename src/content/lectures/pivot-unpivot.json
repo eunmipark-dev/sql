@@ -1,0 +1,1556 @@
+{
+  "slug": "pivot-unpivot",
+  "title": "PIVOT / UNPIVOT 절",
+  "tables": {
+    "SALES": {
+      "columns": [
+        "REGION",
+        "YR",
+        "QTR",
+        "AMT"
+      ],
+      "rows": [
+        [
+          "서울",
+          "2023",
+          "Q1",
+          "100"
+        ],
+        [
+          "서울",
+          "2023",
+          "Q2",
+          "200"
+        ],
+        [
+          "부산",
+          "2023",
+          "Q1",
+          "50"
+        ],
+        [
+          "서울",
+          "2024",
+          "Q1",
+          "300"
+        ],
+        [
+          "부산",
+          "2024",
+          "Q2",
+          "150"
+        ]
+      ]
+    },
+    "SALES_Y": {
+      "columns": [
+        "YR",
+        "Q1",
+        "Q2"
+      ],
+      "rows": [
+        [
+          "2023",
+          "100",
+          "200"
+        ],
+        [
+          "2024",
+          "300",
+          "NULL"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "PIVOT과 UNPIVOT",
+      "subtitle": "행을 열로, 열을 행으로",
+      "icon": "arrow-left-right",
+      "steps": [
+        {
+          "say": "PIVOT과 UNPIVOT을 시작할게요."
+        },
+        {
+          "say": "표를 가로세로로 돌리는 기술이에요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "compare",
+      "section": "PIVOT이란",
+      "title": "두 방향",
+      "left": {
+        "title": "PIVOT",
+        "icon": "table",
+        "items": [
+          "행을 열로 펼침",
+          "교차표 만들기"
+        ]
+      },
+      "right": {
+        "title": "UNPIVOT",
+        "icon": "layers",
+        "items": [
+          "열을 행으로 접음",
+          "교차표 되돌리기"
+        ]
+      },
+      "steps": [
+        {
+          "say": "PIVOT은 행의 값을 열로 펼쳐요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "보고서용 교차표를 만들 때 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "UNPIVOT은 반대로 여러 열을 행으로 접어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "id": "s03",
+      "section": "예제 데이터",
+      "type": "data",
+      "title": "SALES 테이블",
+      "tables": [
+        "SALES"
+      ],
+      "steps": [
+        {
+          "say": "예제는 SALES 테이블이에요.",
+          "t": {
+            "SALES": {
+              "rows": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ]
+            }
+          }
+        },
+        {
+          "say": "지역, 연도, 분기, 금액이 있어요.",
+          "t": {
+            "SALES": {
+              "cols": [
+                "REGION",
+                "YR",
+                "QTR",
+                "AMT"
+              ]
+            }
+          }
+        },
+        {
+          "say": "2023년 1분기는 서울 100, 부산 50이에요.",
+          "t": {
+            "SALES": {
+              "rows": [
+                0,
+                2
+              ],
+              "cells": [
+                [
+                  0,
+                  "AMT"
+                ],
+                [
+                  2,
+                  "AMT"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "flow",
+      "section": "예제 데이터",
+      "title": "목표: 연도별 교차표",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "SALES",
+          "desc": "세로로 긴 5행",
+          "icon": "table"
+        },
+        {
+          "title": "PIVOT",
+          "desc": "분기를 열로",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "교차표",
+          "desc": "YR, Q1, Q2 두 행",
+          "icon": "layers",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "목표는 연도별 분기 매출표예요."
+        },
+        {
+          "say": "세로로 긴 다섯 행에서 출발해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "분기 값 Q1, Q2를 열 이름으로 펼쳐요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "연도별 두 행짜리 표가 돼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "같은 연도와 분기의 금액은 합쳐져요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "cards",
+      "section": "PIVOT 문법",
+      "title": "PIVOT의 세 요소",
+      "cols": 3,
+      "items": [
+        {
+          "title": "집계함수",
+          "desc": "SUM(AMT)",
+          "icon": "database"
+        },
+        {
+          "title": "FOR 컬럼",
+          "desc": "FOR QTR",
+          "icon": "tag"
+        },
+        {
+          "title": "IN 목록",
+          "desc": "IN ('Q1','Q2')",
+          "icon": "checklist"
+        }
+      ],
+      "steps": [
+        {
+          "say": "PIVOT은 세 부분으로 써요."
+        },
+        {
+          "say": "첫째, 집계함수예요. 칸에 들어갈 값이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, FOR 다음엔 열로 바꿀 컬럼을 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, IN 목록엔 열로 만들 값을 적어요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "id": "s06",
+      "section": "PIVOT 문법",
+      "type": "data",
+      "title": "연도별 분기 매출",
+      "tables": [
+        "SALES"
+      ],
+      "code": "SELECT *\nFROM   (SELECT YR, QTR, AMT FROM SALES)\nPIVOT  (SUM(AMT)\n        FOR QTR IN ('Q1' AS Q1,\n                    'Q2' AS Q2))\nORDER  BY YR;",
+      "steps": [
+        {
+          "say": "인라인 뷰에서 세 컬럼만 골라요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "SALES": {
+              "cols": [
+                "YR",
+                "QTR",
+                "AMT"
+              ]
+            }
+          }
+        },
+        {
+          "say": "금액을 합치고, 분기를 열로 펼쳐요.",
+          "focus": [
+            3,
+            4,
+            5
+          ],
+          "t": {
+            "SALES": {
+              "group": "YR"
+            }
+          }
+        },
+        {
+          "say": "2023년 1분기는 서울과 부산을 더해 150이에요.",
+          "focus": [
+            3,
+            4
+          ],
+          "t": {
+            "SALES": {
+              "rows": [
+                0,
+                2
+              ],
+              "result": {
+                "title": "PIVOT 결과",
+                "columns": [
+                  "YR",
+                  "Q1",
+                  "Q2"
+                ],
+                "rows": [
+                  [
+                    "2023",
+                    "150",
+                    ""
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "2023년 2분기는 200이에요.",
+          "focus": [
+            5
+          ],
+          "t": {
+            "SALES": {
+              "rows": [
+                1
+              ],
+              "result": {
+                "title": "PIVOT 결과",
+                "columns": [
+                  "YR",
+                  "Q1",
+                  "Q2"
+                ],
+                "rows": [
+                  [
+                    "2023",
+                    "150",
+                    "200"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "2024년도 같은 방식으로 채워요.",
+          "t": {
+            "SALES": {
+              "rows": [
+                3,
+                4
+              ],
+              "result": {
+                "title": "PIVOT 결과",
+                "columns": [
+                  "YR",
+                  "Q1",
+                  "Q2"
+                ],
+                "rows": [
+                  [
+                    "2023",
+                    "150",
+                    "200"
+                  ],
+                  [
+                    "2024",
+                    "300",
+                    "150"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "연도마다 한 행, Q1과 Q2 열엔 분기별 합계가 들어가요.",
+          "focus": [
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "PIVOT 문법",
+      "title": "IN 목록 규칙",
+      "cols": 2,
+      "items": [
+        {
+          "title": "상수만",
+          "desc": "서브쿼리 불가",
+          "icon": "lock"
+        },
+        {
+          "title": "별칭 권장",
+          "desc": "없으면 따옴표 포함",
+          "icon": "tag"
+        },
+        {
+          "title": "목록 밖",
+          "desc": "결과에서 빠짐",
+          "icon": "filter",
+          "tone": "warn"
+        },
+        {
+          "title": "빈 칸",
+          "desc": "NULL이 들어감",
+          "icon": "box"
+        }
+      ],
+      "steps": [
+        {
+          "say": "IN 목록 규칙은 네 가지예요."
+        },
+        {
+          "say": "첫째, 값은 상수로 직접 적어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "서브쿼리는 안 돼요. XML 형식만 예외예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 별칭이 없으면 열 이름에 따옴표가 붙어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 목록에 없는 값은 결과에서 빠져요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 데이터가 없는 칸은 NULL이에요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "quiz",
+      "section": "PIVOT 문법",
+      "question": "IN 목록이 ('Q1', 'Q2')뿐인데 원본에 **Q3** 행이 있다면?",
+      "choices": [
+        "Q3 데이터는 빠진다",
+        "Q3 열이 자동 추가된다",
+        "Q2 열에 더해진다",
+        "오류가 난다"
+      ],
+      "answer": 1,
+      "explanation": "PIVOT은 IN 목록의 값만 열로 만들어요. 목록에 없는 Q3은 빠져요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. IN 목록에 없는 Q3 데이터는 어떻게 될까요?"
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "flow",
+      "section": "암시적 GROUP BY",
+      "title": "행 기준은 남은 컬럼",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "FROM 결과",
+          "desc": "REGION, YR, QTR, AMT",
+          "icon": "table"
+        },
+        {
+          "title": "집계 대상 빼기",
+          "desc": "AMT 제외",
+          "icon": "filter"
+        },
+        {
+          "title": "FOR 컬럼 빼기",
+          "desc": "QTR 제외",
+          "icon": "filter"
+        },
+        {
+          "title": "남은 컬럼",
+          "desc": "REGION, YR 기준",
+          "icon": "layers",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "PIVOT은 GROUP BY를 자동으로 해요."
+        },
+        {
+          "say": "테이블을 그대로 쓰면 네 컬럼이 다 들어와요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "집계 대상 AMT를 빼고,",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "FOR 컬럼 QTR을 빼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "남은 REGION과 YR이 그룹 기준이 돼요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "id": "s10",
+      "section": "암시적 GROUP BY",
+      "type": "data",
+      "title": "행 수가 달라져요",
+      "tables": [
+        "SALES"
+      ],
+      "steps": [
+        {
+          "say": "테이블을 그대로 쓰면 지역까지 그룹이 돼요.",
+          "t": {
+            "SALES": {
+              "cols": [
+                "REGION",
+                "YR"
+              ],
+              "tint": [
+                [
+                  0,
+                  1
+                ],
+                [
+                  2
+                ],
+                [
+                  3
+                ],
+                [
+                  4
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "지역 둘, 연도 둘이면 네 행이 나와요.",
+          "t": {
+            "SALES": {
+              "tint": [
+                [
+                  0,
+                  1
+                ],
+                [
+                  2
+                ],
+                [
+                  3
+                ],
+                [
+                  4
+                ]
+              ],
+              "result": {
+                "title": "테이블 그대로: 4행",
+                "columns": [
+                  "REGION",
+                  "YR",
+                  "Q1",
+                  "Q2"
+                ],
+                "rows": [
+                  [
+                    "서울",
+                    "2023",
+                    "100",
+                    "200"
+                  ],
+                  [
+                    "부산",
+                    "2023",
+                    "50",
+                    "NULL"
+                  ],
+                  [
+                    "서울",
+                    "2024",
+                    "300",
+                    "NULL"
+                  ],
+                  [
+                    "부산",
+                    "2024",
+                    "NULL",
+                    "150"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "데이터가 없는 칸은 NULL이에요."
+        },
+        {
+          "say": "인라인 뷰에서 필요한 컬럼만 고르세요.",
+          "t": {
+            "SALES": {
+              "cols": [
+                "YR",
+                "QTR",
+                "AMT"
+              ],
+              "group": "YR",
+              "result": null
+            }
+          }
+        },
+        {
+          "say": "그러면 연도별 두 행이 나와요.",
+          "t": {
+            "SALES": {
+              "result": {
+                "title": "인라인 뷰: 2행",
+                "columns": [
+                  "YR",
+                  "Q1",
+                  "Q2"
+                ],
+                "rows": [
+                  [
+                    "2023",
+                    "150",
+                    "200"
+                  ],
+                  [
+                    "2024",
+                    "300",
+                    "150"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "암시적 GROUP BY",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "결과 행 수는 집계 대상과 FOR 컬럼을 **뺀 나머지 컬럼의 고유 조합 수**.",
+      "steps": [
+        {
+          "say": "행 수를 묻는 문제가 자주 나와요."
+        },
+        {
+          "say": "집계 대상과 FOR 컬럼을 빼세요."
+        },
+        {
+          "say": "남은 컬럼의 조합 수를 세면 돼요."
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "type": "quiz",
+      "section": "암시적 GROUP BY",
+      "question": "원본 지역은 **서울, 부산** 두 곳이에요. 인라인 뷰를 **REGION, QTR, AMT**로 바꾸면 결과는 몇 행?",
+      "choices": [
+        "5행",
+        "4행",
+        "2행",
+        "1행"
+      ],
+      "answer": 3,
+      "explanation": "AMT와 QTR을 빼면 REGION만 남아요. 서울, 부산 2행이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 지역은 서울, 부산 두 곳이에요."
+        },
+        {
+          "say": "지역, 분기, 금액으로 PIVOT하면 몇 행일까요?"
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "cards",
+      "section": "암시적 GROUP BY",
+      "title": "집계함수 여러 개",
+      "cols": 2,
+      "items": [
+        {
+          "title": "Q1_S",
+          "desc": "Q1 합계",
+          "icon": "database"
+        },
+        {
+          "title": "Q1_C",
+          "desc": "Q1 건수",
+          "icon": "tag"
+        },
+        {
+          "title": "Q2_S",
+          "desc": "Q2 합계",
+          "icon": "database"
+        },
+        {
+          "title": "Q2_C",
+          "desc": "Q2 건수",
+          "icon": "tag"
+        }
+      ],
+      "steps": [
+        {
+          "say": "SUM과 COUNT를 함께 쓸 수도 있어요."
+        },
+        {
+          "say": "열 이름은 IN 별칭 뒤에 집계 별칭이 붙어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그래서 Q1 S, Q1 C처럼 만들어져요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "Q2도 똑같이 두 열이 생겨요.",
+          "focus": [
+            2,
+            3
+          ]
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "code",
+      "section": "CASE로 대체",
+      "title": "CASE와 집계로 PIVOT",
+      "code": "SELECT YR,\n  SUM(CASE WHEN QTR = 'Q1'\n           THEN AMT END) AS Q1,\n  SUM(CASE WHEN QTR = 'Q2'\n           THEN AMT END) AS Q2\nFROM   SALES\nGROUP  BY YR;",
+      "steps": [
+        {
+          "say": "PIVOT이 없으면 CASE와 집계로 만들어요."
+        },
+        {
+          "say": "분기가 Q1일 때만 금액을 더해요.",
+          "focus": [
+            2,
+            3
+          ]
+        },
+        {
+          "say": "Q2도 같은 방식이에요.",
+          "focus": [
+            4,
+            5
+          ]
+        },
+        {
+          "say": "결과는 PIVOT과 똑같아요.",
+          "focus": [
+            7
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "cards",
+      "section": "CASE로 대체",
+      "title": "CASE 방식 특징",
+      "cols": 3,
+      "items": [
+        {
+          "title": "그룹 직접",
+          "desc": "암시적 문제 없음",
+          "icon": "check",
+          "tone": "good"
+        },
+        {
+          "title": "ELSE 0",
+          "desc": "NULL 대신 0",
+          "icon": "box"
+        },
+        {
+          "title": "DECODE",
+          "desc": "오라클 대안",
+          "icon": "recycle"
+        }
+      ],
+      "steps": [
+        {
+          "say": "CASE 방식의 특징은 세 가지예요."
+        },
+        {
+          "say": "GROUP BY를 직접 정하니 암시적 그룹 문제가 없어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "ELSE 0을 넣으면 빈 칸이 0이 돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "오라클에선 DECODE로도 쓸 수 있어요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "quiz",
+      "section": "CASE로 대체",
+      "question": "`SUM(CASE WHEN QTR = 'Q1' THEN AMT END)`에서 Q1 데이터가 없는 칸을 **0**으로 만들려면?",
+      "choices": [
+        "WHERE 조건 추가",
+        "GROUP BY 제거",
+        "ELSE 0 추가",
+        "SUM을 COUNT로"
+      ],
+      "answer": 3,
+      "explanation": "CASE에 ELSE 0을 넣으면 돼요. 빈 칸이 NULL 대신 0이 돼요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. CASE 방식에서 빈 칸을 영으로 채우려면?"
+        }
+      ],
+      "id": "s15q"
+    },
+    {
+      "type": "cards",
+      "section": "SQL Server PIVOT",
+      "title": "SQL Server PIVOT",
+      "cols": 3,
+      "items": [
+        {
+          "title": "대괄호",
+          "desc": "[Q1], [Q2]",
+          "icon": "tag"
+        },
+        {
+          "title": "별칭 필수",
+          "desc": "원본과 결과 모두",
+          "icon": "lock"
+        },
+        {
+          "title": "그룹 동작",
+          "desc": "오라클과 같음",
+          "icon": "layers"
+        }
+      ],
+      "steps": [
+        {
+          "say": "SQL Server도 PIVOT이 있어요."
+        },
+        {
+          "say": "IN 목록 값은 대괄호로 감싼 이름으로 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "원본 집합과 결과 모두 별칭이 필요해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "암시적 GROUP BY는 오라클과 같아요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "flow",
+      "section": "UNPIVOT",
+      "title": "UNPIVOT: 열을 행으로",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "SALES_Y",
+          "desc": "열 Q1, Q2",
+          "icon": "table"
+        },
+        {
+          "title": "UNPIVOT",
+          "desc": "AMT FOR QTR",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "두 컬럼",
+          "desc": "QTR 이름, AMT 값",
+          "icon": "layers"
+        }
+      ],
+      "steps": [
+        {
+          "say": "이번엔 UNPIVOT이에요."
+        },
+        {
+          "say": "Q1, Q2 열을 가진 교차표에서 시작해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "값 컬럼 FOR 이름 컬럼 형태로 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "AMT는 새로 생기는 값 컬럼이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "QTR엔 원래 열 이름이 들어가요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "id": "s18",
+      "section": "UNPIVOT",
+      "type": "data",
+      "title": "UNPIVOT 예제",
+      "tables": [
+        "SALES_Y"
+      ],
+      "code": "SELECT YR, QTR, AMT\nFROM   SALES_Y\nUNPIVOT (AMT FOR QTR\n         IN (Q1 AS 'Q1', Q2 AS 'Q2'));",
+      "steps": [
+        {
+          "say": "SALES Y 테이블을 접어 볼게요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "SALES_Y": {
+              "rows": [
+                0,
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "Q1, Q2 두 열이 각각 행이 돼요.",
+          "focus": [
+            3,
+            4
+          ],
+          "t": {
+            "SALES_Y": {
+              "cols": [
+                "Q1",
+                "Q2"
+              ]
+            }
+          }
+        },
+        {
+          "say": "2023년 행은 Q1, Q2 두 행으로 나뉘어요.",
+          "t": {
+            "SALES_Y": {
+              "rows": [
+                0
+              ],
+              "result": {
+                "title": "UNPIVOT 결과",
+                "columns": [
+                  "YR",
+                  "QTR",
+                  "AMT"
+                ],
+                "rows": [
+                  [
+                    "2023",
+                    "Q1",
+                    "100"
+                  ],
+                  [
+                    "2023",
+                    "Q2",
+                    "200"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "2024년 Q1은 300이에요.",
+          "t": {
+            "SALES_Y": {
+              "cells": [
+                [
+                  1,
+                  "Q1"
+                ]
+              ],
+              "result": {
+                "title": "UNPIVOT 결과",
+                "columns": [
+                  "YR",
+                  "QTR",
+                  "AMT"
+                ],
+                "rows": [
+                  [
+                    "2023",
+                    "Q1",
+                    "100"
+                  ],
+                  [
+                    "2023",
+                    "Q2",
+                    "200"
+                  ],
+                  [
+                    "2024",
+                    "Q1",
+                    "300"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "그런데 2024년 Q2는 NULL이에요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "SALES_Y": {
+              "cells": [
+                [
+                  1,
+                  "Q2"
+                ]
+              ],
+              "notes": [
+                [
+                  1,
+                  "Q2",
+                  "NULL!"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s19",
+      "section": "UNPIVOT",
+      "type": "data",
+      "title": "NULL 처리",
+      "tables": [
+        "SALES_Y"
+      ],
+      "steps": [
+        {
+          "say": "교차표 값 네 칸 중 한 칸이 NULL이에요.",
+          "t": {
+            "SALES_Y": {
+              "cols": [
+                "Q1",
+                "Q2"
+              ],
+              "cells": [
+                [
+                  1,
+                  "Q2"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "기본은 EXCLUDE NULLS예요."
+        },
+        {
+          "say": "NULL 칸은 빠져서 3행이에요.",
+          "t": {
+            "SALES_Y": {
+              "notes": [
+                [
+                  1,
+                  "Q2",
+                  "빠짐"
+                ]
+              ],
+              "result": {
+                "title": "EXCLUDE NULLS: 3행",
+                "columns": [
+                  "YR",
+                  "QTR",
+                  "AMT"
+                ],
+                "rows": [
+                  [
+                    "2023",
+                    "Q1",
+                    "100"
+                  ],
+                  [
+                    "2023",
+                    "Q2",
+                    "200"
+                  ],
+                  [
+                    "2024",
+                    "Q1",
+                    "300"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "INCLUDE NULLS를 쓰면 NULL도 남아요.",
+          "t": {
+            "SALES_Y": {
+              "cells": [
+                [
+                  1,
+                  "Q2"
+                ]
+              ],
+              "notes": [
+                [
+                  1,
+                  "Q2",
+                  "남음"
+                ]
+              ],
+              "result": {
+                "title": "INCLUDE NULLS: 4행",
+                "columns": [
+                  "YR",
+                  "QTR",
+                  "AMT"
+                ],
+                "rows": [
+                  [
+                    "2023",
+                    "Q1",
+                    "100"
+                  ],
+                  [
+                    "2023",
+                    "Q2",
+                    "200"
+                  ],
+                  [
+                    "2024",
+                    "Q1",
+                    "300"
+                  ],
+                  [
+                    "2024",
+                    "Q2",
+                    "NULL"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "그래서 4행이에요."
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "UNPIVOT",
+      "question": "연도 2개 × Q1, Q2 교차표 SALES_Y에서 2024년 Q2만 NULL이에요. 옵션 없이 UNPIVOT하면 몇 행?",
+      "choices": [
+        "2행",
+        "3행",
+        "4행",
+        "6행"
+      ],
+      "answer": 2,
+      "explanation": "기본은 EXCLUDE NULLS예요. NULL 한 칸이 빠져서 3행이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 값 네 칸 중 한 칸이 NULL이에요."
+        },
+        {
+          "say": "옵션 없이 UNPIVOT하면 몇 행일까요?"
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "callout",
+      "section": "UNPIVOT",
+      "tone": "info",
+      "title": "UNPIVOT 대체",
+      "text": "열 개수만큼 **UNION ALL** 반복. 또는 복제용 집합과 카티션 곱 후 CASE로 고른다.",
+      "steps": [
+        {
+          "say": "UNPIVOT 없이도 할 수 있어요."
+        },
+        {
+          "say": "열 개수만큼 UNION ALL을 반복해요."
+        },
+        {
+          "say": "복제용 집합과 카티션 곱을 써도 돼요."
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "compare",
+      "section": "PIVOT과 UNPIVOT 비교",
+      "title": "PIVOT과 UNPIVOT",
+      "left": {
+        "title": "PIVOT",
+        "icon": "table",
+        "items": [
+          "집계함수 필수",
+          "FOR 뒤 기존 컬럼",
+          "행 수 줄어듦"
+        ]
+      },
+      "right": {
+        "title": "UNPIVOT",
+        "icon": "layers",
+        "items": [
+          "집계함수 없음",
+          "FOR 뒤 새 컬럼",
+          "행 수 늘어남"
+        ]
+      },
+      "steps": [
+        {
+          "say": "둘을 비교해 볼게요."
+        },
+        {
+          "say": "PIVOT은 집계함수가 꼭 필요해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "FOR 뒤엔 펼칠 기존 컬럼을 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "UNPIVOT은 집계함수를 쓰지 않아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "FOR 뒤엔 새로 만들 이름 컬럼을 써요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "id": "s23",
+      "section": "PIVOT과 UNPIVOT 비교",
+      "type": "data",
+      "title": "원본은 돌아오지 않아요",
+      "tables": [
+        "SALES"
+      ],
+      "steps": [
+        {
+          "say": "PIVOT 후 UNPIVOT하면 원본이 될까요?",
+          "t": {
+            "SALES": {
+              "rows": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ]
+            }
+          }
+        },
+        {
+          "say": "2023년 Q1은 원래 100과 50, 두 행이에요.",
+          "t": {
+            "SALES": {
+              "rows": [
+                0,
+                2
+              ],
+              "cells": [
+                [
+                  0,
+                  "AMT"
+                ],
+                [
+                  2,
+                  "AMT"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "PIVOT하면 150 하나로 합쳐져요.",
+          "t": {
+            "SALES": {
+              "rows": [
+                0,
+                2
+              ],
+              "result": {
+                "title": "PIVOT",
+                "columns": [
+                  "YR",
+                  "Q1",
+                  "Q2"
+                ],
+                "rows": [
+                  [
+                    "2023",
+                    "150",
+                    "200"
+                  ],
+                  [
+                    "2024",
+                    "300",
+                    "150"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "다시 접어도 150 한 행일 뿐이에요.",
+          "t": {
+            "SALES": {
+              "result": {
+                "title": "다시 UNPIVOT: 4행",
+                "columns": [
+                  "YR",
+                  "QTR",
+                  "AMT"
+                ],
+                "rows": [
+                  [
+                    "2023",
+                    "Q1",
+                    "150"
+                  ],
+                  [
+                    "2023",
+                    "Q2",
+                    "200"
+                  ],
+                  [
+                    "2024",
+                    "Q1",
+                    "300"
+                  ],
+                  [
+                    "2024",
+                    "Q2",
+                    "150"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "지역도 사라지고, 5행이 4행이 됐어요.",
+          "t": {
+            "SALES": {
+              "cols": [
+                "REGION"
+              ]
+            }
+          }
+        },
+        {
+          "say": "정리하면, 원본은 복원되지 않아요."
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "PIVOT과 UNPIVOT 비교",
+      "question": "PIVOT과 UNPIVOT에 대한 설명으로 **옳은** 것은?",
+      "choices": [
+        "UNPIVOT은 집계 필수",
+        "IN에 서브쿼리 가능",
+        "UNPIVOT하면 원본 복원",
+        "남은 컬럼으로 그룹화"
+      ],
+      "answer": 4,
+      "explanation": "PIVOT은 나머지 컬럼으로 암시적 GROUP BY를 해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 옳은 설명은 무엇일까요?"
+        }
+      ],
+      "id": "s24"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "PIVOT 행→열, UNPIVOT 열→행",
+        "IN 목록은 상수로 나열",
+        "남은 컬럼으로 암시적 GROUP BY",
+        "CASE와 집계로 PIVOT 대체",
+        "UNPIVOT 기본은 EXCLUDE NULLS",
+        "PIVOT 후 UNPIVOT은 복원 불가"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "PIVOT은 행을 열로, UNPIVOT은 열을 행으로.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "IN 목록은 상수로 적어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "남은 컬럼으로 자동 그룹화돼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "CASE와 집계로도 만들 수 있어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "UNPIVOT은 기본으로 NULL을 빼요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "PIVOT 후 다시 접어도 원본은 안 돌아와요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s25"
+    }
+  ]
+}

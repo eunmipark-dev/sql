@@ -1,0 +1,21 @@
+[
+  { "text": "PIVOT은 행 값을 열로 펼치고 UNPIVOT은 여러 열을 행으로 접는다.", "answer": true, "explain": "PIVOT은 교차표를 만들고 UNPIVOT은 교차표를 정규화된 형태로 되돌린다." },
+  { "text": "Oracle PIVOT 절에서는 집계함수를 생략하고 FOR 절만 쓸 수 있다.", "answer": false, "explain": "PIVOT에는 SUM(AMT)처럼 집계함수가 필수다." },
+  { "text": "Oracle PIVOT의 IN 절에 나열하지 않은 값은 결과 열에서 빠진다.", "answer": true, "explain": "IN 목록에 명시한 값만 열로 만들어진다." },
+  { "text": "XML 형식이 아닌 Oracle PIVOT의 IN 절에는 서브쿼리로 동적 값 목록을 지정할 수 있다.", "answer": false, "explain": "IN 절의 값은 상수로 직접 나열해야 한다. 서브쿼리는 XML 형식에서만 가능하다." },
+  { "text": "PIVOT은 집계 대상 컬럼과 FOR 절 컬럼을 제외한 나머지 컬럼으로 암시적 GROUP BY를 수행한다.", "answer": true, "explain": "결과 행 수는 나머지 컬럼의 고유 조합 수와 같다." },
+  { "text": "PIVOT의 암시적 GROUP BY로 원치 않는 그룹이 생기는 것을 막으려면 FROM 절에 테이블을 그대로 쓴다.", "answer": false, "explain": "인라인 뷰에서 필요한 컬럼만 선택해야 의도한 그룹 기준이 된다." },
+  { "text": "PIVOT 결과에서 해당 조합의 데이터가 없는 칸에는 NULL이 들어간다.", "answer": true, "explain": "집계할 원본 행이 없으므로 NULL이 표시된다." },
+  { "text": "Oracle UNPIVOT의 기본 동작은 INCLUDE NULLS이다.", "answer": false, "explain": "기본은 EXCLUDE NULLS라 NULL 값을 가진 열은 행으로 만들어지지 않는다." },
+  { "text": "UNPIVOT은 열을 행으로 바꿀 때 집계함수를 사용하지 않는다.", "answer": true, "explain": "집계함수가 필수인 것은 PIVOT이다." },
+  { "text": "UNPIVOT 절의 FOR 다음에는 열로 펼칠 기존 컬럼을 쓴다.", "answer": false, "explain": "UNPIVOT의 FOR 다음에는 원래 열 이름이 들어갈 새 이름 컬럼을 쓴다." },
+  { "text": "PIVOT 결과를 다시 UNPIVOT 하면 원본 상세 데이터가 그대로 복원된다.", "answer": false, "explain": "PIVOT 과정에서 집계되어 상세 행이 사라지므로 집계된 값만 행으로 돌아온다." },
+  { "text": "CASE 표현식과 집계함수, GROUP BY를 조합하면 PIVOT과 같은 결과를 만들 수 있다.", "answer": true, "explain": "예: SUM(CASE WHEN QTR = 'Q1' THEN AMT END) AS Q1" },
+  { "text": "CASE 방식 피벗에서 ELSE 0을 넣으면 데이터가 없는 칸에 NULL이 표시된다.", "answer": false, "explain": "ELSE 0을 넣으면 데이터가 없는 칸이 NULL 대신 0이 된다." },
+  { "text": "SQL Server PIVOT의 IN 목록 값은 대괄호로 감싼 식별자로 쓴다.", "answer": true, "explain": "예: FOR QTR IN ([Q1], [Q2])" },
+  { "text": "SQL Server PIVOT에서는 원본 집합과 PIVOT 결과에 별칭을 붙이지 않아도 된다.", "answer": false, "explain": "SQL Server는 원본 집합과 PIVOT 결과 모두에 별칭이 필요하다." },
+  { "text": "Oracle PIVOT의 IN 절 값에 별칭을 생략하면 열 이름이 값 그대로 만들어진다.", "answer": true, "explain": "'Q1'처럼 따옴표가 포함된 이름이 되므로 별칭을 주는 편이 편리하다." },
+  { "text": "SQL Server PIVOT에서는 Oracle과 달리 암시적 GROUP BY가 발생하지 않는다.", "answer": false, "explain": "SQL Server PIVOT의 암시적 GROUP BY 동작은 Oracle과 같다." },
+  { "text": "Oracle PIVOT 절에는 SUM과 COUNT처럼 여러 개의 집계함수를 함께 지정할 수 있다.", "answer": true, "explain": "이때 열 이름은 IN 별칭_집계 별칭 형태(Q1_S 등)로 만들어진다." },
+  { "text": "PIVOT은 대개 결과 행 수를 늘리고 UNPIVOT은 대개 결과 행 수를 줄인다.", "answer": false, "explain": "반대다. PIVOT은 행을 열로 모아 행 수가 줄고, UNPIVOT은 열을 행으로 풀어 행 수가 늘어난다." }
+]

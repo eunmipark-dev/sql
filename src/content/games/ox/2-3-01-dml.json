@@ -1,0 +1,22 @@
+[
+  { "text": "INSERT에서 컬럼 목록을 생략하면 테이블의 모든 컬럼 값을 정의 순서대로 넣어야 한다.", "answer": true, "explain": "값이 없는 컬럼은 NULL을 직접 명시해야 하며 값 개수가 부족하면 오류다." },
+  { "text": "DEFAULT가 정의된 컬럼을 INSERT 컬럼 목록에서 빼면 그 컬럼에는 NULL이 입력된다.", "answer": false, "explain": "목록에서 빠진 컬럼은 DEFAULT가 있으면 DEFAULT 값, 없으면 NULL이 들어간다." },
+  { "text": "INSERT 컬럼 목록에서 빠진 컬럼이 NOT NULL이고 DEFAULT가 없으면 오류가 발생한다.", "answer": true, "explain": "NULL을 넣을 수 없고 대체할 기본값도 없기 때문이다." },
+  { "text": "INSERT INTO ... SELECT 문은 대상 테이블이 없으면 테이블을 자동으로 생성한다.", "answer": false, "explain": "INSERT ... SELECT는 대상 테이블이 미리 있어야 한다. 테이블을 만들며 복사하는 것은 CTAS다." },
+  { "text": "UPDATE 문에서 WHERE 절을 생략하면 테이블의 모든 행이 수정된다.", "answer": true, "explain": "DELETE도 마찬가지로 WHERE를 생략하면 전체 행이 대상이다." },
+  { "text": "UPDATE의 SET 절 서브쿼리 결과가 없으면 해당 컬럼은 기존 값을 유지한다.", "answer": false, "explain": "SET 절 서브쿼리 결과가 없으면 해당 컬럼은 NULL로 바뀐다." },
+  { "text": "DELETE는 삭제 내역을 로그에 남기므로 COMMIT 전이라면 ROLLBACK할 수 있다.", "answer": true, "explain": "DELETE는 DML이며 행 단위로 로그(언두)를 기록한다." },
+  { "text": "DELETE로 테이블의 전체 행을 지우면 테이블에 할당된 저장 공간이 반환된다.", "answer": false, "explain": "DELETE는 구조와 할당된 공간을 그대로 남긴다. 공간을 반환하는 것은 TRUNCATE다." },
+  { "text": "TRUNCATE는 WHERE 절로 삭제할 행을 지정할 수 있다.", "answer": false, "explain": "TRUNCATE는 WHERE 절을 쓸 수 없고 전체 행을 비운다." },
+  { "text": "TRUNCATE는 DDL로 분류되며 Oracle에서 ROLLBACK할 수 없다.", "answer": true, "explain": "Oracle에서 DDL은 자동 커밋되므로 되돌릴 수 없다." },
+  { "text": "TRUNCATE로 테이블을 비우면 DELETE 트리거가 동작한다.", "answer": false, "explain": "DELETE 트리거는 DELETE 문에서만 동작하며 TRUNCATE, DROP에서는 동작하지 않는다." },
+  { "text": "DROP TABLE은 테이블의 데이터와 구조를 모두 삭제한다.", "answer": true, "explain": "DELETE·TRUNCATE는 구조를 남기지만 DROP은 테이블 자체를 없앤다." },
+  { "text": "MERGE 문은 ON 조건 일치 여부에 따라 UPDATE와 INSERT를 한 문장으로 처리한다.", "answer": true, "explain": "일치하면 WHEN MATCHED(UPDATE), 불일치하면 WHEN NOT MATCHED(INSERT)를 수행한다." },
+  { "text": "Oracle MERGE의 DELETE WHERE 조건은 UPDATE 이전의 값으로 평가한다.", "answer": false, "explain": "DELETE WHERE는 UPDATE된 행만 대상으로 하며 UPDATE 이후의 값으로 평가한다." },
+  { "text": "Oracle MERGE에서 ON 절에 사용한 컬럼은 UPDATE SET 절에서 변경할 수 있다.", "answer": false, "explain": "Oracle에서는 ON 절에 쓴 컬럼을 UPDATE SET에서 변경할 수 없다." },
+  { "text": "MERGE 문에서는 WHEN MATCHED와 WHEN NOT MATCHED 중 하나만 써도 된다.", "answer": true, "explain": "둘 다 필수가 아니므로 UPDATE만 또는 INSERT만 수행하도록 쓸 수 있다." },
+  { "text": "SQL Server는 기본적으로 수동 커밋 방식이어서 DML 실행 후 COMMIT해야 확정된다.", "answer": false, "explain": "SQL Server의 기본은 자동 커밋이다. 수동 커밋이 기본인 것은 Oracle이다." },
+  { "text": "Oracle에서 DML 이후 DDL을 실행하면 앞선 DML도 암묵적으로 커밋된다.", "answer": true, "explain": "DDL은 실행 전후로 자동 커밋되므로 앞의 DML까지 확정된다." },
+  { "text": "테이블에서 특정 컬럼 값만 지우려면 DELETE 문에 해당 컬럼명을 지정한다.", "answer": false, "explain": "DELETE는 행 단위로 삭제한다. 컬럼 값만 지우려면 UPDATE ... SET 컬럼 = NULL을 쓴다." },
+  { "text": "SQL Server에서는 BEGIN TRAN으로 시작한 트랜잭션 안의 TRUNCATE도 ROLLBACK할 수 있다.", "answer": true, "explain": "SQL Server는 명시적 트랜잭션 안의 TRUNCATE·DROP도 롤백할 수 있다." }
+]

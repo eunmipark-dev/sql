@@ -1,0 +1,21 @@
+[
+  { "text": "UNION ALL은 두 SELECT 결과를 합치면서 중복 행을 제거하지 않는다.", "answer": true, "explain": "UNION ALL은 결과를 그대로 이어 붙인다. UNION, INTERSECT, MINUS는 중복을 제거한다." },
+  { "text": "INTERSECT는 교집합 결과에서 중복 행을 제거하지 않고 그대로 출력한다.", "answer": false, "explain": "INTERSECT는 중복을 제거한다. 중복을 유지하는 집합 연산자는 UNION ALL이다." },
+  { "text": "집합 연산 결과의 컬럼명은 첫 번째 SELECT 절의 컬럼명이나 별칭을 따른다.", "answer": true, "explain": "두 번째 이후 SELECT에 붙인 별칭은 결과 헤더에 반영되지 않는다." },
+  { "text": "집합 연산자를 사용할 때 ORDER BY는 각 SELECT 문마다 개별적으로 지정한다.", "answer": false, "explain": "ORDER BY는 맨 마지막에 한 번만 쓴다. 개별 SELECT에 붙이면 오류다." },
+  { "text": "집합 연산자로 결합하는 각 SELECT 절의 컬럼 수는 같아야 한다.", "answer": true, "explain": "컬럼 수가 같고 같은 위치 컬럼끼리 타입이 호환되어야 한다." },
+  { "text": "SQL Server에서는 차집합 연산자로 MINUS를 사용한다.", "answer": false, "explain": "SQL Server와 표준은 EXCEPT를 쓴다. MINUS는 Oracle의 차집합 연산자다." },
+  { "text": "A MINUS B와 B MINUS A는 결과가 서로 다를 수 있다.", "answer": true, "explain": "차집합은 앞 결과에서 뒤 결과를 빼므로 순서를 바꾸면 결과가 달라진다." },
+  { "text": "집합 연산자는 중복 여부를 판단할 때 NULL끼리는 서로 다른 값으로 취급한다.", "answer": false, "explain": "집합 연산자는 NULL끼리 같은 값으로 보고 중복을 제거한다." },
+  { "text": "UNION은 한 SELECT 결과 안에 있던 중복 행까지 제거한다.", "answer": true, "explain": "UNION 결과는 항상 중복 없는 집합이 된다." },
+  { "text": "중복 제거가 필요 없을 때는 UNION이 UNION ALL보다 성능상 유리하다.", "answer": false, "explain": "UNION은 중복 제거를 위한 정렬·해시 작업이 필요하므로 UNION ALL이 더 효율적이다." },
+  { "text": "UNION 결과는 중복 제거 과정을 거치므로 ORDER BY 없이도 정렬 순서가 보장된다.", "answer": false, "explain": "정렬된 것처럼 보일 수 있지만 순서는 ORDER BY로만 보장된다." },
+  { "text": "Oracle에서는 집합 연산자의 우선순위가 모두 같아 위에서 아래로 차례대로 수행된다.", "answer": true, "explain": "Oracle은 순서대로 수행하므로 의도를 분명히 하려면 괄호를 쓴다." },
+  { "text": "SQL 표준에서는 UNION이 INTERSECT보다 연산 우선순위가 높다.", "answer": false, "explain": "SQL 표준과 SQL Server에서는 INTERSECT가 UNION, EXCEPT보다 우선순위가 높다." },
+  { "text": "집합 연산 결과는 ORDER BY 1처럼 컬럼 위치 번호로 정렬할 수 있다.", "answer": true, "explain": "마지막 ORDER BY에는 첫 SELECT의 컬럼명·별칭 또는 위치 번호를 쓴다." },
+  { "text": "{사과, 배, 포도}와 {배, 포도, 귤}을 UNION ALL하면 결과는 6행이다.", "answer": true, "explain": "UNION ALL은 중복을 유지하므로 3 + 3 = 6행이다. UNION이면 4행이다." },
+  { "text": "{사과, 배, 포도}와 {배, 포도, 귤}을 INTERSECT하면 결과는 4행이다.", "answer": false, "explain": "양쪽에 모두 있는 배, 포도만 남아 2행이다." },
+  { "text": "집합 연산 결과 전체에 WHERE나 GROUP BY를 적용하려면 전체를 인라인 뷰로 감싼다.", "answer": true, "explain": "개별 SELECT 안의 WHERE·GROUP BY는 그 SELECT에만 적용된다." },
+  { "text": "조인은 행을 위아래로 결합하고 집합 연산자는 컬럼을 옆으로 붙인다.", "answer": false, "explain": "반대다. 조인이 컬럼을 옆으로 붙이고, 집합 연산자는 행을 위아래로 결합한다." },
+  { "text": "집합 연산자로 결합하는 SELECT 절의 같은 위치 컬럼끼리는 데이터 타입이 호환되어야 한다.", "answer": true, "explain": "컬럼 수 일치와 함께 대응 컬럼의 타입 호환이 사용 조건이다." }
+]

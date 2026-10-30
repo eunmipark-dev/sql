@@ -1,0 +1,20 @@
+[
+  {"text":"관계형 데이터 모델은 1970년 E.F. Codd 박사가 제안했다.","answer":true,"explain":"1970년 Codd 박사가 관계형 모델을 제안했다."},
+  {"text":"관계형 데이터베이스는 데이터를 트리 구조로 저장하고 포인터로 관계를 표현한다.","answer":false,"explain":"관계형 DB는 2차원 표(테이블)로 저장하고 키 값으로 관계를 표현한다. 트리 구조는 계층형 DB다."},
+  {"text":"관계 연산의 선택(Selection)은 SQL의 WHERE 절에 해당한다.","answer":true,"explain":"선택은 조건에 맞는 행을 고르는 연산이므로 WHERE 절이 담당한다."},
+  {"text":"관계 연산의 투영(Projection)은 조건에 맞는 행을 추출하는 연산이다.","answer":false,"explain":"투영은 필요한 열을 추출하는 연산으로 SELECT 절에 해당한다. 행 추출은 선택이다."},
+  {"text":"관계 연산 중 나누기(Division)는 SQL에 직접 대응되는 연산자가 없다.","answer":true,"explain":"나누기는 SQL에 직접 대응되는 구문이 없다."},
+  {"text":"집합 연산의 차집합은 Oracle에서 MINUS, SQL Server에서 EXCEPT로 구현한다.","answer":true,"explain":"차집합은 한쪽에만 있는 행을 구하며 MINUS/EXCEPT가 대응된다."},
+  {"text":"관계형 데이터베이스 용어에서 튜플(Tuple)은 테이블의 열을 가리킨다.","answer":false,"explain":"튜플은 행(레코드)이고, 열은 속성(Attribute) 또는 필드다."},
+  {"text":"테이블은 관계형 모델에서 릴레이션(Relation)이라고도 부른다.","answer":true,"explain":"테이블 = 릴레이션, 행 = 튜플, 열 = 속성으로 대응된다."},
+  {"text":"외래키 컬럼에는 참조 대상 테이블에 존재하는 값 또는 NULL만 입력할 수 있다.","answer":true,"explain":"참조 무결성 규칙에 따라 참조 대상에 없는 값은 입력할 수 없다."},
+  {"text":"기본키는 개체 무결성을, 외래키는 도메인 무결성을 보장하는 역할을 한다.","answer":false,"explain":"외래키는 참조 무결성을 보장한다."},
+  {"text":"외래키는 한 테이블에 여러 개 정의할 수 있다.","answer":true,"explain":"PK는 테이블당 1개지만 FK는 여러 개 가능하다."},
+  {"text":"SQL은 원하는 결과를 얻는 처리 순서를 직접 기술하는 절차적 언어다.","answer":false,"explain":"SQL은 무엇을 원하는지만 기술하는 비절차적(선언적) 언어이고, 처리 방법은 옵티마이저가 결정한다."},
+  {"text":"TRUNCATE는 데이터를 삭제하는 명령어이므로 DML로 분류된다.","answer":false,"explain":"TRUNCATE는 DDL이며 Oracle에서 자동 커밋되어 롤백할 수 없다."},
+  {"text":"MERGE는 DML에 속하는 명령어다.","answer":true,"explain":"DML은 SELECT, INSERT, UPDATE, DELETE, MERGE다."},
+  {"text":"RENAME은 객체 접근 권한을 다루는 DCL 명령어다.","answer":false,"explain":"RENAME은 객체 이름을 바꾸는 DDL이다. DCL은 GRANT, REVOKE다."},
+  {"text":"SAVEPOINT는 TCL에 속하는 명령어다.","answer":true,"explain":"TCL은 COMMIT, ROLLBACK, SAVEPOINT다."},
+  {"text":"물리 모델에서 M:N 관계는 교차 테이블을 두어 두 개의 1:N 관계로 분해한다.","answer":true,"explain":"학생-과목 관계를 수강 교차 테이블로 푸는 것이 예다."},
+  {"text":"1:N 관계를 테이블로 구현할 때는 1쪽 테이블에 외래키를 둔다.","answer":false,"explain":"외래키는 N쪽 테이블에 둔다. 예: 사원(N) 테이블에 DEPTNO FK."}
+]

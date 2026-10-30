@@ -1,0 +1,1146 @@
+{
+  "slug": "sort-merge-join",
+  "title": "소트 머지 조인",
+  "tables": {
+    "DEPT": {
+      "columns": [
+        "DEPTNO",
+        "DNAME"
+      ],
+      "rows": [
+        [
+          "30",
+          "영업"
+        ],
+        [
+          "10",
+          "회계"
+        ],
+        [
+          "20",
+          "연구"
+        ]
+      ]
+    },
+    "EMP": {
+      "columns": [
+        "ENAME",
+        "DEPTNO"
+      ],
+      "rows": [
+        [
+          "SMITH",
+          "20"
+        ],
+        [
+          "ALLEN",
+          "30"
+        ],
+        [
+          "KING",
+          "10"
+        ],
+        [
+          "FORD",
+          "20"
+        ],
+        [
+          "CLARK",
+          "10"
+        ],
+        [
+          "WARD",
+          "30"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "소트 머지 조인",
+      "subtitle": "정렬하고, 차례로 병합",
+      "icon": "arrow-left-right",
+      "steps": [
+        {
+          "say": "소트 머지 조인을 시작할게요."
+        },
+        {
+          "say": "양쪽을 정렬한 뒤 차례로 합치는 조인이에요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "flow",
+      "section": "기본 메커니즘",
+      "title": "두 단계로 진행",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "각자 읽기",
+          "desc": "양쪽 집합",
+          "icon": "table"
+        },
+        {
+          "title": "소트 단계",
+          "desc": "조인 키로 정렬",
+          "icon": "ruler"
+        },
+        {
+          "title": "머지 단계",
+          "desc": "위에서부터 비교",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "조인 결과",
+          "icon": "check"
+        }
+      ],
+      "steps": [
+        {
+          "say": "소트 머지 조인은 두 단계예요."
+        },
+        {
+          "say": "먼저 양쪽 집합을 각자 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "소트 단계. 조인 컬럼 기준으로 정렬해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "정렬은 PGA에서 해요. 부족하면 Temp를 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "머지 단계. 정렬된 두 집합을 위부터 비교해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "그렇게 조인 결과가 나와요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "code",
+      "section": "기본 메커니즘",
+      "title": "실행계획 모양",
+      "code": "MERGE JOIN\n  SORT JOIN\n    TABLE ACCESS FULL DEPT\n  SORT JOIN\n    TABLE ACCESS FULL EMP",
+      "steps": [
+        {
+          "say": "실행계획은 이렇게 생겼어요."
+        },
+        {
+          "say": "MERGE JOIN 아래에 SORT JOIN이 두 개예요.",
+          "focus": [
+            1,
+            2,
+            4
+          ]
+        },
+        {
+          "say": "위쪽 DEPT가 Outer, 퍼스트예요.",
+          "focus": [
+            2,
+            3
+          ]
+        },
+        {
+          "say": "아래쪽 EMP가 Inner, 세컨드예요.",
+          "focus": [
+            4,
+            5
+          ]
+        },
+        {
+          "say": "힌트는 USE MERGE예요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "id": "s04",
+      "section": "머지 단계",
+      "type": "data",
+      "title": "머지 단계 따라가기",
+      "tables": [
+        "DEPT",
+        "EMP"
+      ],
+      "steps": [
+        {
+          "say": "먼저 양쪽을 조인 키로 정렬해 둬요.",
+          "t": {
+            "DEPT": {
+              "sort": [
+                [
+                  "DEPTNO",
+                  "asc"
+                ]
+              ],
+              "cols": [
+                "DEPTNO"
+              ]
+            },
+            "EMP": {
+              "sort": [
+                [
+                  "DEPTNO",
+                  "asc"
+                ]
+              ],
+              "cols": [
+                "DEPTNO"
+              ]
+            }
+          }
+        },
+        {
+          "say": "이제 머지 단계예요. Outer에서 10번 부서를 읽어요.",
+          "t": {
+            "DEPT": {
+              "rows": [
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "정렬된 Inner에서 10이 시작하는 곳을 찾아요.",
+          "t": {
+            "DEPT": {
+              "rows": [
+                1
+              ]
+            },
+            "EMP": {
+              "rows": [
+                2
+              ],
+              "notes": [
+                [
+                  2,
+                  "DEPTNO",
+                  "시작점"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "10과 같은 값을 모두 조인해요.",
+          "t": {
+            "DEPT": {
+              "tint": [
+                [
+                  1
+                ]
+              ]
+            },
+            "EMP": {
+              "tint": [
+                [
+                  2,
+                  4
+                ]
+              ],
+              "rows": [
+                2,
+                4
+              ],
+              "result": {
+                "title": "결과",
+                "columns": [
+                  "DEPTNO",
+                  "DNAME",
+                  "ENAME"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "회계",
+                    "KING"
+                  ],
+                  [
+                    "10",
+                    "회계",
+                    "CLARK"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "다른 값을 만나면 그 자리에서 멈춰요.",
+          "t": {
+            "DEPT": {
+              "tint": [
+                [
+                  1
+                ]
+              ]
+            },
+            "EMP": {
+              "tint": [
+                [
+                  2,
+                  4
+                ]
+              ],
+              "rows": [
+                0
+              ],
+              "notes": [
+                [
+                  0,
+                  "DEPTNO",
+                  "여기서 멈춤"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "다음은 20번. 멈춘 곳부터 이어서 찾아요.",
+          "t": {
+            "DEPT": {
+              "tint": [
+                [
+                  1
+                ],
+                [
+                  2
+                ]
+              ],
+              "rows": [
+                2
+              ]
+            },
+            "EMP": {
+              "tint": [
+                [
+                  2,
+                  4
+                ],
+                [
+                  0,
+                  3
+                ]
+              ],
+              "rows": [
+                0,
+                3
+              ],
+              "result": {
+                "title": "결과",
+                "columns": [
+                  "DEPTNO",
+                  "DNAME",
+                  "ENAME"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "회계",
+                    "KING"
+                  ],
+                  [
+                    "10",
+                    "회계",
+                    "CLARK"
+                  ],
+                  [
+                    "20",
+                    "연구",
+                    "SMITH"
+                  ],
+                  [
+                    "20",
+                    "연구",
+                    "FORD"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "그래서 Inner를 처음부터 다시 볼 필요가 없어요.",
+          "t": {
+            "DEPT": {
+              "tint": [
+                [
+                  1
+                ],
+                [
+                  2
+                ],
+                [
+                  0
+                ]
+              ]
+            },
+            "EMP": {
+              "tint": [
+                [
+                  2,
+                  4
+                ],
+                [
+                  0,
+                  3
+                ],
+                [
+                  1,
+                  5
+                ]
+              ],
+              "rows": [
+                1,
+                5
+              ],
+              "result": {
+                "title": "결과 6행",
+                "columns": [
+                  "DEPTNO",
+                  "DNAME",
+                  "ENAME"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "회계",
+                    "KING"
+                  ],
+                  [
+                    "10",
+                    "회계",
+                    "CLARK"
+                  ],
+                  [
+                    "20",
+                    "연구",
+                    "SMITH"
+                  ],
+                  [
+                    "20",
+                    "연구",
+                    "FORD"
+                  ],
+                  [
+                    "30",
+                    "영업",
+                    "ALLEN"
+                  ],
+                  [
+                    "30",
+                    "영업",
+                    "WARD"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "section": "머지 단계",
+      "title": "Inner 탐색 비교",
+      "left": {
+        "title": "NL 조인",
+        "icon": "search",
+        "tone": "bad",
+        "items": [
+          "인덱스로 탐색",
+          "래치 · 블록 경합",
+          "랜덤 액세스"
+        ]
+      },
+      "right": {
+        "title": "소트 머지",
+        "icon": "database",
+        "tone": "good",
+        "items": [
+          "PGA 정렬 집합",
+          "래치 획득 없음",
+          "훨씬 빠름"
+        ]
+      },
+      "steps": [
+        {
+          "say": "머지 단계는 사실 NL 조인과 닮았어요."
+        },
+        {
+          "say": "NL은 Inner를 인덱스로 찾아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "버퍼 캐시 래치 경합과 랜덤 액세스가 따라요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "소트 머지는 PGA의 정렬 집합에서 찾아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "PGA는 프로세스 전용이라 래치가 필요 없어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래서 훨씬 빨라요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "quiz",
+      "section": "머지 단계",
+      "question": "머지 단계가 NL 조인보다 **빠른 이유**는?",
+      "choices": [
+        "Inner를 인덱스로 탐색",
+        "PGA 탐색이라 래치 없음",
+        "Outer를 읽지 않음",
+        "SGA에 결과 캐싱"
+      ],
+      "answer": 2,
+      "explanation": "Inner를 PGA 정렬 집합에서 찾아요. 래치 획득이 없어요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 머지 단계가 NL 조인보다 빠른 이유는?"
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "flow",
+      "section": "PGA 소트와 소트 생략",
+      "title": "정렬은 어디서?",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "Sort Area",
+          "desc": "PGA에서 정렬",
+          "icon": "database"
+        },
+        {
+          "title": "Temp",
+          "desc": "공간 부족 시",
+          "icon": "disk"
+        },
+        {
+          "title": "성능 저하",
+          "desc": "디스크 I/O 증가",
+          "icon": "warning",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "정렬은 PGA의 Sort Area에서 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "공간이 모자라면 Temp 테이블스페이스를 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Temp를 쓰면 디스크 아이오가 늘어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "그래서 정렬 대상 크기가 성능을 좌우해요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "compare",
+      "section": "PGA 소트와 소트 생략",
+      "title": "인덱스로 소트 생략",
+      "left": {
+        "title": "Outer",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "인덱스로 소트 생략",
+          "INDEX FULL SCAN"
+        ]
+      },
+      "right": {
+        "title": "Inner",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "인덱스 있어도",
+          "SORT JOIN 나타남"
+        ]
+      },
+      "steps": [
+        {
+          "say": "Outer에 조인 컬럼 인덱스가 있다면요?",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "인덱스 순서대로 읽어 소트를 생략해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Inner는 인덱스가 있어도 SORT JOIN이 나와요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "반복 탐색하려고 PGA에 정렬해 두거든요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "code",
+      "section": "PGA 소트와 소트 생략",
+      "title": "Outer 소트 생략",
+      "code": "MERGE JOIN\n  TABLE ACCESS BY INDEX ROWID DEPT\n    INDEX FULL SCAN PK_DEPT\n  SORT JOIN\n    TABLE ACCESS FULL EMP",
+      "steps": [
+        {
+          "say": "Outer DEPT는 PK 인덱스로 읽었어요.",
+          "focus": [
+            2,
+            3
+          ]
+        },
+        {
+          "say": "DEPT 쪽 SORT JOIN이 사라졌죠.",
+          "focus": [
+            2,
+            3
+          ]
+        },
+        {
+          "say": "Inner EMP에는 SORT JOIN이 그대로예요.",
+          "focus": [
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "callout",
+      "section": "PGA 소트와 소트 생략",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "\"항상 양쪽을 정렬한다\"는 **틀린 보기**. Outer는 인덱스로 소트 생략 가능!",
+      "steps": [
+        {
+          "say": "항상 양쪽을 정렬한다는 보기는 틀려요."
+        },
+        {
+          "say": "Outer는 인덱스로 정렬을 생략할 수 있어요."
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "type": "quiz",
+      "section": "PGA 소트와 소트 생략",
+      "question": "조인 컬럼 인덱스로 **SORT JOIN을 생략할 수 있는** 쪽은?",
+      "choices": [
+        "Inner 쪽만",
+        "양쪽 모두",
+        "Outer 쪽만",
+        "생략할 수 없음"
+      ],
+      "answer": 3,
+      "explanation": "Outer만 생략할 수 있어요. Inner는 SORT JOIN이 나타나요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 인덱스로 정렬을 생략할 수 있는 쪽은?"
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "type": "cards",
+      "section": "소트 머지의 특징",
+      "title": "4가지 특징",
+      "cols": 2,
+      "items": [
+        {
+          "title": "각자 읽기",
+          "desc": "자기 필터 조건으로",
+          "icon": "filter"
+        },
+        {
+          "title": "인덱스 불필요",
+          "desc": "Full Scan도 가능",
+          "icon": "search"
+        },
+        {
+          "title": "스캔 위주",
+          "desc": "랜덤 액세스 적음",
+          "icon": "disk"
+        },
+        {
+          "title": "전체범위",
+          "desc": "첫 결과가 늦음",
+          "icon": "warning",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "소트 머지 조인의 특징은 네 가지예요."
+        },
+        {
+          "say": "첫째, 양쪽을 각자의 필터 조건으로 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 조인 컬럼 인덱스가 없어도 돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 스캔 위주라 랜덤 액세스가 적어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 정렬이 끝나야 머지를 시작해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "그래서 첫 결과가 늦어요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "compare",
+      "section": "소트 머지의 특징",
+      "title": "Inner를 읽는 방법",
+      "left": {
+        "title": "NL 조인",
+        "icon": "link",
+        "items": [
+          "조인 값을 넘김",
+          "Inner 범위 축소"
+        ]
+      },
+      "right": {
+        "title": "소트 머지",
+        "icon": "layers",
+        "items": [
+          "조인 값 못 넘김",
+          "자체 필터가 중요"
+        ]
+      },
+      "steps": [
+        {
+          "say": "NL은 Outer 값을 Inner로 넘겨요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그래서 Inner 범위가 줄어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "소트 머지는 각자 따로 읽어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Inner에 자체 필터가 있어야 정렬 대상이 줄어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "quiz",
+      "section": "소트 머지의 특징",
+      "question": "소트 머지 조인의 특징으로 **틀린** 것은?",
+      "choices": [
+        "조인 컬럼 인덱스 필수",
+        "각자 필터로 읽음",
+        "스캔 위주 액세스",
+        "PGA에서 정렬"
+      ],
+      "answer": 1,
+      "explanation": "조인 컬럼 인덱스가 없어도 돼요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 소트 머지 조인의 특징으로 틀린 것은?"
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "cards",
+      "section": "언제 유리한가",
+      "title": "언제 유리할까",
+      "cols": 2,
+      "items": [
+        {
+          "title": "인덱스 없음",
+          "desc": "NL이 비현실적",
+          "icon": "search"
+        },
+        {
+          "title": "대량 데이터",
+          "desc": "스캔 · 정렬로 처리",
+          "icon": "database"
+        },
+        {
+          "title": "비등치 조인",
+          "desc": "BETWEEN, 부등호",
+          "icon": "scale",
+          "tone": "good"
+        },
+        {
+          "title": "이미 정렬됨",
+          "desc": "소트 부담 작음",
+          "icon": "check"
+        }
+      ],
+      "steps": [
+        {
+          "say": "소트 머지가 유리한 경우는 네 가지예요."
+        },
+        {
+          "say": "첫째, 조인 컬럼에 인덱스가 없을 때.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 대량 데이터를 조인할 때.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 비등치 조인일 때예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "해시 조인은 같다 조건에서만 되거든요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 입력이 이미 정렬돼 있을 때예요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "code",
+      "section": "언제 유리한가",
+      "title": "비등치 조인 실행계획",
+      "code": "MERGE JOIN\n  SORT JOIN\n    TABLE ACCESS FULL EMP\n  FILTER\n    SORT JOIN\n      TABLE ACCESS FULL SALGRADE",
+      "steps": [
+        {
+          "say": "급여 등급처럼 BETWEEN으로 조인해 봐요."
+        },
+        {
+          "say": "한쪽 범위 조건으로 머지를 진행해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "나머지 범위 조건은 FILTER로 확인해요.",
+          "focus": [
+            4
+          ]
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "cards",
+      "section": "언제 유리한가",
+      "title": "조인 조건별 가능 여부",
+      "cols": 3,
+      "items": [
+        {
+          "title": "등치",
+          "desc": "= 세 조인 모두",
+          "icon": "check",
+          "tone": "good"
+        },
+        {
+          "title": "비등치",
+          "desc": "NL · 소트 머지",
+          "icon": "scale",
+          "tone": "warn"
+        },
+        {
+          "title": "부정형",
+          "desc": "<> 는 NL만",
+          "icon": "warning",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "조인 조건별로 정리해 볼게요."
+        },
+        {
+          "say": "같다 조건은 세 조인 모두 가능해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "범위 조건은 해시 조인이 안 돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "NL이나 소트 머지 조인을 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "같지 않다 조건은 소트 머지도 안 돼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "NL 조인만 가능해요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "callout",
+      "section": "언제 유리한가",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "**인덱스 없음 + 비등치 + 대량** 조인이면 정답은 **소트 머지 조인**.",
+      "steps": [
+        {
+          "say": "인덱스가 없고, 비등치 조건의 대량 조인이라면,"
+        },
+        {
+          "say": "정답은 소트 머지 조인이에요."
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "quiz",
+      "section": "언제 유리한가",
+      "question": "인덱스 없이 **BETWEEN** 조건으로 대량 조인한다. 가장 적합한 방식은?",
+      "choices": [
+        "NL 조인",
+        "해시 조인",
+        "카티션 곱",
+        "소트 머지 조인"
+      ],
+      "answer": 4,
+      "explanation": "해시 조인은 등치만 돼요. 비등치 대량은 소트 머지예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 인덱스 없이 BETWEEN으로 대량 조인해요. 무엇이 적합할까요?"
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "cards",
+      "section": "USE_MERGE 힌트",
+      "title": "소트 머지 힌트",
+      "cols": 3,
+      "items": [
+        {
+          "title": "USE_MERGE",
+          "desc": "소트 머지 사용",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "LEADING",
+          "desc": "순서 함께 지정",
+          "icon": "workflow"
+        },
+        {
+          "title": "NO_USE_MERGE",
+          "desc": "소트 머지 금지",
+          "icon": "lock"
+        }
+      ],
+      "steps": [
+        {
+          "say": "힌트는 USE MERGE예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "단독으로는 순서가 고정되지 않아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "LEADING이나 ORDERED와 함께 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "반대로 막을 땐 NO USE MERGE예요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "양쪽 정렬 후 병합, 정렬은 PGA",
+        "Inner는 PGA에서 탐색, 래치 없음",
+        "Outer만 인덱스로 소트 생략",
+        "각자 읽음, 조인 인덱스 불필요",
+        "비등치 대량 조인에 유리, <> 불가",
+        "실행계획 MERGE JOIN · SORT JOIN"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "양쪽을 정렬해서 병합해요. 정렬은 PGA에서 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Inner를 PGA에서 찾아서 래치가 없어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "소트 생략은 Outer만 가능해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "각자 읽어서 조인 인덱스가 필요 없어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "비등치 대량 조인에 유리해요. 같지 않다는 안 돼요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "실행계획엔 MERGE JOIN과 SORT JOIN이 보여요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s21"
+    }
+  ]
+}

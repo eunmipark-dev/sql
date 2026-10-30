@@ -1,0 +1,188 @@
+[
+  {
+    "id": "select-exec",
+    "cert": "sqld",
+    "title": "SELECT 문의 실행 순서",
+    "prompt": "아래 SQL 이 논리적으로 처리되는 순서대로 놓으세요.",
+    "code": "SELECT 부서, COUNT(*)\nFROM 사원\nWHERE 입사년도 >= 2020\nGROUP BY 부서\nHAVING COUNT(*) >= 3\nORDER BY 부서",
+    "items": [
+      "FROM",
+      "WHERE",
+      "GROUP BY",
+      "HAVING",
+      "SELECT",
+      "ORDER BY"
+    ],
+    "explain": "테이블을 고르고(FROM) 행을 거른 뒤(WHERE) 묶고(GROUP BY) 그룹을 거른 다음(HAVING) 컬럼을 고르고(SELECT) 마지막에 정렬해요(ORDER BY). 그래서 SELECT 의 별칭은 ORDER BY 에서만 쓸 수 있어요."
+  },
+  {
+    "id": "select-write",
+    "cert": "sqld",
+    "title": "SELECT 문의 작성 순서",
+    "prompt": "SQL 문법에 맞게 절을 적는 순서대로 놓으세요.",
+    "items": [
+      "SELECT",
+      "FROM",
+      "WHERE",
+      "GROUP BY",
+      "HAVING",
+      "ORDER BY"
+    ],
+    "explain": "적는 순서는 SELECT 가 맨 앞이지만, 처리 순서에서는 SELECT 가 ORDER BY 바로 앞이에요. 두 순서를 헷갈리지 않는 게 핵심이에요."
+  },
+  {
+    "id": "select-distinct",
+    "cert": "sqld",
+    "title": "DISTINCT 가 있을 때",
+    "prompt": "아래 SQL 이 논리적으로 처리되는 순서대로 놓으세요.",
+    "code": "SELECT DISTINCT 지역\nFROM 고객\nWHERE 등급 = 'VIP'\nORDER BY 지역",
+    "items": [
+      "FROM",
+      "WHERE",
+      "SELECT",
+      "DISTINCT",
+      "ORDER BY"
+    ],
+    "explain": "컬럼을 고른 뒤(SELECT) 중복을 없애고(DISTINCT) 정렬해요(ORDER BY)."
+  },
+  {
+    "id": "modeling-steps",
+    "cert": "sqld",
+    "title": "데이터 모델링 단계",
+    "prompt": "데이터 모델링을 진행하는 순서대로 놓으세요.",
+    "items": [
+      "개념적 데이터 모델링",
+      "논리적 데이터 모델링",
+      "물리적 데이터 모델링"
+    ],
+    "explain": "업무를 큰 그림으로 그리고(개념), 키·속성·관계를 정확히 정하고 정규화한 뒤(논리), DBMS 에 맞게 테이블·인덱스로 옮겨요(물리)."
+  },
+  {
+    "id": "schema-3level",
+    "cert": "sqld",
+    "title": "ANSI/SPARC 3단계 스키마",
+    "prompt": "사용자에게 가까운 것부터 저장 장치에 가까운 것 순서로 놓으세요.",
+    "items": [
+      "외부 스키마",
+      "개념 스키마",
+      "내부 스키마"
+    ],
+    "explain": "외부 스키마는 사용자별 관점, 개념 스키마는 전체 데이터 구조, 내부 스키마는 실제 저장 구조예요. 외부↔개념 사이가 논리적 독립성, 개념↔내부 사이가 물리적 독립성이에요."
+  },
+  {
+    "id": "normal-forms",
+    "cert": "sqld",
+    "title": "정규화 단계",
+    "prompt": "정규화를 진행하는 순서대로 놓으세요.",
+    "items": [
+      "모든 속성이 하나의 값만 갖게 한다",
+      "기본키 일부에만 종속된 속성을 분리한다",
+      "일반 속성에 종속된 속성을 분리한다",
+      "모든 결정자가 후보키가 되게 한다"
+    ],
+    "explain": "1차 정규형(원자값) → 2차(부분 함수 종속 제거) → 3차(이행 함수 종속 제거) → BCNF(결정자가 모두 후보키) 순서예요."
+  },
+  {
+    "id": "tx-states",
+    "cert": "sqld",
+    "title": "트랜잭션이 성공할 때의 상태",
+    "prompt": "트랜잭션이 정상적으로 끝날 때 거치는 상태를 순서대로 놓으세요.",
+    "items": [
+      "활동 (Active)",
+      "부분 완료 (Partially Committed)",
+      "완료 (Committed)"
+    ],
+    "explain": "마지막 연산까지 실행하면 부분 완료, 변경이 영구히 반영되면 완료예요. 도중에 실패하면 실패(Failed)를 거쳐 철회(Aborted)돼요."
+  },
+  {
+    "id": "isolation",
+    "cert": "sqld",
+    "title": "트랜잭션 격리 수준",
+    "prompt": "격리 수준이 낮은 것부터 높은 것 순서로 놓으세요.",
+    "items": [
+      "READ UNCOMMITTED",
+      "READ COMMITTED",
+      "REPEATABLE READ",
+      "SERIALIZABLE"
+    ],
+    "explain": "낮을수록 동시성은 좋지만 Dirty Read, Non-Repeatable Read, Phantom Read 같은 현상이 생길 수 있어요. SERIALIZABLE 은 셋 다 막아요."
+  },
+  {
+    "id": "hierarchical",
+    "cert": "sqld",
+    "title": "계층형 질의 처리 순서 (Oracle)",
+    "prompt": "조인이 없는 계층형 질의에서 조건이 적용되는 순서대로 놓으세요.",
+    "code": "SELECT 사원, 관리자, LEVEL\nFROM 사원\nWHERE 부서 = '영업'\nSTART WITH 관리자 IS NULL\nCONNECT BY PRIOR 사원 = 관리자",
+    "items": [
+      "START WITH 로 루트 행 찾기",
+      "CONNECT BY 로 자식 행 펼치기",
+      "WHERE 로 결과 거르기"
+    ],
+    "explain": "WHERE 는 계층을 다 펼친 뒤에 적용돼요. 그래서 WHERE 로 걸러진 행의 자식도 결과에 남을 수 있어요."
+  },
+  {
+    "id": "index-scan",
+    "cert": "sqlp",
+    "title": "인덱스로 테이블 찾아가기",
+    "prompt": "B*Tree 인덱스 범위 스캔으로 테이블 행을 읽는 순서대로 놓으세요.",
+    "items": [
+      "루트 블록",
+      "브랜치 블록",
+      "리프 블록",
+      "테이블 블록 (ROWID 로 접근)"
+    ],
+    "explain": "루트에서 브랜치를 따라 리프까지 내려가는 게 수직적 탐색, 리프를 옆으로 읽는 게 수평적 탐색이에요. 리프의 ROWID 로 테이블 블록을 찾아가요."
+  },
+  {
+    "id": "parse-steps",
+    "cert": "sqlp",
+    "title": "SQL 파싱과 최적화 (Oracle)",
+    "prompt": "SQL 을 처음 실행할 때(하드 파싱) 거치는 순서대로 놓으세요.",
+    "items": [
+      "문법 검사",
+      "의미 검사",
+      "라이브러리 캐시에서 찾기",
+      "최적화",
+      "로우 소스 생성"
+    ],
+    "explain": "캐시에서 같은 SQL 을 찾으면 바로 실행하는 게 소프트 파싱이에요. 못 찾으면 최적화와 로우 소스 생성까지 하는 하드 파싱을 해요."
+  },
+  {
+    "id": "commit",
+    "cert": "sqlp",
+    "title": "커밋이 처리되는 순서 (Oracle)",
+    "prompt": "데이터를 바꾸고 커밋할 때 일어나는 일을 순서대로 놓으세요.",
+    "items": [
+      "변경 내용을 로그 버퍼에 기록",
+      "COMMIT 실행",
+      "LGWR 가 로그 버퍼를 리두 로그 파일에 기록",
+      "DBWR 가 변경된 블록을 데이터 파일에 기록"
+    ],
+    "explain": "커밋은 리두 로그만 파일에 쓰면 끝나요(Log Force at Commit). 변경된 데이터 블록은 나중에 DBWR 가 모아서 써요(Fast Commit)."
+  },
+  {
+    "id": "hash-join",
+    "cert": "sqlp",
+    "title": "해시 조인",
+    "prompt": "해시 조인이 처리되는 순서대로 놓으세요.",
+    "items": [
+      "작은 집합(Build Input)을 읽는다",
+      "해시 테이블을 만든다",
+      "큰 집합(Probe Input)을 읽는다",
+      "해시 테이블을 탐색해 조인한다"
+    ],
+    "explain": "작은 집합으로 해시 테이블을 만들고(Build), 큰 집합을 읽으며 해시 테이블을 찾아요(Probe). 그래서 작은 집합이 Build Input 이 되는 게 유리해요."
+  },
+  {
+    "id": "sort-merge",
+    "cert": "sqlp",
+    "title": "소트 머지 조인",
+    "prompt": "소트 머지 조인이 처리되는 순서대로 놓으세요.",
+    "items": [
+      "양쪽 집합을 읽는다",
+      "조인 컬럼으로 각각 정렬한다",
+      "정렬된 두 집합을 차례로 병합한다"
+    ],
+    "explain": "정렬 단계(Sort)와 병합 단계(Merge)로 나뉘어요. 조인 컬럼에 인덱스가 있으면 정렬을 건너뛸 수 있어요."
+  }
+]

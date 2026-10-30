@@ -1,0 +1,1884 @@
+{
+  "slug": "hierarchical-query",
+  "title": "계층형 질의와 셀프 조인",
+  "tables": {
+    "EMP": {
+      "columns": [
+        "EMPNO",
+        "ENAME",
+        "MGR"
+      ],
+      "rows": [
+        [
+          "100",
+          "한대표",
+          "NULL"
+        ],
+        [
+          "110",
+          "김부장",
+          "100"
+        ],
+        [
+          "120",
+          "이부장",
+          "100"
+        ],
+        [
+          "111",
+          "박과장",
+          "110"
+        ],
+        [
+          "112",
+          "최과장",
+          "110"
+        ],
+        [
+          "121",
+          "정대리",
+          "120"
+        ]
+      ]
+    },
+    "EMP E": {
+      "columns": [
+        "ENAME",
+        "MGR"
+      ],
+      "rows": [
+        [
+          "한대표",
+          "NULL"
+        ],
+        [
+          "김부장",
+          "100"
+        ],
+        [
+          "이부장",
+          "100"
+        ],
+        [
+          "박과장",
+          "110"
+        ],
+        [
+          "최과장",
+          "110"
+        ],
+        [
+          "정대리",
+          "120"
+        ]
+      ]
+    },
+    "EMP M": {
+      "columns": [
+        "EMPNO",
+        "ENAME"
+      ],
+      "rows": [
+        [
+          "100",
+          "한대표"
+        ],
+        [
+          "110",
+          "김부장"
+        ],
+        [
+          "120",
+          "이부장"
+        ],
+        [
+          "111",
+          "박과장"
+        ],
+        [
+          "112",
+          "최과장"
+        ],
+        [
+          "121",
+          "정대리"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "계층형 질의와 셀프 조인",
+      "subtitle": "조직도처럼 위아래가 있는 데이터",
+      "icon": "branch",
+      "steps": [
+        {
+          "say": "계층형 질의와 셀프 조인을 시작할게요."
+        },
+        {
+          "say": "조직도처럼 위아래가 있는 데이터를 다뤄요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "cards",
+      "section": "계층형 데이터",
+      "title": "조회 방법 세 가지",
+      "cols": 3,
+      "items": [
+        {
+          "title": "계층형 질의",
+          "desc": "오라클 CONNECT BY",
+          "icon": "branch"
+        },
+        {
+          "title": "재귀 CTE",
+          "desc": "SQL Server",
+          "icon": "recycle"
+        },
+        {
+          "title": "셀프 조인",
+          "desc": "깊이 정해진 조회",
+          "icon": "link"
+        }
+      ],
+      "steps": [
+        {
+          "say": "계층 데이터를 조회하는 방법은 세 가지예요."
+        },
+        {
+          "say": "첫째, 오라클의 계층형 질의예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "깊이에 상관없이 전체를 펼쳐요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, SQL Server의 재귀 CTE예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 셀프 조인이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "한 단계 위아래처럼 깊이가 정해질 때 써요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "id": "s03",
+      "section": "계층형 데이터",
+      "type": "data",
+      "title": "예제 EMP 테이블",
+      "tables": [
+        "EMP"
+      ],
+      "steps": [
+        {
+          "say": "예제 EMP 테이블을 볼게요. 사원 6명이에요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            }
+          }
+        },
+        {
+          "say": "EMPNO는 사원 번호예요. 자식 쪽 키예요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "EMPNO"
+              ]
+            }
+          }
+        },
+        {
+          "say": "MGR은 상사의 사원 번호예요. 부모 쪽 키예요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "MGR"
+              ]
+            }
+          }
+        },
+        {
+          "say": "김부장의 MGR 100은 한대표의 EMPNO예요.",
+          "t": {
+            "EMP": {
+              "cells": [
+                [
+                  1,
+                  "MGR"
+                ],
+                [
+                  0,
+                  "EMPNO"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "EMPNO",
+                  "김부장의 상사"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "한대표는 MGR이 NULL이에요. 상사가 없어요.",
+          "t": {
+            "EMP": {
+              "cells": [
+                [
+                  0,
+                  "MGR"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "MGR",
+                  "상사 없음"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "같은 테이블을 가리키니 순환 관계라고 해요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "EMPNO",
+                "MGR"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "layers",
+      "section": "계층형 데이터",
+      "title": "예제 조직도",
+      "axis": {
+        "top": "루트",
+        "bottom": "리프"
+      },
+      "layers": [
+        {
+          "title": "LEVEL 1",
+          "desc": "한대표",
+          "icon": "user"
+        },
+        {
+          "title": "LEVEL 2",
+          "desc": "김부장, 이부장",
+          "icon": "users"
+        },
+        {
+          "title": "LEVEL 3",
+          "desc": "박과장, 최과장, 정대리",
+          "icon": "users"
+        }
+      ],
+      "steps": [
+        {
+          "say": "조직도로 그려 볼게요."
+        },
+        {
+          "say": "MGR이 비어 있는 한대표가 루트예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그 아래 김부장과 이부장이 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "김부장 밑엔 박과장, 최과장이 있어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "이부장 밑엔 정대리가 있어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "맨 아래 세 명은 자식이 없는 리프예요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "cards",
+      "section": "오라클 문법",
+      "title": "계층형 질의 문법",
+      "cols": 2,
+      "items": [
+        {
+          "title": "시작점",
+          "desc": "START WITH",
+          "icon": "target"
+        },
+        {
+          "title": "연결 조건",
+          "desc": "CONNECT BY",
+          "icon": "link"
+        },
+        {
+          "title": "직전 행",
+          "desc": "PRIOR",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "순환 방지",
+          "desc": "NOCYCLE",
+          "icon": "recycle"
+        }
+      ],
+      "steps": [
+        {
+          "say": "문법은 네 가지만 기억하세요."
+        },
+        {
+          "say": "START WITH는 시작할 루트를 정해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "CONNECT BY는 다음 행과 잇는 조건이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "PRIOR는 직전에 펼친 행의 컬럼이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "NOCYCLE은 순환이 생겨도 오류 없이 멈춰요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "cards",
+      "section": "오라클 문법",
+      "title": "가상 컬럼과 함수",
+      "cols": 3,
+      "items": [
+        {
+          "title": "LEVEL",
+          "desc": "루트가 1, 1씩 증가",
+          "icon": "layers"
+        },
+        {
+          "title": "ISLEAF",
+          "desc": "리프면 1, 아니면 0",
+          "icon": "check"
+        },
+        {
+          "title": "ROOT",
+          "desc": "루트 행의 값",
+          "icon": "target"
+        },
+        {
+          "title": "PATH",
+          "desc": "/한대표/김부장/박과장",
+          "icon": "map"
+        },
+        {
+          "title": "ISCYCLE",
+          "desc": "순환이면 1",
+          "icon": "recycle"
+        }
+      ],
+      "steps": [
+        {
+          "say": "계층형 질의엔 특별한 컬럼이 있어요."
+        },
+        {
+          "say": "LEVEL. 루트가 1이고, 내려갈수록 커져요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "루트의 자식은 2, 손자는 3이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "CONNECT BY ISLEAF. 리프면 1, 아니면 0이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "CONNECT BY ROOT. 루트 행의 값을 보여 줘요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "SYS CONNECT BY PATH. 루트부터 경로를 이어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "예를 들면 한대표, 김부장, 박과장 순이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "CONNECT BY ISCYCLE. 순환이 있으면 1이에요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "이건 NOCYCLE과 함께 써요.",
+          "focus": [
+            4
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "quiz",
+      "section": "오라클 문법",
+      "question": "루트부터 현재 행까지의 **경로**를 문자열로 보여 주는 것은?",
+      "choices": [
+        "CONNECT_BY_ROOT",
+        "SYS_CONNECT_BY_PATH",
+        "CONNECT_BY_ISLEAF",
+        "LEVEL"
+      ],
+      "answer": 2,
+      "explanation": "SYS CONNECT BY PATH가 루트부터 경로를 이어 줘요. CONNECT BY ROOT는 루트 값만 보여 줘요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 루트부터 현재 행까지 경로를 보여 주는 것은?"
+        }
+      ],
+      "id": "s06q"
+    },
+    {
+      "id": "s07",
+      "section": "순방향 전개",
+      "type": "data",
+      "title": "위에서 아래로",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT LEVEL, ENAME\nFROM   EMP\nSTART  WITH MGR IS NULL\nCONNECT BY PRIOR EMPNO = MGR\nORDER  SIBLINGS BY ENAME;",
+      "steps": [
+        {
+          "say": "순방향 전개 예제예요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "EMPNO",
+                "MGR"
+              ]
+            }
+          }
+        },
+        {
+          "say": "MGR이 비어 있는 루트에서 시작해요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "rows": [
+                0
+              ],
+              "cells": [
+                [
+                  0,
+                  "MGR"
+                ]
+              ],
+              "add": [
+                "LEVEL",
+                [
+                  "1",
+                  "",
+                  "",
+                  "",
+                  "",
+                  ""
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "직전 행의 EMPNO를 MGR로 가진 행을 찾아요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP": {
+              "cells": [
+                [
+                  0,
+                  "EMPNO"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "MGR이 100인 김부장, 이부장이 LEVEL 2예요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP": {
+              "rows": [
+                1,
+                2
+              ],
+              "cells": [
+                [
+                  1,
+                  "MGR"
+                ],
+                [
+                  2,
+                  "MGR"
+                ]
+              ],
+              "set": [
+                [
+                  1,
+                  "LEVEL",
+                  "2"
+                ],
+                [
+                  2,
+                  "LEVEL",
+                  "2"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "다시 그 부하를 찾으면 LEVEL 3이에요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP": {
+              "rows": [
+                3,
+                4,
+                5
+              ],
+              "set": [
+                [
+                  3,
+                  "LEVEL",
+                  "3"
+                ],
+                [
+                  4,
+                  "LEVEL",
+                  "3"
+                ],
+                [
+                  5,
+                  "LEVEL",
+                  "3"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "즉 부하 직원을 찾아 내려가요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP": {
+              "cols": [
+                "LEVEL"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s08",
+      "section": "순방향 전개",
+      "type": "data",
+      "title": "깊이 우선 출력",
+      "tables": [
+        "EMP"
+      ],
+      "steps": [
+        {
+          "say": "결과는 깊이 우선 순서로 나와요.",
+          "t": {
+            "EMP": {
+              "add": [
+                "LEVEL",
+                [
+                  "1",
+                  "2",
+                  "2",
+                  "3",
+                  "3",
+                  "3"
+                ]
+              ],
+              "sort": [
+                [
+                  "EMPNO",
+                  "asc"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "한대표에서 시작해서,",
+          "t": {
+            "EMP": {
+              "rows": [
+                0
+              ]
+            }
+          }
+        },
+        {
+          "say": "김부장으로 내려가고,",
+          "t": {
+            "EMP": {
+              "rows": [
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "그 아래 박과장, 최과장을 다 출력해요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                3,
+                4
+              ]
+            }
+          }
+        },
+        {
+          "say": "그다음 형제인 이부장으로 넘어가요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "마지막이 정대리예요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                5
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s09",
+      "section": "순방향 전개",
+      "type": "data",
+      "title": "계층 안에서 정렬",
+      "tables": [
+        "EMP"
+      ],
+      "steps": [
+        {
+          "say": "정렬할 때 주의하세요.",
+          "t": {
+            "EMP": {
+              "add": [
+                "LEVEL",
+                [
+                  "1",
+                  "2",
+                  "2",
+                  "3",
+                  "3",
+                  "3"
+                ]
+              ],
+              "sort": [
+                [
+                  "EMPNO",
+                  "asc"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "일반 ORDER BY ENAME은 이름순으로 다 섞어요.",
+          "t": {
+            "EMP": {
+              "sort": [
+                [
+                  "ENAME",
+                  "asc"
+                ]
+              ],
+              "cols": [
+                "ENAME"
+              ]
+            }
+          }
+        },
+        {
+          "say": "LEVEL이 뒤섞여서 계층 순서가 깨져요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "LEVEL"
+              ]
+            }
+          }
+        },
+        {
+          "say": "ORDER SIBLINGS BY는 형제끼리만 정렬해요.",
+          "t": {
+            "EMP": {
+              "sort": [
+                [
+                  "EMPNO",
+                  "asc"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "김부장과 이부장, 박과장과 최과장이 형제예요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "계층 구조는 그대로 유지돼요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "LEVEL"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "순방향 전개",
+      "question": "한대표 → 이부장 → 정대리 순서이고, 정대리는 부하가 없어요. **정대리**의 CONNECT_BY_ISLEAF와 LEVEL은?",
+      "choices": [
+        "0, 2",
+        "1, 2",
+        "0, 3",
+        "1, 3"
+      ],
+      "answer": 4,
+      "explanation": "정대리는 자식이 없어 ISLEAF가 1이에요. 세 번째 단계라 LEVEL 3이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 한대표 아래 이부장, 그 아래 정대리예요."
+        },
+        {
+          "say": "정대리의 ISLEAF와 LEVEL은 얼마일까요?"
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "type": "compare",
+      "section": "역방향 전개",
+      "title": "방향은 PRIOR 위치로",
+      "left": {
+        "title": "순방향",
+        "icon": "arrow-left-right",
+        "items": [
+          "PRIOR가 EMPNO에",
+          "위에서 아래로",
+          "부하를 찾음"
+        ]
+      },
+      "right": {
+        "title": "역방향",
+        "icon": "arrow-left-right",
+        "items": [
+          "PRIOR가 MGR에",
+          "아래에서 위로",
+          "상사를 찾음"
+        ]
+      },
+      "steps": [
+        {
+          "say": "방향은 PRIOR가 어디 붙었는지로 봐요."
+        },
+        {
+          "say": "PRIOR가 자식 키 EMPNO에 붙으면 순방향이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "위에서 아래로 내려가요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "PRIOR가 부모 키 MGR에 붙으면 역방향이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "아래에서 위로 올라가요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "id": "s12",
+      "section": "역방향 전개",
+      "type": "data",
+      "title": "박과장에서 위로",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT LEVEL, ENAME, MGR\nFROM   EMP\nSTART  WITH ENAME = '박과장'\nCONNECT BY PRIOR MGR = EMPNO;",
+      "steps": [
+        {
+          "say": "박과장에서 시작해 위로 가 볼게요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "rows": [
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "조건은 PRIOR MGR 같다 EMPNO예요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP": {
+              "cols": [
+                "MGR",
+                "EMPNO"
+              ]
+            }
+          }
+        },
+        {
+          "say": "시작한 박과장이 LEVEL 1이에요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "rows": [
+                3
+              ],
+              "add": [
+                "LEVEL",
+                [
+                  "",
+                  "",
+                  "",
+                  "1",
+                  "",
+                  ""
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "MGR 110을 따라가면 상사 김부장이 2,",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP": {
+              "cells": [
+                [
+                  3,
+                  "MGR"
+                ],
+                [
+                  1,
+                  "EMPNO"
+                ]
+              ],
+              "set": [
+                [
+                  1,
+                  "LEVEL",
+                  "2"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "MGR 100을 따라가면 한대표가 3이에요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP": {
+              "cells": [
+                [
+                  1,
+                  "MGR"
+                ],
+                [
+                  0,
+                  "EMPNO"
+                ]
+              ],
+              "set": [
+                [
+                  0,
+                  "LEVEL",
+                  "3"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "한대표는 MGR이 NULL이라 여기서 멈춰요. 결과는 3행이에요.",
+          "t": {
+            "EMP": {
+              "filter": [
+                3,
+                1,
+                0
+              ],
+              "notes": [
+                [
+                  0,
+                  "MGR",
+                  "끝"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "역방향은 위로 갈수록 LEVEL이 커져요.",
+          "t": {
+            "EMP": {
+              "sort": [
+                [
+                  "LEVEL",
+                  "asc"
+                ]
+              ],
+              "cols": [
+                "LEVEL"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "역방향 전개",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "EMPNO = PRIOR MGR도 **역방향**. 등호 좌우가 아니라 **PRIOR가 붙은 컬럼**을 본다.",
+      "steps": [
+        {
+          "say": "EMPNO 같다 PRIOR MGR도 역방향이에요."
+        },
+        {
+          "say": "등호의 왼쪽 오른쪽은 상관없어요."
+        },
+        {
+          "say": "PRIOR가 어느 컬럼에 붙었는지로 판단해요."
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "quiz",
+      "section": "역방향 전개",
+      "question": "**아래에서 위로** 전개하는 조건은?",
+      "choices": [
+        "PRIOR EMPNO = MGR",
+        "MGR = PRIOR EMPNO",
+        "EMPNO = PRIOR MGR",
+        "START WITH PRIOR MGR"
+      ],
+      "answer": 3,
+      "explanation": "PRIOR가 부모 키 MGR에 붙으면 역방향이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 아래에서 위로 전개하는 조건은?"
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "flow",
+      "section": "WHERE와 CONNECT BY",
+      "title": "처리 순서",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "START WITH",
+          "desc": "루트 결정",
+          "icon": "target"
+        },
+        {
+          "title": "CONNECT BY",
+          "desc": "계층 전개",
+          "icon": "branch"
+        },
+        {
+          "title": "WHERE",
+          "desc": "마지막에 필터",
+          "icon": "filter"
+        }
+      ],
+      "steps": [
+        {
+          "say": "처리 순서를 볼게요."
+        },
+        {
+          "say": "먼저 START WITH로 루트를 정해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "CONNECT BY로 계층을 펼쳐요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "WHERE는 맨 마지막에 행을 걸러요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "id": "s16",
+      "section": "WHERE와 CONNECT BY",
+      "type": "data",
+      "title": "같은 조건, 다른 결과",
+      "tables": [
+        "EMP"
+      ],
+      "steps": [
+        {
+          "say": "6명 조직에서 김부장을 빼 볼게요.",
+          "t": {
+            "EMP": {
+              "add": [
+                "LEVEL",
+                [
+                  "1",
+                  "2",
+                  "2",
+                  "3",
+                  "3",
+                  "3"
+                ]
+              ],
+              "sort": [
+                [
+                  "EMPNO",
+                  "asc"
+                ]
+              ],
+              "rows": [
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "김부장 밑엔 박과장, 최과장이 있어요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                3,
+                4
+              ],
+              "cells": [
+                [
+                  3,
+                  "MGR"
+                ],
+                [
+                  4,
+                  "MGR"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "WHERE에 두면 김부장 한 행만 빠져요.",
+          "t": {
+            "EMP": {
+              "filter": [
+                0,
+                2,
+                3,
+                4,
+                5
+              ]
+            }
+          }
+        },
+        {
+          "say": "박과장, 최과장은 남아서 5행이에요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                3,
+                4
+              ],
+              "notes": [
+                [
+                  3,
+                  "LEVEL",
+                  "3 그대로"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "CONNECT BY에 두면 전개 자체가 막혀요.",
+          "t": {
+            "EMP": {
+              "filter": null
+            }
+          }
+        },
+        {
+          "say": "김부장과 부하 둘이 통째로 사라져요.",
+          "t": {
+            "EMP": {
+              "filter": [
+                0,
+                2,
+                5
+              ]
+            }
+          }
+        },
+        {
+          "say": "한대표, 이부장, 정대리 3행만 남아요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                2,
+                5
+              ]
+            }
+          }
+        },
+        {
+          "say": "WHERE는 행만, CONNECT BY는 가지째 빠져요."
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "WHERE와 CONNECT BY",
+      "tone": "info",
+      "title": "함께 기억하기",
+      "text": "루트는 CONNECT BY 조건과 무관하게 포함. 깊이 제한은 CONNECT BY에 **LEVEL <= 2**.",
+      "steps": [
+        {
+          "say": "START WITH를 만족한 루트는 항상 결과에 들어가요."
+        },
+        {
+          "say": "깊이 제한은 CONNECT BY에 LEVEL 조건을 둬요."
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "quiz",
+      "section": "WHERE와 CONNECT BY",
+      "question": "전체 6명이고, 이부장 밑엔 정대리 한 명만 있어요. CONNECT BY에 **ENAME <> '이부장'**을 추가하면 몇 행?",
+      "choices": [
+        "3행",
+        "4행",
+        "5행",
+        "6행"
+      ],
+      "answer": 2,
+      "explanation": "이부장과 그 아래 정대리가 빠져요. 6명 중 4행이 남아요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 6명 중 이부장 밑엔 정대리 한 명이에요."
+        },
+        {
+          "say": "CONNECT BY에서 이부장을 빼면 몇 행일까요?"
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "flow",
+      "section": "SQL Server 재귀 CTE",
+      "title": "재귀 CTE 동작",
+      "direction": "down",
+      "edges": [
+        "UNION ALL",
+        "더 없으면"
+      ],
+      "nodes": [
+        {
+          "title": "앵커 멤버",
+          "desc": "루트, LVL 1",
+          "icon": "target"
+        },
+        {
+          "title": "재귀 멤버",
+          "desc": "부하 찾고 LVL 증가",
+          "icon": "recycle"
+        },
+        {
+          "title": "종료",
+          "desc": "반환 행이 없음",
+          "icon": "check"
+        }
+      ],
+      "steps": [
+        {
+          "say": "SQL Server엔 CONNECT BY가 없어요."
+        },
+        {
+          "say": "대신 WITH 절의 재귀 CTE를 써요."
+        },
+        {
+          "say": "앵커 멤버가 루트 행을 만들어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "재귀 멤버는 직전 결과와 조인해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "부하를 찾고 레벨을 1 올려요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "둘은 UNION ALL로 이어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "더 나올 행이 없으면 끝나요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "출력 순서는 깊이 우선이 보장되지 않아요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "id": "s20",
+      "section": "셀프 조인",
+      "type": "data",
+      "title": "사원과 직속 상사",
+      "tables": [
+        "EMP E",
+        "EMP M"
+      ],
+      "code": "SELECT E.ENAME AS 사원, M.ENAME AS 상사\nFROM   EMP E\n       LEFT OUTER JOIN EMP M\n       ON E.MGR = M.EMPNO;",
+      "steps": [
+        {
+          "say": "셀프 조인은 같은 테이블을 두 번 써요.",
+          "t": {
+            "EMP E": {
+              "rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            "EMP M": {
+              "rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            }
+          }
+        },
+        {
+          "say": "별칭만 E와 M으로 다르게 줘요.",
+          "focus": [
+            2,
+            3
+          ]
+        },
+        {
+          "say": "사원의 MGR과 상사의 EMPNO를 이어요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP E": {
+              "cols": [
+                "MGR"
+              ]
+            },
+            "EMP M": {
+              "cols": [
+                "EMPNO"
+              ]
+            }
+          }
+        },
+        {
+          "say": "MGR이 100인 김부장, 이부장은 한대표와 짝이에요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP E": {
+              "tint": [
+                [
+                  1,
+                  2
+                ]
+              ]
+            },
+            "EMP M": {
+              "tint": [
+                [
+                  0
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "박과장, 최과장은 김부장, 정대리는 이부장과 짝이에요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP E": {
+              "tint": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  5
+                ]
+              ]
+            },
+            "EMP M": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ],
+                [
+                  2
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 M이 상사 역할이에요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "EMP E": {
+              "tint": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  5
+                ]
+              ],
+              "result": {
+                "title": "사원과 상사",
+                "columns": [
+                  "사원",
+                  "상사"
+                ],
+                "rows": [
+                  [
+                    "김부장",
+                    "한대표"
+                  ],
+                  [
+                    "이부장",
+                    "한대표"
+                  ],
+                  [
+                    "박과장",
+                    "김부장"
+                  ],
+                  [
+                    "최과장",
+                    "김부장"
+                  ],
+                  [
+                    "정대리",
+                    "이부장"
+                  ],
+                  [
+                    "한대표",
+                    "NULL"
+                  ]
+                ]
+              }
+            },
+            "EMP M": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ],
+                [
+                  2
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s21",
+      "section": "셀프 조인",
+      "type": "data",
+      "title": "INNER와 LEFT",
+      "tables": [
+        "EMP E",
+        "EMP M"
+      ],
+      "steps": [
+        {
+          "say": "사원 6명 중 한대표만 상사가 없어요.",
+          "t": {
+            "EMP E": {
+              "cells": [
+                [
+                  0,
+                  "MGR"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "MGR",
+                  "짝 없음"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "INNER 조인이면 상사 없는 한대표가 빠져요.",
+          "t": {
+            "EMP E": {
+              "filter": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 5행이에요.",
+          "t": {
+            "EMP E": {
+              "tint": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  5
+                ]
+              ],
+              "result": {
+                "title": "INNER JOIN: 5행",
+                "columns": [
+                  "사원",
+                  "상사"
+                ],
+                "rows": [
+                  [
+                    "김부장",
+                    "한대표"
+                  ],
+                  [
+                    "이부장",
+                    "한대표"
+                  ],
+                  [
+                    "박과장",
+                    "김부장"
+                  ],
+                  [
+                    "최과장",
+                    "김부장"
+                  ],
+                  [
+                    "정대리",
+                    "이부장"
+                  ]
+                ]
+              }
+            },
+            "EMP M": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ],
+                [
+                  2
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "LEFT 조인이면 한대표도 남아요.",
+          "t": {
+            "EMP E": {
+              "filter": null
+            }
+          }
+        },
+        {
+          "say": "상사 칸은 NULL로 채워져 6행이에요.",
+          "t": {
+            "EMP E": {
+              "rows": [
+                0
+              ],
+              "cells": [
+                [
+                  0,
+                  "MGR"
+                ]
+              ],
+              "result": {
+                "title": "LEFT OUTER JOIN: 6행",
+                "columns": [
+                  "사원",
+                  "상사"
+                ],
+                "rows": [
+                  [
+                    "김부장",
+                    "한대표"
+                  ],
+                  [
+                    "이부장",
+                    "한대표"
+                  ],
+                  [
+                    "박과장",
+                    "김부장"
+                  ],
+                  [
+                    "최과장",
+                    "김부장"
+                  ],
+                  [
+                    "정대리",
+                    "이부장"
+                  ],
+                  [
+                    "한대표",
+                    "NULL"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "셀프 조인",
+      "question": "사원 6명 중 한대표만 MGR이 NULL이에요. E.MGR = M.EMPNO로 **INNER JOIN** 하면 몇 행?",
+      "choices": [
+        "5행",
+        "4행",
+        "6행",
+        "3행"
+      ],
+      "answer": 1,
+      "explanation": "상사가 없는 한대표가 빠져요. 6명 중 5행이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 6명 중 한대표만 상사가 없어요."
+        },
+        {
+          "say": "사원과 상사를 INNER 조인하면 몇 행일까요?"
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "compare",
+      "section": "셀프 조인",
+      "title": "언제 무엇을 쓸까",
+      "left": {
+        "title": "셀프 조인",
+        "icon": "link",
+        "items": [
+          "깊이가 정해짐",
+          "상사, 차상위"
+        ]
+      },
+      "right": {
+        "title": "계층형 질의",
+        "icon": "branch",
+        "items": [
+          "깊이 제한 없음",
+          "전체 계층 전개"
+        ]
+      },
+      "steps": [
+        {
+          "say": "상사의 상사는 조인을 한 번 더 하면 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "깊이가 정해져 있으면 셀프 조인이 편해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "깊이를 모르면 계층형 질의가 맞아요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s23"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "START WITH 루트, CONNECT BY",
+        "PRIOR가 EMPNO면 순방향",
+        "PRIOR가 MGR이면 역방향",
+        "LEVEL은 루트가 1, 리프는 ISLEAF",
+        "형제 정렬은 ORDER SIBLINGS BY",
+        "WHERE는 행만, CONNECT BY는 가지째"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "START WITH는 루트, CONNECT BY는 전개예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "PRIOR가 자식 키에 붙으면 순방향,",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "부모 키에 붙으면 역방향이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "LEVEL은 루트가 1이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "형제끼리 정렬은 ORDER SIBLINGS BY예요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "WHERE는 행만, CONNECT BY는 가지째 빠져요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s24"
+    }
+  ]
+}

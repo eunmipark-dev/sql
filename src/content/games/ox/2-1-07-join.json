@@ -1,0 +1,20 @@
+[
+  {"text":"조인은 PK–FK 관계가 없어도 컬럼 값의 논리적 관계만 있으면 수행할 수 있다.","answer":true,"explain":"FK 제약조건이 없어도 컬럼 값을 비교해 조인할 수 있다."},
+  {"text":"FROM 절에 세 개 이상의 테이블을 나열하면 조인은 세 테이블이 동시에 한 번에 수행된다.","answer":false,"explain":"여러 테이블을 나열해도 조인은 내부적으로 두 집합씩 순차적으로 수행된다."},
+  {"text":"여러 테이블에 같은 이름의 컬럼이 있으면 테이블명이나 별칭으로 구분하지 않을 때 모호성 오류가 발생한다.","answer":true,"explain":"테이블명.컬럼 또는 별칭.컬럼으로 반드시 구분해야 한다."},
+  {"text":"EQUI JOIN에서 조인 컬럼 값이 NULL인 행은 결과에서 제외된다.","answer":true,"explain":"NULL은 어떤 값과도 같지 않으므로 매칭되지 않는다."},
+  {"text":"BETWEEN을 이용해 급여 범위로 등급을 구하는 조인은 EQUI JOIN에 해당한다.","answer":false,"explain":"= 이외의 BETWEEN, 부등호 등으로 연결하는 조인은 Non-EQUI JOIN이다."},
+  {"text":"N개의 테이블을 조인하려면 최소 N-1개의 조인 조건이 필요하다.","answer":true,"explain":"3개 테이블이면 최소 2개의 조인 조건이 필요하다."},
+  {"text":"SELF JOIN은 하나의 테이블을 별칭을 달리하여 두 번 사용하는 조인이다.","answer":true,"explain":"사원–관리자처럼 같은 테이블 안의 관계를 표현할 때 쓴다."},
+  {"text":"SELF JOIN에서는 같은 테이블을 두 번 쓰므로 테이블 별칭을 생략할 수 있다.","answer":false,"explain":"별칭이 없으면 컬럼을 구분할 수 없어 오류가 나므로 별칭은 필수다."},
+  {"text":"WHERE E.MGR = M.EMPNO로 SELF JOIN하면 MGR이 NULL인 사원은 결과에서 제외된다.","answer":true,"explain":"MGR이 NULL이면 매칭되지 않는다. 포함하려면 OUTER JOIN을 써야 한다."},
+  {"text":"Oracle OUTER JOIN에서 (+) 기호는 모든 행을 보존할 기준 테이블의 컬럼에 붙인다.","answer":false,"explain":"(+)는 데이터가 부족해 NULL로 채워질 쪽 테이블의 컬럼에 붙인다."},
+  {"text":"WHERE E.DEPTNO = D.DEPTNO(+)는 EMP를 기준으로 하는 LEFT OUTER JOIN과 같다.","answer":true,"explain":"DEPT 쪽에 (+)가 붙어 EMP의 모든 행이 보존된다."},
+  {"text":"Oracle에서는 조인 조건 양쪽 컬럼에 (+)를 동시에 붙여 FULL OUTER JOIN을 표현할 수 있다.","answer":false,"explain":"양쪽에 (+)를 동시에 붙일 수 없다. FULL OUTER JOIN은 ANSI 문법이나 UNION으로 구현한다."},
+  {"text":"Oracle의 (+) 조건은 OR 연산자로 다른 조건과 결합할 수 없다.","answer":true,"explain":"(+) 조건을 OR로 결합하는 것은 제약사항이다."},
+  {"text":"E.DEPTNO = D.DEPTNO(+) 조인에서 D.LOC = 'DALLAS' 조건에 (+)를 빼도 OUTER JOIN 결과는 그대로 유지된다.","answer":false,"explain":"(+)가 없으면 NULL 행이 걸러져 사실상 INNER JOIN이 된다. D.LOC(+) = 'DALLAS'로 써야 한다."},
+  {"text":"조인 조건 없이 6행 테이블과 4행 테이블을 FROM 절에 나열하면 24행이 조회된다.","answer":true,"explain":"조인 조건이 없으면 카티션 곱이 발생해 6 × 4 = 24행이다."},
+  {"text":"카티션 곱이 발생하면 결과 행 수는 두 테이블 행 수의 합이 된다.","answer":false,"explain":"카티션 곱의 결과 행 수는 두 테이블 행 수의 곱(M × N)이다."},
+  {"text":"조인 컬럼에 중복 값이 있으면 EQUI JOIN 결과 행 수는 중복된 만큼 늘어날 수 있다.","answer":true,"explain":"결과 행 수는 조건을 만족하는 행 쌍의 개수이므로 중복 값만큼 곱해진다."},
+  {"text":"LEFT OUTER JOIN의 결과 행 수는 INNER JOIN 행 수에 오른쪽 테이블에만 있는 행 수를 더한 것이다.","answer":false,"explain":"LEFT OUTER JOIN은 INNER JOIN 행 수 + 왼쪽(기준) 테이블에만 있는 행 수다."}
+]

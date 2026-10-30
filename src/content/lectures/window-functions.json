@@ -1,0 +1,1995 @@
+{
+  "slug": "window-functions",
+  "title": "윈도우 함수",
+  "tables": {
+    "EMP": {
+      "columns": [
+        "DEPTNO",
+        "SAL"
+      ],
+      "rows": [
+        [
+          "10",
+          "300"
+        ],
+        [
+          "10",
+          "200"
+        ],
+        [
+          "10",
+          "200"
+        ],
+        [
+          "20",
+          "400"
+        ],
+        [
+          "20",
+          "300"
+        ],
+        [
+          "20",
+          "100"
+        ]
+      ]
+    },
+    "급여 6건": {
+      "columns": [
+        "SAL"
+      ],
+      "rows": [
+        [
+          "30"
+        ],
+        [
+          "10"
+        ],
+        [
+          "20"
+        ],
+        [
+          "40"
+        ],
+        [
+          "20"
+        ],
+        [
+          "30"
+        ]
+      ]
+    },
+    "SALES": {
+      "columns": [
+        "월",
+        "AMT"
+      ],
+      "rows": [
+        [
+          "1월",
+          "100"
+        ],
+        [
+          "2월",
+          "150"
+        ],
+        [
+          "3월",
+          "120"
+        ],
+        [
+          "4월",
+          "200"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "윈도우 함수",
+      "subtitle": "행은 그대로, 계산은 옆에",
+      "icon": "table",
+      "steps": [
+        {
+          "say": "윈도우 함수를 시작할게요."
+        },
+        {
+          "say": "순위, 누적합, 비율을 구하는 함수예요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "compare",
+      "section": "윈도우 함수란",
+      "title": "GROUP BY와 다른 점",
+      "left": {
+        "title": "GROUP BY",
+        "icon": "box",
+        "items": [
+          "행을 묶어 줄임",
+          "그룹당 한 행"
+        ]
+      },
+      "right": {
+        "title": "윈도우 함수",
+        "icon": "table",
+        "tone": "good",
+        "items": [
+          "행 수 그대로",
+          "값을 옆에 붙임"
+        ]
+      },
+      "steps": [
+        {
+          "say": "GROUP BY는 행을 묶어서 줄여요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "윈도우 함수는 행 수를 줄이지 않아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "원래 행마다 계산 값을 붙여 줘요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "flow",
+      "section": "윈도우 함수란",
+      "title": "OVER 절 읽는 법",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "PARTITION BY",
+          "desc": "그룹으로 나누기",
+          "icon": "layers"
+        },
+        {
+          "title": "ORDER BY",
+          "desc": "순서 정하기",
+          "icon": "checklist"
+        },
+        {
+          "title": "윈도우 절",
+          "desc": "범위 정하기",
+          "icon": "ruler"
+        }
+      ],
+      "steps": [
+        {
+          "say": "함수 뒤에 OVER를 붙여요."
+        },
+        {
+          "say": "안에는 세 가지가 들어가요."
+        },
+        {
+          "say": "첫째, PARTITION BY로 나눠요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "생략하면 전체가 한 그룹이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, ORDER BY로 줄을 세워요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "순위 함수에서는 꼭 필요해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 윈도우 절로 범위를 정해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "나누고, 줄 세우고, 범위를 정한다. 기억하세요.",
+          "focus": [
+            0,
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "compare",
+      "section": "윈도우 함수란",
+      "title": "쓸 수 있는 위치",
+      "left": {
+        "title": "가능",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "SELECT 절",
+          "ORDER BY 절"
+        ]
+      },
+      "right": {
+        "title": "불가",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "WHERE 절",
+          "GROUP BY 절",
+          "HAVING 절"
+        ]
+      },
+      "steps": [
+        {
+          "say": "윈도우 함수는 아무 데나 못 써요."
+        },
+        {
+          "say": "SELECT 절과 ORDER BY 절에서만 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "WHERE, GROUP BY, HAVING에선 안 돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "결과로 거르려면 인라인 뷰로 감싸요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그리고 바깥 WHERE에서 조건을 걸어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "quiz",
+      "section": "윈도우 함수란",
+      "question": "윈도우 함수를 쓸 수 있는 절은?",
+      "choices": [
+        "WHERE",
+        "GROUP BY",
+        "HAVING",
+        "ORDER BY"
+      ],
+      "answer": 4,
+      "explanation": "SELECT 절과 ORDER BY 절에서만 쓸 수 있어요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 윈도우 함수를 쓸 수 있는 절은?"
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "id": "s06",
+      "section": "순위 함수",
+      "type": "data",
+      "title": "동점이 있는 순위",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT DEPTNO, SAL,\n       RANK()       OVER (ORDER BY SAL DESC),\n       DENSE_RANK() OVER (ORDER BY SAL DESC),\n       ROW_NUMBER() OVER (ORDER BY SAL DESC)\nFROM EMP;",
+      "steps": [
+        {
+          "say": "급여 내림차순으로 순위를 매겨요.",
+          "t": {
+            "EMP": {
+              "sort": [
+                [
+                  "SAL",
+                  "desc"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "300이 두 명이라 RANK는 공동 2등이에요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "add": [
+                "RANK",
+                [
+                  "2",
+                  "4",
+                  "4",
+                  "1",
+                  "2",
+                  "6"
+                ]
+              ],
+              "cells": [
+                [
+                  0,
+                  "SAL"
+                ],
+                [
+                  4,
+                  "SAL"
+                ],
+                [
+                  0,
+                  "RANK"
+                ],
+                [
+                  4,
+                  "RANK"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "200 두 명은 RANK로 4등이에요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "cells": [
+                [
+                  1,
+                  "RANK"
+                ],
+                [
+                  2,
+                  "RANK"
+                ]
+              ],
+              "notes": [
+                [
+                  1,
+                  "RANK",
+                  "3등 건너뜀"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "DENSE RANK로는 3등이에요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "add": [
+                "DENSE_RANK",
+                [
+                  "2",
+                  "3",
+                  "3",
+                  "1",
+                  "2",
+                  "4"
+                ]
+              ],
+              "cells": [
+                [
+                  1,
+                  "DENSE_RANK"
+                ],
+                [
+                  2,
+                  "DENSE_RANK"
+                ]
+              ],
+              "notes": [
+                [
+                  1,
+                  "DENSE_RANK",
+                  "연속"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "ROW NUMBER는 동점도 2, 3번이에요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP": {
+              "add": [
+                "ROW_NUMBER",
+                [
+                  "2",
+                  "4",
+                  "5",
+                  "1",
+                  "3",
+                  "6"
+                ]
+              ],
+              "cells": [
+                [
+                  0,
+                  "ROW_NUMBER"
+                ],
+                [
+                  4,
+                  "ROW_NUMBER"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "마지막 100은 RANK로 6등, DENSE RANK로 4등이에요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                5
+              ],
+              "cells": [
+                [
+                  5,
+                  "RANK"
+                ],
+                [
+                  5,
+                  "DENSE_RANK"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "layers",
+      "section": "순위 함수",
+      "title": "동점을 어떻게 셀까",
+      "layers": [
+        {
+          "title": "RANK",
+          "desc": "1, 2, 2, 4 · 건너뜀",
+          "icon": "target"
+        },
+        {
+          "title": "DENSE_RANK",
+          "desc": "1, 2, 2, 3 · 연속",
+          "icon": "target"
+        },
+        {
+          "title": "ROW_NUMBER",
+          "desc": "1, 2, 3, 4 · 고유 번호",
+          "icon": "tag"
+        }
+      ],
+      "steps": [
+        {
+          "say": "공동 2등이 둘 있다고 해 볼게요."
+        },
+        {
+          "say": "RANK는 둘 다 2등이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "다음은 3등을 건너뛰고 4등이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "DENSE RANK도 둘 다 2등이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "다음은 건너뛰지 않고 3등이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "ROW NUMBER는 동점이어도 2, 3이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "항상 서로 다른 연속 번호예요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "callout",
+      "section": "순위 함수",
+      "tone": "warning",
+      "title": "ROW_NUMBER 주의",
+      "text": "동점자 중 누가 먼저 번호를 받을지는 **보장되지 않는다**. 정렬 기준을 추가하자.",
+      "steps": [
+        {
+          "say": "동점자 중 누가 2번일지는 정해지지 않아요."
+        },
+        {
+          "say": "일정하게 하려면 정렬 기준을 더 넣어요."
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "id": "s09",
+      "section": "순위 함수",
+      "type": "data",
+      "title": "파티션별 순위",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT DEPTNO, SAL,\n       RANK() OVER (PARTITION BY DEPTNO\n                    ORDER BY SAL DESC)\nFROM EMP;",
+      "steps": [
+        {
+          "say": "PARTITION BY로 부서별로 나눠요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "group": "DEPTNO"
+            }
+          }
+        },
+        {
+          "say": "부서 안에서 급여 내림차순으로 세워요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "sort": [
+                [
+                  "SAL",
+                  "desc"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "10번 부서는 300 한 명, 200 두 명이에요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2
+              ],
+              "cols": [
+                "SAL"
+              ]
+            }
+          }
+        },
+        {
+          "say": "RANK로 1등, 그리고 공동 2등이에요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "add": [
+                "RANK",
+                [
+                  "1",
+                  "2",
+                  "2",
+                  "1",
+                  "2",
+                  "3"
+                ]
+              ],
+              "cells": [
+                [
+                  0,
+                  "RANK"
+                ],
+                [
+                  1,
+                  "RANK"
+                ],
+                [
+                  2,
+                  "RANK"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "20번 부서로 바뀌면 다시 1등부터예요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                3,
+                4,
+                5
+              ],
+              "notes": [
+                [
+                  3,
+                  "RANK",
+                  "다시 1등"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "순위 함수",
+      "question": "점수 100, 90, 90, 80에 **RANK**를 매기면?",
+      "choices": [
+        "1, 2, 2, 3",
+        "1, 2, 2, 4",
+        "1, 2, 3, 4",
+        "1, 1, 2, 3"
+      ],
+      "answer": 2,
+      "explanation": "RANK는 동점 수만큼 건너뛰어요. 그래서 4등이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 동점이 있는 점수에 RANK를 매기면?"
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "id": "s11",
+      "section": "집계 윈도우 함수",
+      "type": "data",
+      "title": "집계 함수 + OVER",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT DEPTNO, SAL,\n       SUM(SAL) OVER (PARTITION BY DEPTNO),\n       MAX(SAL) OVER (PARTITION BY DEPTNO),\n       COUNT(*) OVER (PARTITION BY DEPTNO)\nFROM EMP;",
+      "steps": [
+        {
+          "say": "집계 함수에 OVER를 붙여도 윈도우 함수예요.",
+          "t": {
+            "EMP": {
+              "group": "DEPTNO"
+            }
+          }
+        },
+        {
+          "say": "SUM은 부서 합계를 행마다 붙여요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "add": [
+                "SUM(SAL)",
+                [
+                  "700",
+                  "700",
+                  "700",
+                  "800",
+                  "800",
+                  "800"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "10번 부서 세 명은 모두 700이 붙어요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2
+              ],
+              "cells": [
+                [
+                  0,
+                  "SUM(SAL)"
+                ],
+                [
+                  1,
+                  "SUM(SAL)"
+                ],
+                [
+                  2,
+                  "SUM(SAL)"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "MAX는 부서 최고 급여를 붙여요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "add": [
+                "MAX(SAL)",
+                [
+                  "300",
+                  "300",
+                  "300",
+                  "400",
+                  "400",
+                  "400"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "COUNT는 부서 인원을 붙여요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP": {
+              "add": [
+                "COUNT(*)",
+                [
+                  "3",
+                  "3",
+                  "3",
+                  "3",
+                  "3",
+                  "3"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "행 수는 그대로예요. ORDER BY가 없으니 파티션 전체가 범위예요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "SUM(SAL)",
+                "MAX(SAL)",
+                "COUNT(*)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "section": "윈도우 절",
+      "title": "ROWS와 RANGE",
+      "left": {
+        "title": "ROWS",
+        "icon": "table",
+        "items": [
+          "행 위치 기준",
+          "동점도 따로 셈"
+        ]
+      },
+      "right": {
+        "title": "RANGE",
+        "icon": "ruler",
+        "items": [
+          "값 기준",
+          "동점은 한 묶음"
+        ]
+      },
+      "steps": [
+        {
+          "say": "윈도우 절은 계산 범위를 정해요."
+        },
+        {
+          "say": "ROWS는 행의 위치로 세요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "동점이어도 한 행씩 따로예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "RANGE는 정렬 컬럼의 값으로 정해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "같은 값은 같은 범위로 묶여요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "flow",
+      "section": "윈도우 절",
+      "title": "범위 키워드",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "UNBOUNDED PRECEDING",
+          "desc": "파티션 첫 행",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "n PRECEDING",
+          "desc": "n행 앞"
+        },
+        {
+          "title": "CURRENT ROW",
+          "desc": "현재 행",
+          "icon": "target"
+        },
+        {
+          "title": "n FOLLOWING",
+          "desc": "n행 뒤"
+        },
+        {
+          "title": "UNBOUNDED FOLLOWING",
+          "desc": "파티션 마지막 행",
+          "icon": "arrow-left-right"
+        }
+      ],
+      "steps": [
+        {
+          "say": "범위를 정하는 키워드예요."
+        },
+        {
+          "say": "UNBOUNDED PRECEDING은 맨 첫 행이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "n PRECEDING은 n행 앞이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "CURRENT ROW는 현재 행이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "n FOLLOWING은 n행 뒤예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "UNBOUNDED FOLLOWING은 맨 마지막 행이에요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "시작점만 쓰면 끝점은 현재 행이에요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "compare",
+      "section": "윈도우 절",
+      "title": "윈도우 절을 생략하면",
+      "left": {
+        "title": "ORDER BY 없음",
+        "icon": "layers",
+        "items": [
+          "파티션 전체"
+        ]
+      },
+      "right": {
+        "title": "ORDER BY 있음",
+        "icon": "ruler",
+        "tone": "good",
+        "items": [
+          "처음부터 현재까지",
+          "RANGE 기준"
+        ]
+      },
+      "steps": [
+        {
+          "say": "윈도우 절을 생략할 때가 중요해요."
+        },
+        {
+          "say": "ORDER BY가 없으면 파티션 전체예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "ORDER BY가 있으면 처음부터 현재 행까지예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "이때 기준은 RANGE예요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "id": "s15",
+      "section": "윈도우 절",
+      "type": "data",
+      "title": "누적합 비교",
+      "tables": [
+        "급여 6건"
+      ],
+      "code": "SUM(SAL) OVER (ORDER BY SAL)               -- RANGE\nSUM(SAL) OVER (ORDER BY SAL\n               ROWS UNBOUNDED PRECEDING)   -- ROWS",
+      "steps": [
+        {
+          "say": "급여 오름차순으로 누적합을 구해요.",
+          "t": {
+            "급여 6건": {
+              "sort": [
+                [
+                  "SAL",
+                  "asc"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "ORDER BY만 쓰면 RANGE 기준이에요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "급여 6건": {
+              "add": [
+                "RANGE",
+                [
+                  "110",
+                  "10",
+                  "50",
+                  "150",
+                  "50",
+                  "110"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "RANGE는 20인 두 행이 모두 50이에요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "급여 6건": {
+              "cells": [
+                [
+                  2,
+                  "RANGE"
+                ],
+                [
+                  4,
+                  "RANGE"
+                ]
+              ],
+              "rows": [
+                2,
+                4
+              ]
+            }
+          }
+        },
+        {
+          "say": "동점을 한꺼번에 더했기 때문이에요.",
+          "t": {
+            "급여 6건": {
+              "notes": [
+                [
+                  2,
+                  "RANGE",
+                  "10+20+20"
+                ],
+                [
+                  4,
+                  "RANGE",
+                  "10+20+20"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "ROWS는 30, 50으로 한 행씩 늘어요.",
+          "focus": [
+            2,
+            3
+          ],
+          "t": {
+            "급여 6건": {
+              "add": [
+                "ROWS",
+                [
+                  "80",
+                  "10",
+                  "30",
+                  "150",
+                  "50",
+                  "110"
+                ]
+              ],
+              "cells": [
+                [
+                  2,
+                  "ROWS"
+                ],
+                [
+                  4,
+                  "ROWS"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "30에서도 RANGE는 110이 반복돼요.",
+          "t": {
+            "급여 6건": {
+              "rows": [
+                0,
+                5
+              ],
+              "cells": [
+                [
+                  0,
+                  "RANGE"
+                ],
+                [
+                  5,
+                  "RANGE"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "마지막 40 행은 둘 다 150이에요.",
+          "t": {
+            "급여 6건": {
+              "rows": [
+                3
+              ],
+              "cells": [
+                [
+                  3,
+                  "RANGE"
+                ],
+                [
+                  3,
+                  "ROWS"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "윈도우 절",
+      "question": "`SUM(SAL) OVER (ORDER BY SAL)`의 기본 범위 기준은?",
+      "choices": [
+        "ROWS",
+        "PARTITION",
+        "RANGE",
+        "FOLLOWING"
+      ],
+      "answer": 3,
+      "explanation": "ORDER BY만 있으면 RANGE 기준이에요. 동점 누적합이 같아요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. ORDER BY만 쓴 누적합의 기본 기준은?"
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "id": "s17",
+      "section": "윈도우 절",
+      "type": "data",
+      "title": "이동 범위",
+      "tables": [
+        "급여 6건"
+      ],
+      "code": "SUM(SAL) OVER (ORDER BY SAL\n  ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING)\nSUM(SAL) OVER (ORDER BY SAL\n  RANGE BETWEEN 10 PRECEDING AND 10 FOLLOWING)",
+      "steps": [
+        {
+          "say": "ROWS로 앞뒤 1행을 잡아 볼게요.",
+          "focus": [
+            1,
+            2
+          ],
+          "t": {
+            "급여 6건": {
+              "sort": [
+                [
+                  "SAL",
+                  "asc"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "앞 행, 현재 행, 뒤 행을 더해요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "급여 6건": {
+              "add": [
+                "ROWS±1",
+                [
+                  "80",
+                  "30",
+                  "50",
+                  "70",
+                  "70",
+                  "100"
+                ]
+              ],
+              "rows": [
+                1,
+                2,
+                4
+              ],
+              "notes": [
+                [
+                  2,
+                  "ROWS±1",
+                  "10+20+20"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "첫 행과 끝 행은 두 행만 더해요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "급여 6건": {
+              "rows": [
+                1,
+                3
+              ],
+              "notes": [
+                [
+                  1,
+                  "ROWS±1",
+                  "10+20"
+                ],
+                [
+                  3,
+                  "ROWS±1",
+                  "30+40"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "RANGE로 앞뒤 10을 잡으면 값으로 봐요.",
+          "focus": [
+            3,
+            4
+          ],
+          "t": {
+            "급여 6건": {
+              "add": [
+                "RANGE±10",
+                [
+                  "140",
+                  "50",
+                  "110",
+                  "100",
+                  "110",
+                  "140"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "30이면 20에서 40까지예요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "급여 6건": {
+              "rows": [
+                2,
+                4,
+                0,
+                5,
+                3
+              ],
+              "cells": [
+                [
+                  0,
+                  "RANGE±10"
+                ],
+                [
+                  5,
+                  "RANGE±10"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그 사이 값인 행은 동점까지 모두 더해 140이에요.",
+          "t": {
+            "급여 6건": {
+              "rows": [
+                2,
+                4,
+                0,
+                5,
+                3
+              ],
+              "notes": [
+                [
+                  0,
+                  "RANGE±10",
+                  "20~40 다섯 행"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "행 순서 함수",
+      "title": "행 순서 함수",
+      "cols": 2,
+      "items": [
+        {
+          "title": "첫 값",
+          "desc": "FIRST_VALUE",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "마지막 값",
+          "desc": "LAST_VALUE",
+          "icon": "arrow-left-right",
+          "tone": "warn"
+        },
+        {
+          "title": "앞 행 값",
+          "desc": "LAG",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "뒤 행 값",
+          "desc": "LEAD",
+          "icon": "arrow-left-right"
+        }
+      ],
+      "steps": [
+        {
+          "say": "행 순서 함수 네 가지예요."
+        },
+        {
+          "say": "FIRST VALUE는 범위의 첫 값이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "LAST VALUE는 범위의 마지막 값이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "LAG는 앞 행 값을 가져와요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "LEAD는 뒤 행 값을 가져와요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "compare",
+      "section": "행 순서 함수",
+      "title": "LAST_VALUE 함정",
+      "left": {
+        "title": "기본 범위",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "현재 행까지",
+          "현재 행 값 반환"
+        ]
+      },
+      "right": {
+        "title": "끝까지 확장",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "UNBOUNDED",
+          "FOLLOWING",
+          "진짜 마지막 값"
+        ]
+      },
+      "steps": [
+        {
+          "say": "LAST VALUE에는 함정이 있어요."
+        },
+        {
+          "say": "기본 범위가 현재 행까지예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그래서 사실상 현재 행 값이 나와요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "끝점을 UNBOUNDED FOLLOWING으로 넓혀요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래야 진짜 마지막 값이 나와요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "id": "s20",
+      "section": "행 순서 함수",
+      "type": "data",
+      "title": "LAG와 LEAD",
+      "tables": [
+        "SALES"
+      ],
+      "code": "SELECT 월, AMT,\n       LAG(AMT)  OVER (ORDER BY 월),\n       LEAD(AMT) OVER (ORDER BY 월)\nFROM SALES;",
+      "steps": [
+        {
+          "say": "월별 매출로 볼게요.",
+          "t": {
+            "SALES": {
+              "cols": [
+                "AMT"
+              ]
+            }
+          }
+        },
+        {
+          "say": "LAG는 앞 행 값을 가져와요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "SALES": {
+              "add": [
+                "LAG",
+                [
+                  "NULL",
+                  "100",
+                  "150",
+                  "120"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "1월은 앞 행이 없어서 LAG가 NULL이에요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "SALES": {
+              "cells": [
+                [
+                  0,
+                  "LAG"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "LAG",
+                  "앞 행 없음"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "2월의 LAG는 1월 매출 100이에요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "SALES": {
+              "cells": [
+                [
+                  0,
+                  "AMT"
+                ],
+                [
+                  1,
+                  "LAG"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "LEAD는 뒤 행 값이에요. 3월의 LEAD는 200이에요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "SALES": {
+              "add": [
+                "LEAD",
+                [
+                  "150",
+                  "120",
+                  "200",
+                  "NULL"
+                ]
+              ],
+              "cells": [
+                [
+                  3,
+                  "AMT"
+                ],
+                [
+                  2,
+                  "LEAD"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "4월은 뒤 행이 없어서 LEAD가 NULL이에요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "SALES": {
+              "cells": [
+                [
+                  3,
+                  "LEAD"
+                ]
+              ],
+              "notes": [
+                [
+                  3,
+                  "LEAD",
+                  "뒤 행 없음"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "세 번째 인수를 주면 NULL 대신 그 값이에요.",
+          "t": {
+            "SALES": {
+              "cols": [
+                "LAG",
+                "LEAD"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "행 순서 함수",
+      "question": "`LAG(AMT, 2, 0)`에서 **0**의 의미는?",
+      "choices": [
+        "행이 없을 때의 값",
+        "건너뛸 행 수",
+        "정렬 방향",
+        "파티션 번호"
+      ],
+      "answer": 1,
+      "explanation": "가져올 행이 없을 때 NULL 대신 쓸 값이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. LAG에 2와 0을 줬어요. 0의 의미는?"
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "layers",
+      "section": "비율 함수",
+      "title": "비율 함수",
+      "layers": [
+        {
+          "title": "RATIO_TO_REPORT",
+          "desc": "값 ÷ 합계 · Oracle 전용",
+          "icon": "scale"
+        },
+        {
+          "title": "PERCENT_RANK",
+          "desc": "(순위−1) ÷ (행수−1)",
+          "icon": "ruler"
+        },
+        {
+          "title": "CUME_DIST",
+          "desc": "동점 포함 누적 비율",
+          "icon": "layers"
+        },
+        {
+          "title": "NTILE(n)",
+          "desc": "n개 그룹으로 나누기",
+          "icon": "users"
+        }
+      ],
+      "steps": [
+        {
+          "say": "비율 함수 네 가지예요."
+        },
+        {
+          "say": "RATIO TO REPORT는 전체 대비 비중이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "오라클 전용이고 ORDER BY를 못 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "PERCENT RANK는 순위 빼기 1을 나눠요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "전체 행 수 빼기 1로 나눠요. 처음은 0이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "CUME DIST는 누적 비율이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "NTILE은 행을 n개 그룹으로 나눠요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "id": "s23",
+      "section": "비율 함수",
+      "type": "data",
+      "title": "CUME_DIST 계산",
+      "tables": [
+        "급여 6건"
+      ],
+      "code": "CUME_DIST() OVER (ORDER BY SAL DESC)",
+      "steps": [
+        {
+          "say": "CUME DIST는 동점을 모두 포함해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "여섯 행을 급여 내림차순으로 세웠어요.",
+          "t": {
+            "급여 6건": {
+              "sort": [
+                [
+                  "SAL",
+                  "desc"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "30인 두 행은 위에서 세 행까지예요.",
+          "t": {
+            "급여 6건": {
+              "rows": [
+                3,
+                0,
+                5
+              ],
+              "cells": [
+                [
+                  0,
+                  "SAL"
+                ],
+                [
+                  5,
+                  "SAL"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "6행 중 3행이라 둘 다 0.5예요.",
+          "t": {
+            "급여 6건": {
+              "add": [
+                "CUME_DIST",
+                [
+                  "0.5",
+                  "1",
+                  "0.83",
+                  "0.17",
+                  "0.83",
+                  "0.5"
+                ]
+              ],
+              "cells": [
+                [
+                  0,
+                  "CUME_DIST"
+                ],
+                [
+                  5,
+                  "CUME_DIST"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "CUME_DIST",
+                  "3 ÷ 6"
+                ],
+                [
+                  5,
+                  "CUME_DIST",
+                  "3 ÷ 6"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "맨 아래 10은 끝까지라서 1이에요.",
+          "t": {
+            "급여 6건": {
+              "rows": [
+                1
+              ],
+              "cells": [
+                [
+                  1,
+                  "CUME_DIST"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s24",
+      "section": "비율 함수",
+      "type": "data",
+      "title": "NTILE(4)로 6행 나누기",
+      "tables": [
+        "급여 6건"
+      ],
+      "code": "NTILE(4) OVER (ORDER BY SAL DESC)",
+      "steps": [
+        {
+          "say": "NTILE 4로 여섯 행을 나눠요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "급여 6건": {
+              "sort": [
+                [
+                  "SAL",
+                  "desc"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "6을 4로 나누면 몫이 1이에요.",
+          "t": {
+            "급여 6건": {
+              "rows": [
+                3,
+                0,
+                5,
+                2,
+                4,
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "나머지는 2예요. 앞 그룹부터 하나씩 더 줘요.",
+          "t": {
+            "급여 6건": {
+              "notes": [
+                [
+                  0,
+                  "SAL",
+                  "+1"
+                ],
+                [
+                  2,
+                  "SAL",
+                  "+1"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "앞 두 그룹은 2행씩이에요.",
+          "t": {
+            "급여 6건": {
+              "add": [
+                "NTILE",
+                [
+                  "1",
+                  "4",
+                  "2",
+                  "1",
+                  "3",
+                  "2"
+                ]
+              ],
+              "tint": [
+                [
+                  3,
+                  0
+                ],
+                [
+                  5,
+                  2
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "뒤 두 그룹은 1행씩이에요.",
+          "t": {
+            "급여 6건": {
+              "tint": [
+                [
+                  3,
+                  0
+                ],
+                [
+                  5,
+                  2
+                ],
+                [
+                  4
+                ],
+                [
+                  1
+                ]
+              ],
+              "rows": [
+                4,
+                1
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "비율 함수",
+      "question": "`NTILE(4)`로 6행을 나누면 그룹 크기는?",
+      "choices": [
+        "1, 1, 2, 2",
+        "2, 2, 1, 1",
+        "2, 1, 2, 1",
+        "3, 3, 0, 0"
+      ],
+      "answer": 2,
+      "explanation": "나머지 2행은 앞 그룹부터 하나씩 받아요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. NTILE 4로 여섯 행을 나누면?"
+        }
+      ],
+      "id": "s25"
+    },
+    {
+      "type": "callout",
+      "section": "비율 함수",
+      "tone": "info",
+      "title": "DBMS 차이",
+      "text": "SQL Server는 **2012**부터 지원. RATIO_TO_REPORT는 **Oracle 전용**.",
+      "steps": [
+        {
+          "say": "SQL 서버는 2012 버전부터 지원해요."
+        },
+        {
+          "say": "RATIO TO REPORT는 오라클에만 있어요."
+        },
+        {
+          "say": "SQL 서버에선 합계로 직접 나눠요."
+        }
+      ],
+      "id": "s26"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "윈도우 함수는 행 수를 유지",
+        "SELECT, ORDER BY 절에서만",
+        "동점: RANK 건너뜀, DENSE 연속",
+        "ORDER BY만 있으면 RANGE 누적",
+        "LAST_VALUE는 끝까지 넓히기",
+        "NTILE 나머지는 앞 그룹부터"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "윈도우 함수는 행 수를 줄이지 않아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SELECT와 ORDER BY 절에서만 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "RANK는 건너뛰고, DENSE RANK는 연속이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "ROW NUMBER는 항상 고유 번호예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "ORDER BY만 있으면 RANGE 누적이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "LAST VALUE는 끝까지 범위를 넓혀요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "NTILE 나머지는 앞 그룹부터 줘요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s27"
+    }
+  ]
+}

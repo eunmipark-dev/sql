@@ -1,0 +1,1959 @@
+{
+  "slug": "standard-join",
+  "title": "표준 조인",
+  "tables": {
+    "EMP": {
+      "columns": [
+        "EMPNO",
+        "ENAME",
+        "DEPTNO"
+      ],
+      "rows": [
+        [
+          "101",
+          "SMITH",
+          "20"
+        ],
+        [
+          "102",
+          "ALLEN",
+          "30"
+        ],
+        [
+          "103",
+          "KING",
+          "10"
+        ],
+        [
+          "104",
+          "FORD",
+          "20"
+        ]
+      ]
+    },
+    "DEPT": {
+      "columns": [
+        "DEPTNO",
+        "DNAME"
+      ],
+      "rows": [
+        [
+          "10",
+          "ACCOUNTING"
+        ],
+        [
+          "20",
+          "RESEARCH"
+        ],
+        [
+          "40",
+          "OPERATIONS"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "표준 조인",
+      "subtitle": "ANSI 조인 문법과 ON, WHERE의 차이",
+      "icon": "network",
+      "steps": [
+        {
+          "say": "표준 조인을 배워 볼게요."
+        },
+        {
+          "say": "핵심은 ON과 WHERE 위치에 따른 차이예요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "compare",
+      "section": "표준 조인이란",
+      "title": "WHERE 방식과 표준",
+      "left": {
+        "title": "WHERE 방식",
+        "icon": "filter",
+        "items": [
+          "조인 조건도 WHERE",
+          "필터와 뒤섞임"
+        ]
+      },
+      "right": {
+        "title": "ANSI 표준",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "FROM에 조인 명시",
+          "ON, WHERE 분리",
+          "두 DBMS 모두 OK"
+        ]
+      },
+      "steps": [
+        {
+          "say": "예전 방식은 조인 조건도 WHERE에 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "표준 조인은 FROM 절에 조인을 적어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "조인 조건과 필터가 나뉘어 의도가 분명해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "오라클과 SQL 서버 모두에서 써요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "id": "s03",
+      "section": "표준 조인이란",
+      "type": "data",
+      "title": "예제 데이터",
+      "tables": [
+        "EMP",
+        "DEPT"
+      ],
+      "steps": [
+        {
+          "say": "예제에서 세 가지를 기억하세요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "DEPTNO"
+              ]
+            },
+            "DEPT": {
+              "cols": [
+                "DEPTNO"
+              ]
+            }
+          }
+        },
+        {
+          "say": "ALLEN의 30번 부서는 DEPT에 없어요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                1
+              ],
+              "notes": [
+                [
+                  1,
+                  "DEPTNO",
+                  "DEPT에 없음"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "40번 부서에는 사원이 없어요.",
+          "t": {
+            "DEPT": {
+              "rows": [
+                2
+              ],
+              "notes": [
+                [
+                  2,
+                  "DEPTNO",
+                  "사원 없음"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "짝이 맞는 건 SMITH, KING, FORD 세 명이에요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  2
+                ],
+                [
+                  0,
+                  3
+                ]
+              ]
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "표준 조인이란",
+      "title": "표준 조인 6가지",
+      "cols": 3,
+      "items": [
+        {
+          "title": "INNER",
+          "desc": "조건 맞는 행만",
+          "icon": "link"
+        },
+        {
+          "title": "NATURAL",
+          "desc": "같은 이름 전부",
+          "icon": "copy"
+        },
+        {
+          "title": "USING",
+          "desc": "고른 컬럼만",
+          "icon": "target"
+        },
+        {
+          "title": "CROSS",
+          "desc": "모든 조합",
+          "icon": "shapes"
+        },
+        {
+          "title": "OUTER",
+          "desc": "한쪽 모두 보존",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "FULL",
+          "desc": "양쪽 모두 보존",
+          "icon": "layers"
+        }
+      ],
+      "steps": [
+        {
+          "say": "표준 조인은 여섯 가지예요."
+        },
+        {
+          "say": "INNER는 조건에 맞는 행만 남겨요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "NATURAL은 같은 이름 컬럼 전부로 이어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "USING은 고른 컬럼으로만 이어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "CROSS는 모든 조합을 만들어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "LEFT와 RIGHT는 한쪽 행을 모두 남겨요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "FULL은 양쪽 행을 모두 남겨요.",
+          "focus": [
+            5
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "cards",
+      "section": "INNER JOIN과 ON",
+      "title": "INNER JOIN과 ON",
+      "cols": 2,
+      "items": [
+        {
+          "title": "INNER 생략",
+          "desc": "JOIN만 써도 OK",
+          "icon": "check"
+        },
+        {
+          "title": "임의 조건",
+          "desc": "BETWEEN도 가능",
+          "icon": "ruler"
+        },
+        {
+          "title": "이름 달라도",
+          "desc": "E.MGR=M.EMPNO",
+          "icon": "link"
+        },
+        {
+          "title": "접두사 필수",
+          "desc": "같은 이름 컬럼",
+          "icon": "tag",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "INNER JOIN 규칙 네 가지예요."
+        },
+        {
+          "say": "첫째, JOIN만 쓰면 INNER JOIN이에요. 기본값이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, ON에는 부등호나 BETWEEN도 돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 컬럼 이름이 달라도 조인할 수 있어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 같은 이름 컬럼엔 별칭을 꼭 붙여요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "안 붙이면 모호성 오류가 나요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "callout",
+      "section": "INNER JOIN과 ON",
+      "tone": "tip",
+      "title": "원칙",
+      "text": "조인 조건은 **ON**, 필터 조건은 **WHERE**. 테이블이 셋이면 JOIN ON을 이어 써요.",
+      "steps": [
+        {
+          "say": "조인 조건은 ON, 필터 조건은 WHERE에 둬요."
+        },
+        {
+          "say": "테이블이 셋이면 JOIN과 ON을 이어서 써요."
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "quiz",
+      "section": "INNER JOIN과 ON",
+      "question": "EMP와 DEPT를 **JOIN ON**으로 잇고, 둘 다 있는 **DEPTNO**를 별칭 없이 SELECT하면?",
+      "choices": [
+        "EMP 쪽 값이 나온다",
+        "모호성 오류가 난다",
+        "DEPT 쪽 값이 나온다",
+        "두 컬럼이 모두 나온다"
+      ],
+      "answer": 2,
+      "explanation": "어느 테이블 컬럼인지 모호해서 오류가 나요. 같은 이름 컬럼엔 별칭을 꼭 붙여요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 두 테이블에 같은 이름 컬럼이 있어요."
+        },
+        {
+          "say": "별칭 없이 SELECT하면 어떻게 될까요?"
+        }
+      ],
+      "id": "s06q"
+    },
+    {
+      "id": "s07",
+      "section": "NATURAL과 USING",
+      "type": "data",
+      "title": "NATURAL JOIN",
+      "tables": [
+        "EMP",
+        "DEPT"
+      ],
+      "code": "SELECT DEPTNO, ENAME, DNAME\nFROM   EMP NATURAL JOIN DEPT;",
+      "steps": [
+        {
+          "say": "NATURAL JOIN은 조건을 직접 안 써요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "두 테이블에서 같은 이름 컬럼을 찾아요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "DEPTNO"
+              ]
+            },
+            "DEPT": {
+              "cols": [
+                "DEPTNO"
+              ]
+            }
+          }
+        },
+        {
+          "say": "그 컬럼으로 자동 등가 조인을 해요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  2
+                ],
+                [
+                  0,
+                  3
+                ]
+              ]
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "결과는 세 명, 3행이에요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  2
+                ],
+                [
+                  0,
+                  3
+                ]
+              ],
+              "result": {
+                "title": "결과 3행",
+                "columns": [
+                  "DEPTNO",
+                  "ENAME",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "KING",
+                    "ACCOUNTING"
+                  ],
+                  [
+                    "20",
+                    "SMITH",
+                    "RESEARCH"
+                  ],
+                  [
+                    "20",
+                    "FORD",
+                    "RESEARCH"
+                  ]
+                ]
+              }
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "NATURAL과 USING",
+      "title": "NATURAL 규칙",
+      "cols": 2,
+      "items": [
+        {
+          "title": "접두사 불가",
+          "desc": "E.DEPTNO는 오류",
+          "icon": "warning",
+          "tone": "bad"
+        },
+        {
+          "title": "ON·USING",
+          "desc": "함께 못 씀",
+          "icon": "lock",
+          "tone": "warn"
+        },
+        {
+          "title": "타입 호환",
+          "desc": "같은 이름, 같은 형",
+          "icon": "scale"
+        },
+        {
+          "title": "SQL서버",
+          "desc": "지원 안 함",
+          "icon": "database",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "NATURAL JOIN 규칙 네 가지예요."
+        },
+        {
+          "say": "첫째, 조인 컬럼엔 접두사를 못 붙여요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "E 점 DEPTNO처럼 쓰면 오류예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, ON이나 USING과 함께 못 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 데이터 타입도 호환되어야 해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, SQL 서버는 지원하지 않아요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "callout",
+      "section": "NATURAL과 USING",
+      "tone": "warning",
+      "title": "이름만 같은 컬럼",
+      "text": "같은 이름 컬럼이 여럿이면 **모두** 조건이 돼요. 등록일자까지 같아야 이어지는 함정!",
+      "steps": [
+        {
+          "say": "같은 이름 컬럼이 여러 개면 모두 조건이 돼요."
+        },
+        {
+          "say": "뜻이 다른 등록일자까지 같아야 이어져요."
+        },
+        {
+          "say": "의도하지 않은 결과가 나와요."
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "compare",
+      "section": "NATURAL과 USING",
+      "title": "NATURAL과 USING",
+      "left": {
+        "title": "NATURAL",
+        "icon": "copy",
+        "items": [
+          "같은 이름 전부 자동",
+          "ON, USING 불가",
+          "조인 컬럼 접두사 X"
+        ]
+      },
+      "right": {
+        "title": "USING",
+        "icon": "target",
+        "items": [
+          "조인 컬럼을 골라 씀",
+          "괄호 필수",
+          "조인 컬럼 접두사 X"
+        ]
+      },
+      "steps": [
+        {
+          "say": "NATURAL은 같은 이름 컬럼을 전부 자동으로 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "USING은 그중 쓸 컬럼만 골라요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "컬럼 목록은 괄호로 감싸야 해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "둘 다 조인 컬럼엔 접두사를 못 붙여요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "USING도 SQL 서버는 지원하지 않아요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "id": "s11",
+      "section": "NATURAL과 USING",
+      "type": "data",
+      "title": "SELECT * 컬럼 수",
+      "tables": [
+        "EMP",
+        "DEPT"
+      ],
+      "steps": [
+        {
+          "say": "SELECT 스타로 보면 컬럼 수가 달라요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  2
+                ],
+                [
+                  0,
+                  3
+                ]
+              ]
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "EMP는 컬럼 3개, DEPT는 2개예요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "EMPNO",
+                "ENAME",
+                "DEPTNO"
+              ]
+            },
+            "DEPT": {
+              "cols": [
+                "DEPTNO",
+                "DNAME"
+              ]
+            }
+          }
+        },
+        {
+          "say": "ON은 양쪽 DEPTNO가 다 나와서 5개예요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "DEPTNO"
+              ],
+              "result": {
+                "title": "ON · 5개",
+                "columns": [
+                  "EMPNO",
+                  "ENAME",
+                  "E.DEPTNO",
+                  "D.DEPTNO",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "103",
+                    "KING",
+                    "10",
+                    "10",
+                    "ACCOUNTING"
+                  ],
+                  [
+                    "101",
+                    "SMITH",
+                    "20",
+                    "20",
+                    "RESEARCH"
+                  ],
+                  [
+                    "104",
+                    "FORD",
+                    "20",
+                    "20",
+                    "RESEARCH"
+                  ]
+                ]
+              }
+            },
+            "DEPT": {
+              "cols": [
+                "DEPTNO"
+              ]
+            }
+          }
+        },
+        {
+          "say": "USING은 DEPTNO가 맨 앞에 한 번, 4개예요.",
+          "t": {
+            "EMP": {
+              "result": {
+                "title": "USING · 4개",
+                "columns": [
+                  "DEPTNO",
+                  "EMPNO",
+                  "ENAME",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "103",
+                    "KING",
+                    "ACCOUNTING"
+                  ],
+                  [
+                    "20",
+                    "101",
+                    "SMITH",
+                    "RESEARCH"
+                  ],
+                  [
+                    "20",
+                    "104",
+                    "FORD",
+                    "RESEARCH"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "NATURAL도 똑같이 4개예요.",
+          "t": {
+            "EMP": {
+              "result": {
+                "title": "NATURAL · 4개",
+                "columns": [
+                  "DEPTNO",
+                  "EMPNO",
+                  "ENAME",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "103",
+                    "KING",
+                    "ACCOUNTING"
+                  ],
+                  [
+                    "20",
+                    "101",
+                    "SMITH",
+                    "RESEARCH"
+                  ],
+                  [
+                    "20",
+                    "104",
+                    "FORD",
+                    "RESEARCH"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "NATURAL과 USING",
+      "question": "**EMP E JOIN DEPT D USING (DEPTNO)**에서 SELECT에 쓰면 오류인 것은?",
+      "choices": [
+        "DEPTNO",
+        "E.ENAME",
+        "E.DEPTNO",
+        "D.DNAME"
+      ],
+      "answer": 3,
+      "explanation": "USING에 쓴 컬럼엔 접두사를 못 붙여요. 다른 컬럼은 괜찮아요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. USING 조인에서 오류가 나는 것은?"
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "flow",
+      "section": "CROSS JOIN",
+      "title": "CROSS JOIN",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "EMP",
+          "desc": "4행",
+          "icon": "table"
+        },
+        {
+          "title": "DEPT",
+          "desc": "3행",
+          "icon": "table"
+        },
+        {
+          "title": "12행",
+          "desc": "모든 조합",
+          "icon": "copy"
+        }
+      ],
+      "steps": [
+        {
+          "say": "CROSS JOIN은 모든 조합을 만들어요."
+        },
+        {
+          "say": "EMP 4행과 DEPT 3행이에요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "4 곱하기 3, 12행이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "CROSS JOIN에는 ON을 쓸 수 없어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "거를 땐 WHERE를 써요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "id": "s14",
+      "section": "OUTER JOIN",
+      "type": "data",
+      "title": "OUTER JOIN 결과",
+      "tables": [
+        "EMP",
+        "DEPT"
+      ],
+      "steps": [
+        {
+          "say": "OUTER JOIN 세 가지를 볼게요."
+        },
+        {
+          "say": "짝이 맞는 행은 3행이에요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  2
+                ],
+                [
+                  0,
+                  3
+                ]
+              ]
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "LEFT는 왼쪽 EMP를 모두 남겨요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  2
+                ],
+                [
+                  0,
+                  3
+                ]
+              ],
+              "rows": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "result": {
+                "title": "LEFT",
+                "columns": [
+                  "ENAME",
+                  "E.DEPTNO",
+                  "D.DEPTNO",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "KING",
+                    "10",
+                    "10",
+                    "ACCOUNTING"
+                  ],
+                  [
+                    "SMITH",
+                    "20",
+                    "20",
+                    "RESEARCH"
+                  ],
+                  [
+                    "FORD",
+                    "20",
+                    "20",
+                    "RESEARCH"
+                  ]
+                ]
+              }
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "짝 없는 ALLEN이 더해져 4행이에요. DEPT 쪽은 NULL이에요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                1
+              ],
+              "notes": [
+                [
+                  1,
+                  "DEPTNO",
+                  "짝 없음"
+                ]
+              ],
+              "result": {
+                "title": "LEFT 4행",
+                "columns": [
+                  "ENAME",
+                  "E.DEPTNO",
+                  "D.DEPTNO",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "KING",
+                    "10",
+                    "10",
+                    "ACCOUNTING"
+                  ],
+                  [
+                    "SMITH",
+                    "20",
+                    "20",
+                    "RESEARCH"
+                  ],
+                  [
+                    "FORD",
+                    "20",
+                    "20",
+                    "RESEARCH"
+                  ],
+                  [
+                    "ALLEN",
+                    "30",
+                    "NULL",
+                    "NULL"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "RIGHT는 오른쪽 DEPT를 모두 남겨요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  2
+                ],
+                [
+                  0,
+                  3
+                ]
+              ],
+              "result": {
+                "title": "RIGHT",
+                "columns": [
+                  "ENAME",
+                  "E.DEPTNO",
+                  "D.DEPTNO",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "KING",
+                    "10",
+                    "10",
+                    "ACCOUNTING"
+                  ],
+                  [
+                    "SMITH",
+                    "20",
+                    "20",
+                    "RESEARCH"
+                  ],
+                  [
+                    "FORD",
+                    "20",
+                    "20",
+                    "RESEARCH"
+                  ]
+                ]
+              }
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ]
+              ],
+              "rows": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "사원 없는 40번이 더해져 4행이에요.",
+          "t": {
+            "DEPT": {
+              "rows": [
+                2
+              ],
+              "notes": [
+                [
+                  2,
+                  "DEPTNO",
+                  "짝 없음"
+                ]
+              ]
+            },
+            "EMP": {
+              "result": {
+                "title": "RIGHT 4행",
+                "columns": [
+                  "ENAME",
+                  "E.DEPTNO",
+                  "D.DEPTNO",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "KING",
+                    "10",
+                    "10",
+                    "ACCOUNTING"
+                  ],
+                  [
+                    "SMITH",
+                    "20",
+                    "20",
+                    "RESEARCH"
+                  ],
+                  [
+                    "FORD",
+                    "20",
+                    "20",
+                    "RESEARCH"
+                  ],
+                  [
+                    "NULL",
+                    "NULL",
+                    "40",
+                    "OPERATIONS"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "FULL은 양쪽을 모두 남겨 5행이에요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                1
+              ],
+              "result": {
+                "title": "FULL 5행",
+                "columns": [
+                  "ENAME",
+                  "E.DEPTNO",
+                  "D.DEPTNO",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "KING",
+                    "10",
+                    "10",
+                    "ACCOUNTING"
+                  ],
+                  [
+                    "SMITH",
+                    "20",
+                    "20",
+                    "RESEARCH"
+                  ],
+                  [
+                    "FORD",
+                    "20",
+                    "20",
+                    "RESEARCH"
+                  ],
+                  [
+                    "ALLEN",
+                    "30",
+                    "NULL",
+                    "NULL"
+                  ],
+                  [
+                    "NULL",
+                    "NULL",
+                    "40",
+                    "OPERATIONS"
+                  ]
+                ]
+              }
+            },
+            "DEPT": {
+              "rows": [
+                2
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "flow",
+      "section": "OUTER JOIN",
+      "title": "FULL OUTER 행 수",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "매칭",
+          "desc": "SMITH·KING·FORD",
+          "icon": "link"
+        },
+        {
+          "title": "왼쪽에만",
+          "desc": "ALLEN",
+          "icon": "user"
+        },
+        {
+          "title": "오른쪽에만",
+          "desc": "40번 부서",
+          "icon": "building"
+        },
+        {
+          "title": "합계 5행",
+          "desc": "3 + 1 + 1",
+          "icon": "check"
+        }
+      ],
+      "steps": [
+        {
+          "say": "FULL OUTER 행 수를 세 볼게요."
+        },
+        {
+          "say": "매칭되는 행이 3행이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "왼쪽에만 있는 ALLEN이 1행.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "오른쪽에만 있는 40번 부서가 1행.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "합치면 5행이에요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "callout",
+      "section": "OUTER JOIN",
+      "tone": "info",
+      "title": "알아 둘 관계",
+      "text": "A RIGHT JOIN B = **B LEFT JOIN A**. FULL은 LEFT와 RIGHT의 **UNION**.",
+      "steps": [
+        {
+          "say": "RIGHT는 테이블 순서를 바꾼 LEFT와 같아요."
+        },
+        {
+          "say": "FULL은 LEFT와 RIGHT를 UNION한 결과예요."
+        },
+        {
+          "say": "UNION ALL이면 매칭 행이 중복돼요."
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "quiz",
+      "section": "OUTER JOIN",
+      "question": "매칭 3행, 왼쪽에만 1행, 오른쪽에만 1행. **FULL OUTER JOIN** 행 수는?",
+      "choices": [
+        "3행",
+        "4행",
+        "12행",
+        "5행"
+      ],
+      "answer": 4,
+      "explanation": "3 더하기 1 더하기 1이에요. 그래서 5행이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. FULL OUTER JOIN은 몇 행일까요?"
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "compare",
+      "section": "ON과 WHERE",
+      "title": "ON과 WHERE의 역할",
+      "left": {
+        "title": "ON 조건",
+        "icon": "link",
+        "items": [
+          "짝을 찾는 조건",
+          "기준 행은 모두 유지"
+        ]
+      },
+      "right": {
+        "title": "WHERE 조건",
+        "icon": "filter",
+        "items": [
+          "결과를 거르는 조건",
+          "NULL 행도 제거"
+        ]
+      },
+      "steps": [
+        {
+          "say": "INNER JOIN에선 어디에 둬도 결과가 같아요."
+        },
+        {
+          "say": "하지만 OUTER JOIN에선 달라져요."
+        },
+        {
+          "say": "ON은 짝을 찾는 조건이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "기준 테이블 행은 그대로 다 남아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "WHERE는 조인이 끝난 결과를 걸러요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "NULL로 채운 행도 걸러질 수 있어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "flow",
+      "section": "ON과 WHERE",
+      "title": "OUTER JOIN 처리 순서",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "DEPT 3행",
+          "desc": "기준 테이블",
+          "icon": "table"
+        },
+        {
+          "title": "ON",
+          "desc": "EMP 짝 찾기",
+          "icon": "link"
+        },
+        {
+          "title": "조인 결과",
+          "desc": "짝 없으면 NULL",
+          "icon": "layers"
+        },
+        {
+          "title": "WHERE",
+          "desc": "결과 행 거르기",
+          "icon": "filter"
+        }
+      ],
+      "steps": [
+        {
+          "say": "순서로 보면 더 쉬워요."
+        },
+        {
+          "say": "기준은 DEPT 3행이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "ON 조건으로 EMP 짝을 찾아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "짝이 없어도 3행은 남아요. NULL로 채워요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "마지막에 WHERE가 결과를 걸러요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "id": "s20",
+      "section": "ON과 WHERE",
+      "type": "data",
+      "title": "예제1: SMITH 조건",
+      "tables": [
+        "DEPT",
+        "EMP"
+      ],
+      "code": "SELECT D.DEPTNO, D.DNAME, E.ENAME\nFROM   DEPT D LEFT JOIN EMP E\n  ON   D.DEPTNO = E.DEPTNO\n AND   E.ENAME = 'SMITH'   -- ① ON에 둘 때\nWHERE  E.ENAME = 'SMITH';  -- ② WHERE에 둘 때",
+      "steps": [
+        {
+          "say": "DEPT 기준 LEFT 조인에 SMITH 조건을 걸어요.",
+          "focus": [
+            2,
+            3
+          ]
+        },
+        {
+          "say": "ON에 두면 짝을 찾을 때 SMITH만 봐요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "DEPT": {
+              "tint": [
+                [
+                  1
+                ]
+              ]
+            },
+            "EMP": {
+              "tint": [
+                [
+                  0
+                ]
+              ],
+              "cells": [
+                [
+                  0,
+                  "ENAME"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 부서 3행이 다 남고, 20번에만 SMITH가 붙어요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "DEPT": {
+              "rows": [
+                0,
+                1,
+                2
+              ],
+              "result": {
+                "title": "① ON에 조건 · 3행",
+                "columns": [
+                  "DEPTNO",
+                  "DNAME",
+                  "ENAME"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "ACCOUNTING",
+                    "NULL"
+                  ],
+                  [
+                    "20",
+                    "RESEARCH",
+                    "SMITH"
+                  ],
+                  [
+                    "40",
+                    "OPERATIONS",
+                    "NULL"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "WHERE에 두면 조인을 먼저 끝내요.",
+          "focus": [
+            5
+          ],
+          "t": {
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ]
+              ],
+              "result": {
+                "title": "조인 직후",
+                "columns": [
+                  "DEPTNO",
+                  "DNAME",
+                  "ENAME"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "ACCOUNTING",
+                    "KING"
+                  ],
+                  [
+                    "20",
+                    "RESEARCH",
+                    "SMITH"
+                  ],
+                  [
+                    "20",
+                    "RESEARCH",
+                    "FORD"
+                  ],
+                  [
+                    "40",
+                    "OPERATIONS",
+                    "NULL"
+                  ]
+                ]
+              }
+            },
+            "EMP": {
+              "tint": [
+                [
+                  2
+                ],
+                [
+                  0,
+                  3
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그다음 SMITH가 아닌 행이 지워져요. NULL 행도요.",
+          "focus": [
+            5
+          ],
+          "t": {
+            "DEPT": {
+              "result": {
+                "title": "② WHERE에 조건 · 1행",
+                "columns": [
+                  "DEPTNO",
+                  "DNAME",
+                  "ENAME"
+                ],
+                "rows": [
+                  [
+                    "20",
+                    "RESEARCH",
+                    "SMITH"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "NULL은 SMITH와 같지 않기 때문이에요."
+        },
+        {
+          "say": "결국 INNER JOIN과 같아져요."
+        }
+      ]
+    },
+    {
+      "id": "s21",
+      "section": "ON과 WHERE",
+      "type": "data",
+      "title": "예제2: 10번 조건",
+      "tables": [
+        "DEPT",
+        "EMP"
+      ],
+      "code": "SELECT D.DEPTNO, D.DNAME, E.ENAME\nFROM   DEPT D LEFT JOIN EMP E\n  ON   D.DEPTNO = E.DEPTNO\n AND   D.DEPTNO = 10;\n-- 10번만 보려면: WHERE D.DEPTNO = 10",
+      "steps": [
+        {
+          "say": "이번엔 기준 테이블 DEPT에 조건을 걸어요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "DEPT": {
+              "cells": [
+                [
+                  0,
+                  "DEPTNO"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "ON에 두면 DEPT 행이 걸러지지 않아요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "DEPT": {
+              "rows": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "10번만 KING과 짝을 지어요.",
+          "t": {
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ]
+              ],
+              "result": {
+                "title": "ON에 조건",
+                "columns": [
+                  "DEPTNO",
+                  "DNAME",
+                  "ENAME"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "ACCOUNTING",
+                    "KING"
+                  ]
+                ]
+              }
+            },
+            "EMP": {
+              "tint": [
+                [
+                  2
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "20번도 남고, 짝이 없어 NULL이 돼요.",
+          "t": {
+            "DEPT": {
+              "rows": [
+                1,
+                2
+              ],
+              "notes": [
+                [
+                  1,
+                  "DEPTNO",
+                  "짝 없음"
+                ]
+              ],
+              "result": {
+                "title": "ON에 조건 · 3행",
+                "columns": [
+                  "DEPTNO",
+                  "DNAME",
+                  "ENAME"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "ACCOUNTING",
+                    "KING"
+                  ],
+                  [
+                    "20",
+                    "RESEARCH",
+                    "NULL"
+                  ],
+                  [
+                    "40",
+                    "OPERATIONS",
+                    "NULL"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "10번만 보려면 WHERE에 써야 해요.",
+          "focus": [
+            5
+          ],
+          "t": {
+            "DEPT": {
+              "filter": [
+                0
+              ],
+              "result": {
+                "title": "WHERE에 조건 · 1행",
+                "columns": [
+                  "DEPTNO",
+                  "DNAME",
+                  "ENAME"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "ACCOUNTING",
+                    "KING"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "ON과 WHERE",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "반대편 조건을 **WHERE**에 쓰면 OUTER 효과가 사라져요. 기준 조건을 **ON**에 쓰면 안 걸러져요.",
+      "steps": [
+        {
+          "say": "NULL이 채워질 쪽 조건을 WHERE에 쓰면,"
+        },
+        {
+          "say": "OUTER JOIN 효과가 사라져요."
+        },
+        {
+          "say": "기준 테이블 조건을 ON에 쓰면 걸러지지 않아요."
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "quiz",
+      "section": "ON과 WHERE",
+      "question": "DEPT 3행 LEFT JOIN EMP ON 부서 일치, **WHERE E.ENAME = 'SMITH'**. 결과 행 수는?",
+      "choices": [
+        "1행",
+        "3행",
+        "0행",
+        "4행"
+      ],
+      "answer": 1,
+      "explanation": "NULL 행은 WHERE에서 지워져요. SMITH 1행만 남아요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. SMITH 조건을 WHERE에 두면 몇 행일까요?"
+        }
+      ],
+      "id": "s23"
+    },
+    {
+      "type": "cards",
+      "section": "Oracle (+)와 대응",
+      "title": "오라클 방식과 대응",
+      "cols": 2,
+      "items": [
+        {
+          "title": "LEFT",
+          "desc": "A.K = B.K(+)",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "RIGHT",
+          "desc": "A.K(+) = B.K",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "FULL",
+          "desc": "(+) 불가, UNION",
+          "icon": "lock",
+          "tone": "warn"
+        },
+        {
+          "title": "CROSS",
+          "desc": "FROM A, B",
+          "icon": "copy"
+        }
+      ],
+      "steps": [
+        {
+          "say": "오라클 플러스 기호와 비교해 볼게요."
+        },
+        {
+          "say": "LEFT는 B 쪽에 플러스 기호를 붙여요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "RIGHT는 A 쪽에 붙여요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "FULL은 양쪽에 못 붙여요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "LEFT와 RIGHT 결과를 UNION해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "CROSS는 조건 없이 테이블만 나열해요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s24"
+    },
+    {
+      "type": "callout",
+      "section": "Oracle (+)와 대응",
+      "tone": "info",
+      "title": "ON 조건과 (+)",
+      "text": "ON의 반대편 조건은 오라클에서 **(+)를 붙인 조건**. 빠뜨리면 ANSI의 **WHERE 조건**과 같아요.",
+      "steps": [
+        {
+          "say": "ON 절의 반대편 조건은 플러스 기호를 붙인 조건이에요."
+        },
+        {
+          "say": "플러스 기호를 빠뜨리면 WHERE 조건과 같아요."
+        }
+      ],
+      "id": "s25"
+    },
+    {
+      "type": "quiz",
+      "section": "Oracle (+)와 대응",
+      "question": "**FULL OUTER JOIN**을 Oracle (+)로 표현하는 방법은?",
+      "choices": [
+        "양쪽에 (+)",
+        "(+)로 직접 불가",
+        "왼쪽에만 (+)",
+        "(+) 생략"
+      ],
+      "answer": 2,
+      "explanation": "양쪽 (+)는 불가해요. LEFT와 RIGHT 결과를 UNION해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. FULL 조인을 플러스 기호로 쓸 수 있을까요?"
+        }
+      ],
+      "id": "s26"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "JOIN만 쓰면 INNER JOIN",
+        "NATURAL은 전부, USING은 골라서",
+        "NATURAL, USING 조인 컬럼 접두사 X",
+        "FULL = 매칭 + 왼쪽 + 오른쪽",
+        "ON은 짝 찾기, WHERE는 결과 필터",
+        "FULL은 (+)로 표현 불가"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "JOIN만 쓰면 INNER JOIN이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "NATURAL은 같은 이름 전부, USING은 골라서 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "둘 다 조인 컬럼엔 접두사를 못 붙여요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "FULL 행 수는 매칭과 양쪽 나머지의 합이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "ON은 짝 찾기, WHERE는 결과 필터예요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "FULL은 플러스 기호로 표현할 수 없어요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s27"
+    }
+  ]
+}

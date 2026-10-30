@@ -1,0 +1,21 @@
+[
+  { "text": "B*Tree 인덱스의 B는 이진(Binary)을 의미하므로 각 노드는 최대 두 개의 자식만 가진다.", "answer": false, "explain": "B는 Balanced다. 한 블록이 수백 개의 자식을 가질 수 있어 트리 높이가 낮다." },
+  { "text": "B*Tree 인덱스는 루트에서 어떤 리프 블록까지 내려가든 높이가 같은 균형 트리다.", "answer": true, "explain": "삭제가 많아도 높이는 같으므로 Unbalanced Index는 생기지 않는다. 다만 Fragmentation은 생길 수 있다." },
+  { "text": "B*Tree 인덱스의 리프 블록은 인덱스 키 값과 ROWID를 키 순으로 저장한다.", "answer": true, "explain": "리프 블록의 인덱스 레코드는 테이블 레코드와 1:1로 대응한다." },
+  { "text": "B*Tree 인덱스의 리프 블록끼리는 단방향 연결 리스트로 이어져 있어 역순 스캔이 불가능하다.", "answer": false, "explain": "리프 블록은 양방향 연결 리스트로 이어져 있어 정순·역순 스캔이 모두 가능하다." },
+  { "text": "루트와 브랜치 블록의 첫 번째 레코드는 키 값을 갖지 않는 LMC(Leftmost Child)다.", "answer": true, "explain": "LMC는 자식 노드 중 가장 왼쪽 블록을 가리킨다." },
+  { "text": "B*Tree 인덱스에서 키 값이 같은 레코드는 ROWID 순으로 정렬된다.", "answer": true, "explain": "인덱스는 키 값, 키가 같으면 ROWID 순으로 정렬되어 저장된다." },
+  { "text": "ROWID는 메모리 주소를 직접 가리키는 물리적 포인터이므로 ROWID로 테이블을 액세스하는 비용은 거의 없다.", "answer": false, "explain": "ROWID는 논리적 주소다. 버퍼 캐시 해시 탐색과 래치 획득을 거치므로 생각보다 비싸다." },
+  { "text": "인덱스 수직적 탐색은 리프 블록을 옆으로 읽으며 조건을 만족하는 데이터를 모두 찾는 과정이다.", "answer": false, "explain": "설명은 수평적 탐색이다. 수직적 탐색은 루트에서 리프까지 내려가 스캔 시작점을 찾는 과정이다." },
+  { "text": "인덱스 수평적 탐색은 조건을 벗어나는 첫 값을 만나면 스캔을 멈춘다.", "answer": true, "explain": "인덱스는 정렬되어 있으므로 시작점과 끝점을 정해 필요한 범위만 읽는다." },
+  { "text": "브랜치 블록에서 찾는 값과 같은 키를 만나면 중복 값이 앞 블록에도 있을 수 있어 바로 앞 레코드의 하위 블록으로 내려간다.", "answer": true, "explain": "같은 값이 앞쪽 하위 블록에 있을 수 있으므로 그 앞 레코드가 가리키는 블록부터 탐색한다." },
+  { "text": "인덱스는 키 순으로 정렬되어 있어 ORDER BY나 MIN/MAX 처리 시 소트 연산을 생략할 수 있다.", "answer": true, "explain": "인덱스 정렬 순서를 그대로 이용하면 별도 정렬이 필요 없다." },
+  { "text": "Oracle의 단일 컬럼 B*Tree 인덱스는 NULL 값을 인덱스의 맨 앞에 저장한다.", "answer": false, "explain": "Oracle 단일 컬럼 인덱스는 NULL을 저장하지 않는다. 결합 인덱스에서 NULL은 맨 뒤에 정렬된다." },
+  { "text": "SQL Server 인덱스는 NULL 값도 저장하며 NULL을 맨 앞에 정렬한다.", "answer": true, "explain": "Oracle은 NULL을 맨 뒤에 두고, SQL Server는 NULL을 저장하며 맨 앞에 둔다." },
+  { "text": "인덱스 컬럼을 UPDATE하면 인덱스에서는 삭제 후 삽입 방식으로 처리된다.", "answer": true, "explain": "인덱스는 정렬 구조라 키 값이 바뀌면 기존 위치에서 삭제하고 새 위치에 삽입한다." },
+  { "text": "비트맵 인덱스는 Distinct Value 개수가 많은 컬럼에서 저장 공간 효율이 가장 좋다.", "answer": false, "explain": "비트맵 인덱스는 Distinct Value 개수가 적은 컬럼에서 저장 공간이 매우 작다." },
+  { "text": "비트맵 인덱스는 DML 시 Lock 범위가 넓어 동시 DML이 많은 OLTP 환경에 부적합하다.", "answer": true, "explain": "하나의 비트맵 엔트리가 많은 행을 커버하므로 주로 읽기 위주 DW·OLAP 환경에서 쓴다." },
+  { "text": "Oracle IOT는 PK 인덱스의 리프 블록에 테이블 데이터를 저장하므로 ROWID에 의한 테이블 랜덤 액세스가 생기지 않는다.", "answer": true, "explain": "별도 테이블 블록이 없는 구조이며 ORGANIZATION INDEX로 생성한다." },
+  { "text": "SQL Server의 클러스터형 인덱스는 한 테이블에 여러 개 만들 수 있다.", "answer": false, "explain": "클러스터형 인덱스는 데이터 자체를 키 순으로 정렬 저장하므로 테이블당 하나만 만들 수 있다." },
+  { "text": "클러스터형 인덱스가 있는 SQL Server 테이블의 비클러스터형 인덱스는 리프에 RID 대신 클러스터형 인덱스 키를 저장한다.", "answer": true, "explain": "비클러스터형 인덱스는 클러스터형 인덱스 키로 데이터를 찾아간다." }
+]

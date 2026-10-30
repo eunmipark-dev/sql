@@ -1,0 +1,160 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./styles/prose.css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /*
+   * 브랜드: 잉크(남색) + 형광펜(노랑), 종이 느낌의 따뜻한 바탕.
+   * 라이트는 잉크가 주색, 다크는 형광펜이 주색. 로고 색은 고정 (components/brand/AppLogo.vue)
+   */
+  --radius: 0.75rem;
+  --ink: oklch(0.29 0.065 265);
+  --highlight: oklch(0.9 0.165 101);
+  --background: oklch(0.982 0.007 95);
+  --foreground: oklch(0.22 0.035 265);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.035 265);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.035 265);
+  --primary: oklch(0.36 0.09 264);
+  --primary-foreground: oklch(0.985 0.005 95);
+  --secondary: oklch(0.955 0.01 95);
+  --secondary-foreground: oklch(0.26 0.04 265);
+  --muted: oklch(0.955 0.01 95);
+  --muted-foreground: oklch(0.5 0.025 265);
+  --accent: oklch(0.95 0.012 95);
+  --accent-foreground: oklch(0.26 0.04 265);
+  --destructive: oklch(0.577 0.215 27);
+  --success: oklch(0.58 0.14 155);
+  --border: oklch(0.905 0.012 95);
+  --input: oklch(0.9 0.012 95);
+  --ring: oklch(0.36 0.09 264);
+  --mark: oklch(0.9 0.165 101 / 55%);
+  --scrollbar: oklch(0.22 0.035 265 / 14%);
+  --scrollbar-hover: oklch(0.22 0.035 265 / 28%);
+}
+
+.dark {
+  --background: oklch(0.19 0.03 266);
+  --foreground: oklch(0.96 0.008 95);
+  --card: oklch(0.225 0.032 266);
+  --card-foreground: oklch(0.96 0.008 95);
+  --popover: oklch(0.225 0.032 266);
+  --popover-foreground: oklch(0.96 0.008 95);
+  --primary: oklch(0.9 0.165 101);
+  --primary-foreground: oklch(0.22 0.045 265);
+  --secondary: oklch(0.27 0.032 266);
+  --secondary-foreground: oklch(0.96 0.008 95);
+  --muted: oklch(0.27 0.032 266);
+  --muted-foreground: oklch(0.72 0.02 265);
+  --accent: oklch(0.28 0.035 266);
+  --accent-foreground: oklch(0.96 0.008 95);
+  --destructive: oklch(0.68 0.19 24);
+  --success: oklch(0.72 0.15 155);
+  --border: oklch(1 0 0 / 9%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: oklch(0.9 0.165 101);
+  --mark: oklch(0.9 0.165 101 / 28%);
+  --scrollbar: oklch(1 0 0 / 12%);
+  --scrollbar-hover: oklch(1 0 0 / 25%);
+}
+
+@theme inline {
+  --font-sans: "Pretendard Variable", Pretendard, system-ui, sans-serif;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-ink: var(--ink);
+  --color-highlight: var(--highlight);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  html {
+    scroll-padding-top: 5rem;
+  }
+
+  /* 스크롤바: 얇고 연하게, 테마에 맞춰 */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--scrollbar);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-hover);
+    background-clip: content-box;
+  }
+}
+
+/* Shiki 라이트/다크 듀얼 테마 */
+.dark .shiki,
+.dark .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+mark { background: var(--mark); color: inherit; border-radius: 2px; padding: 0 0.125rem; }
+
+/* 형광펜 밑줄: 글자 아래쪽 절반만 칠한다 (브랜드 포인트) */
+.hl {
+  background: linear-gradient(transparent 58%, var(--mark) 58%, var(--mark) 92%, transparent 92%);
+  padding: 0 0.1em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/*
+ * 시스템 바(상태바·하단 버튼·제스처 바)에 가려지지 않게 비워 둘 여백.
+ * 안드로이드 앱은 Android 15 부터 화면이 시스템 바 밑까지 그려지는데(edge-to-edge),
+ * WebView 에 따라 env(safe-area-inset-*) 가 0 으로 오기도 해서 Capacitor 가 넣어 주는
+ * --safe-area-inset-* 값과 비교해 큰 쪽을 쓴다. 웹 브라우저에서는 둘 다 0 이거나 env 만 쓰인다.
+ */
+:root {
+  --inset-top: max(env(safe-area-inset-top, 0px), var(--safe-area-inset-top, 0px));
+  --inset-right: max(env(safe-area-inset-right, 0px), var(--safe-area-inset-right, 0px));
+  --inset-bottom: max(env(safe-area-inset-bottom, 0px), var(--safe-area-inset-bottom, 0px));
+  --inset-left: max(env(safe-area-inset-left, 0px), var(--safe-area-inset-left, 0px));
+  /* 상단 헤더 높이 (고정 사이드바 위치·높이 계산에 쓴다) */
+  --header-h: calc(3.5rem + var(--inset-top));
+  /* 휴대폰 하단 탭 높이 (탭 + 시스템 버튼 영역) */
+  --tabbar-h: calc(3.5rem + var(--inset-bottom));
+}

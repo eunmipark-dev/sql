@@ -1,0 +1,1636 @@
+{
+  "slug": "execution-plan",
+  "title": "실행계획 분석",
+  "tables": {
+    "EMP_X01": {
+      "columns": [
+        "DEPTNO",
+        "JOB",
+        "SAL"
+      ],
+      "rows": [
+        [
+          "10",
+          "CLERK",
+          "100"
+        ],
+        [
+          "10",
+          "MANAGER",
+          "300"
+        ],
+        [
+          "20",
+          "ANALYST",
+          "300"
+        ],
+        [
+          "20",
+          "CLERK",
+          "100"
+        ],
+        [
+          "20",
+          "CLERK",
+          "250"
+        ],
+        [
+          "20",
+          "MANAGER",
+          "200"
+        ],
+        [
+          "30",
+          "CLERK",
+          "150"
+        ],
+        [
+          "30",
+          "SALESMAN",
+          "200"
+        ]
+      ]
+    },
+    "EMP": {
+      "columns": [
+        "ENAME",
+        "JOB"
+      ],
+      "rows": [
+        [
+          "A",
+          "CLERK"
+        ],
+        [
+          "B",
+          "SALESMAN"
+        ],
+        [
+          "C",
+          "MANAGER"
+        ],
+        [
+          "D",
+          "CLERK"
+        ],
+        [
+          "E",
+          "SALESMAN"
+        ],
+        [
+          "F",
+          "ANALYST"
+        ],
+        [
+          "G",
+          "CLERK"
+        ],
+        [
+          "H",
+          "MANAGER"
+        ],
+        [
+          "I",
+          "ANALYST"
+        ],
+        [
+          "J",
+          "PRESIDENT"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "실행계획 분석",
+      "subtitle": "트리를 읽는 순서",
+      "icon": "map",
+      "steps": [
+        {
+          "say": "실행계획 분석을 시작할게요."
+        },
+        {
+          "say": "튜닝은 실행계획을 정확히 읽는 데서 시작해요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "compare",
+      "section": "예상과 실제",
+      "title": "예상과 실제 실행계획",
+      "left": {
+        "title": "예상 실행계획",
+        "icon": "eye",
+        "items": [
+          "실행하지 않음",
+          "EXPLAIN PLAN",
+          "모두 추정치"
+        ]
+      },
+      "right": {
+        "title": "실제 실행계획",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "실제로 실행",
+          "TKPROF",
+          "DISPLAY_CURSOR"
+        ]
+      },
+      "steps": [
+        {
+          "say": "실행계획은 두 종류예요."
+        },
+        {
+          "say": "예상 실행계획은 SQL을 실행하지 않아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "EXPLAIN PLAN이 대표적이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "실제 실행계획은 실제로 돌린 결과예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "실제 건수와 읽은 블록 수를 볼 수 있어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "callout",
+      "section": "예상과 실제",
+      "tone": "warning",
+      "title": "예상은 틀릴 수 있다",
+      "text": "바인드 변수 타입, Peeking, 통계 차이 때문에 예상 계획은 **실제와 다를 수 있어요**.",
+      "steps": [
+        {
+          "say": "예상 계획은 실제와 다를 수 있어요."
+        },
+        {
+          "say": "바인드 변수나 통계 차이 때문이에요."
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "flow",
+      "section": "예상과 실제",
+      "title": "EXPLAIN PLAN 흐름",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "EXPLAIN PLAN",
+          "desc": "SQL은 실행 안 함",
+          "icon": "file"
+        },
+        {
+          "title": "PLAN_TABLE",
+          "desc": "계획을 저장",
+          "icon": "table"
+        },
+        {
+          "title": "DBMS_XPLAN",
+          "desc": "DISPLAY로 조회",
+          "icon": "eye"
+        }
+      ],
+      "steps": [
+        {
+          "say": "EXPLAIN PLAN은 이렇게 써요."
+        },
+        {
+          "say": "SQL 앞에 EXPLAIN PLAN FOR를 붙여요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "계획이 플랜 테이블에 저장돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "10g부터는 플랜 테이블이 기본 제공돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "DBMS XPLAN의 DISPLAY로 꺼내 봐요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "code",
+      "section": "예상과 실제",
+      "title": "DISPLAY 출력 예",
+      "code": "Id Operation           Name  Rows Cost\n 0 SELECT STATEMENT             9    4\n*1  HASH JOIN                   9    4\n 2   TABLE ACCESS FULL DEPT     4    2\n*3   TABLE ACCESS FULL EMP      9    2\n\n1 - access(\"D\".\"DEPTNO\"=\"E\".\"DEPTNO\")\n3 - filter(\"E\".\"SAL\">=200)",
+      "steps": [
+        {
+          "say": "출력은 이렇게 생겼어요."
+        },
+        {
+          "say": "들여쓰기가 부모와 자식 관계예요.",
+          "focus": [
+            3,
+            4,
+            5
+          ]
+        },
+        {
+          "say": "별표가 붙은 줄은 조건 정보가 있어요.",
+          "focus": [
+            3,
+            5
+          ]
+        },
+        {
+          "say": "아래 Predicate 정보에서 확인해요.",
+          "focus": [
+            7,
+            8
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "cards",
+      "section": "예상과 실제",
+      "title": "주요 컬럼",
+      "cols": 2,
+      "items": [
+        {
+          "title": "Id",
+          "desc": "별표면 조건 있음",
+          "icon": "tag"
+        },
+        {
+          "title": "작업",
+          "desc": "Operation",
+          "icon": "workflow"
+        },
+        {
+          "title": "Rows",
+          "desc": "예상 건수",
+          "icon": "table"
+        },
+        {
+          "title": "Cost",
+          "desc": "예상 비용",
+          "icon": "scale"
+        }
+      ],
+      "steps": [
+        {
+          "say": "컬럼 네 개만 알면 돼요."
+        },
+        {
+          "say": "Id는 오퍼레이션 번호예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Operation은 하는 작업이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Rows는 예상 건수, 카디널리티예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "Cost는 예상 비용이에요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "cards",
+      "section": "예상과 실제",
+      "title": "DISPLAY 포맷 옵션",
+      "cols": 3,
+      "items": [
+        {
+          "title": "BASIC",
+          "desc": "Id · 작업 · 이름",
+          "icon": "file"
+        },
+        {
+          "title": "TYPICAL",
+          "desc": "기본값",
+          "icon": "check",
+          "tone": "good"
+        },
+        {
+          "title": "SERIAL",
+          "desc": "병렬 정보 제외",
+          "icon": "filter"
+        },
+        {
+          "title": "ALL",
+          "desc": "블록명 · 컬럼 추가",
+          "icon": "layers"
+        },
+        {
+          "title": "OUTLINE",
+          "desc": "고정용 힌트 목록",
+          "icon": "lock"
+        },
+        {
+          "title": "ADVANCED",
+          "desc": "가능한 모든 정보",
+          "icon": "search"
+        }
+      ],
+      "steps": [
+        {
+          "say": "포맷 옵션도 있어요."
+        },
+        {
+          "say": "BASIC은 아이디와 작업, 이름만 보여요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "TYPICAL이 기본값이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "SERIAL은 병렬 정보를 빼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "ALL은 쿼리 블록과 컬럼 정보를 더해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "OUTLINE은 계획 고정용 힌트를 보여요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "ADVANCED는 모든 정보를 보여요.",
+          "focus": [
+            5
+          ]
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "quiz",
+      "section": "예상과 실제",
+      "question": "**실제 실행계획**을 볼 수 있는 방법은?",
+      "choices": [
+        "EXPLAIN PLAN",
+        "DISPLAY_CURSOR",
+        "PLAN_TABLE 조회",
+        "DISPLAY의 BASIC 포맷"
+      ],
+      "answer": 2,
+      "explanation": "EXPLAIN PLAN은 SQL을 실행하지 않는 예상 계획이에요. 실제 실행계획은 DISPLAY CURSOR나 TKPROF로 확인해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 실제 실행계획을 볼 수 있는 방법은?"
+        }
+      ],
+      "id": "s07q"
+    },
+    {
+      "type": "compare",
+      "section": "Predicate 정보",
+      "title": "access와 filter",
+      "left": {
+        "title": "access",
+        "icon": "target",
+        "tone": "good",
+        "items": [
+          "스캔 범위 결정",
+          "시작점과 끝점"
+        ]
+      },
+      "right": {
+        "title": "filter",
+        "icon": "filter",
+        "tone": "bad",
+        "items": [
+          "읽은 뒤 걸러냄",
+          "스캔량 못 줄임"
+        ]
+      },
+      "steps": [
+        {
+          "say": "조건은 두 가지로 쓰여요."
+        },
+        {
+          "say": "access는 스캔 범위를 정해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "어디서 시작해서 어디서 멈출지요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "filter는 읽은 걸 걸러내기만 해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래서 읽는 양은 줄지 않아요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "id": "s09",
+      "section": "Predicate 정보",
+      "type": "data",
+      "title": "둘 다 나오는 경우",
+      "tables": [
+        "EMP_X01"
+      ],
+      "code": "-- 인덱스 (DEPTNO, JOB, SAL)\n-- 조건 DEPTNO = 20 AND SAL >= 200\n*2 INDEX RANGE SCAN EMP_X01\n\n2 - access(\"DEPTNO\"=20 AND \"SAL\">=200)\n    filter(\"SAL\">=200)",
+      "steps": [
+        {
+          "say": "인덱스 컬럼 순서는 부서, 업무, 급여예요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "EMP_X01": {
+              "cols": [
+                "DEPTNO",
+                "JOB",
+                "SAL"
+              ]
+            }
+          }
+        },
+        {
+          "say": "조건은 부서와 급여에만 있어요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP_X01": {
+              "cols": [
+                "DEPTNO",
+                "SAL"
+              ]
+            }
+          }
+        },
+        {
+          "say": "중간의 업무 조건이 없죠. 그래서 20번 안에서 급여 순서가 뒤섞여 있어요.",
+          "focus": [
+            1,
+            2
+          ],
+          "t": {
+            "EMP_X01": {
+              "cells": [
+                [
+                  2,
+                  "SAL"
+                ],
+                [
+                  3,
+                  "SAL"
+                ],
+                [
+                  4,
+                  "SAL"
+                ],
+                [
+                  5,
+                  "SAL"
+                ]
+              ],
+              "notes": [
+                [
+                  3,
+                  "SAL",
+                  "순서 섞임"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 범위는 부서 조건으로만 정해져요. 20번 네 건을 다 읽어요.",
+          "focus": [
+            5
+          ],
+          "t": {
+            "EMP_X01": {
+              "filter": [
+                2,
+                3,
+                4,
+                5
+              ]
+            }
+          }
+        },
+        {
+          "say": "급여 조건은 access와 filter에 다 나와요.",
+          "focus": [
+            5,
+            6
+          ],
+          "t": {
+            "EMP_X01": {
+              "cols": [
+                "SAL"
+              ]
+            }
+          }
+        },
+        {
+          "say": "실제로는 읽은 뒤에 걸러요. 급여 100인 행이 빠져요.",
+          "focus": [
+            6
+          ],
+          "t": {
+            "EMP_X01": {
+              "filter": [
+                2,
+                4,
+                5
+              ],
+              "notes": [
+                [
+                  3,
+                  "SAL",
+                  "빠짐"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "이러면 사실상 필터로만 동작해요.",
+          "focus": [
+            6
+          ],
+          "t": {
+            "EMP_X01": {
+              "rows": [
+                2,
+                4,
+                5
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "Predicate 정보",
+      "question": "인덱스 **스캔 범위를 줄이는** 조건은?",
+      "choices": [
+        "access 조건",
+        "filter 조건",
+        "둘 다 줄인다",
+        "둘 다 못 줄인다"
+      ],
+      "answer": 1,
+      "explanation": "access 조건만 범위를 줄여요. filter는 읽은 뒤 버려요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 스캔 범위를 줄이는 조건은?"
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "type": "flow",
+      "section": "읽는 순서",
+      "title": "실행계획 읽기 규칙",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "안쪽부터",
+          "desc": "가장 깊은 들여쓰기",
+          "icon": "target"
+        },
+        {
+          "title": "형제는 위부터",
+          "desc": "같은 레벨은 위 먼저",
+          "icon": "layers"
+        },
+        {
+          "title": "그다음 부모",
+          "desc": "자식이 넘겨주면 처리",
+          "icon": "branch"
+        }
+      ],
+      "steps": [
+        {
+          "say": "읽는 규칙은 세 가지예요."
+        },
+        {
+          "say": "첫째, 가장 안쪽 들여쓰기부터 실행해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 같은 레벨이면 위쪽이 먼저예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 자식이 끝나야 부모가 처리돼요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "type": "code",
+      "section": "읽는 순서",
+      "title": "NL 조인 실행계획",
+      "code": "0 SELECT STATEMENT\n1  NESTED LOOPS\n2   NESTED LOOPS\n3    TABLE ACCESS BY INDEX ROWID DEPT\n4     INDEX RANGE SCAN DEPT_LOC_IDX\n5    INDEX RANGE SCAN EMP_DEPTNO_IDX\n6   TABLE ACCESS BY INDEX ROWID EMP",
+      "steps": [
+        {
+          "say": "이 계획으로 연습해 볼게요."
+        },
+        {
+          "say": "가장 안쪽은 4번, 부서 인덱스예요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "3번과 5번은 같은 레벨 형제예요.",
+          "focus": [
+            4,
+            6
+          ]
+        },
+        {
+          "say": "위쪽인 3번이 먼저예요.",
+          "focus": [
+            4
+          ]
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "flow",
+      "section": "읽는 순서",
+      "title": "실제 실행 순서",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "Id 4",
+          "desc": "DEPT 인덱스 스캔"
+        },
+        {
+          "title": "Id 3",
+          "desc": "DEPT 테이블 액세스"
+        },
+        {
+          "title": "Id 5",
+          "desc": "EMP 인덱스 탐색"
+        },
+        {
+          "title": "Id 2",
+          "desc": "두 결과를 NL 조인"
+        },
+        {
+          "title": "Id 6",
+          "desc": "EMP 테이블 액세스"
+        },
+        {
+          "title": "Id 1, 0",
+          "desc": "결과 반환"
+        }
+      ],
+      "steps": [
+        {
+          "say": "순서대로 따라가 봐요."
+        },
+        {
+          "say": "4번, 부서 인덱스로 ROWID를 얻어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "3번, 부서 테이블을 읽어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "5번, 부서마다 사원 인덱스를 찾아요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "2번, 둘을 NL 조인해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "6번, 사원 테이블을 읽어요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "마지막으로 1번과 0번이 결과를 돌려줘요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "Id 번호 순서가 실행 순서는 아니에요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "compare",
+      "section": "읽는 순서",
+      "title": "조인의 두 자식",
+      "left": {
+        "title": "위쪽 자식",
+        "icon": "arrow-left-right",
+        "items": [
+          "Outer · Build",
+          "먼저 실행",
+          "드라이빙 테이블"
+        ]
+      },
+      "right": {
+        "title": "아래쪽 자식",
+        "icon": "link",
+        "items": [
+          "Inner · Probe",
+          "나중에 실행"
+        ]
+      },
+      "steps": [
+        {
+          "say": "조인에선 위쪽 자식이 먼저예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Outer나 Build라고 불러요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "아래쪽은 Inner나 Probe예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "위에 부서, 아래 사원이면 부서가 드라이빙이에요.",
+          "focus": [
+            0
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "callout",
+      "section": "읽는 순서",
+      "tone": "warning",
+      "title": "NL 조인은 번갈아",
+      "text": "NL은 Outer **한 건마다** Inner를 반복 탐색해요. 해시는 Build를 **다 읽고** Probe.",
+      "steps": [
+        {
+          "say": "안쪽부터 규칙은 이해를 돕는 규칙이에요."
+        },
+        {
+          "say": "NL 조인은 바깥 한 건마다 안쪽을 반복해요."
+        },
+        {
+          "say": "바깥 테이블과 안쪽 인덱스가 번갈아 돌아요."
+        },
+        {
+          "say": "해시 조인은 Build를 다 읽고 Probe해요."
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "quiz",
+      "section": "읽는 순서",
+      "question": "실행계획 **읽는 순서**로 옳은 것은?",
+      "choices": [
+        "Id 번호 순서대로",
+        "안쪽부터, 형제는 위부터",
+        "바깥쪽부터 차례로",
+        "아래 줄부터 위로"
+      ],
+      "answer": 2,
+      "explanation": "가장 안쪽부터, 같은 레벨은 위부터, 그다음 부모예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 실행계획을 읽는 순서로 옳은 것은?"
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "cards",
+      "section": "주요 오퍼레이션",
+      "title": "인덱스 오퍼레이션",
+      "cols": 2,
+      "items": [
+        {
+          "title": "UNIQUE",
+          "desc": "= 조건 한 건",
+          "icon": "target"
+        },
+        {
+          "title": "RANGE",
+          "desc": "인덱스 범위 스캔",
+          "icon": "ruler"
+        },
+        {
+          "title": "SKIP",
+          "desc": "선두 컬럼 없을 때",
+          "icon": "shapes"
+        },
+        {
+          "title": "BY ROWID",
+          "desc": "테이블 액세스",
+          "icon": "table"
+        }
+      ],
+      "steps": [
+        {
+          "say": "인덱스 관련 오퍼레이션이에요."
+        },
+        {
+          "say": "UNIQUE SCAN은 같다 조건으로 한 건 찾아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "RANGE SCAN은 범위를 스캔해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "SKIP SCAN은 선두 컬럼 조건이 없을 때예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "BY INDEX ROWID로 테이블을 찾아가요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "compare",
+      "section": "주요 오퍼레이션",
+      "title": "두 가지 Full Scan",
+      "left": {
+        "title": "INDEX FULL",
+        "icon": "train",
+        "items": [
+          "리프를 순서대로",
+          "Single Block",
+          "정렬 보장"
+        ]
+      },
+      "right": {
+        "title": "FAST FULL",
+        "icon": "layers",
+        "items": [
+          "세그먼트 전체",
+          "Multiblock",
+          "순서 보장 없음"
+        ]
+      },
+      "steps": [
+        {
+          "say": "인덱스 Full Scan은 리프를 순서대로 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "싱글 블록 방식이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Fast Full Scan은 멀티 블록으로 읽어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "대신 순서는 보장되지 않아요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "quiz",
+      "section": "주요 오퍼레이션",
+      "question": "인덱스를 Multiblock으로 읽고 **순서를 보장하지 않는** 것은?",
+      "choices": [
+        "INDEX FULL SCAN",
+        "INDEX RANGE SCAN",
+        "INDEX SKIP SCAN",
+        "INDEX FAST FULL SCAN"
+      ],
+      "answer": 4,
+      "explanation": "Fast Full Scan은 멀티 블록으로 빠르지만 순서가 없어요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 멀티 블록으로 읽고 순서가 없는 스캔은?"
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "cards",
+      "section": "주요 오퍼레이션",
+      "title": "조인 오퍼레이션",
+      "cols": 2,
+      "items": [
+        {
+          "title": "NL 조인",
+          "desc": "NESTED LOOPS",
+          "icon": "recycle"
+        },
+        {
+          "title": "소트 머지",
+          "desc": "MERGE JOIN",
+          "icon": "filter"
+        },
+        {
+          "title": "해시 조인",
+          "desc": "HASH JOIN",
+          "icon": "puzzle"
+        },
+        {
+          "title": "카테시안",
+          "desc": "조인 조건 없음",
+          "icon": "warning",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "조인 오퍼레이션이에요."
+        },
+        {
+          "say": "NESTED LOOPS는 NL 조인이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "MERGE JOIN은 소트 머지 조인이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "HASH JOIN은 해시 조인이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "카테시안은 조인 조건이 없을 때 나와요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "EXISTS 서브쿼리는 SEMI 조인,",
+          "focus": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "say": "NOT EXISTS는 ANTI 조인으로 나와요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3
+          ]
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "cards",
+      "section": "주요 오퍼레이션",
+      "title": "정렬과 기타",
+      "cols": 3,
+      "items": [
+        {
+          "title": "집계",
+          "desc": "SORT AGGREGATE",
+          "icon": "shapes"
+        },
+        {
+          "title": "GROUP BY",
+          "desc": "정렬 또는 해시",
+          "icon": "layers"
+        },
+        {
+          "title": "UNIQUE",
+          "desc": "중복 제거",
+          "icon": "copy"
+        },
+        {
+          "title": "STOPKEY",
+          "desc": "Top N에서 멈춤",
+          "icon": "target"
+        },
+        {
+          "title": "FILTER",
+          "desc": "서브쿼리 필터",
+          "icon": "filter"
+        },
+        {
+          "title": "VIEW",
+          "desc": "뷰 병합 안 함",
+          "icon": "eye"
+        }
+      ],
+      "steps": [
+        {
+          "say": "정렬과 기타 오퍼레이션이에요."
+        },
+        {
+          "say": "SORT AGGREGATE는 전체 집계예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "이름과 달리 실제 정렬은 안 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "GROUP BY는 정렬이나 해시로 해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "UNIQUE는 중복을 없애요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "STOPKEY는 ROWNUM 조건에서 멈춰요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "FILTER는 서브쿼리를 필터로 처리해요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "VIEW는 뷰를 병합하지 않았다는 뜻이에요.",
+          "focus": [
+            5
+          ]
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "cards",
+      "section": "Cost와 카디널리티",
+      "title": "세 가지 예상치",
+      "cols": 3,
+      "items": [
+        {
+          "title": "선택도",
+          "desc": "조건 만족 비율",
+          "icon": "filter"
+        },
+        {
+          "title": "카디널리티",
+          "desc": "예상 건수 Rows",
+          "icon": "table"
+        },
+        {
+          "title": "Cost",
+          "desc": "표준화한 예상 비용",
+          "icon": "scale"
+        }
+      ],
+      "steps": [
+        {
+          "say": "예상치 세 가지예요."
+        },
+        {
+          "say": "선택도. 조건을 만족할 비율이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "같다 조건은 1 나누기 NDV예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "카디널리티. 예상 건수예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "전체 건수 곱하기 선택도예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Cost. 계획끼리 비교하는 예상 비용이에요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "id": "s23",
+      "section": "Cost와 카디널리티",
+      "type": "data",
+      "title": "카디널리티 계산",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT * FROM EMP\nWHERE  JOB = 'CLERK';",
+      "steps": [
+        {
+          "say": "예를 들어 볼게요. 사원이 10명이에요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9
+              ],
+              "result": {
+                "title": "예상치",
+                "columns": [
+                  "항목",
+                  "값"
+                ],
+                "rows": [
+                  [
+                    "건수",
+                    "10"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "업무 종류는 다섯 가지예요. 이걸 NDV라고 해요.",
+          "t": {
+            "EMP": {
+              "group": "JOB",
+              "result": {
+                "title": "예상치",
+                "columns": [
+                  "항목",
+                  "값"
+                ],
+                "rows": [
+                  [
+                    "건수",
+                    "10"
+                  ],
+                  [
+                    "NDV",
+                    "5"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "같다 조건 선택도는 5분의 1, 0.2예요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "result": {
+                "title": "예상치",
+                "columns": [
+                  "항목",
+                  "값"
+                ],
+                "rows": [
+                  [
+                    "건수",
+                    "10"
+                  ],
+                  [
+                    "NDV",
+                    "5"
+                  ],
+                  [
+                    "선택도",
+                    "0.2"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "카디널리티는 10 곱하기 0.2, 2건이에요.",
+          "t": {
+            "EMP": {
+              "result": {
+                "title": "예상치",
+                "columns": [
+                  "항목",
+                  "값"
+                ],
+                "rows": [
+                  [
+                    "건수",
+                    "10"
+                  ],
+                  [
+                    "NDV",
+                    "5"
+                  ],
+                  [
+                    "선택도",
+                    "0.2"
+                  ],
+                  [
+                    "Rows",
+                    "2"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "값이 고르게 퍼져 있다고 보고 계산한 거예요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "JOB"
+              ]
+            }
+          }
+        },
+        {
+          "say": "실제 CLERK은 세 명이에요. 예상과 다를 수 있어요.",
+          "t": {
+            "EMP": {
+              "group": null,
+              "filter": [
+                0,
+                3,
+                6
+              ],
+              "notes": [
+                [
+                  6,
+                  "JOB",
+                  "실제 3명"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "Cost와 카디널리티",
+      "question": "EMP 100건, JOB 종류 5개. JOB = 'CLERK'의 예상 건수는?",
+      "choices": [
+        "5건",
+        "10건",
+        "20건",
+        "50건"
+      ],
+      "answer": 3,
+      "explanation": "선택도 5분의 1에 100건을 곱해서 20건이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 100건에 업무 종류가 다섯 개면 예상 건수는?"
+        }
+      ],
+      "id": "s24"
+    },
+    {
+      "type": "callout",
+      "section": "Cost와 카디널리티",
+      "tone": "warning",
+      "title": "Cost는 실측값이 아니다",
+      "text": "Cost와 Rows는 **예상치**예요. 다른 SQL끼리 Cost로 성능을 **비교하면 안 돼요**.",
+      "steps": [
+        {
+          "say": "Cost와 Rows는 통계 기반 예상치예요."
+        },
+        {
+          "say": "통계가 낡으면 크게 틀려요."
+        },
+        {
+          "say": "다른 SQL끼리 Cost로 비교하면 안 돼요."
+        },
+        {
+          "say": "정확한 비교는 실측 통계로 해요."
+        }
+      ],
+      "id": "s25"
+    },
+    {
+      "type": "table",
+      "section": "AutoTrace",
+      "title": "AutoTrace 옵션",
+      "columns": [
+        "명령",
+        "실행",
+        "계획",
+        "통계"
+      ],
+      "rows": [
+        [
+          "ON",
+          "O",
+          "O",
+          "O"
+        ],
+        [
+          "ON EXPLAIN",
+          "O",
+          "O",
+          "-"
+        ],
+        [
+          "ON STATISTICS",
+          "O",
+          "-",
+          "O"
+        ],
+        [
+          "TRACEONLY",
+          "O",
+          "O",
+          "O"
+        ],
+        [
+          "TRACEONLY EXPLAIN",
+          "X",
+          "O",
+          "-"
+        ]
+      ],
+      "steps": [
+        {
+          "say": "오토트레이스는 계획과 통계를 함께 봐요."
+        },
+        {
+          "say": "TRACEONLY는 결과 출력만 생략해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "딱 하나만 SQL을 실행하지 않아요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "TRACEONLY EXPLAIN이에요.",
+          "focus": [
+            4
+          ]
+        }
+      ],
+      "id": "s26"
+    },
+    {
+      "type": "compare",
+      "section": "AutoTrace",
+      "title": "SQL Server는",
+      "left": {
+        "title": "SHOWPLAN",
+        "icon": "eye",
+        "items": [
+          "예상 실행계획",
+          "SQL 실행 안 함"
+        ]
+      },
+      "right": {
+        "title": "STATISTICS",
+        "icon": "check",
+        "items": [
+          "실제 실행 후",
+          "건수 · 읽기 · 시간"
+        ]
+      },
+      "steps": [
+        {
+          "say": "SQL Server도 비슷해요."
+        },
+        {
+          "say": "SHOWPLAN은 예상 실행계획이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "STATISTICS는 실행 후 실측 정보예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래픽 계획은 오른쪽에서 왼쪽으로 읽어요.",
+          "focus": [
+            0,
+            1
+          ]
+        }
+      ],
+      "id": "s27"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "예상 계획은 실행 안 함, 실제와 다를 수 있음",
+        "access는 범위 결정, filter는 거르기",
+        "안쪽부터, 형제는 위부터, 그다음 부모",
+        "조인은 위가 Outer, 아래가 Inner",
+        "카디널리티 = 건수 × 선택도",
+        "Cost는 예상치, 실측으로 비교"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "예상 계획은 실제와 다를 수 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "access는 범위를 정하고 filter는 걸러요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "안쪽부터, 형제는 위부터 읽어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "조인은 위가 Outer, 아래가 Inner예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "카디널리티는 건수 곱하기 선택도예요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "Cost는 예상치예요. 비교는 실측으로 해요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s28"
+    }
+  ]
+}

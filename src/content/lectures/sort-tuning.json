@@ -1,0 +1,1624 @@
+{
+  "slug": "sort-tuning",
+  "title": "소트 튜닝",
+  "tables": {
+    "결제": {
+      "columns": [
+        "번호",
+        "주문일",
+        "결제일"
+      ],
+      "rows": [
+        [
+          "1",
+          "10-20",
+          "10-20"
+        ],
+        [
+          "2",
+          "10-20",
+          "10-21"
+        ],
+        [
+          "3",
+          "10-20",
+          "NULL"
+        ],
+        [
+          "4",
+          "10-19",
+          "10-20"
+        ],
+        [
+          "5",
+          "10-19",
+          "10-19"
+        ]
+      ]
+    },
+    "주문_X01": {
+      "columns": [
+        "고객ID",
+        "주문일자"
+      ],
+      "rows": [
+        [
+          "A",
+          "09-01"
+        ],
+        [
+          "A",
+          "09-20"
+        ],
+        [
+          "A",
+          "10-05"
+        ],
+        [
+          "B",
+          "09-03"
+        ],
+        [
+          "B",
+          "09-25"
+        ],
+        [
+          "B",
+          "10-01"
+        ]
+      ]
+    },
+    "거래": {
+      "columns": [
+        "번호",
+        "금액"
+      ],
+      "rows": [
+        [
+          "1",
+          "50"
+        ],
+        [
+          "2",
+          "80"
+        ],
+        [
+          "3",
+          "30"
+        ],
+        [
+          "4",
+          "90"
+        ],
+        [
+          "5",
+          "60"
+        ],
+        [
+          "6",
+          "20"
+        ],
+        [
+          "7",
+          "70"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "소트 튜닝",
+      "subtitle": "정렬을 없애고, 줄이고, 대신하기",
+      "icon": "filter",
+      "steps": [
+        {
+          "say": "소트 튜닝을 시작할게요."
+        },
+        {
+          "say": "정렬은 비싸요. 어떻게 줄일지 알아봐요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "cards",
+      "section": "왜 소트가 문제일까",
+      "title": "소트가 느린 이유",
+      "cols": 3,
+      "items": [
+        {
+          "title": "CPU 부담",
+          "desc": "비교 연산이 많음",
+          "icon": "scale",
+          "tone": "warn"
+        },
+        {
+          "title": "디스크 I/O",
+          "desc": "Temp 쓰고 읽기",
+          "icon": "disk",
+          "tone": "warn"
+        },
+        {
+          "title": "부분범위 X",
+          "desc": "다 정렬해야 첫 행",
+          "icon": "lock",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "소트가 느린 이유는 세 가지예요."
+        },
+        {
+          "say": "첫째, 비교 연산이 많아 CPU를 많이 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 메모리가 모자라면 디스크까지 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 정렬이 끝나야 첫 행이 나와요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "그래서 부분범위 처리가 불가능해져요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "cards",
+      "section": "왜 소트가 문제일까",
+      "title": "소트 튜닝 3가지 전략",
+      "cols": 3,
+      "items": [
+        {
+          "title": "없애기",
+          "desc": "SQL을 바꿔 제거",
+          "icon": "filter",
+          "tone": "good"
+        },
+        {
+          "title": "인덱스로",
+          "desc": "정렬된 순서 활용",
+          "icon": "search",
+          "tone": "good"
+        },
+        {
+          "title": "줄이기",
+          "desc": "컬럼과 건수 최소",
+          "icon": "ruler",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "소트 튜닝 전략은 세 가지예요."
+        },
+        {
+          "say": "첫째, SQL을 바꿔 소트를 없애요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 이미 정렬된 인덱스를 이용해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 정렬할 양을 줄여요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "정리하면 없애기, 대체하기, 줄이기예요.",
+          "focus": [
+            0,
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "flow",
+      "section": "소트 수행 과정",
+      "title": "소트는 어디서 할까",
+      "direction": "down",
+      "edges": [
+        "",
+        "공간 부족",
+        ""
+      ],
+      "nodes": [
+        {
+          "title": "PGA Sort Area",
+          "desc": "메모리에서 정렬",
+          "icon": "database"
+        },
+        {
+          "title": "메모리 소트",
+          "desc": "공간이 충분하면 끝",
+          "icon": "check"
+        },
+        {
+          "title": "Temp에 Run 기록",
+          "desc": "디스크로 내려 씀",
+          "icon": "disk"
+        },
+        {
+          "title": "Run 병합",
+          "desc": "다시 읽어 Merge",
+          "icon": "workflow"
+        }
+      ],
+      "steps": [
+        {
+          "say": "오라클은 PGA의 Sort Area에서 정렬해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "공간이 충분하면 메모리 소트로 끝나요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "부족하면 중간 결과를 Temp에 써요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "그걸 다시 읽어 병합해요. 디스크 소트예요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "layers",
+      "section": "소트 수행 과정",
+      "title": "디스크 사용 정도",
+      "axis": {
+        "top": "빠름",
+        "bottom": "느림"
+      },
+      "layers": [
+        {
+          "title": "Optimal",
+          "desc": "메모리 안에서 완료",
+          "icon": "check"
+        },
+        {
+          "title": "One-pass",
+          "desc": "Temp에 한 번 쓰고 읽기",
+          "icon": "disk"
+        },
+        {
+          "title": "Multi-pass",
+          "desc": "쓰고 읽기를 여러 번",
+          "icon": "warning"
+        }
+      ],
+      "steps": [
+        {
+          "say": "디스크를 쓰는 정도로 셋으로 나눠요."
+        },
+        {
+          "say": "Optimal. 메모리 안에서 끝나요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "One-pass. Temp에 한 번 쓰고 한 번 읽어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Multi-pass. 여러 번 반복해요. 가장 느려요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "cards",
+      "section": "소트 오퍼레이션",
+      "title": "소트 오퍼레이션",
+      "cols": 3,
+      "items": [
+        {
+          "title": "ORDER BY",
+          "desc": "SORT ORDER BY",
+          "icon": "filter"
+        },
+        {
+          "title": "GROUP BY",
+          "desc": "SORT 또는 HASH",
+          "icon": "layers"
+        },
+        {
+          "title": "중복 제거",
+          "desc": "SORT UNIQUE",
+          "icon": "copy"
+        },
+        {
+          "title": "전체 집계",
+          "desc": "SORT AGGREGATE",
+          "icon": "box"
+        },
+        {
+          "title": "머지 조인",
+          "desc": "SORT JOIN",
+          "icon": "link"
+        },
+        {
+          "title": "분석 함수",
+          "desc": "WINDOW SORT",
+          "icon": "table"
+        }
+      ],
+      "steps": [
+        {
+          "say": "실행계획의 소트 오퍼레이션을 볼게요."
+        },
+        {
+          "say": "ORDER BY는 SORT ORDER BY예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "GROUP BY는 SORT GROUP BY예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "해시 방식이면 HASH GROUP BY예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "중복 제거는 SORT UNIQUE예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "DISTINCT, UNION, MINUS가 해당돼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "GROUP BY 없는 집계는 SORT AGGREGATE예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "소트 머지 조인은 SORT JOIN이에요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "분석 함수는 WINDOW SORT예요.",
+          "focus": [
+            5
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "compare",
+      "section": "소트 오퍼레이션",
+      "title": "자주 나오는 함정",
+      "left": {
+        "title": "SORT AGGREGATE",
+        "icon": "box",
+        "items": [
+          "Sort Area는 사용",
+          "실제 정렬은 안 함",
+          "값만 갱신하며 읽음"
+        ]
+      },
+      "right": {
+        "title": "HASH GROUP BY",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "10gR2부터 가능",
+          "정렬 보장 없음",
+          "필요하면 ORDER BY"
+        ]
+      },
+      "steps": [
+        {
+          "say": "함정 두 가지를 기억하세요."
+        },
+        {
+          "say": "SORT AGGREGATE는 실제로 정렬하지 않아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "값을 읽으며 합계와 최댓값만 갱신해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "GROUP BY는 해시로 처리될 수 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래서 결과 정렬이 보장되지 않아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "정렬이 필요하면 꼭 ORDER BY를 쓰세요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "quiz",
+      "section": "소트 오퍼레이션",
+      "question": "SQL과 오퍼레이션 연결이 **틀린** 것은?",
+      "choices": [
+        "MINUS, SORT UNIQUE",
+        "분석 함수, WINDOW SORT",
+        "머지 조인, SORT JOIN",
+        "전체 SUM, ORDER BY"
+      ],
+      "answer": 4,
+      "explanation": "GROUP BY 없는 집계는 SORT AGGREGATE예요. 실제 정렬은 하지 않아요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 연결이 틀린 것은 무엇일까요?"
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "flow",
+      "section": "SQL로 소트 없애기",
+      "title": "UNION ALL로 바꾸기",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "UNION",
+          "desc": "중복 제거 소트",
+          "icon": "copy",
+          "tone": "bad"
+        },
+        {
+          "title": "배타적 집합?",
+          "desc": "겹치는 행이 없나",
+          "icon": "search"
+        },
+        {
+          "title": "UNION ALL",
+          "desc": "소트 없음",
+          "icon": "check",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "UNION은 중복을 없애려고 소트해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "두 집합이 서로 겹치지 않는지 봐요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "배타적이면 UNION ALL로 바꿔요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "소트가 사라져요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "id": "s10",
+      "section": "SQL로 소트 없애기",
+      "type": "data",
+      "title": "겹칠 수 있을 때",
+      "tables": [
+        "결제"
+      ],
+      "code": "SELECT 번호 FROM 결제\nWHERE  결제일 = '10-20'\nUNION ALL\nSELECT 번호 FROM 결제\nWHERE  주문일 = '10-20'\nAND    결제일 <> '10-20';\n-- 대신 LNNVL(결제일 = '10-20')",
+      "steps": [
+        {
+          "say": "첫 집합은 결제일 조건이에요. 1번과 4번이에요.",
+          "focus": [
+            1,
+            2
+          ],
+          "t": {
+            "결제": {
+              "rows": [
+                0,
+                3
+              ],
+              "cells": [
+                [
+                  0,
+                  "결제일"
+                ],
+                [
+                  3,
+                  "결제일"
+                ]
+              ],
+              "result": {
+                "title": "UNION ALL",
+                "columns": [
+                  "번호"
+                ],
+                "rows": [
+                  [
+                    "1"
+                  ],
+                  [
+                    "4"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "둘째 집합은 주문일 조건이에요. 1, 2, 3번이에요.",
+          "focus": [
+            4,
+            5
+          ],
+          "t": {
+            "결제": {
+              "rows": [
+                0,
+                1,
+                2
+              ],
+              "cells": [
+                [
+                  0,
+                  "주문일"
+                ],
+                [
+                  1,
+                  "주문일"
+                ],
+                [
+                  2,
+                  "주문일"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "1번이 겹치니 반대 조건을 추가해요.",
+          "focus": [
+            6
+          ],
+          "t": {
+            "결제": {
+              "rows": [
+                0
+              ],
+              "notes": [
+                [
+                  0,
+                  "결제일",
+                  "겹침"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그런데 같지 않다 조건은 NULL 행도 걸러요.",
+          "focus": [
+            6
+          ],
+          "t": {
+            "결제": {
+              "cells": [
+                [
+                  2,
+                  "결제일"
+                ]
+              ],
+              "notes": [
+                [
+                  2,
+                  "결제일",
+                  "NULL 빠짐"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "3번이 빠져서 결과가 달라져요.",
+          "t": {
+            "결제": {
+              "rows": [
+                2
+              ],
+              "result": {
+                "title": "UNION ALL",
+                "columns": [
+                  "번호"
+                ],
+                "rows": [
+                  [
+                    "1"
+                  ],
+                  [
+                    "4"
+                  ],
+                  [
+                    "2"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "LNNVL을 쓰면 NULL 행까지 포함돼요.",
+          "focus": [
+            7
+          ],
+          "t": {
+            "결제": {
+              "rows": [
+                2
+              ],
+              "result": {
+                "title": "UNION ALL",
+                "columns": [
+                  "번호"
+                ],
+                "rows": [
+                  [
+                    "1"
+                  ],
+                  [
+                    "4"
+                  ],
+                  [
+                    "2"
+                  ],
+                  [
+                    "3"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "또는 OR IS NULL을 붙여도 돼요.",
+          "focus": [
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "SQL로 소트 없애기",
+      "question": "NULL 허용 결제일자로 UNION ALL 변환 시 결과가 **같은** 조건은?",
+      "choices": [
+        "LNNVL(결제일자 = 값)",
+        "결제일자 <> 값",
+        "결제일자 IS NULL",
+        "NOT 결제일자 = 값"
+      ],
+      "answer": 1,
+      "explanation": "같지 않다 조건은 NULL 행을 걸러요. LNNVL은 NULL 행까지 포함해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. NULL 행까지 결과가 같은 조건은?"
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "type": "compare",
+      "section": "SQL로 소트 없애기",
+      "title": "EXISTS로 바꾸기",
+      "left": {
+        "title": "DISTINCT",
+        "icon": "copy",
+        "tone": "bad",
+        "items": [
+          "모든 행 조인",
+          "그 뒤 중복 제거",
+          "소트 발생"
+        ]
+      },
+      "right": {
+        "title": "EXISTS",
+        "icon": "search",
+        "tone": "good",
+        "items": [
+          "한 건 찾으면 멈춤",
+          "소트 없음",
+          "I/O도 줄어듦"
+        ]
+      },
+      "steps": [
+        {
+          "say": "DISTINCT는 모든 행을 읽고 중복을 없애요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "존재 여부만 필요하면 EXISTS로 바꿔요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "한 건만 찾으면 바로 멈춰요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "MINUS도 NOT EXISTS로 바꿀 수 있어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "flow",
+      "section": "SQL로 소트 없애기",
+      "title": "조인 방식 바꾸기",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "해시 조인",
+          "desc": "ORDER BY 소트 따로",
+          "icon": "workflow",
+          "tone": "bad"
+        },
+        {
+          "title": "NL 조인",
+          "desc": "드라이빙 순서 유지",
+          "icon": "link",
+          "tone": "good"
+        },
+        {
+          "title": "소트 생략",
+          "desc": "부분범위 처리 가능",
+          "icon": "check",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "해시 조인 뒤 정렬하면 소트가 따로 생겨요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "드라이빙 인덱스가 정렬 순서와 같다면,",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "NL 조인으로 바꿔요. 순서가 유지돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "소트가 사라지고 부분범위 처리도 돼요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "id": "s14",
+      "section": "인덱스로 소트 생략",
+      "type": "data",
+      "title": "ORDER BY 생략",
+      "tables": [
+        "주문_X01"
+      ],
+      "code": "-- 인덱스: 주문_X01 (고객ID, 주문일자)\nSELECT 주문번호, 주문일자, 주문금액\nFROM   주문\nWHERE  고객ID = :cust_id\nORDER  BY 주문일자 DESC;",
+      "steps": [
+        {
+          "say": "인덱스는 고객ID, 주문일자 순이에요. 고객 안에서 날짜가 정렬돼 있어요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "주문_X01": {
+              "tint": [
+                [
+                  0,
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4,
+                  5
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "선두 컬럼 고객ID가 같다 조건이에요. A만 읽어요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "주문_X01": {
+              "filter": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "ORDER BY가 그 뒤 컬럼과 일치해요. 거꾸로 읽기만 하면 돼요.",
+          "focus": [
+            5
+          ],
+          "t": {
+            "주문_X01": {
+              "sort": [
+                [
+                  "주문일자",
+                  "desc"
+                ]
+              ],
+              "cols": [
+                "주문일자"
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 SORT ORDER BY가 생략돼요.",
+          "focus": [
+            4,
+            5
+          ],
+          "t": {
+            "주문_X01": {
+              "result": {
+                "title": "소트 없이 결과",
+                "columns": [
+                  "주문일자"
+                ],
+                "rows": [
+                  [
+                    "10-05"
+                  ],
+                  [
+                    "09-20"
+                  ],
+                  [
+                    "09-01"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "고객ID가 IN A, B라면 어떨까요?",
+          "focus": [
+            4
+          ],
+          "t": {
+            "주문_X01": {
+              "filter": null,
+              "sort": null,
+              "result": null,
+              "tint": [
+                [
+                  0,
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4,
+                  5
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "IN은 값마다 따로 읽어요. A 다음 B를 읽으니 날짜가 섞여요.",
+          "t": {
+            "주문_X01": {
+              "cells": [
+                [
+                  2,
+                  "주문일자"
+                ],
+                [
+                  3,
+                  "주문일자"
+                ]
+              ],
+              "notes": [
+                [
+                  3,
+                  "주문일자",
+                  "다시 9월"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 정렬이 따로 필요해요. 소트가 발생해요.",
+          "focus": [
+            5
+          ],
+          "t": {
+            "주문_X01": {
+              "sort": [
+                [
+                  "주문일자",
+                  "desc"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "section": "인덱스로 소트 생략",
+      "title": "생략될까, 안 될까",
+      "left": {
+        "title": "소트 생략",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "A 같다, B 정렬",
+          "A 범위, A,B 정렬"
+        ]
+      },
+      "right": {
+        "title": "소트 발생",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "A IN, B 정렬",
+          "A 범위, B 정렬",
+          "가공 별칭 정렬"
+        ]
+      },
+      "steps": [
+        {
+          "say": "인덱스가 A, B 순이라고 해 볼게요."
+        },
+        {
+          "say": "A가 같다 조건이면 B 정렬은 생략돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "A, B 순 정렬이면 범위 조건이어도 생략돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "A가 IN이나 범위면 B 정렬이 발생해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "IN은 값마다 따로 읽기 때문이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "가공한 컬럼의 별칭으로 정렬해도 발생해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "quiz",
+      "section": "인덱스로 소트 생략",
+      "question": "인덱스 (고객ID, 주문일자)일 때 **소트가 발생하는** 것은?",
+      "choices": [
+        "고객ID 같다, 일자순",
+        "고객ID 같다, 일자 역순",
+        "고객ID IN, 일자순",
+        "고객ID 범위, 두 컬럼순"
+      ],
+      "answer": 3,
+      "explanation": "IN은 고객별로 따로 읽어 전체 순서가 없어요. 그래서 소트가 발생해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 소트가 발생하는 경우는?"
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "flow",
+      "section": "인덱스로 소트 생략",
+      "title": "MIN, MAX 구하기",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "인덱스 끝으로",
+          "desc": "양 끝이 최소, 최대",
+          "icon": "search"
+        },
+        {
+          "title": "한 건만 읽기",
+          "desc": "FIRST ROW",
+          "icon": "target",
+          "tone": "good"
+        },
+        {
+          "title": "조건",
+          "desc": "모두 인덱스에, 가공 X",
+          "icon": "checklist"
+        }
+      ],
+      "steps": [
+        {
+          "say": "인덱스의 양 끝이 최솟값과 최댓값이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그래서 한 건만 읽으면 돼요. FIRST ROW예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "조건 컬럼과 대상 컬럼이 모두 인덱스에 있어야 해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "대상 컬럼을 가공하면 범위 전체를 읽어요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "callout",
+      "section": "인덱스로 소트 생략",
+      "tone": "tip",
+      "title": "대안: Top N",
+      "text": "조건에 인덱스 밖 컬럼이 섞이면 **정렬 후 ROWNUM 1건**으로 바꿔요.",
+      "steps": [
+        {
+          "say": "조건에 인덱스 밖 컬럼이 섞이면 어떡할까요?"
+        },
+        {
+          "say": "정렬 후 한 건만 받는 Top N으로 바꿔요."
+        },
+        {
+          "say": "조건을 만족하는 첫 행에서 멈춰요."
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "cards",
+      "section": "인덱스로 소트 생략",
+      "title": "Top N 쿼리",
+      "cols": 3,
+      "items": [
+        {
+          "title": "STOPKEY",
+          "desc": "N건만 읽고 멈춤",
+          "icon": "target",
+          "tone": "good"
+        },
+        {
+          "title": "Top N 소트",
+          "desc": "상위 N건만 유지",
+          "icon": "filter",
+          "tone": "good"
+        },
+        {
+          "title": "RANK 푸시",
+          "desc": "ROW_NUMBER도 같음",
+          "icon": "tag",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "Top N 쿼리는 소트 부담을 줄여요."
+        },
+        {
+          "say": "인덱스 순서로 읽으면 N건 읽고 멈춰요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "인덱스가 없어도 Top N 소트가 동작해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "상위 N건만 메모리에 두니 훨씬 가벼워요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "ROW_NUMBER로 걸러도 같은 효과예요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "id": "s19t",
+      "section": "인덱스로 소트 생략",
+      "type": "data",
+      "title": "Top N 소트: 3건만 유지",
+      "tables": [
+        "거래"
+      ],
+      "code": "SELECT *\nFROM  (SELECT 번호, 금액 FROM 거래\n       ORDER BY 금액 DESC)\nWHERE ROWNUM <= 3;",
+      "steps": [
+        {
+          "say": "인덱스 없이 금액 상위 3건을 구해 볼게요.",
+          "focus": [
+            3,
+            4
+          ],
+          "t": {
+            "거래": {
+              "cols": [
+                "금액"
+              ]
+            }
+          }
+        },
+        {
+          "say": "처음 세 건은 그대로 메모리에 담아요.",
+          "t": {
+            "거래": {
+              "rows": [
+                0,
+                1,
+                2
+              ],
+              "result": {
+                "title": "메모리 3칸",
+                "columns": [
+                  "번호",
+                  "금액"
+                ],
+                "rows": [
+                  [
+                    "2",
+                    "80"
+                  ],
+                  [
+                    "1",
+                    "50"
+                  ],
+                  [
+                    "3",
+                    "30"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "90이 들어오면 꼴찌 30을 버려요.",
+          "t": {
+            "거래": {
+              "rows": [
+                3
+              ],
+              "notes": [
+                [
+                  2,
+                  "금액",
+                  "버림"
+                ]
+              ],
+              "result": {
+                "title": "메모리 3칸",
+                "columns": [
+                  "번호",
+                  "금액"
+                ],
+                "rows": [
+                  [
+                    "4",
+                    "90"
+                  ],
+                  [
+                    "2",
+                    "80"
+                  ],
+                  [
+                    "1",
+                    "50"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "60은 50보다 커서 50을 버려요.",
+          "t": {
+            "거래": {
+              "rows": [
+                4
+              ],
+              "notes": [
+                [
+                  0,
+                  "금액",
+                  "버림"
+                ]
+              ],
+              "result": {
+                "title": "메모리 3칸",
+                "columns": [
+                  "번호",
+                  "금액"
+                ],
+                "rows": [
+                  [
+                    "4",
+                    "90"
+                  ],
+                  [
+                    "2",
+                    "80"
+                  ],
+                  [
+                    "5",
+                    "60"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "20은 꼴찌보다 작아서 바로 버려요.",
+          "t": {
+            "거래": {
+              "rows": [
+                5
+              ],
+              "notes": [
+                [
+                  5,
+                  "금액",
+                  "버림"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "70이 들어오면 60을 버려요.",
+          "t": {
+            "거래": {
+              "rows": [
+                6
+              ],
+              "notes": [
+                [
+                  4,
+                  "금액",
+                  "버림"
+                ]
+              ],
+              "result": {
+                "title": "메모리 3칸",
+                "columns": [
+                  "번호",
+                  "금액"
+                ],
+                "rows": [
+                  [
+                    "4",
+                    "90"
+                  ],
+                  [
+                    "2",
+                    "80"
+                  ],
+                  [
+                    "7",
+                    "70"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "끝까지 세 건만 들고 있어요. 전체 정렬보다 훨씬 가벼워요.",
+          "t": {
+            "거래": {
+              "filter": [
+                1,
+                3,
+                6
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "section": "소트 영역 줄이기",
+      "title": "필요한 컬럼만 정렬",
+      "left": {
+        "title": "가공 후 정렬",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "긴 문자열을 만들고",
+          "큰 레코드를 정렬"
+        ]
+      },
+      "right": {
+        "title": "정렬 후 가공",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "원래 컬럼만 정렬",
+          "바깥에서 가공"
+        ]
+      },
+      "steps": [
+        {
+          "say": "Sort Area엔 SELECT 컬럼 전체가 올라가요."
+        },
+        {
+          "say": "문자열을 붙여 만든 뒤 정렬하면 무거워요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "인라인 뷰에서 원래 컬럼으로 정렬해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "가공은 바깥에서 해요. 레코드가 작아져요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "code",
+      "section": "소트 영역 줄이기",
+      "title": "필요한 건수만 정렬",
+      "code": "SELECT *\nFROM (SELECT ROWNUM NO, A.*\n      FROM (SELECT ... FROM 종목거래\n            ORDER BY 거래일시) A\n      WHERE ROWNUM <= :page * 10)\nWHERE NO >= (:page - 1) * 10 + 1;",
+      "steps": [
+        {
+          "say": "페이징 쿼리예요."
+        },
+        {
+          "say": "안쪽에서 거래일시로 정렬해요.",
+          "focus": [
+            3,
+            4
+          ]
+        },
+        {
+          "say": "끝 번호 조건은 바로 바깥에 둬요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "그래야 Top N 소트가 작동해요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "가장 바깥에만 두면 전체를 정렬해요.",
+          "focus": [
+            6
+          ]
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "quiz",
+      "section": "소트 영역 줄이기",
+      "question": "페이징의 끝 번호 조건은 어디에 둘까?",
+      "choices": [
+        "가장 바깥 WHERE",
+        "정렬 뷰 바로 바깥",
+        "정렬 뷰 안 WHERE",
+        "HAVING 절"
+      ],
+      "answer": 2,
+      "explanation": "정렬된 인라인 뷰 바로 바깥이에요. 그래야 Top N 소트가 작동해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 끝 번호 조건은 어디에 둘까요?"
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "소트는 부분범위 처리를 막는다",
+        "배타적 UNION은 UNION ALL로",
+        "존재 확인 DISTINCT는 EXISTS로",
+        "선두 같다 + 뒤 컬럼 정렬은 생략",
+        "MIN, MAX는 가공 없이 FIRST ROW",
+        "끝 번호는 정렬 뷰 바로 바깥"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "소트는 부분범위 처리를 막아요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "배타적이면 UNION ALL로 바꿔요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "존재 확인은 DISTINCT 대신 EXISTS예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "선두 같다 조건이면 정렬이 생략돼요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "MIN과 MAX는 가공 없이 한 건만 읽어요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "페이징 끝 번호는 정렬 뷰 바로 바깥이에요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s23"
+    }
+  ]
+}

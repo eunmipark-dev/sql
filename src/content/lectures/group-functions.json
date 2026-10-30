@@ -1,0 +1,1848 @@
+{
+  "slug": "group-functions",
+  "title": "그룹 함수",
+  "tables": {
+    "SALES": {
+      "columns": [
+        "DEPTNO",
+        "JOB",
+        "SAL"
+      ],
+      "rows": [
+        [
+          "10",
+          "CLERK",
+          "100"
+        ],
+        [
+          "10",
+          "MANAGER",
+          "300"
+        ],
+        [
+          "20",
+          "CLERK",
+          "200"
+        ],
+        [
+          "20",
+          "MANAGER",
+          "400"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "그룹 함수",
+      "subtitle": "소계와 총계를 한 번에",
+      "icon": "layers",
+      "steps": [
+        {
+          "say": "그룹 함수를 시작할게요."
+        },
+        {
+          "say": "소계와 총계를 쿼리 한 번으로 만드는 방법이에요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "flow",
+      "section": "그룹 함수란",
+      "title": "왜 필요할까?",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "GROUP BY 여러 번",
+          "desc": "수준마다 따로 집계",
+          "icon": "copy",
+          "tone": "bad"
+        },
+        {
+          "title": "UNION ALL로 연결",
+          "desc": "테이블을 여러 번 읽음",
+          "icon": "link",
+          "tone": "warn"
+        },
+        {
+          "title": "그룹 함수 한 번",
+          "desc": "소계, 총계를 함께",
+          "icon": "check",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "소계와 총계를 따로 구한다고 해 볼게요."
+        },
+        {
+          "say": "GROUP BY 쿼리를 여러 번 써야 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그걸 UNION ALL로 이어 붙여요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그룹 함수는 이걸 한 번에 해 줘요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "cards",
+      "section": "그룹 함수란",
+      "title": "세 가지 그룹 함수",
+      "cols": 3,
+      "items": [
+        {
+          "title": "ROLLUP",
+          "desc": "계층적 소계",
+          "icon": "layers"
+        },
+        {
+          "title": "CUBE",
+          "desc": "모든 조합",
+          "icon": "box"
+        },
+        {
+          "title": "지정 집계",
+          "desc": "GROUPING SETS",
+          "icon": "checklist"
+        }
+      ],
+      "steps": [
+        {
+          "say": "그룹 함수는 세 가지예요."
+        },
+        {
+          "say": "ROLLUP은 계층을 따라 소계를 내요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "CUBE는 가능한 모든 조합을 내요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "GROUPING SETS는 고른 것만 집계해요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "quiz",
+      "section": "그룹 함수란",
+      "question": "가능한 **모든 조합**의 소계를 만드는 그룹 함수는?",
+      "choices": [
+        "ROLLUP",
+        "GROUPING SETS",
+        "GROUP BY",
+        "CUBE"
+      ],
+      "answer": 4,
+      "explanation": "CUBE는 모든 조합을 집계해요. ROLLUP은 계층을 따라 소계를 내요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 가능한 모든 조합을 집계하는 그룹 함수는?"
+        }
+      ],
+      "id": "s03q"
+    },
+    {
+      "id": "s04",
+      "section": "예제 데이터",
+      "type": "data",
+      "title": "예제 데이터",
+      "tables": [
+        "SALES"
+      ],
+      "steps": [
+        {
+          "say": "예제는 아주 작게 잡을게요. 부서별, 직무별 급여예요.",
+          "t": {
+            "SALES": {
+              "rows": [
+                0,
+                1,
+                2,
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "부서는 10번과 20번, 두 개예요.",
+          "t": {
+            "SALES": {
+              "group": "DEPTNO"
+            }
+          }
+        },
+        {
+          "say": "직무는 CLERK과 MANAGER, 두 개예요.",
+          "t": {
+            "SALES": {
+              "group": "JOB"
+            }
+          }
+        },
+        {
+          "say": "그래서 부서와 직무 조합은 4개예요.",
+          "t": {
+            "SALES": {
+              "group": null,
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ],
+                [
+                  2
+                ],
+                [
+                  3
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "이 숫자들로 결과 행 수를 세어 볼게요.",
+          "t": {
+            "SALES": {
+              "cols": [
+                "SAL"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s05",
+      "section": "ROLLUP",
+      "type": "data",
+      "title": "ROLLUP(부서, 직무)",
+      "tables": [
+        "SALES"
+      ],
+      "code": "SELECT DEPTNO, JOB, SUM(SAL)\nFROM SALES\nGROUP BY ROLLUP(DEPTNO, JOB);",
+      "steps": [
+        {
+          "say": "ROLLUP은 오른쪽 컬럼부터 하나씩 빼요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "먼저 부서와 직무별 상세 4행이에요.",
+          "t": {
+            "SALES": {
+              "rows": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "result": {
+                "title": "상세 4행",
+                "columns": [
+                  "DEPTNO",
+                  "JOB",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "CLERK",
+                    "100"
+                  ],
+                  [
+                    "10",
+                    "MANAGER",
+                    "300"
+                  ],
+                  [
+                    "20",
+                    "CLERK",
+                    "200"
+                  ],
+                  [
+                    "20",
+                    "MANAGER",
+                    "400"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "직무를 빼면 부서 소계 2행이 생겨요.",
+          "t": {
+            "SALES": {
+              "group": "DEPTNO",
+              "result": {
+                "title": "+ 부서 소계 2행",
+                "columns": [
+                  "DEPTNO",
+                  "JOB",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "CLERK",
+                    "100"
+                  ],
+                  [
+                    "10",
+                    "MANAGER",
+                    "300"
+                  ],
+                  [
+                    "10",
+                    "NULL",
+                    "400"
+                  ],
+                  [
+                    "20",
+                    "CLERK",
+                    "200"
+                  ],
+                  [
+                    "20",
+                    "MANAGER",
+                    "400"
+                  ],
+                  [
+                    "20",
+                    "NULL",
+                    "600"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "10번 부서 소계는 400이에요.",
+          "t": {
+            "SALES": {
+              "rows": [
+                0,
+                1
+              ],
+              "cols": [
+                "SAL"
+              ]
+            }
+          }
+        },
+        {
+          "say": "20번 부서 소계는 600이에요.",
+          "t": {
+            "SALES": {
+              "rows": [
+                2,
+                3
+              ],
+              "cols": [
+                "SAL"
+              ]
+            }
+          }
+        },
+        {
+          "say": "모두 빼면 전체 합계 1행, 1000이에요.",
+          "t": {
+            "SALES": {
+              "group": null,
+              "rows": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "result": {
+                "title": "+ 총계 1행",
+                "columns": [
+                  "DEPTNO",
+                  "JOB",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "CLERK",
+                    "100"
+                  ],
+                  [
+                    "10",
+                    "MANAGER",
+                    "300"
+                  ],
+                  [
+                    "10",
+                    "NULL",
+                    "400"
+                  ],
+                  [
+                    "20",
+                    "CLERK",
+                    "200"
+                  ],
+                  [
+                    "20",
+                    "MANAGER",
+                    "400"
+                  ],
+                  [
+                    "20",
+                    "NULL",
+                    "600"
+                  ],
+                  [
+                    "NULL",
+                    "NULL",
+                    "1000"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "모두 더하면 7행이에요.",
+          "t": {
+            "SALES": {
+              "result": {
+                "title": "결과 7행",
+                "columns": [
+                  "DEPTNO",
+                  "JOB",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "CLERK",
+                    "100"
+                  ],
+                  [
+                    "10",
+                    "MANAGER",
+                    "300"
+                  ],
+                  [
+                    "10",
+                    "NULL",
+                    "400"
+                  ],
+                  [
+                    "20",
+                    "CLERK",
+                    "200"
+                  ],
+                  [
+                    "20",
+                    "MANAGER",
+                    "400"
+                  ],
+                  [
+                    "20",
+                    "NULL",
+                    "600"
+                  ],
+                  [
+                    "NULL",
+                    "NULL",
+                    "1000"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "ROLLUP",
+      "tone": "info",
+      "title": "소계 행의 NULL",
+      "text": "소계 행에서는 집계에서 **빠진 컬럼이 NULL**로 표시된다. 결과 순서는 ORDER BY로만 보장.",
+      "steps": [
+        {
+          "say": "소계 행에서 빠진 컬럼은 NULL로 보여요."
+        },
+        {
+          "say": "부서 소계 행이면 직무 칸이 NULL이에요."
+        },
+        {
+          "say": "출력 순서는 ORDER BY로만 보장돼요."
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "id": "s07",
+      "section": "ROLLUP",
+      "type": "data",
+      "title": "인수 순서를 바꾸면",
+      "tables": [
+        "SALES"
+      ],
+      "code": "SELECT JOB, DEPTNO, SUM(SAL)\nFROM SALES\nGROUP BY ROLLUP(JOB, DEPTNO);",
+      "steps": [
+        {
+          "say": "ROLLUP은 인수 순서가 계층을 정해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "직무를 앞에 두면 직무끼리 묶여요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "SALES": {
+              "group": "JOB"
+            }
+          }
+        },
+        {
+          "say": "CLERK 소계는 300이에요.",
+          "t": {
+            "SALES": {
+              "rows": [
+                0,
+                2
+              ],
+              "result": {
+                "title": "ROLLUP(JOB, DEPTNO)",
+                "columns": [
+                  "JOB",
+                  "DEPTNO",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "CLERK",
+                    "10",
+                    "100"
+                  ],
+                  [
+                    "CLERK",
+                    "20",
+                    "200"
+                  ],
+                  [
+                    "CLERK",
+                    "NULL",
+                    "300"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "MANAGER 소계는 700이에요.",
+          "t": {
+            "SALES": {
+              "rows": [
+                1,
+                3
+              ],
+              "result": {
+                "title": "ROLLUP(JOB, DEPTNO)",
+                "columns": [
+                  "JOB",
+                  "DEPTNO",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "CLERK",
+                    "10",
+                    "100"
+                  ],
+                  [
+                    "CLERK",
+                    "20",
+                    "200"
+                  ],
+                  [
+                    "CLERK",
+                    "NULL",
+                    "300"
+                  ],
+                  [
+                    "MANAGER",
+                    "10",
+                    "300"
+                  ],
+                  [
+                    "MANAGER",
+                    "20",
+                    "400"
+                  ],
+                  [
+                    "MANAGER",
+                    "NULL",
+                    "700"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "총계 1000까지 모두 7행이에요.",
+          "t": {
+            "SALES": {
+              "group": null,
+              "result": {
+                "title": "결과 7행",
+                "columns": [
+                  "JOB",
+                  "DEPTNO",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "CLERK",
+                    "10",
+                    "100"
+                  ],
+                  [
+                    "CLERK",
+                    "20",
+                    "200"
+                  ],
+                  [
+                    "CLERK",
+                    "NULL",
+                    "300"
+                  ],
+                  [
+                    "MANAGER",
+                    "10",
+                    "300"
+                  ],
+                  [
+                    "MANAGER",
+                    "20",
+                    "400"
+                  ],
+                  [
+                    "MANAGER",
+                    "NULL",
+                    "700"
+                  ],
+                  [
+                    "NULL",
+                    "NULL",
+                    "1000"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "부서 소계 대신 직무 소계가 나왔어요. 행 수는 같아도 내용이 달라요."
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "ROLLUP",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "**ROLLUP은 인수 순서**가 결과를 바꾼다. CUBE·GROUPING SETS는 순서를 바꿔도 같다.",
+      "steps": [
+        {
+          "say": "순서가 중요한 건 ROLLUP뿐이에요."
+        },
+        {
+          "say": "CUBE와 GROUPING SETS는 순서와 상관없어요."
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "quiz",
+      "section": "ROLLUP",
+      "question": "`ROLLUP(A, B)`가 만들지 **않는** 그룹은?",
+      "choices": [
+        "(A, B)",
+        "(A)",
+        "(B)",
+        "()"
+      ],
+      "answer": 3,
+      "explanation": "ROLLUP은 오른쪽부터 빼요. B만 남는 그룹은 없어요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. ROLLUP A, B가 만들지 않는 그룹은?"
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "code",
+      "section": "ROLLUP",
+      "title": "부분 ROLLUP과 묶음",
+      "code": "-- 예제: 부서 2개 × 직무 2개 = 조합 4개\nGROUP BY DEPTNO, ROLLUP(JOB)\n-- (DEPTNO, JOB), (DEPTNO) → 6행\n\nGROUP BY ROLLUP((DEPTNO, JOB))\n-- (DEPTNO, JOB), () → 5행",
+      "steps": [
+        {
+          "say": "부서 2개, 직무 2개인 예제예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "부서는 밖에 두고 직무만 ROLLUP해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "부서 소계만 생기고 총계는 없어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "상세 4행에 부서 소계 2행, 6행이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "괄호로 두 컬럼을 묶으면 한 덩어리예요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "상세 4행에 총계 1행, 5행이에요.",
+          "focus": [
+            6
+          ]
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "id": "s11",
+      "section": "CUBE",
+      "type": "data",
+      "title": "CUBE(부서, 직무)",
+      "tables": [
+        "SALES"
+      ],
+      "code": "SELECT DEPTNO, JOB, SUM(SAL)\nFROM SALES\nGROUP BY CUBE(DEPTNO, JOB);",
+      "steps": [
+        {
+          "say": "CUBE는 가능한 모든 조합을 만들어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "부서와 직무별 상세 4행,",
+          "t": {
+            "SALES": {
+              "rows": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "result": {
+                "title": "상세 4행",
+                "columns": [
+                  "DEPTNO",
+                  "JOB",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "CLERK",
+                    "100"
+                  ],
+                  [
+                    "10",
+                    "MANAGER",
+                    "300"
+                  ],
+                  [
+                    "20",
+                    "CLERK",
+                    "200"
+                  ],
+                  [
+                    "20",
+                    "MANAGER",
+                    "400"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "부서 소계 2행,",
+          "t": {
+            "SALES": {
+              "group": "DEPTNO",
+              "result": {
+                "title": "+ 부서 소계",
+                "columns": [
+                  "DEPTNO",
+                  "JOB",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "CLERK",
+                    "100"
+                  ],
+                  [
+                    "10",
+                    "MANAGER",
+                    "300"
+                  ],
+                  [
+                    "20",
+                    "CLERK",
+                    "200"
+                  ],
+                  [
+                    "20",
+                    "MANAGER",
+                    "400"
+                  ],
+                  [
+                    "10",
+                    "NULL",
+                    "400"
+                  ],
+                  [
+                    "20",
+                    "NULL",
+                    "600"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "ROLLUP에 없던 직무 소계 2행,",
+          "t": {
+            "SALES": {
+              "group": "JOB",
+              "result": {
+                "title": "+ 직무 소계",
+                "columns": [
+                  "DEPTNO",
+                  "JOB",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "CLERK",
+                    "100"
+                  ],
+                  [
+                    "10",
+                    "MANAGER",
+                    "300"
+                  ],
+                  [
+                    "20",
+                    "CLERK",
+                    "200"
+                  ],
+                  [
+                    "20",
+                    "MANAGER",
+                    "400"
+                  ],
+                  [
+                    "10",
+                    "NULL",
+                    "400"
+                  ],
+                  [
+                    "20",
+                    "NULL",
+                    "600"
+                  ],
+                  [
+                    "NULL",
+                    "CLERK",
+                    "300"
+                  ],
+                  [
+                    "NULL",
+                    "MANAGER",
+                    "700"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "그리고 총계 1행이에요.",
+          "t": {
+            "SALES": {
+              "group": null,
+              "result": {
+                "title": "+ 총계",
+                "columns": [
+                  "DEPTNO",
+                  "JOB",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "CLERK",
+                    "100"
+                  ],
+                  [
+                    "10",
+                    "MANAGER",
+                    "300"
+                  ],
+                  [
+                    "20",
+                    "CLERK",
+                    "200"
+                  ],
+                  [
+                    "20",
+                    "MANAGER",
+                    "400"
+                  ],
+                  [
+                    "10",
+                    "NULL",
+                    "400"
+                  ],
+                  [
+                    "20",
+                    "NULL",
+                    "600"
+                  ],
+                  [
+                    "NULL",
+                    "CLERK",
+                    "300"
+                  ],
+                  [
+                    "NULL",
+                    "MANAGER",
+                    "700"
+                  ],
+                  [
+                    "NULL",
+                    "NULL",
+                    "1000"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "모두 더하면 9행이에요.",
+          "t": {
+            "SALES": {
+              "result": {
+                "title": "결과 9행",
+                "columns": [
+                  "DEPTNO",
+                  "JOB",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "CLERK",
+                    "100"
+                  ],
+                  [
+                    "10",
+                    "MANAGER",
+                    "300"
+                  ],
+                  [
+                    "20",
+                    "CLERK",
+                    "200"
+                  ],
+                  [
+                    "20",
+                    "MANAGER",
+                    "400"
+                  ],
+                  [
+                    "10",
+                    "NULL",
+                    "400"
+                  ],
+                  [
+                    "20",
+                    "NULL",
+                    "600"
+                  ],
+                  [
+                    "NULL",
+                    "CLERK",
+                    "300"
+                  ],
+                  [
+                    "NULL",
+                    "MANAGER",
+                    "700"
+                  ],
+                  [
+                    "NULL",
+                    "NULL",
+                    "1000"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "section": "CUBE",
+      "title": "ROLLUP과 CUBE",
+      "left": {
+        "title": "ROLLUP",
+        "icon": "layers",
+        "items": [
+          "계층적 소계",
+          "수준 n 더하기 1",
+          "인수 2개면 3수준"
+        ]
+      },
+      "right": {
+        "title": "CUBE",
+        "icon": "box",
+        "items": [
+          "모든 조합",
+          "수준 2의 n제곱",
+          "인수 2개면 4수준"
+        ]
+      },
+      "steps": [
+        {
+          "say": "인수가 n개일 때 비교해 볼게요."
+        },
+        {
+          "say": "ROLLUP은 그룹 수준이 n 더하기 1개예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "CUBE는 2의 n제곱 개예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "모두 계산하니 CUBE가 부하가 가장 커요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "quiz",
+      "section": "CUBE",
+      "question": "`CUBE(A, B, C)`의 그룹 수준은 몇 개?",
+      "choices": [
+        "3개",
+        "4개",
+        "6개",
+        "8개"
+      ],
+      "answer": 4,
+      "explanation": "CUBE는 2의 n제곱이에요. 2의 3제곱은 8이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. CUBE A, B, C의 그룹 수준은 몇 개일까요?"
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "id": "s14",
+      "section": "GROUPING SETS",
+      "type": "data",
+      "title": "GROUPING SETS",
+      "tables": [
+        "SALES"
+      ],
+      "code": "SELECT DEPTNO, JOB, SUM(SAL)\nFROM SALES\nGROUP BY GROUPING SETS(DEPTNO, JOB);",
+      "steps": [
+        {
+          "say": "GROUPING SETS는 원하는 수준만 골라요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "부서를 넣으면 부서 소계 2행,",
+          "t": {
+            "SALES": {
+              "group": "DEPTNO",
+              "result": {
+                "title": "부서 수준",
+                "columns": [
+                  "DEPTNO",
+                  "JOB",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "NULL",
+                    "400"
+                  ],
+                  [
+                    "20",
+                    "NULL",
+                    "600"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "직무를 넣으면 직무 소계 2행이에요.",
+          "t": {
+            "SALES": {
+              "group": "JOB",
+              "result": {
+                "title": "+ 직무 수준",
+                "columns": [
+                  "DEPTNO",
+                  "JOB",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "NULL",
+                    "400"
+                  ],
+                  [
+                    "20",
+                    "NULL",
+                    "600"
+                  ],
+                  [
+                    "NULL",
+                    "CLERK",
+                    "300"
+                  ],
+                  [
+                    "NULL",
+                    "MANAGER",
+                    "700"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "상세 행과 총계는 없어요.",
+          "t": {
+            "SALES": {
+              "group": null,
+              "result": {
+                "title": "결과 4행",
+                "columns": [
+                  "DEPTNO",
+                  "JOB",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "NULL",
+                    "400"
+                  ],
+                  [
+                    "20",
+                    "NULL",
+                    "600"
+                  ],
+                  [
+                    "NULL",
+                    "CLERK",
+                    "300"
+                  ],
+                  [
+                    "NULL",
+                    "MANAGER",
+                    "700"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "각각을 UNION ALL한 것과 같아요. 4행이에요."
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "GROUPING SETS",
+      "tone": "warning",
+      "title": "전체 합계가 없다",
+      "text": "GROUPING SETS(A, B)엔 **총계가 없다**. 필요하면 빈 괄호 **()**를 추가.",
+      "steps": [
+        {
+          "say": "여기엔 전체 합계가 없어요."
+        },
+        {
+          "say": "총계가 필요하면 빈 괄호를 넣어요."
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "table",
+      "section": "GROUPING SETS",
+      "title": "SETS로 바꿔 쓰기",
+      "columns": [
+        "표현",
+        "같은 그룹 수준"
+      ],
+      "rows": [
+        [
+          "ROLLUP(A, B)",
+          "(A, B), (A), ()"
+        ],
+        [
+          "CUBE(A, B)",
+          "(A, B), (A), (B), ()"
+        ],
+        [
+          "SETS(A, B)",
+          "(A), (B)"
+        ]
+      ],
+      "steps": [
+        {
+          "say": "모두 GROUPING SETS로 바꿀 수 있어요."
+        },
+        {
+          "say": "ROLLUP은 세 수준이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "CUBE는 직무 수준까지 네 개예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "GROUPING SETS는 적은 것만이에요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "quiz",
+      "section": "GROUPING SETS",
+      "question": "`GROUPING SETS(A, B)`에 **없는** 수준은?",
+      "choices": [
+        "(A)",
+        "()",
+        "(B)",
+        "모두 있다"
+      ],
+      "answer": 2,
+      "explanation": "총계를 뜻하는 빈 괄호는 직접 넣어야 해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. GROUPING SETS A, B에 없는 수준은?"
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "flow",
+      "section": "결과 행 수 계산",
+      "title": "행 수 세는 법",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "수준 나열",
+          "desc": "ROLLUP: 부서직무, 부서, 전체",
+          "icon": "checklist"
+        },
+        {
+          "title": "수준별 그룹 수",
+          "desc": "4개, 2개, 1개",
+          "icon": "search"
+        },
+        {
+          "title": "모두 더하기",
+          "desc": "7행",
+          "icon": "check",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "행 수 문제는 세 단계로 풀어요."
+        },
+        {
+          "say": "부서 2개, 직무 2개로 ROLLUP을 세요."
+        },
+        {
+          "say": "첫째, 그룹 수준을 적어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 수준마다 그룹 개수를 세요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "데이터에 실제 있는 조합만 세요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 모두 더해요. 그래서 7행이에요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "compare",
+      "section": "GROUPING 함수",
+      "title": "GROUPING 함수",
+      "left": {
+        "title": "소계, 총계 행",
+        "icon": "tag",
+        "tone": "good",
+        "items": [
+          "값이 1"
+        ]
+      },
+      "right": {
+        "title": "일반 행",
+        "icon": "table",
+        "items": [
+          "값이 0",
+          "원본 NULL도 0"
+        ]
+      },
+      "steps": [
+        {
+          "say": "소계 행의 NULL은 원래 NULL과 헷갈려요."
+        },
+        {
+          "say": "GROUPING 함수가 이걸 구분해 줘요."
+        },
+        {
+          "say": "집계로 생긴 NULL이면 1을 돌려줘요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그 밖에는 0이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "원본이 NULL이어도 일반 행이면 0이에요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "id": "s20",
+      "section": "GROUPING 함수",
+      "type": "data",
+      "title": "라벨 붙이기",
+      "tables": [
+        "SALES"
+      ],
+      "code": "SELECT DECODE(GROUPING(DEPTNO), 1, '전체', TO_CHAR(DEPTNO)) D,\n       DECODE(GROUPING(JOB), 1, '합계', JOB) J,\n       SUM(SAL)\nFROM SALES\nGROUP BY ROLLUP(DEPTNO, JOB);",
+      "steps": [
+        {
+          "say": "ROLLUP 결과에 GROUPING 값을 붙여 볼게요.",
+          "focus": [
+            5
+          ],
+          "t": {
+            "SALES": {
+              "rows": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "result": {
+                "title": "ROLLUP + GROUPING(JOB)",
+                "columns": [
+                  "DEPTNO",
+                  "JOB",
+                  "SUM(SAL)",
+                  "GROUPING(JOB)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "CLERK",
+                    "100",
+                    "0"
+                  ],
+                  [
+                    "10",
+                    "MANAGER",
+                    "300",
+                    "0"
+                  ],
+                  [
+                    "10",
+                    "NULL",
+                    "400",
+                    "1"
+                  ],
+                  [
+                    "20",
+                    "CLERK",
+                    "200",
+                    "0"
+                  ],
+                  [
+                    "20",
+                    "MANAGER",
+                    "400",
+                    "0"
+                  ],
+                  [
+                    "20",
+                    "NULL",
+                    "600",
+                    "1"
+                  ],
+                  [
+                    "NULL",
+                    "NULL",
+                    "1000",
+                    "1"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "GROUPING 값이 1인 행이 소계와 총계예요.",
+          "t": {
+            "SALES": {
+              "cols": [
+                "JOB"
+              ]
+            }
+          }
+        },
+        {
+          "say": "DECODE로 1인 행의 직무를 합계로 바꿔요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "SALES": {
+              "result": {
+                "title": "직무 라벨",
+                "columns": [
+                  "DEPTNO",
+                  "J",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "CLERK",
+                    "100"
+                  ],
+                  [
+                    "10",
+                    "MANAGER",
+                    "300"
+                  ],
+                  [
+                    "10",
+                    "합계",
+                    "400"
+                  ],
+                  [
+                    "20",
+                    "CLERK",
+                    "200"
+                  ],
+                  [
+                    "20",
+                    "MANAGER",
+                    "400"
+                  ],
+                  [
+                    "20",
+                    "합계",
+                    "600"
+                  ],
+                  [
+                    "NULL",
+                    "합계",
+                    "1000"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "숫자 부서번호는 TO CHAR로 문자로 바꿔요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "SALES": {
+              "result": {
+                "title": "부서 라벨",
+                "columns": [
+                  "D",
+                  "J",
+                  "SUM(SAL)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "CLERK",
+                    "100"
+                  ],
+                  [
+                    "10",
+                    "MANAGER",
+                    "300"
+                  ],
+                  [
+                    "10",
+                    "합계",
+                    "400"
+                  ],
+                  [
+                    "20",
+                    "CLERK",
+                    "200"
+                  ],
+                  [
+                    "20",
+                    "MANAGER",
+                    "400"
+                  ],
+                  [
+                    "20",
+                    "합계",
+                    "600"
+                  ],
+                  [
+                    "전체",
+                    "합계",
+                    "1000"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "합계, 전체 같은 글자가 보여요.",
+          "t": {
+            "SALES": {
+              "cols": [
+                "DEPTNO",
+                "JOB"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "GROUPING 함수",
+      "question": "GROUPING 함수가 **1**을 돌려주는 행은?",
+      "choices": [
+        "소계, 총계 행",
+        "원본 NULL 행",
+        "첫 번째 행",
+        "모든 행"
+      ],
+      "answer": 1,
+      "explanation": "집계로 NULL이 된 소계와 총계 행에서 1이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. GROUPING 함수가 1을 돌려주는 행은?"
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "flow",
+      "section": "UNION ALL로 풀어 쓰기",
+      "title": "ROLLUP 풀어 쓰기",
+      "direction": "down",
+      "edges": [
+        "UNION ALL",
+        "UNION ALL"
+      ],
+      "nodes": [
+        {
+          "title": "부서, 직무별 집계",
+          "desc": "GROUP BY 부서, 직무",
+          "icon": "table"
+        },
+        {
+          "title": "부서별 집계",
+          "desc": "GROUP BY 부서",
+          "icon": "building"
+        },
+        {
+          "title": "전체 집계",
+          "desc": "GROUP BY 없음",
+          "icon": "database"
+        }
+      ],
+      "steps": [
+        {
+          "say": "ROLLUP은 세 쿼리를 이은 것과 같아요."
+        },
+        {
+          "say": "부서와 직무별 집계,",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "부서별 집계,",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그리고 전체 집계예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "CUBE라면 직무별 집계가 하나 더 붙어요.",
+          "focus": [
+            0,
+            1,
+            2
+          ]
+        },
+        {
+          "say": "이 방식은 테이블을 여러 번 읽어 느려요.",
+          "focus": [
+            0,
+            1,
+            2
+          ]
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "cards",
+      "section": "UNION ALL로 풀어 쓰기",
+      "title": "DBMS별 참고",
+      "cols": 3,
+      "items": [
+        {
+          "title": "Oracle",
+          "desc": "세 함수 지원",
+          "icon": "database"
+        },
+        {
+          "title": "SQL 서버",
+          "desc": "WITH ROLLUP도",
+          "icon": "database"
+        },
+        {
+          "title": "ORDER BY",
+          "desc": "정렬은 이걸로만",
+          "icon": "checklist",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "DBMS별로 조금 달라요."
+        },
+        {
+          "say": "오라클은 세 함수를 모두 지원해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL 서버도 지원하고, 예전 문법도 있어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "WITH ROLLUP, WITH CUBE예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "결과 순서는 ORDER BY로만 보장돼요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s23"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "ROLLUP: 오른쪽부터 빼며 소계",
+        "ROLLUP만 인수 순서가 중요",
+        "CUBE: 모든 조합, 부하 최대",
+        "GROUPING SETS: 총계는 () 추가",
+        "수준 수: n+1, 2의 n제곱",
+        "GROUPING 1이면 소계·총계 행"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "ROLLUP은 오른쪽부터 빼며 소계를 내요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "인수 순서가 중요한 건 ROLLUP뿐이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "CUBE는 모든 조합이라 부하가 커요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "GROUPING SETS는 총계를 직접 넣어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "수준 수는 n 더하기 1, 그리고 2의 n제곱.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "GROUPING 값 1은 소계와 총계 행이에요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s24"
+    }
+  ]
+}

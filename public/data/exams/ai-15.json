@@ -1,0 +1,742 @@
+{
+  "id": "ai-15",
+  "kind": "ai",
+  "title": "모의고사 15회",
+  "round": 15,
+  "timeLimitMin": 90,
+  "questions": [
+    {
+      "id": 1,
+      "subject": 1,
+      "theory": "data-model",
+      "question": "항공사가 예약 시스템을 재설계하면서 좋은 데이터 모델의 요소를 적용하였다. 요소와 적용 사례를 짝지은 것으로 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "통합성 - 승객 정보를 예약·마일리지·탑승 업무가 각자 정의하지 않고, 한 곳에서 한 번만 정의한 뒤 모든 업무가 참조하도록 하였다.",
+        "업무 규칙 - '좌석 등급은 F, C, Y 중 하나이다'라는 규칙을 모델에 표현하여 개발자와 현업이 같은 규칙을 공유하도록 하였다.",
+        "데이터 재사용 - 운임 조회 화면 한 곳에서만 쓰기 편한 형태로 예약 데이터를 설계하여, 그 화면의 처리 방식에 맞추었다.",
+        "완전성 - 업무 분석 중 수하물 위탁 정보가 모델에 빠져 있음을 발견하고 이를 모델에 추가하였다."
+      ],
+      "answer": 3,
+      "explanation": "**데이터 재사용**은 데이터가 특정 프로세스(화면)에 묶이지 않고 통합적으로 설계되어 여러 업무에서 다시 쓰일 수 있는 것을 말한다. 운임 조회 화면 하나의 처리 방식에 맞춰 설계하는 것은 오히려 재사용성을 떨어뜨리고 비유연성을 키우는 설계이므로 짝이 맞지 않는다.\n\n- 1번: 같은 데이터를 조직 전체에서 한 번만 정의하고 공유하는 것은 **통합성**이다.\n- 2번: 업무 규칙이 모델에 드러나 모든 사용자가 공유하는 것은 **업무 규칙** 요소다.\n- 4번: 업무에 필요한 데이터가 빠짐없이 정의되도록 하는 것은 **완전성**이다."
+    },
+    {
+      "id": 2,
+      "subject": 1,
+      "theory": "entity",
+      "question": "항공 예약 시스템을 분석하며 엔터티 후보에 대해 나온 의견이다. 가장 적절한 것은?",
+      "choices": [
+        "'기내식메뉴'는 다른 항공사 시스템에서는 엔터티가 될 수 있더라도, 이 예약 시스템의 업무에서 관리할 필요가 없다면 엔터티로 도출하지 않는다.",
+        "'승객명'은 모든 예약에 반드시 필요한 중요한 정보이므로 독립된 엔터티로 도출한다.",
+        "'좌석'은 항공기마다 인스턴스가 수백 개씩 생기므로 항공기별로 엔터티를 각각 나누어 정의한다.",
+        "'탑승권발행'은 승객·항공편과의 관계만 표현하면 되므로 속성이 하나도 없는 엔터티로 정의해도 된다."
+      ],
+      "answer": 1,
+      "explanation": "엔터티는 **해당 업무에서 필요하고 관리하고자 하는 정보**여야 한다. 같은 대상이라도 업무 범위에 따라 엔터티 여부가 달라지므로, 예약 업무에서 관리하지 않는 기내식메뉴는 이 시스템의 엔터티로 보지 않는다.\n\n- 2번: 승객명은 승객을 설명하는 정보이므로 엔터티가 아니라 `승객` 엔터티의 **속성**이다.\n- 3번: 인스턴스가 많다는 것은 엔터티를 나눌 이유가 아니다. 같은 성격의 인스턴스 집합은 하나의 `좌석` 엔터티로 정의한다.\n- 4번: 엔터티는 반드시 **속성을 가져야** 한다. 관계만 있고 속성이 없는 엔터티는 엔터티의 특징을 만족하지 못한다."
+    },
+    {
+      "id": 3,
+      "subject": 1,
+      "theory": "attribute",
+      "question": "항공 예약 시스템의 엔터티·인스턴스·속성·속성값의 관계에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "엔터티는 속성을 하나 이상 가지면 충분하므로, '좌석번호' 속성 하나만 가진 `좌석` 엔터티도 바람직한 설계이다.",
+        "한 인스턴스에서 하나의 속성은 여러 값을 가질 수 있으므로, 승객의 여러 연락처를 '연락처' 속성 하나에 쉼표로 이어 저장한다.",
+        "업무에서 '출발일시'를 날짜와 시각으로 나누어 검색·집계해야 하더라도, 의미상 하나의 값이므로 반드시 하나의 속성으로 정의한다.",
+        "`예약` 엔터티의 한 인스턴스에서 '예약상태' 속성은 하나의 속성값만 가진다."
+      ],
+      "answer": 4,
+      "explanation": "한 인스턴스에서 **하나의 속성은 하나의 속성값만** 가진다. 예약 한 건의 예약상태는 '확정', '취소' 등 한 가지 값이다.\n\n- 1번: 한 엔터티는 **2개 이상의 속성**을 가지는 것이 원칙이다.\n- 2번: 한 속성에 여러 값이 들어가야 하면 다중값 속성이다. 별도 엔터티로 분리해야 하며(제1정규형), 쉼표로 이어 저장하는 것은 잘못이다.\n- 3번: 속성인지 판단할 때는 **업무 요구**가 우선이다. 날짜와 시각을 따로 다뤄야 한다면 각각을 속성으로 둘 수 있다."
+    },
+    {
+      "id": 4,
+      "subject": 1,
+      "theory": "relationship",
+      "question": "`승객`과 `예약` 엔터티 사이의 관계를 정의하려 한다. 관계와 관계명에 대한 설명으로 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "하나의 관계는 양쪽 끝에 관계명을 하나씩 가지므로, 승객 기준 '요청한다', 예약 기준 '요청된다'처럼 두 개의 관계명을 붙인다.",
+        "관계명은 이미 발생한 사실을 나타내야 하므로 '예약했다'처럼 과거형으로 표현하는 것이 원칙이다.",
+        "'관련이 있다', '관계된다'처럼 구체적이지 않은 동사는 관계명으로 사용하지 않는다.",
+        "ERD에서는 존재적 관계와 행위적 관계를 구분하지 않고 같은 관계선으로 표현한다."
+      ],
+      "answer": 2,
+      "explanation": "관계명은 **현재형**으로 표현한다. '예약했다'(X) → '예약한다'(O)처럼 써야 하므로 2번이 적절하지 않다.\n\n- 1번: 관계는 시작점과 끝점 양쪽에 이름을 붙여 **두 개의 관계명**을 가진다.\n- 3번: '관련이 있다', '관계된다', '이다' 같은 애매한 동사는 피한다.\n- 4번: ERD는 존재적·행위적 관계를 구분하지 않는다. (UML 클래스 다이어그램은 연관/의존 관계로 구분한다.)"
+    },
+    {
+      "id": 5,
+      "subject": 1,
+      "theory": "identifier",
+      "question": "`승객` 엔터티의 주식별자로 '여권번호'를 검토하였다. 여권번호는 승객마다 서로 다르고 거의 바뀌지도 않는다. 그러나 국내선만 이용하는 승객은 여권 없이 예약할 수 있어서, 여권번호 값이 없는 승객이 존재한다.\n\n이 때문에 여권번호가 주식별자로 부적합하다고 판단했을 때, 그 근거가 되는 주식별자의 특징은?",
+      "choices": [
+        "유일성",
+        "존재성",
+        "최소성",
+        "불변성"
+      ],
+      "answer": 2,
+      "explanation": "주식별자로 지정되면 **반드시 값이 존재**해야 한다(NULL 불가). 여권번호가 없는 승객이 있으므로 **존재성**을 만족하지 못한다.\n\n- 유일성: 여권번호는 승객마다 달라 만족한다.\n- 최소성: 단일 속성이므로 만족한다.\n- 불변성: 거의 바뀌지 않는다고 했으므로 문제의 근거가 아니다."
+    },
+    {
+      "id": 6,
+      "subject": 1,
+      "theory": "normalization",
+      "question": "항공사의 운항 통계 화면이 여러 테이블을 조인하느라 느리다는 불만이 접수되었다. 이에 대한 판단으로 가장 적절한 것은?",
+      "choices": [
+        "정규화된 모델은 조인이 늘어나 조회 성능이 항상 저하되므로, 통계 조회가 느리면 즉시 관련 테이블을 병합한다.",
+        "반정규화는 데이터 무결성에 영향을 주지 않으므로, 별도의 정합성 관리 방안 없이 적용해도 된다.",
+        "반정규화를 적용하기 전에 인덱스 조정, 뷰, 클러스터링, 파티셔닝, 응용 로직 변경 같은 다른 방법을 먼저 검토한다.",
+        "정규화를 하면 입력·수정·삭제 성능이 일반적으로 저하되므로, 예약 입력이 많은 시스템은 정규화를 하지 않는 것이 원칙이다."
+      ],
+      "answer": 3,
+      "explanation": "반정규화는 중복을 허용해 **무결성 저하 위험**이 있으므로, 대상 조사 후 **인덱스·뷰·클러스터링·파티셔닝·응용 로직 변경 같은 대안을 먼저 검토**하고 그래도 안 될 때 적용한다.\n\n- 1번: 정규화하면 조회 성능이 저하될 수도 있지만, 테이블이 작아져 오히려 빨라지기도 한다. '항상 저하'는 틀린 말이고, 바로 병합하는 것도 절차에 어긋난다.\n- 2번: 반정규화는 중복 데이터의 정합성 관리가 필요하다.\n- 4번: 정규화는 중복이 없어 입력·수정·삭제 성능이 일반적으로 **향상**된다."
+    },
+    {
+      "id": 7,
+      "subject": 1,
+      "theory": "relationship-and-join",
+      "question": "`PASSENGER`와 `PAX_DETAIL`은 1:1(선택) 관계, `PASSENGER`와 `BOOKING`은 1:M 관계이며 데이터는 다음과 같다.\n\n**PASSENGER**\n\n| PAX_ID | NAME |\n|---|---|\n| P1 | 김 |\n| P2 | 이 |\n| P3 | 박 |\n| P4 | 최 |\n\n**PAX_DETAIL**\n\n| PAX_ID | PASSPORT_NO |\n|---|---|\n| P1 | M111 |\n| P3 | M333 |\n\n**BOOKING**\n\n| BK_NO | PAX_ID |\n|---|---|\n| B1 | P1 |\n| B2 | P1 |\n| B3 | P3 |\n| B4 | P4 |\n\n다음 SQL의 결과 건수와, 결과 중 PASSPORT_NO가 NULL인 행의 수로 옳은 것은?",
+      "code": "SELECT P.PAX_ID, D.PASSPORT_NO, B.BK_NO\n  FROM PASSENGER P\n  LEFT OUTER JOIN PAX_DETAIL D ON P.PAX_ID = D.PAX_ID\n  INNER JOIN BOOKING B         ON P.PAX_ID = B.PAX_ID;",
+      "choices": [
+        "4건 / 1건",
+        "3건 / 0건",
+        "5건 / 2건",
+        "4건 / 2건"
+      ],
+      "answer": 1,
+      "explanation": "먼저 PASSENGER를 기준으로 PAX_DETAIL을 LEFT JOIN하면 4명이 모두 남는다(P2, P4는 PASSPORT_NO가 NULL). 이어서 BOOKING과 INNER JOIN하면 예약이 없는 P2는 제외되고, P1은 예약이 2건이라 2행이 된다.\n\n| PAX_ID | PASSPORT_NO | BK_NO |\n|---|---|---|\n| P1 | M111 | B1 |\n| P1 | M111 | B2 |\n| P3 | M333 | B3 |\n| P4 | NULL | B4 |\n\n따라서 **4건**이고, PASSPORT_NO가 NULL인 행은 P4 **1건**이다. P2도 PASSPORT_NO가 NULL이지만 예약이 없어 INNER JOIN에서 빠지므로 2건으로 세면 안 된다. 1:1 관계는 행 수를 늘리지 않고, 1:M 관계는 M 쪽 건수만큼 행이 늘어난다."
+    },
+    {
+      "id": 8,
+      "subject": 1,
+      "theory": "transaction-model",
+      "question": "항공권 구매 트랜잭션은 다음 세 단계로 구성된다.\n\n1. 예약(BOOKING) INSERT\n2. 좌석(SEAT)의 상태를 '배정'으로 UPDATE\n3. 결제(PAYMENT) INSERT\n\n업무 요구사항은 \"3단계의 결제 입력이 실패하면 앞서 처리한 예약 등록과 좌석 배정도 모두 취소되어, 결제 없는 예약이 남아서는 안 된다\"이다. 이 요구와 가장 관련 있는 트랜잭션 특성은?",
+      "choices": [
+        "일관성(Consistency)",
+        "고립성(Isolation)",
+        "지속성(Durability)",
+        "원자성(Atomicity)"
+      ],
+      "answer": 4,
+      "explanation": "트랜잭션의 연산은 **모두 반영되거나 모두 반영되지 않아야**(All or Nothing) 한다는 것이 **원자성**이다. 세 단계 중 하나라도 실패하면 전체를 취소해야 한다는 요구가 바로 이것이다.\n\n- 일관성: 트랜잭션 전후로 데이터가 제약조건 등 규칙을 만족하는 일관된 상태여야 한다는 특성이다.\n- 고립성: 실행 중인 트랜잭션의 중간 결과를 다른 트랜잭션이 볼 수 없어야 한다는 특성이다.\n- 지속성: 커밋된 결과는 장애가 나도 보존된다는 특성이다."
+    },
+    {
+      "id": 9,
+      "subject": 1,
+      "theory": "null-attribute",
+      "question": "`PAX` 테이블의 데이터가 다음과 같을 때, (가)와 (나) SQL의 결과로 옳은 것은? (Oracle 기준)\n\n| PAX_ID | MILE | GRADE |\n|---|---|---|\n| P1 | 500 | G |\n| P2 | NULL | S |\n| P3 | 100 | NULL |\n| P4 | NULL | NULL |",
+      "code": "-- (가)\nSELECT COUNT(*) FROM PAX\n WHERE NOT (MILE >= 300 AND GRADE = 'G');\n\n-- (나)\nSELECT COUNT(*) FROM PAX\n WHERE NOT (MILE >= 300 OR GRADE = 'S');",
+      "choices": [
+        "(가) 3, (나) 1",
+        "(가) 2, (나) 2",
+        "(가) 2, (나) 0",
+        "(가) 3, (나) 0"
+      ],
+      "answer": 3,
+      "explanation": "NULL과의 비교는 UNKNOWN이며, WHERE 절은 **TRUE인 행만** 반환한다. 3값 논리를 행마다 따져 보면 다음과 같다.\n\n**(가)** `NOT (MILE >= 300 AND GRADE = 'G')`\n- P1: TRUE AND TRUE = TRUE → NOT → FALSE\n- P2: UNKNOWN AND FALSE = FALSE → NOT → **TRUE**\n- P3: FALSE AND UNKNOWN = FALSE → NOT → **TRUE**\n- P4: UNKNOWN AND UNKNOWN = UNKNOWN → NOT → UNKNOWN\n\n→ **2건**\n\n**(나)** `NOT (MILE >= 300 OR GRADE = 'S')`\n- P1: TRUE OR … = TRUE → FALSE\n- P2: UNKNOWN OR TRUE = TRUE → FALSE\n- P3: FALSE OR UNKNOWN = UNKNOWN → UNKNOWN\n- P4: UNKNOWN OR UNKNOWN = UNKNOWN → UNKNOWN\n\n→ **0건**\n\nFALSE AND UNKNOWN은 FALSE, TRUE OR UNKNOWN은 TRUE이고, NOT UNKNOWN은 여전히 UNKNOWN이라는 점이 핵심이다. P4를 TRUE로 보면 (가)를 3으로, P3를 TRUE로 보면 (나)를 1로 잘못 세게 된다."
+    },
+    {
+      "id": 10,
+      "subject": 1,
+      "theory": "natural-vs-surrogate-key",
+      "question": "`운항` 엔터티의 본질식별자는 (항공사코드, 편명, 출발일자)이며, 이 세 속성이 `예약`, `탑승`, `수하물`, `좌석배정` 테이블에 모두 FK로 상속되어 있다. 설계자는 시퀀스로 생성하는 인조식별자 '운항ID'를 운항의 PK로 도입하려 한다.\n\n이 변경으로 기대할 수 있는 효과로 가장 적절한 것은?",
+      "choices": [
+        "운항ID에 PK가 걸리므로 같은 (항공사코드, 편명, 출발일자) 운항이 중복 입력되는 것도 자동으로 막을 수 있다.",
+        "하위 테이블에 상속되는 식별자 컬럼이 3개에서 1개로 줄어 조인 조건과 SQL이 단순해진다.",
+        "운항ID가 생기면 항공사코드·편명·출발일자는 더 이상 필요 없으므로 운항 테이블에서 삭제한다.",
+        "운항ID는 업무 의미를 담은 값이므로 탑승권과 안내 화면에 출력해 승객이 운항을 식별하는 데 사용한다."
+      ],
+      "answer": 2,
+      "explanation": "복합 본질식별자가 여러 하위 테이블로 상속되면 FK 컬럼이 늘고 조인 조건이 길어진다. 단일 인조식별자를 PK로 쓰면 **상속되는 컬럼 수가 줄어 SQL이 단순해진다.**\n\n- 1번: 인조식별자는 매번 새 값이 생성되므로 업무상 같은 운항이 **중복 입력되는 것을 막지 못한다.** 막으려면 (항공사코드, 편명, 출발일자)에 별도 UNIQUE 제약(인덱스)이 필요하다.\n- 3번: 본질식별자 속성은 업무에 필요한 데이터이므로 일반 속성으로 유지해야 한다.\n- 4번: 인조식별자는 업무 의미가 없는 값이라 일반적으로 사용자에게 노출하지 않는다."
+    },
+    {
+      "id": 11,
+      "subject": 2,
+      "theory": "rdb-overview",
+      "question": "`PASSENGER` 테이블의 기본키는 PAX_ID이고, `BOOKING` 테이블의 PAX_ID는 PASSENGER.PAX_ID를 참조하는 외래키다. 기본키와 외래키에 대한 설명으로 **적절하지 않은** 것은?",
+      "choices": [
+        "NOT NULL 제약이 없다면 BOOKING.PAX_ID에는 NULL이 입력될 수 있다.",
+        "BOOKING 테이블에는 PAX_ID 외에도 FLIGHT 테이블을 참조하는 외래키를 추가로 정의할 수 있다.",
+        "BOOKING.PAX_ID 값은 PASSENGER에 존재하는 PAX_ID 값 중 하나이거나 NULL이어야 한다.",
+        "외래키 값은 테이블 안에서 중복될 수 없으므로, 한 승객은 BOOKING 테이블에 한 번만 나타날 수 있다."
+      ],
+      "answer": 4,
+      "explanation": "중복 불가는 **기본키(및 UNIQUE)**의 특성이다. 외래키는 부모 테이블의 키 값을 참조할 뿐 자식 테이블 안에서는 **얼마든지 중복**될 수 있다. 그래서 한 승객이 여러 건을 예약하는 1:N 관계가 표현된다.\n\n- 1번: 외래키는 NULL을 허용한다(NOT NULL 제약이 없다면).\n- 2번: 한 테이블에 외래키를 여러 개 정의할 수 있다.\n- 3번: 참조 무결성 규칙에 따라 외래키 값은 부모 키 값 중 하나이거나 NULL이어야 한다."
+    },
+    {
+      "id": 12,
+      "subject": 2,
+      "theory": "select",
+      "question": "다음 [FLIGHT] 테이블에 (가), (나) SQL을 실행했을 때 결과 행 수로 옳은 것은? (Oracle, DEP와 ARR은 VARCHAR2 타입)\n\n[FLIGHT]\n\n| FLT_NO | DEP | ARR |\n|---|---|---|\n| KE01 | GMP | NULL |\n| KE02 | NULL | GMP |\n| OZ03 | GMP | CJU |\n| OZ04 | GMP | CJU |\n| LJ05 | ICN | NULL |\n| LJ06 | ICN | NRT |",
+      "code": "-- (가)\nSELECT DISTINCT DEP, ARR FROM FLIGHT;\n\n-- (나)\nSELECT DISTINCT DEP || ARR AS ROUTE FROM FLIGHT;",
+      "choices": [
+        "(가) 5, (나) 4",
+        "(가) 5, (나) 3",
+        "(가) 6, (나) 4",
+        "(가) 4, (나) 4"
+      ],
+      "answer": 1,
+      "explanation": "**(가)** DISTINCT는 (DEP, ARR) 조합 전체로 중복을 제거하며 NULL끼리는 같은 값으로 취급한다. (GMP, NULL), (NULL, GMP), (GMP, CJU), (ICN, NULL), (ICN, NRT) → **5행**. (GMP, NULL)과 (NULL, GMP)는 서로 다른 조합이다.\n\n**(나)** Oracle의 `||` 연산은 NULL을 빈 문자열처럼 처리한다. 결과는 'GMP', 'GMP', 'GMPCJU', 'GMPCJU', 'ICN', 'ICNNRT'이고, 중복을 제거하면 'GMP', 'GMPCJU', 'ICN', 'ICNNRT' → **4행**.\n\n`||`에 NULL이 섞이면 결과가 NULL이 된다고 생각하면 NULL, 'GMPCJU', 'ICNNRT'의 3행으로 잘못 계산하게 된다."
+    },
+    {
+      "id": 13,
+      "subject": 2,
+      "theory": "select",
+      "question": "FLIGHT 테이블에는 FLT_NO, FARE 컬럼이 있다. 다음 중 Oracle에서 **오류 없이 실행되는** SQL은?",
+      "choices": [
+        "`SELECT FARE * 2 AS RT, RT + 1000 AS RT_FEE FROM FLIGHT;`",
+        "`SELECT FLT_NO, FARE FROM FLIGHT F WHERE FLIGHT.FARE > 100000;`",
+        "`SELECT FLT_NO AS FNO, FARE * 2 \"Round Trip\" FROM FLIGHT ORDER BY \"Round Trip\";`",
+        "`SELECT FLT_NO, FARE * 2 AS RT FROM FLIGHT WHERE RT > 300000;`"
+      ],
+      "answer": 3,
+      "explanation": "컬럼 별칭은 SELECT 절이 처리된 뒤에 생기므로 **ORDER BY 절에서만** 사용할 수 있다. 공백이 포함된 별칭은 큰따옴표로 감싸야 하며, ORDER BY에서도 같은 표기(\"Round Trip\")로 참조하면 된다. 따라서 3번은 정상 실행된다.\n\n- 1번: 같은 SELECT 절 안에서 앞에서 정의한 별칭 RT를 다른 식에 쓸 수 없다(ORA-00904).\n- 2번: FROM 절에서 테이블 별칭 F를 지정하면 그 문장에서는 테이블명 FLIGHT로 컬럼을 한정할 수 없다.\n- 4번: WHERE 절은 SELECT 절보다 먼저 처리되므로 별칭 RT를 인식하지 못한다."
+    },
+    {
+      "id": 14,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle, C1, C2, C3, C4 순서로 표기)",
+      "code": "SELECT SUBSTR('KE0123-ICN-NRT', INSTR('KE0123-ICN-NRT', '-') + 1, 3) AS C1,\n       INSTR('KE0123-ICN-NRT', '-', 1, 2)                          AS C2,\n       LTRIM('0012A', '0')                                         AS C3,\n       SUBSTR('KE0123', -4, 2)                                     AS C4\n  FROM DUAL;",
+      "choices": [
+        "`ICN, 11, 12A, 12`",
+        "`ICN, 11, 12A, 01`",
+        "`-IC, 11, 12A, 01`",
+        "`ICN, 10, 012A, 01`"
+      ],
+      "answer": 2,
+      "explanation": "'KE0123-ICN-NRT'의 위치: K(1) E(2) 0(3) 1(4) 2(5) 3(6) -(7) I(8) C(9) N(10) -(11) N(12) R(13) T(14)\n\n- **C1**: INSTR(…, '-')는 첫 '-'의 위치 7이다. SUBSTR(…, 8, 3) = **'ICN'**. (+1을 빼먹으면 '-IC')\n- **C2**: INSTR(…, '-', 1, 2)는 두 번째 '-'의 위치 **11**이다.\n- **C3**: LTRIM('0012A', '0')은 왼쪽에서 '0'을 연속으로 모두 제거해 **'12A'**가 된다.\n- **C4**: 시작 위치가 음수이면 뒤에서부터 센다. 'KE0123'(6자)에서 -4는 앞에서 3번째 문자 '0'이고, 2글자를 잘라 **'01'**이다."
+    },
+    {
+      "id": 15,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle, C1, C2, C3, C4 순서로 표기)",
+      "code": "SELECT TO_CHAR(ADD_MONTHS(TO_DATE('2025-03-31 18:30', 'YYYY-MM-DD HH24:MI'), -1), 'MM-DD')   AS C1,\n       TO_CHAR(TO_DATE('2025-03-31 18:30', 'YYYY-MM-DD HH24:MI') + 6/24, 'MM-DD HH24')      AS C2,\n       TRUNC(MONTHS_BETWEEN(TO_DATE('2025-06-15', 'YYYY-MM-DD'),\n                            TO_DATE('2025-03-31', 'YYYY-MM-DD')))                         AS C3,\n       EXTRACT(DAY FROM LAST_DAY(TO_DATE('2024-02-10', 'YYYY-MM-DD')))                      AS C4\n  FROM DUAL;",
+      "choices": [
+        "`03-01, 04-01 00, 2, 29`",
+        "`02-28, 03-31 24, 3, 29`",
+        "`02-28, 04-01 00, 3, 28`",
+        "`02-28, 04-01 00, 2, 29`"
+      ],
+      "answer": 4,
+      "explanation": "- **C1**: ADD_MONTHS는 기준일이 그 달의 말일이면 결과도 해당 월의 **말일**로 맞춘다. 3월 31일의 한 달 전은 2025년 2월 말일인 **02-28**이다.\n- **C2**: 6/24일은 6시간이다. 2025-03-31 18:30 + 6시간 = 2025-04-01 00:30 → 'MM-DD HH24' 형식으로 **04-01 00**. HH24는 00~23이므로 '24'는 나올 수 없다.\n- **C3**: MONTHS_BETWEEN(6/15, 3/31) = 3 + (15 − 31)/31 ≈ 2.48이고, TRUNC하면 **2**다. (두 날짜가 모두 말일이거나 일자가 같을 때만 정수가 된다.)\n- **C4**: 2024년은 윤년이므로 LAST_DAY는 2024-02-29이고 EXTRACT(DAY …)는 **29**다."
+    },
+    {
+      "id": 16,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 [PAX] 테이블에 SQL을 실행했을 때 X, Y, Z, W의 값으로 옳은 것은? (Oracle)\n\n[PAX]\n\n| PAX_ID | MOBILE | HOME | MILE |\n|---|---|---|---|\n| P1 | 010-1 | NULL | 0 |\n| P2 | NULL | 02-1 | 500 |\n| P3 | NULL | NULL | NULL |\n| P4 | 010-2 | 031-1 | 1200 |",
+      "code": "SELECT COUNT(NULLIF(MILE, 0))         AS X,\n       SUM(NVL2(MOBILE, 1, 0))         AS Y,\n       COUNT(COALESCE(MOBILE, HOME))   AS Z,\n       SUM(DECODE(MILE, NULL, 1, 0))   AS W\n  FROM PAX;",
+      "choices": [
+        "`X=2, Y=2, Z=3, W=1`",
+        "`X=2, Y=2, Z=3, W=0`",
+        "`X=3, Y=2, Z=3, W=1`",
+        "`X=2, Y=2, Z=2, W=1`"
+      ],
+      "answer": 1,
+      "explanation": "- **X**: NULLIF(MILE, 0)은 MILE이 0이면 NULL을 돌려준다. 값은 NULL(P1), 500, NULL(P3), 1200이고 COUNT는 NULL을 제외하므로 **2**.\n- **Y**: NVL2(MOBILE, 1, 0)은 MOBILE이 NULL이 아니면 1, NULL이면 0이다. 1+0+0+1 = **2**.\n- **Z**: COALESCE(MOBILE, HOME)은 처음으로 NULL이 아닌 값을 돌려준다. P1 '010-1', P2 '02-1', P3 NULL, P4 '010-2' → COUNT = **3**.\n- **W**: DECODE는 일반 비교와 달리 **NULL과 NULL을 같은 값으로** 본다. P3만 1이 되어 합계 **1**. (`MILE = NULL`처럼 판단해 0이라고 생각하면 오답)"
+    },
+    {
+      "id": 17,
+      "subject": 2,
+      "theory": "where",
+      "question": "다음 [FLIGHT] 테이블에 SQL을 실행했을 때 결과 값은?\n\n[FLIGHT]\n\n| FLT_NO | DEP | ARR | FARE |\n|---|---|---|---|\n| KE01 | GMP | CJU | 80000 |\n| OZ02 | ICN | NRT | 250000 |\n| LJ03 | GMP | PUS | 150000 |\n| KE04 | ICN | CJU | 120000 |\n| 7C05 | PUS | CJU | 60000 |\n| ZE06 | ICN | KIX | NULL |",
+      "code": "SELECT COUNT(*)\n  FROM FLIGHT\n WHERE DEP = 'GMP'\n    OR DEP = 'ICN' AND FARE NOT BETWEEN 100000 AND 200000;",
+      "choices": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "answer": 3,
+      "explanation": "AND가 OR보다 우선순위가 높으므로 조건은 `DEP = 'GMP' OR (DEP = 'ICN' AND FARE NOT BETWEEN 100000 AND 200000)`으로 해석된다.\n\n- DEP = 'GMP': KE01, LJ03 (운임과 무관하게 TRUE)\n- DEP = 'ICN' AND 운임이 10만~20만 밖: OZ02(250000)만 해당. KE04(120000)는 범위 안이라 FALSE, ZE06은 FARE가 NULL이라 UNKNOWN.\n\n결과는 KE01, LJ03, OZ02로 **3**이다.\n\n괄호로 `(GMP OR ICN) AND …`처럼 묶었다고 착각하면 LJ03(150000)이 빠져 2가 되고, NULL을 범위 밖으로 보면 4가 된다."
+    },
+    {
+      "id": 18,
+      "subject": 2,
+      "theory": "where",
+      "question": "다음 [SEAT] 테이블에 (가), (나) SQL을 실행했을 때 결과로 옳은 것은?\n\n[SEAT]\n\n| SEAT_NO |\n|---|\n| 1A |\n| 12A |\n| 1B |\n| 10 |\n| 1 |\n| 21A |",
+      "code": "-- (가)\nSELECT COUNT(*) FROM SEAT WHERE SEAT_NO LIKE '1_';\n\n-- (나)\nSELECT COUNT(*) FROM SEAT WHERE SEAT_NO LIKE '1%A';",
+      "choices": [
+        "(가) 4, (나) 2",
+        "(가) 3, (나) 2",
+        "(가) 3, (나) 1",
+        "(가) 4, (나) 3"
+      ],
+      "answer": 2,
+      "explanation": "**(가)** `'1_'`은 '1'로 시작하고 뒤에 **정확히 한 글자**가 오는 두 글자 문자열이다. '1A', '1B', '10' → **3**. '1'은 뒤에 글자가 없어 제외되고, '12A'는 세 글자라 제외된다.\n\n**(나)** `'1%A'`는 '1'로 시작하고 'A'로 끝나는 문자열이다. %는 **0개 이상**의 문자이므로 '1A'도 포함된다. '1A', '12A' → **2**. '21A'는 '2'로 시작하므로 제외된다.\n\n%가 1개 이상의 문자를 뜻한다고 착각하면 (나)를 1로 세게 된다."
+    },
+    {
+      "id": 19,
+      "subject": 2,
+      "theory": "group-by-having",
+      "question": "다음 [BOOKING] 테이블에 SQL을 실행한 결과로 옳은 것은? (FLT_NO, CNT, PAID, AVG_AMT 순서로 표기)\n\n[BOOKING]\n\n| BK_NO | FLT_NO | CLASS | AMT |\n|---|---|---|---|\n| 1 | KE01 | Y | 100 |\n| 2 | KE01 | Y | NULL |\n| 3 | KE01 | C | 300 |\n| 4 | OZ02 | Y | 200 |\n| 5 | OZ02 | Y | 300 |\n| 6 | OZ02 | C | NULL |\n| 7 | LJ03 | Y | 150 |",
+      "code": "SELECT FLT_NO,\n       COUNT(*)   AS CNT,\n       COUNT(AMT) AS PAID,\n       AVG(AMT)   AS AVG_AMT\n  FROM BOOKING\n GROUP BY FLT_NO\nHAVING COUNT(*) > COUNT(AMT)\n ORDER BY FLT_NO;",
+      "choices": [
+        "`KE01, 3, 3, 133.33` / `OZ02, 3, 3, 166.67`",
+        "`KE01, 3, 2, 200` / `OZ02, 3, 2, 250` / `LJ03, 1, 1, 150`",
+        "`KE01, 2, 2, 200` / `OZ02, 2, 2, 250`",
+        "`KE01, 3, 2, 200` / `OZ02, 3, 2, 250`"
+      ],
+      "answer": 4,
+      "explanation": "COUNT(*)는 NULL을 포함한 행 수, COUNT(AMT)와 AVG(AMT)는 **NULL을 제외**하고 계산한다.\n\n| FLT_NO | COUNT(*) | COUNT(AMT) | AVG(AMT) |\n|---|---|---|---|\n| KE01 | 3 | 2 | (100+300)/2 = 200 |\n| OZ02 | 3 | 2 | (200+300)/2 = 250 |\n| LJ03 | 1 | 1 | 150 |\n\nHAVING `COUNT(*) > COUNT(AMT)`는 AMT가 NULL인 행이 있는 그룹만 남기므로 LJ03은 제외된다. 결과는 **KE01(3, 2, 200), OZ02(3, 2, 250)**이다.\n\nAVG를 COUNT(*)로 나누면 133.33처럼 잘못 계산되고, HAVING을 무시하면 LJ03이 포함된다."
+    },
+    {
+      "id": 20,
+      "subject": 2,
+      "theory": "group-by-having",
+      "question": "다음 [BOOKING] 테이블에 대해 실행했을 때, 결과가 나머지 셋과 **다른** SQL은?\n\n[BOOKING]\n\n| BK_NO | FLT_NO | CLASS | AMT |\n|---|---|---|---|\n| 1 | KE01 | Y | 100 |\n| 2 | KE01 | Y | NULL |\n| 3 | KE01 | C | 300 |\n| 4 | OZ02 | Y | 200 |\n| 5 | OZ02 | Y | 300 |\n| 6 | OZ02 | C | NULL |\n| 7 | LJ03 | Y | 150 |",
+      "choices": [
+        "`SELECT FLT_NO, SUM(AMT) FROM BOOKING WHERE AMT IS NOT NULL GROUP BY FLT_NO HAVING COUNT(*) >= 3;`",
+        "`SELECT FLT_NO, SUM(AMT) FROM BOOKING GROUP BY FLT_NO HAVING COUNT(*) >= 3;`",
+        "`SELECT FLT_NO, SUM(AMT) FROM BOOKING GROUP BY FLT_NO HAVING COUNT(BK_NO) >= 3;`",
+        "`SELECT FLT_NO, SUM(AMT) FROM BOOKING GROUP BY FLT_NO HAVING COUNT(*) > COUNT(AMT);`"
+      ],
+      "answer": 1,
+      "explanation": "WHERE 절은 **그룹핑 전에** 행을 거른다. 1번은 AMT가 NULL인 행(2번, 6번)을 먼저 제거하므로 그룹별 건수가 KE01 2, OZ02 2, LJ03 1이 되어 `COUNT(*) >= 3`을 만족하는 그룹이 없다. 결과는 **0행**이다.\n\n나머지는 모두 같은 결과(KE01 400, OZ02 500)를 낸다.\n- 2번: 그룹별 전체 건수가 KE01 3, OZ02 3, LJ03 1이므로 KE01, OZ02.\n- 3번: BK_NO는 NULL이 없어 COUNT(BK_NO) = COUNT(*)와 같다.\n- 4번: AMT가 NULL인 행이 있는 그룹, 즉 KE01, OZ02.\n\nSUM은 NULL을 무시하므로 KE01은 400, OZ02는 500이다."
+    },
+    {
+      "id": 21,
+      "subject": 2,
+      "theory": "order-by",
+      "question": "다음 [PAX] 테이블에 SQL을 실행한 결과의 출력 순서로 옳은 것은? (Oracle)\n\n[PAX]\n\n| NAME | GRADE | MILE |\n|---|---|---|\n| 가 | S | 300 |\n| 나 | NULL | 500 |\n| 다 | G | 100 |\n| 라 | S | NULL |\n| 마 | G | 400 |",
+      "code": "SELECT NAME, GRADE, MILE\n  FROM PAX\n ORDER BY 2 DESC, 3;",
+      "choices": [
+        "가, 라, 다, 마, 나",
+        "나, 가, 라, 다, 마",
+        "나, 라, 가, 다, 마",
+        "다, 마, 가, 라, 나"
+      ],
+      "answer": 2,
+      "explanation": "`ORDER BY 2 DESC, 3`은 SELECT 목록의 두 번째 컬럼(GRADE) 내림차순, 같으면 세 번째 컬럼(MILE) 오름차순이다.\n\nOracle은 NULL을 **가장 큰 값**으로 취급한다.\n- GRADE DESC: NULL이 맨 앞 → 나, 그다음 S → G 순\n- S 그룹(가 300, 라 NULL)을 MILE 오름차순으로 정렬하면 NULL이 가장 크므로 가 → 라\n- G 그룹: 다(100) → 마(400)\n\n결과: **나, 가, 라, 다, 마**\n\n1번은 SQL Server처럼 NULL을 가장 작은 값으로 본 경우이고, 3번은 MILE의 NULL을 앞에 둔 경우다."
+    },
+    {
+      "id": 22,
+      "subject": 2,
+      "theory": "order-by",
+      "question": "BOOKING 테이블(BK_NO, FLT_NO, CLASS, AMT)에 대해 Oracle에서 실행할 때 **오류가 발생하는** SQL은?",
+      "choices": [
+        "`SELECT FLT_NO FROM BOOKING GROUP BY FLT_NO ORDER BY COUNT(*) DESC;`",
+        "`SELECT FLT_NO, AMT FROM BOOKING ORDER BY CLASS, 2 DESC;`",
+        "`SELECT FLT_NO FROM (SELECT FLT_NO, AMT FROM BOOKING) ORDER BY CLASS;`",
+        "`SELECT FLT_NO AS F, AMT FROM BOOKING ORDER BY F, AMT DESC;`"
+      ],
+      "answer": 3,
+      "explanation": "인라인 뷰는 SELECT한 컬럼(FLT_NO, AMT)만 바깥 쿼리에 제공한다. 바깥 쿼리의 ORDER BY에서 인라인 뷰에 없는 CLASS를 참조하면 **ORA-00904(부적합한 식별자)** 오류가 난다.\n\n- 1번: GROUP BY를 쓴 쿼리에서도 ORDER BY에 집계 함수를 쓸 수 있으므로 정상이다.\n- 2번: 일반 SELECT 문에서는 SELECT 목록에 없는 컬럼(CLASS)으로도 정렬할 수 있고, 컬럼명과 위치 번호를 섞어 써도 된다.\n- 4번: ORDER BY는 SELECT 다음에 처리되므로 별칭 F를 쓸 수 있다."
+    },
+    {
+      "id": 23,
+      "subject": 2,
+      "theory": "join",
+      "question": "다음 [FLIGHT] 테이블에서 환승 가능한 항공편 조합(앞 편의 도착지 = 뒤 편의 출발지)을 찾되, 출발지로 되돌아오는 왕복 조합은 제외하려고 한다. SQL을 실행했을 때 결과 값은?\n\n[FLIGHT]\n\n| FLT_NO | DEP | ARR |\n|---|---|---|\n| KE01 | ICN | NRT |\n| KE02 | NRT | ICN |\n| KE03 | NRT | LAX |\n| OZ04 | ICN | HND |\n| OZ05 | HND | LAX |\n| JL06 | LAX | NRT |",
+      "code": "SELECT COUNT(*)\n  FROM FLIGHT A, FLIGHT B\n WHERE A.ARR = B.DEP\n   AND A.DEP <> B.ARR;",
+      "choices": [
+        "3",
+        "4",
+        "9",
+        "5"
+      ],
+      "answer": 4,
+      "explanation": "같은 테이블을 A, B 두 별칭으로 셀프 조인한다. 먼저 `A.ARR = B.DEP`를 만족하는 조합을 모두 구하고, `A.DEP <> B.ARR`로 왕복 조합을 거른다.\n\n| A | A.ARR = B.DEP인 B | 왕복 제외 후 |\n|---|---|---|\n| KE01(ICN→NRT) | KE02(NRT→ICN), KE03(NRT→LAX) | KE03 |\n| KE02(NRT→ICN) | KE01(ICN→NRT), OZ04(ICN→HND) | OZ04 |\n| KE03(NRT→LAX) | JL06(LAX→NRT) | 없음 |\n| OZ04(ICN→HND) | OZ05(HND→LAX) | OZ05 |\n| OZ05(HND→LAX) | JL06(LAX→NRT) | JL06 |\n| JL06(LAX→NRT) | KE02(NRT→ICN), KE03(NRT→LAX) | KE02 |\n\n조인 조건만으로는 9건이지만, 왕복을 제외하면 **5건**이다."
+    },
+    {
+      "id": 24,
+      "subject": 2,
+      "theory": "join",
+      "question": "[SCHED]의 PK는 (FLT_NO, DEP_DATE)이고, [BOOKING]은 (FLT_NO, DEP_DATE)로 SCHED를 참조한다. 예약별 기종을 조회하려고 다음 SQL을 작성했을 때 결과 건수는?\n\n[SCHED]\n\n| FLT_NO | DEP_DATE | AIRCRAFT |\n|---|---|---|\n| KE01 | 0301 | B737 |\n| KE01 | 0302 | A330 |\n| OZ02 | 0301 | A321 |\n\n[BOOKING]\n\n| FLT_NO | DEP_DATE | PAX |\n|---|---|---|\n| KE01 | 0301 | P1 |\n| KE01 | 0301 | P2 |\n| KE01 | 0302 | P3 |\n| OZ02 | 0301 | P4 |",
+      "code": "SELECT B.PAX, S.AIRCRAFT\n  FROM SCHED S, BOOKING B\n WHERE S.FLT_NO = B.FLT_NO;",
+      "choices": [
+        "7",
+        "4",
+        "6",
+        "12"
+      ],
+      "answer": 1,
+      "explanation": "PK가 복합키인데 조인 조건에 **FLT_NO만** 사용했다. 그러면 같은 FLT_NO를 가진 SCHED 행 모두와 연결된다.\n\n- BOOKING의 KE01 3건 × SCHED의 KE01 2건 = 6건\n- BOOKING의 OZ02 1건 × SCHED의 OZ02 1건 = 1건\n\n합계 **7건**이다. 예약 한 건에 기종이 두 개씩 붙는 잘못된 결과이며, `S.DEP_DATE = B.DEP_DATE` 조건까지 넣어야 의도한 4건이 나온다. 복합키로 연결된 관계를 조인할 때는 **키를 구성하는 모든 컬럼**을 조인 조건에 포함해야 한다."
+    },
+    {
+      "id": 25,
+      "subject": 2,
+      "theory": "standard-join",
+      "question": "다음 [FLIGHT], [BOOKING] 테이블에 SQL을 실행했을 때 결과 건수와 BK_NO가 NULL인 행의 수로 옳은 것은?\n\n[FLIGHT]\n\n| FLT_NO | STATUS |\n|---|---|\n| KE01 | OPEN |\n| OZ02 | CLOSED |\n| LJ03 | OPEN |\n\n[BOOKING]\n\n| BK_NO | FLT_NO |\n|---|---|\n| 1 | KE01 |\n| 2 | KE01 |\n| 3 | OZ02 |",
+      "code": "SELECT F.FLT_NO, B.BK_NO\n  FROM FLIGHT F\n  LEFT OUTER JOIN BOOKING B\n    ON F.FLT_NO = B.FLT_NO\n   AND F.STATUS = 'OPEN';",
+      "choices": [
+        "3행 / 0행",
+        "4행 / 1행",
+        "4행 / 2행",
+        "3행 / 1행"
+      ],
+      "answer": 3,
+      "explanation": "LEFT OUTER JOIN에서 ON 절의 조건은 **조인할 짝을 찾는 조건**일 뿐, 기준(왼쪽) 테이블의 행을 걸러내지 않는다.\n\n- KE01(OPEN): BOOKING 1, 2와 연결 → 2행\n- OZ02(CLOSED): `F.STATUS = 'OPEN'`이 거짓이라 짝이 없지만, 기준 테이블 행이므로 BK_NO NULL로 남는다 → 1행\n- LJ03(OPEN): 예약이 없음 → BK_NO NULL로 1행\n\n결과는 **4행**, BK_NO가 NULL인 행은 **2행**이다. OZ02 행을 빼려면 조건을 WHERE 절로 옮겨야 한다."
+    },
+    {
+      "id": 26,
+      "subject": 2,
+      "theory": "standard-join",
+      "question": "다음 [PAX], [TIER] 테이블에 대해 (가), (나) SQL을 실행했을 때 결과 값으로 옳은 것은?\n\n[PAX]\n\n| PAX_ID | MILE |\n|---|---|\n| P1 | 500 |\n| P2 | 1000 |\n| P3 | 3000 |\n| P4 | 5000 |\n| P5 | NULL |\n\n[TIER]\n\n| TIER_NM | MIN_MILE | MAX_MILE |\n|---|---|---|\n| SILVER | 0 | 1000 |\n| GOLD | 1000 | 5000 |\n| VIP | 5000 | 99999 |",
+      "code": "-- (가)\nSELECT COUNT(*)\n  FROM PAX P INNER JOIN TIER T\n    ON P.MILE BETWEEN T.MIN_MILE AND T.MAX_MILE;\n\n-- (나)\nSELECT COUNT(*)\n  FROM PAX P LEFT OUTER JOIN TIER T\n    ON P.MILE BETWEEN T.MIN_MILE AND T.MAX_MILE;",
+      "choices": [
+        "(가) 4, (나) 5",
+        "(가) 6, (나) 7",
+        "(가) 6, (나) 6",
+        "(가) 5, (나) 6"
+      ],
+      "answer": 2,
+      "explanation": "ON 절에는 등가 조건뿐 아니라 BETWEEN 같은 **비등가 조건**도 쓸 수 있다. BETWEEN은 양 끝 값을 포함하므로 경계값이 두 구간에 걸치는 점을 주의한다.\n\n- P1(500): SILVER → 1행\n- P2(1000): SILVER(0~1000), GOLD(1000~5000) 모두 해당 → 2행\n- P3(3000): GOLD → 1행\n- P4(5000): GOLD, VIP 모두 해당 → 2행\n- P5(NULL): 비교 결과 UNKNOWN → 짝 없음\n\n(가) INNER JOIN은 **6**행, (나) LEFT OUTER JOIN은 짝이 없는 P5가 NULL과 함께 남아 **7**행이다."
+    },
+    {
+      "id": 27,
+      "subject": 2,
+      "theory": "subquery",
+      "question": "다음 [FLIGHT] 테이블에 (가), (나) SQL을 실행했을 때 결과 건수로 옳은 것은?\n\n[FLIGHT]\n\n| FLT_NO | DEP | FARE |\n|---|---|---|\n| KE01 | ICN | 300 |\n| KE02 | ICN | 500 |\n| OZ03 | ICN | 200 |\n| LJ04 | GMP | 300 |\n| LJ05 | GMP | 400 |\n| 7C06 | PUS | 200 |",
+      "code": "-- (가)\nSELECT FLT_NO FROM FLIGHT\n WHERE (DEP, FARE) IN (SELECT DEP, MIN(FARE) FROM FLIGHT GROUP BY DEP);\n\n-- (나)\nSELECT FLT_NO FROM FLIGHT\n WHERE FARE IN (SELECT MIN(FARE) FROM FLIGHT GROUP BY DEP);",
+      "choices": [
+        "(가) 3건, (나) 4건",
+        "(가) 3건, (나) 3건",
+        "(가) 4건, (나) 4건",
+        "(가) 3건, (나) 6건"
+      ],
+      "answer": 1,
+      "explanation": "서브쿼리 결과(출발지별 최저 운임)는 ICN 200, GMP 300, PUS 200이다.\n\n**(가)** 다중 컬럼 서브쿼리는 (DEP, FARE)를 **쌍으로** 비교한다. (ICN, 200)인 OZ03, (GMP, 300)인 LJ04, (PUS, 200)인 7C06 → **3건**.\n\n**(나)** FARE만 비교하면 서브쿼리 결과 {200, 300, 200} 중 하나와 같으면 된다. 출발지와 상관없이 FARE가 200 또는 300인 KE01(ICN, 300), OZ03, LJ04, 7C06 → **4건**. KE01은 ICN의 최저 운임이 아닌데도 GMP의 최저 운임과 값이 같아 포함된다."
+    },
+    {
+      "id": 28,
+      "subject": 2,
+      "theory": "subquery",
+      "question": "다음 [FLIGHT] 테이블에 (가)~(다) SQL을 실행했을 때 결과 값으로 옳은 것은? (DEP가 'CJU'인 행은 없다.)\n\n[FLIGHT]\n\n| FLT_NO | DEP | FARE |\n|---|---|---|\n| KE01 | GMP | 100 |\n| OZ02 | ICN | 200 |\n| LJ03 | GMP | 300 |\n| KE04 | ICN | 400 |\n| 7C05 | PUS | 500 |",
+      "code": "-- (가)\nSELECT COUNT(*) FROM FLIGHT\n WHERE FARE > ALL (SELECT FARE FROM FLIGHT WHERE DEP = 'GMP');\n\n-- (나)\nSELECT COUNT(*) FROM FLIGHT\n WHERE FARE < ANY (SELECT FARE FROM FLIGHT WHERE DEP = 'GMP');\n\n-- (다)\nSELECT COUNT(*) FROM FLIGHT\n WHERE FARE > ALL (SELECT FARE FROM FLIGHT WHERE DEP = 'CJU');",
+      "choices": [
+        "(가) 2, (나) 2, (다) 0",
+        "(가) 2, (나) 1, (다) 5",
+        "(가) 3, (나) 2, (다) 0",
+        "(가) 2, (나) 2, (다) 5"
+      ],
+      "answer": 4,
+      "explanation": "GMP 출발 운임은 {100, 300}이다.\n\n- **(가)** `> ALL`은 모든 값보다 커야 하므로 최댓값 300 초과 → 400, 500 → **2**\n- **(나)** `< ANY`는 하나라도 작으면 되므로 최댓값 300 미만 → 100, 200 → **2**. (`< MIN`으로 착각하면 1)\n- **(다)** 서브쿼리 결과가 **0건**이면 `ALL` 조건은 항상 참이 된다. 모든 행이 반환되어 **5**다. (반대로 0건에 대한 `ANY` 조건은 항상 거짓이다.)"
+    },
+    {
+      "id": 29,
+      "subject": 2,
+      "theory": "set-operators",
+      "question": "다음 두 테이블에 SQL을 실행했을 때 결과 건수는?\n\n[DOM_FLT]\n\n| FLT_NO | FARE |\n|---|---|\n| KE01 | 100 |\n| OZ02 | NULL |\n| KE01 | 100 |\n\n[INTL_FLT]\n\n| FLT_NO | FARE |\n|---|---|\n| KE01 | 300 |\n| OZ02 | 500 |",
+      "code": "SELECT FLT_NO, FARE FROM DOM_FLT\nUNION\nSELECT FLT_NO, NULL FROM INTL_FLT;",
+      "choices": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "answer": 2,
+      "explanation": "두 번째 SELECT는 FARE 대신 NULL을 선택하므로 (KE01, NULL), (OZ02, NULL)이 된다. 결합 대상은 다음 5행이다.\n\n(KE01, 100), (OZ02, NULL), (KE01, 100), (KE01, NULL), (OZ02, NULL)\n\nUNION은 **전체 결과에서** 중복을 제거하며, 집합 연산에서는 NULL끼리 같은 값으로 취급한다.\n- (KE01, 100) 2건 → 1건\n- (OZ02, NULL) 2건 → 1건 (DOM_FLT의 NULL과 INTL_FLT에서 선택한 NULL이 같은 행으로 처리됨)\n- (KE01, NULL) 1건\n\n결과는 **3건**이다. UNION ALL이었다면 5건이다."
+    },
+    {
+      "id": 30,
+      "subject": 2,
+      "theory": "set-operators",
+      "question": "집합 연산자에 대한 설명으로 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "결과 집합의 컬럼명은 첫 번째 SELECT 문의 컬럼명(또는 별칭)을 따른다.",
+        "정렬이 필요하면 ORDER BY는 전체 집합 연산의 마지막에 한 번만 쓸 수 있다.",
+        "INTERSECT는 두 결과에 공통으로 존재하는 행을 중복까지 포함하여 모두 반환한다.",
+        "SQL Server에서는 Oracle의 MINUS와 같은 차집합 연산에 EXCEPT를 사용한다."
+      ],
+      "answer": 3,
+      "explanation": "INTERSECT는 두 결과에 공통으로 존재하는 행을 **중복을 제거**하여 반환한다. 중복을 그대로 유지하는 집합 연산자는 UNION ALL뿐이다.\n\n- 1번: 결과 컬럼명은 첫 번째 SELECT 기준이다.\n- 2번: ORDER BY는 개별 SELECT마다 쓸 수 없고 마지막에 한 번만 쓴다.\n- 4번: 차집합은 Oracle에서 MINUS, SQL Server에서 EXCEPT다."
+    },
+    {
+      "id": 31,
+      "subject": 2,
+      "theory": "group-functions",
+      "question": "다음 SQL의 결과 건수는?\n\n[BK_SUM]\n\n| DEP | ARR | CLASS | AMT |\n|---|---|---|---|\n| ICN | NRT | Y | 10 |\n| ICN | NRT | C | 20 |\n| ICN | LAX | Y | 30 |\n| GMP | CJU | Y | 40 |\n| GMP | CJU | Y | 50 |",
+      "code": "SELECT DEP, ARR, CLASS, SUM(AMT)\n  FROM BK_SUM\n GROUP BY DEP, ROLLUP(ARR, CLASS);",
+      "choices": [
+        "9건",
+        "10건",
+        "8건",
+        "12건"
+      ],
+      "answer": 1,
+      "explanation": "`GROUP BY DEP, ROLLUP(ARR, CLASS)`는 ROLLUP 바깥의 DEP가 **항상** 그룹 기준에 포함되는 부분 ROLLUP이다. 생성되는 그룹 수준은 (DEP, ARR, CLASS), (DEP, ARR), (DEP) 세 가지이고, 전체 합계는 만들어지지 않는다.\n\n- (DEP, ARR, CLASS): ICN-NRT-Y, ICN-NRT-C, ICN-LAX-Y, GMP-CJU-Y → 4건\n- (DEP, ARR): ICN-NRT, ICN-LAX, GMP-CJU → 3건\n- (DEP): ICN, GMP → 2건\n\n합계 **9건**이다. `ROLLUP(DEP, ARR, CLASS)`였다면 총계 1행이 더해져 10건이 된다."
+    },
+    {
+      "id": 32,
+      "subject": 2,
+      "theory": "group-functions",
+      "question": "다음 SQL의 결과에서 DEP와 CLASS가 **모두 NULL로 표시되는** 행의 수와, 그중 G 값이 0인 행의 S 값으로 옳은 것은?\n\n[BK]\n\n| DEP | CLASS | AMT |\n|---|---|---|\n| ICN | Y | 10 |\n| ICN | C | 20 |\n| GMP | Y | 30 |\n| GMP | NULL | 40 |",
+      "code": "SELECT DEP, CLASS, SUM(AMT) AS S, GROUPING(CLASS) AS G\n  FROM BK\n GROUP BY CUBE(DEP, CLASS);",
+      "choices": [
+        "1행, 100",
+        "2행, 100",
+        "2행, 70",
+        "2행, 40"
+      ],
+      "answer": 4,
+      "explanation": "CUBE(DEP, CLASS)는 (DEP, CLASS), (DEP), (CLASS), () 네 수준의 그룹을 만든다.\n\n| 수준 | DEP | CLASS | S | G |\n|---|---|---|---|---|\n| (CLASS) | NULL | Y | 40 | 0 |\n| (CLASS) | NULL | C | 20 | 0 |\n| (CLASS) | NULL | **NULL**(원본 값) | 40 | 0 |\n| () | NULL | NULL | 100 | 1 |\n\n원본 데이터에 CLASS가 NULL인 행(GMP, 40)이 있으므로, CLASS별 소계 중 하나도 DEP와 CLASS가 모두 NULL로 보인다. 그래서 그런 행은 총계와 함께 **2행**이다.\n\nGROUPING(CLASS)는 CLASS가 집계되어 생긴 NULL이면 1, 실제 데이터의 NULL이면 0이다. G = 0인 행은 실제 NULL CLASS의 소계이므로 S는 **40**이다."
+    },
+    {
+      "id": 33,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 SQL을 실행했을 때 DEP가 'ICN'인 행들의 LV1, LV2 값을 FARE 오름차순으로 나열한 것으로 옳은 것은?\n\n[FLIGHT]\n\n| FLT_NO | DEP | FARE |\n|---|---|---|\n| KE01 | ICN | 300 |\n| KE02 | ICN | 400 |\n| KE03 | ICN | 400 |\n| KE04 | ICN | 600 |\n| LJ05 | GMP | 100 |\n| LJ06 | GMP | 200 |",
+      "code": "SELECT FLT_NO, FARE,\n       LAST_VALUE(FARE) OVER (PARTITION BY DEP ORDER BY FARE) AS LV1,\n       LAST_VALUE(FARE) OVER (PARTITION BY DEP ORDER BY FARE\n                              ROWS BETWEEN UNBOUNDED PRECEDING\n                                       AND UNBOUNDED FOLLOWING) AS LV2\n  FROM FLIGHT;",
+      "choices": [
+        "LV1: `600, 600, 600, 600` / LV2: `600, 600, 600, 600`",
+        "LV1: `300, 400, 400, 600` / LV2: `600, 600, 600, 600`",
+        "LV1: `300, 400, 400, 600` / LV2: `300, 400, 400, 600`",
+        "LV1: `600, 600, 600, 600` / LV2: `300, 400, 400, 600`"
+      ],
+      "answer": 2,
+      "explanation": "OVER 절에 ORDER BY만 있고 윈도우 절이 없으면 기본 범위는 `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`다. 즉 파티션 처음부터 **현재 행(및 같은 FARE의 동료 행)**까지만 본다.\n\n- **LV1**: 프레임의 마지막 값은 현재 행의 FARE와 같다. KE01 300, KE02·KE03은 동료 행까지 포함해도 400, KE04 600 → `300, 400, 400, 600`\n- **LV2**: 프레임을 파티션 끝까지 넓혔으므로 모든 행에서 파티션의 마지막 값 → `600, 600, 600, 600`\n\nLAST_VALUE로 파티션의 마지막 값을 얻으려면 프레임을 UNBOUNDED FOLLOWING까지 지정해야 한다는 점이 함정이다."
+    },
+    {
+      "id": 34,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 SQL을 실행했을 때 MA 값을 출력 순서(FLT_NO, DAY 순)대로 나열한 것으로 옳은 것은? (LOAD_PCT는 탑승률이다.)\n\n[LOAD_LOG]\n\n| FLT_NO | DAY | LOAD_PCT |\n|---|---|---|\n| KE01 | 1 | 80 |\n| KE01 | 2 | NULL |\n| KE01 | 3 | 60 |\n| KE01 | 4 | 100 |\n| OZ02 | 1 | 50 |\n| OZ02 | 2 | 70 |",
+      "code": "SELECT FLT_NO, DAY,\n       AVG(LOAD_PCT) OVER (PARTITION BY FLT_NO ORDER BY DAY\n                           ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) AS MA\n  FROM LOAD_LOG\n ORDER BY FLT_NO, DAY;",
+      "choices": [
+        "`40, 46.67, 53.33, 80, 60, 60`",
+        "`80, 70, 80, 70, 73.33, 60`",
+        "`80, 70, 80, 80, 60, 60`",
+        "`80, 80, 60, 80, 50, 60`"
+      ],
+      "answer": 3,
+      "explanation": "윈도우는 파티션(FLT_NO) 안에서 앞 1행·현재 행·뒤 1행이며, AVG는 **NULL을 제외**하고 평균을 낸다. 파티션 경계를 넘지 않는다.\n\n| FLT_NO | DAY | 윈도우 값 | MA |\n|---|---|---|---|\n| KE01 | 1 | 80, NULL | 80 |\n| KE01 | 2 | 80, NULL, 60 | 70 |\n| KE01 | 3 | NULL, 60, 100 | 80 |\n| KE01 | 4 | 60, 100 | 80 |\n| OZ02 | 1 | 50, 70 | 60 |\n| OZ02 | 2 | 50, 70 | 60 |\n\n- 1번: NULL을 0으로 보고 나눈 경우\n- 2번: PARTITION BY를 무시하고 KE01의 마지막 행과 OZ02 행을 섞은 경우\n- 4번: `1 PRECEDING AND CURRENT ROW`로 계산한 경우"
+    },
+    {
+      "id": 35,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "윈도우 함수에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "윈도우 함수는 결과 행 수를 줄이지 않으며, SUM 같은 집계 함수를 OVER 절과 함께 쓰면 각 행에 집계 값이 함께 표시된다.",
+        "`SUM(AMT) OVER (PARTITION BY DEP)`처럼 ORDER BY 없이 쓰면 파티션 안에서 행 순서대로 누적합이 계산된다.",
+        "ROWS는 ORDER BY 값의 논리적 범위를, RANGE는 물리적인 행 수를 기준으로 윈도우를 정한다.",
+        "RANK 함수에 `ROWS BETWEEN 1 PRECEDING AND CURRENT ROW` 같은 윈도우 절을 지정하면 순위 계산 범위를 바꿀 수 있다."
+      ],
+      "answer": 1,
+      "explanation": "윈도우 함수는 GROUP BY와 달리 행을 묶어 줄이지 않고, **원래 행을 유지한 채** 각 행에 계산 결과를 붙인다.\n\n- 2번: ORDER BY가 없으면 파티션 전체가 윈도우가 되어 모든 행에 **파티션 합계**가 같은 값으로 표시된다. 누적합은 ORDER BY를 지정해야 계산된다.\n- 3번: 반대로 설명했다. ROWS는 물리적 행 수, RANGE는 ORDER BY 값의 논리적 범위가 기준이다.\n- 4번: RANK, DENSE_RANK, ROW_NUMBER 같은 순위 함수에는 윈도우 절(ROWS/RANGE)을 지정할 수 없다."
+    },
+    {
+      "id": 36,
+      "subject": 2,
+      "theory": "top-n",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (SQL Server 기준, 출력 순서대로 표기)\n\n[FLIGHT]\n\n| FLT_NO | FARE |\n|---|---|\n| KE01 | 300 |\n| OZ02 | 550 |\n| LJ03 | 120 |\n| 7C04 | 480 |\n| TW05 | 260 |\n| ZE06 | 610 |",
+      "code": "SELECT TOP (40) PERCENT FLT_NO\n  FROM FLIGHT\n ORDER BY FARE DESC;",
+      "choices": [
+        "ZE06, OZ02",
+        "ZE06, OZ02, 7C04, KE01",
+        "LJ03, TW05, KE01",
+        "ZE06, OZ02, 7C04"
+      ],
+      "answer": 4,
+      "explanation": "`TOP (n) PERCENT`는 전체 행 수의 n%만큼 가져오며, 계산 결과가 소수이면 **올림**한다. 6행 × 40% = 2.4 → **3행**이다.\n\nTOP은 ORDER BY로 정렬한 뒤 적용되므로 FARE 내림차순(ZE06 610, OZ02 550, 7C04 480, …)의 앞 3행인 **ZE06, OZ02, 7C04**가 출력된다.\n\n- 1번: 2.4를 버림해 2행으로 계산한 경우\n- 3번: 오름차순으로 정렬한 경우"
+    },
+    {
+      "id": 37,
+      "subject": 2,
+      "theory": "top-n",
+      "question": "출발지별로 운임이 높은 항공편 2개씩을 조회하려고 한다. 다음 SQL의 순위 함수 자리에 (가) ROW_NUMBER, (나) RANK, (다) DENSE_RANK를 각각 넣어 실행했을 때 결과 건수로 옳은 것은?\n\n[FLIGHT]\n\n| FLT_NO | DEP | FARE |\n|---|---|---|\n| A | ICN | 500 |\n| B | ICN | 400 |\n| C | ICN | 400 |\n| D | ICN | 300 |\n| E | GMP | 200 |\n| F | GMP | 200 |\n| G | GMP | 100 |",
+      "code": "SELECT *\n  FROM (SELECT FLT_NO, DEP, FARE,\n               순위함수() OVER (PARTITION BY DEP ORDER BY FARE DESC) AS RN\n          FROM FLIGHT)\n WHERE RN <= 2;",
+      "choices": [
+        "(가) 4, (나) 4, (다) 6",
+        "(가) 4, (나) 5, (다) 6",
+        "(가) 4, (나) 5, (다) 5",
+        "(가) 4, (나) 6, (다) 7"
+      ],
+      "answer": 2,
+      "explanation": "출발지별 FARE 내림차순 순위는 다음과 같다.\n\n| FLT_NO | DEP | FARE | ROW_NUMBER | RANK | DENSE_RANK |\n|---|---|---|---|---|---|\n| A | ICN | 500 | 1 | 1 | 1 |\n| B | ICN | 400 | 2 | 2 | 2 |\n| C | ICN | 400 | 3 | 2 | 2 |\n| D | ICN | 300 | 4 | 4 | 3 |\n| E | GMP | 200 | 1 | 1 | 1 |\n| F | GMP | 200 | 2 | 1 | 1 |\n| G | GMP | 100 | 3 | 3 | 2 |\n\n(ROW_NUMBER는 동점끼리 순서가 임의로 정해지지만 건수에는 영향이 없다.)\n\n- (가) ROW_NUMBER ≤ 2: 파티션마다 정확히 2건 → **4**\n- (나) RANK ≤ 2: A, B, C, E, F → **5**\n- (다) DENSE_RANK ≤ 2: A, B, C, E, F, G → **6**"
+    },
+    {
+      "id": 38,
+      "subject": 2,
+      "theory": "hierarchical-query",
+      "question": "[PAX] 테이블의 REF_ID는 해당 승객을 추천한 승객의 ID이다. 다음 SQL의 실행 결과로 옳은 것은? (Oracle 기준)\n\n[PAX]\n\n| ID | NAME | REF_ID | GRADE |\n|---|---|---|---|\n| 1 | A | NULL | VIP |\n| 2 | B | 1 | GOLD |\n| 3 | C | 1 | VIP |\n| 4 | D | 2 | GOLD |\n| 5 | E | 3 | GOLD |\n| 6 | F | 5 | GOLD |",
+      "code": "SELECT COUNT(*)\n  FROM PAX\n START WITH GRADE = 'VIP'\nCONNECT BY PRIOR ID = REF_ID;",
+      "choices": [
+        "9",
+        "6",
+        "3",
+        "8"
+      ],
+      "answer": 1,
+      "explanation": "START WITH 조건을 만족하는 행은 **모두 각각의 루트**가 되어 전개가 시작된다. GRADE가 'VIP'인 행은 A와 C 두 개다.\n\n- A를 루트로 전개: A → B → D, A → C → E → F → **6행**\n- C를 루트로 전개: C → E → F → **3행**\n\nC는 A의 하위이기도 하지만 START WITH 조건을 만족하므로 별도의 루트로 다시 전개된다. 따라서 C, E, F가 두 번씩 나타나 총 **9행**이다."
+    },
+    {
+      "id": 39,
+      "subject": 2,
+      "theory": "hierarchical-query",
+      "question": "다음 SQL의 실행 결과에 대한 설명으로 옳은 것은? (Oracle 기준)\n\n[PAX]\n\n| ID | NAME | REF_ID |\n|---|---|---|\n| 1 | A | NULL |\n| 2 | B | 1 |\n| 3 | C | 1 |\n| 4 | D | 2 |\n| 5 | E | 3 |\n| 6 | F | 5 |",
+      "code": "SELECT NAME, LEVEL, CONNECT_BY_ISLEAF AS ISLEAF,\n       CONNECT_BY_ROOT NAME AS RT,\n       SYS_CONNECT_BY_PATH(NAME, '/') AS PATH\n  FROM PAX\n START WITH NAME = 'F'\nCONNECT BY ID = PRIOR REF_ID;",
+      "choices": [
+        "A 행의 LEVEL은 1이다.",
+        "CONNECT_BY_ISLEAF 값이 1인 행은 F이다.",
+        "결과는 4행이며, 모든 행의 RT 값은 F이다.",
+        "마지막으로 출력되는 행의 PATH 값은 '/A/C/E/F'이다."
+      ],
+      "answer": 3,
+      "explanation": "`CONNECT BY ID = PRIOR REF_ID`는 직전 행의 REF_ID(추천인)를 ID로 가진 행을 다음 행으로 찾으므로 **역방향(하위 → 상위)** 전개다.\n\n| NAME | LEVEL | ISLEAF | RT | PATH |\n|---|---|---|---|---|\n| F | 1 | 0 | F | /F |\n| E | 2 | 0 | F | /F/E |\n| C | 3 | 0 | F | /F/E/C |\n| A | 4 | 1 | F | /F/E/C/A |\n\n결과는 **4행**이고, CONNECT_BY_ROOT는 시작 행 F의 값이므로 모든 행에서 **F**다.\n\n- 1번: A는 4번째로 전개되어 LEVEL 4다.\n- 2번: 역방향에서는 더 이상 전개할 행이 없는 **A**가 리프(ISLEAF = 1)다.\n- 4번: 경로는 루트 F부터 쌓이므로 '/F/E/C/A'다."
+    },
+    {
+      "id": 40,
+      "subject": 2,
+      "theory": "pivot-unpivot",
+      "question": "다음 SQL의 결과에 대한 설명으로 옳은 것은? (Oracle 기준)\n\n[BOOKING_M]\n\n| BK_NO | MON | CLASS | AMT |\n|---|---|---|---|\n| 1 | 01 | Y | 100 |\n| 2 | 01 | Y | 200 |\n| 3 | 01 | C | 500 |\n| 4 | 02 | Y | 300 |",
+      "code": "SELECT *\n  FROM (SELECT MON, CLASS, AMT FROM BOOKING_M)\n PIVOT (SUM(AMT) AS S, COUNT(*) AS C\n        FOR CLASS IN ('Y' AS Y, 'C' AS C))\n ORDER BY MON;",
+      "choices": [
+        "결과 컬럼은 MON, Y_S, Y_C, C_S, C_C이고, MON이 '02'인 행의 값은 300, 1, 0, 0이다.",
+        "결과 컬럼은 MON, S_Y, C_Y, S_C, C_C이고, MON이 '02'인 행의 값은 300, 1, NULL, 0이다.",
+        "결과 컬럼은 MON, Y_S, Y_C, C_S, C_C이고, MON이 '02'인 행의 값은 300, 1, NULL, NULL이다.",
+        "결과 컬럼은 MON, Y_S, Y_C, C_S, C_C이고, MON이 '02'인 행의 값은 300, 1, NULL, 0이다."
+      ],
+      "answer": 4,
+      "explanation": "인라인 뷰에서 MON, CLASS, AMT만 선택했으므로 집계 대상(AMT)과 FOR 컬럼(CLASS)을 뺀 **MON**이 행 기준이 된다(2행).\n\n집계 함수가 여러 개이면 결과 컬럼 이름은 **`IN 별칭_집계 별칭`** 형태로 만들어진다. 따라서 Y_S, Y_C, C_S, C_C다.\n\n| MON | Y_S | Y_C | C_S | C_C |\n|---|---|---|---|---|\n| 01 | 300 | 2 | 500 | 1 |\n| 02 | 300 | 1 | NULL | 0 |\n\nMON '02'에는 CLASS 'C' 행이 없다. 대상 행이 없을 때 SUM은 **NULL**, COUNT는 **0**을 돌려준다. 따라서 '02' 행은 300, 1, NULL, 0이다."
+    },
+    {
+      "id": 41,
+      "subject": 2,
+      "theory": "regex",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle 기준, C1, C2 순서로 표기)",
+      "code": "SELECT REGEXP_REPLACE('KE0123', '([A-Z]{2})0*([0-9]+)', '\\1-\\2') AS C1,\n       REGEXP_SUBSTR('ICN>NRT>LAX', '[^>]+', 1, 3)               AS C2\n  FROM DUAL;",
+      "choices": [
+        "`KE-0123, LAX`",
+        "`KE-123, LAX`",
+        "`KE-123, NRT`",
+        "`KE0123, LAX`"
+      ],
+      "answer": 2,
+      "explanation": "**C1**: 패턴 `([A-Z]{2})0*([0-9]+)`를 'KE0123'에 적용하면\n- 첫 번째 그룹 `([A-Z]{2})` → 'KE'\n- `0*`는 0이 0개 이상 반복되는 부분으로, 탐욕적으로 '0'을 소비한다.\n- 두 번째 그룹 `([0-9]+)` → '123'\n\n치환 문자열 `'\\1-\\2'`는 백레퍼런스로 두 그룹 사이에 '-'를 넣으므로 결과는 **'KE-123'**이다. 앞자리 0은 어느 그룹에도 들어가지 않아 사라진다.\n\n**C2**: `[^>]+`는 '>'가 아닌 문자가 1개 이상 이어진 덩어리다. 'ICN', 'NRT', 'LAX' 중 세 번째 일치는 **'LAX'**다."
+    },
+    {
+      "id": 42,
+      "subject": 2,
+      "theory": "regex",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle 기준, C1, C2, C3 순서로 표기)",
+      "code": "SELECT REGEXP_COUNT('Seat 12a, seat 12A, SEAT 3B', 'seat', 1, 'ic')        AS C1,\n       REGEXP_COUNT('Seat 12a, seat 12A, SEAT 3B', '[0-9]+[a-z]', 1, 'i') AS C2,\n       REGEXP_INSTR('Seat 12a, seat 12A, SEAT 3B', '\\d+', 1, 3)           AS C3\n  FROM DUAL;",
+      "choices": [
+        "`1, 3, 26`",
+        "`3, 3, 26`",
+        "`1, 2, 26`",
+        "`1, 3, 27`"
+      ],
+      "answer": 1,
+      "explanation": "대상 문자열: 'Seat 12a, seat 12A, SEAT 3B'\n\n- **C1**: match_param에 'i'와 'c'를 함께 주면 **마지막에 쓴 옵션**이 적용된다. 'ic'는 'c'(대소문자 구분)이므로 소문자 'seat'만 일치하여 **1**이다. 'i'가 적용된다고 보면 3이 된다.\n- **C2**: 'i' 옵션으로 대소문자를 구분하지 않으므로 '12a', '12A', '3B' 모두 일치해 **3**이다.\n- **C3**: `\\d+`의 일치는 '12'(6번째), '12'(16번째), '3'(26번째)이다. 세 번째 일치의 **시작 위치**는 **26**이다. (return_opt를 1로 주었다면 일치 다음 위치인 27)"
+    },
+    {
+      "id": 43,
+      "subject": 2,
+      "theory": "dml",
+      "question": "다음 두 테이블에 대해 아래 UPDATE 문을 실행(Oracle)한 후 `SELECT SUM(fare), COUNT(fare) FROM flight;`의 결과로 옳은 것은?\n\n**FLIGHT**\n\n| FLT_NO | FARE |\n|---|---|\n| KE01 | 100 |\n| OZ02 | 200 |\n| LJ03 | 300 |\n| 7C04 | 400 |\n\n**FARE_CHG**\n\n| FLT_NO | NEW_FARE |\n|---|---|\n| KE01 | 150 |\n| LJ03 | 350 |\n| ZE09 | 999 |",
+      "code": "UPDATE flight f\n   SET fare = (SELECT c.new_fare\n                 FROM fare_chg c\n                WHERE c.flt_no = f.flt_no);",
+      "choices": [
+        "1100, 4",
+        "500, 4",
+        "500, 2",
+        "1100, 2"
+      ],
+      "answer": 3,
+      "explanation": "UPDATE 문에 WHERE 절이 없으므로 FLIGHT의 **모든 행**이 갱신 대상이다. 각 행에 대해 스칼라 서브쿼리를 실행하는데, FARE_CHG에 짝이 없는 행은 서브쿼리 결과가 없어 **NULL로 갱신**된다.\n\n| FLT_NO | 갱신 후 FARE |\n|---|---|\n| KE01 | 150 |\n| OZ02 | NULL |\n| LJ03 | 350 |\n| 7C04 | NULL |\n\nSUM은 150 + 350 = **500**, COUNT(fare)는 NULL을 제외한 **2**다. FARE_CHG의 ZE09는 FLIGHT에 없으므로 영향이 없다.\n\n짝이 없는 행의 기존 값을 유지하려면 `WHERE EXISTS (SELECT 1 FROM fare_chg c WHERE c.flt_no = f.flt_no)`를 추가해야 한다. 그렇게 했다면 1100, 4가 된다."
+    },
+    {
+      "id": 44,
+      "subject": 2,
+      "theory": "dml",
+      "question": "다음 두 테이블에 대해 아래 MERGE 문을 실행(Oracle)한 후 `SELECT COUNT(*), SUM(avail) FROM seat_inv;`의 결과로 옳은 것은?\n\n**SEAT_INV**\n\n| FLT_NO | CLASS | AVAIL |\n|---|---|---|\n| KE01 | Y | 10 |\n| KE01 | C | 2 |\n| OZ02 | Y | 5 |\n\n**SEAT_CHG**\n\n| FLT_NO | CLASS | QTY |\n|---|---|---|\n| KE01 | Y | -3 |\n| KE01 | C | -5 |\n| OZ02 | C | 4 |\n| LJ03 | Y | 0 |",
+      "code": "MERGE INTO seat_inv t\nUSING seat_chg s\n   ON (t.flt_no = s.flt_no AND t.class = s.class)\n WHEN MATCHED THEN\n      UPDATE SET t.avail = t.avail + s.qty\n       WHERE t.avail + s.qty >= 0\n WHEN NOT MATCHED THEN\n      INSERT (flt_no, class, avail)\n      VALUES (s.flt_no, s.class, s.qty)\n       WHERE s.qty > 0;",
+      "choices": [
+        "5, 18",
+        "4, 13",
+        "3, 14",
+        "4, 18"
+      ],
+      "answer": 4,
+      "explanation": "SEAT_CHG의 각 행을 ON 조건으로 SEAT_INV와 비교한다.\n\n- (KE01, Y, -3): 일치 → 10 − 3 = 7 ≥ 0 이므로 UPDATE → **7**\n- (KE01, C, -5): 일치하지만 2 − 5 = −3으로 UPDATE의 WHERE 조건을 만족하지 않아 **갱신되지 않음** → 2 유지\n- (OZ02, C, 4): 불일치 → QTY 4 > 0 이므로 INSERT → **(OZ02, C, 4)**\n- (LJ03, Y, 0): 불일치이지만 INSERT의 WHERE 조건(QTY > 0)을 만족하지 않아 **입력되지 않음**\n\n최종 데이터는 (KE01, Y, 7), (KE01, C, 2), (OZ02, Y, 5), (OZ02, C, 4)이므로 COUNT는 **4**, SUM은 7 + 2 + 5 + 4 = **18**이다.\n\n- 2번: KE01 C를 −3으로 갱신한 경우\n- 1번: LJ03을 0으로 입력한 경우"
+    },
+    {
+      "id": 45,
+      "subject": 2,
+      "theory": "tcl",
+      "question": "SEAT_CNT 테이블에는 AVAIL 값이 10인 한 행이 커밋되어 있다. Oracle에서 아래 문장을 순서대로 실행한 후 `SELECT avail FROM seat_cnt;`의 결과는? (오류가 발생한 문장은 무시하고 다음 문장이 실행된다고 가정한다.)",
+      "code": "UPDATE seat_cnt SET avail = avail - 1;\nSAVEPOINT sp;\nUPDATE seat_cnt SET avail = avail - 2;\nSAVEPOINT sp;\nUPDATE seat_cnt SET avail = avail - 3;\nSAVEPOINT sp2;\nUPDATE seat_cnt SET avail = avail - 4;\nROLLBACK TO sp;\nROLLBACK TO sp2;\nUPDATE seat_cnt SET avail = avail - 1;\nCOMMIT;",
+      "choices": [
+        "8",
+        "6",
+        "3",
+        "9"
+      ],
+      "answer": 2,
+      "explanation": "문장별 AVAIL 값을 따라가면 다음과 같다.\n\n| 문장 | AVAIL | 저장점 |\n|---|---|---|\n| UPDATE −1 | 9 | |\n| SAVEPOINT sp | 9 | sp = 9 |\n| UPDATE −2 | 7 | |\n| SAVEPOINT sp | 7 | 같은 이름이므로 **sp = 7로 대체** |\n| UPDATE −3 | 4 | |\n| SAVEPOINT sp2 | 4 | sp2 = 4 |\n| UPDATE −4 | 0 | |\n| ROLLBACK TO sp | 7 | sp **뒤에 만든 sp2는 사라짐** |\n| ROLLBACK TO sp2 | 7 | 존재하지 않는 저장점 → **오류**(무시) |\n| UPDATE −1 | 6 | |\n| COMMIT | 6 | 확정 |\n\n결과는 **6**이다.\n\n- 8: 같은 이름의 저장점이 처음 것(9)으로 유지된다고 본 경우\n- 3: ROLLBACK TO sp 뒤에도 sp2가 남아 있어 4로 돌아간다고 본 경우\n- 9: 저장점 롤백 오류가 트랜잭션 전체를 취소한다고 본 경우"
+    },
+    {
+      "id": 46,
+      "subject": 2,
+      "theory": "tcl",
+      "question": "트랜잭션 TX1이 좌석 12A의 운임을 조회하여 300,000원을 확인했다. 그 사이 TX2가 같은 좌석의 운임을 350,000원으로 **UPDATE하고 COMMIT**했고, TX1이 같은 조회를 다시 실행하자 350,000원이 조회되었다.\n\n이 현상의 이름과, 이 현상을 방지할 수 있는 **가장 낮은** 격리 수준(ANSI 표준 기준)을 바르게 짝지은 것은?",
+      "choices": [
+        "Non-Repeatable Read – REPEATABLE READ",
+        "Phantom Read – SERIALIZABLE",
+        "Dirty Read – READ COMMITTED",
+        "Non-Repeatable Read – READ COMMITTED"
+      ],
+      "answer": 1,
+      "explanation": "한 트랜잭션 안에서 **같은 행**을 두 번 읽었는데, 그 사이 다른 트랜잭션이 그 행을 **수정하고 커밋**해서 값이 달라졌으므로 **Non-Repeatable Read**다. ANSI 표준에서 이를 방지하는 가장 낮은 격리 수준은 **REPEATABLE READ**다.\n\n- 2번: Phantom Read는 다른 트랜잭션이 조건에 맞는 **새 행을 삽입**해 없던 행이 나타나는 현상이다.\n- 3번: Dirty Read는 **커밋되지 않은** 데이터를 읽는 현상인데, TX2는 커밋했다.\n- 4번: READ COMMITTED는 Dirty Read만 방지하며 Non-Repeatable Read는 발생한다."
+    },
+    {
+      "id": 47,
+      "subject": 2,
+      "theory": "ddl",
+      "question": "다음과 같이 테이블을 만들고 ㄱ~ㅁ의 INSERT 문을 순서대로 실행했다. Oracle과 SQL Server에서 각각 **성공하는** INSERT 문의 개수로 옳은 것은? (SQL Server에서는 VARCHAR2 대신 VARCHAR, NUMBER 대신 INT로 같은 구조를 만들었다고 가정하며, 오류가 난 문장은 무시하고 진행한다.)",
+      "code": "CREATE TABLE pax_t (\n  pax_id    NUMBER PRIMARY KEY,\n  passport  VARCHAR2(9) UNIQUE,\n  mile      NUMBER CHECK (mile >= 0)\n);\n\nINSERT INTO pax_t VALUES (1, 'M1', 0);      -- ㄱ\nINSERT INTO pax_t VALUES (2, NULL, NULL);   -- ㄴ\nINSERT INTO pax_t VALUES (3, NULL, 100);    -- ㄷ\nINSERT INTO pax_t VALUES (4, 'M1', 50);     -- ㄹ\nINSERT INTO pax_t VALUES (5, 'M2', -10);    -- ㅁ",
+      "choices": [
+        "Oracle 2개 / SQL Server 2개",
+        "Oracle 3개 / SQL Server 3개",
+        "Oracle 4개 / SQL Server 3개",
+        "Oracle 3개 / SQL Server 2개"
+      ],
+      "answer": 4,
+      "explanation": "| 문장 | 내용 | Oracle | SQL Server |\n|---|---|---|---|\n| ㄱ | 정상 값 | 성공 | 성공 |\n| ㄴ | PASSPORT NULL, MILE NULL | 성공 | 성공 |\n| ㄷ | PASSPORT NULL (두 번째) | **성공** | **실패** |\n| ㄹ | PASSPORT 'M1' 중복 | 실패 | 실패 |\n| ㅁ | MILE −10 | 실패 | 실패 |\n\n- UNIQUE 컬럼의 NULL은 Oracle에서는 여러 건 허용되지만, SQL Server에서는 **한 건만** 허용된다. 그래서 ㄷ의 결과가 DBMS마다 다르다.\n- CHECK 조건은 결과가 FALSE일 때만 거부한다. MILE이 NULL이면 조건이 UNKNOWN이 되어 통과하므로 ㄴ은 성공한다.\n- ㅁ은 MILE >= 0을 위반한다.\n\n따라서 **Oracle 3개, SQL Server 2개**다."
+    },
+    {
+      "id": 48,
+      "subject": 2,
+      "theory": "ddl",
+      "question": "VIEW, INDEX, SEQUENCE에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "뷰는 생성 시점의 조회 결과를 별도로 저장하므로, 원본 테이블을 삭제해도 뷰는 계속 조회할 수 있다.",
+        "인덱스를 많이 만들수록 조회뿐 아니라 INSERT·UPDATE·DELETE 성능도 함께 좋아진다.",
+        "Oracle에서는 ALTER VIEW로 뷰의 SELECT 정의를 바꿀 수 없으므로, CREATE OR REPLACE VIEW로 다시 생성한다.",
+        "SQL Server는 순차 번호 생성에 IDENTITY 속성을 사용할 수 없으므로 반드시 SEQUENCE 객체를 만들어야 한다."
+      ],
+      "answer": 3,
+      "explanation": "뷰의 정의(SELECT 문)는 ALTER VIEW로 변경할 수 없으므로 **CREATE OR REPLACE VIEW**로 재생성한다.\n\n- 1번: 뷰는 데이터를 저장하지 않는 **가상 테이블**이다. 원본 테이블이 없어지면 뷰를 조회할 수 없다.\n- 2번: 인덱스는 조회를 빠르게 하지만, DML 시 인덱스도 함께 갱신해야 하므로 INSERT·UPDATE·DELETE에는 **부하**가 된다.\n- 4번: SQL Server는 순차 번호 생성에 주로 **IDENTITY** 속성을 사용한다."
+    },
+    {
+      "id": 49,
+      "subject": 2,
+      "theory": "dcl",
+      "question": "DBA가 아래 문장을 순서대로 실행했다. 실행 후 KIM과 LEE가 가진 권한으로 옳은 것은? (Oracle, 두 사용자는 이 문장들 외에 다른 권한이 없다.)",
+      "code": "CREATE ROLE r_read;\nGRANT SELECT ON air.flight TO r_read;\n\nCREATE ROLE r_agent;\nGRANT r_read TO r_agent;\nGRANT INSERT ON air.booking TO r_agent;\n\nGRANT r_agent TO kim;\nGRANT r_read  TO lee;\n\nREVOKE SELECT ON air.flight FROM r_read;",
+      "choices": [
+        "KIM: FLIGHT SELECT, BOOKING INSERT / LEE: 없음",
+        "KIM: BOOKING INSERT / LEE: 없음",
+        "KIM: FLIGHT SELECT, BOOKING INSERT / LEE: FLIGHT SELECT",
+        "KIM: BOOKING INSERT / LEE: FLIGHT SELECT"
+      ],
+      "answer": 2,
+      "explanation": "롤에는 권한뿐 아니라 **다른 롤도 부여**할 수 있다. 롤을 통해 받은 권한은 롤의 현재 상태를 그대로 따르므로, 롤에서 권한을 회수하면 그 롤을 받은 사용자와 롤 모두에 즉시 반영된다.\n\n- R_READ: FLIGHT SELECT → 마지막에 회수되어 **아무 권한도 없음**\n- R_AGENT: R_READ + BOOKING INSERT → 실질적으로 **BOOKING INSERT만** 남음\n- KIM(R_AGENT): BOOKING INSERT\n- LEE(R_READ): 없음\n\n사용자에게 직접 준 권한이 아니므로 '이미 받은 권한은 남는다'고 보면 안 된다."
+    },
+    {
+      "id": 50,
+      "subject": 2,
+      "theory": "dcl",
+      "question": "Oracle의 DCL에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "WITH GRANT OPTION은 오브젝트 권한을, WITH ADMIN OPTION은 시스템 권한이나 롤을 다른 사용자에게 다시 부여할 수 있게 한다.",
+        "WITH ADMIN OPTION으로 받은 시스템 권한을 회수하면, 그 사용자가 다른 사용자에게 부여한 같은 권한도 연쇄적으로 회수된다.",
+        "CONNECT, RESOURCE 같은 롤은 Oracle이 제공하지 않으므로 DBA가 직접 CREATE ROLE로 만들어야 사용할 수 있다.",
+        "GRANT나 REVOKE를 실행해도 진행 중인 트랜잭션의 DML은 커밋되지 않고 그대로 유지된다."
+      ],
+      "answer": 1,
+      "explanation": "오브젝트 권한의 재부여는 **WITH GRANT OPTION**, 시스템 권한과 롤의 재부여는 **WITH ADMIN OPTION**으로 허용한다.\n\n- 2번: WITH ADMIN OPTION은 **연쇄 회수되지 않는다.** 연쇄 회수는 WITH GRANT OPTION으로 부여한 오브젝트 권한의 특징이다.\n- 3번: CONNECT, RESOURCE, DBA는 Oracle이 **기본 제공**하는 롤이다.\n- 4번: Oracle에서 DCL(GRANT, REVOKE)은 DDL처럼 **암묵적 COMMIT**을 일으키므로 앞서 실행한 DML도 커밋된다."
+    }
+  ]
+}

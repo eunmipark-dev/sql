@@ -1,0 +1,1466 @@
+{
+  "slug": "index-scan",
+  "title": "인덱스 스캔 방식",
+  "tables": {
+    "인덱스": {
+      "columns": [
+        "DEPTNO",
+        "ROWID"
+      ],
+      "rows": [
+        [
+          "10",
+          "R3"
+        ],
+        [
+          "10",
+          "R6"
+        ],
+        [
+          "20",
+          "R1"
+        ],
+        [
+          "20",
+          "R4"
+        ],
+        [
+          "20",
+          "R5"
+        ],
+        [
+          "30",
+          "R2"
+        ]
+      ]
+    },
+    "EMP": {
+      "columns": [
+        "ROWID",
+        "ENAME",
+        "DEPTNO"
+      ],
+      "rows": [
+        [
+          "R1",
+          "SMITH",
+          "20"
+        ],
+        [
+          "R2",
+          "ALLEN",
+          "30"
+        ],
+        [
+          "R3",
+          "CLARK",
+          "10"
+        ],
+        [
+          "R4",
+          "JONES",
+          "20"
+        ],
+        [
+          "R5",
+          "FORD",
+          "20"
+        ],
+        [
+          "R6",
+          "KING",
+          "10"
+        ]
+      ]
+    },
+    "EMP_IDX": {
+      "columns": [
+        "ENAME",
+        "SAL",
+        "ROWID"
+      ],
+      "rows": [
+        [
+          "ALLEN",
+          "160",
+          "R2"
+        ],
+        [
+          "CLARK",
+          "245",
+          "R3"
+        ],
+        [
+          "FORD",
+          "300",
+          "R5"
+        ],
+        [
+          "JONES",
+          "298",
+          "R4"
+        ],
+        [
+          "KING",
+          "500",
+          "R6"
+        ],
+        [
+          "SMITH",
+          "80",
+          "R1"
+        ]
+      ]
+    },
+    "성별_연봉": {
+      "columns": [
+        "성별",
+        "연봉",
+        "ROWID"
+      ],
+      "rows": [
+        [
+          "남",
+          "200",
+          "R4"
+        ],
+        [
+          "남",
+          "300",
+          "R1"
+        ],
+        [
+          "남",
+          "350",
+          "R7"
+        ],
+        [
+          "남",
+          "500",
+          "R2"
+        ],
+        [
+          "여",
+          "250",
+          "R5"
+        ],
+        [
+          "여",
+          "320",
+          "R3"
+        ],
+        [
+          "여",
+          "380",
+          "R8"
+        ],
+        [
+          "여",
+          "600",
+          "R6"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "인덱스 스캔 방식",
+      "subtitle": "인덱스를 읽는 여러 갈래 길",
+      "icon": "search",
+      "steps": [
+        {
+          "say": "인덱스 스캔 방식을 시작할게요."
+        },
+        {
+          "say": "언제 어떤 방식이 쓰이는지가 핵심이에요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "cards",
+      "section": "한눈에 보기",
+      "title": "여섯 가지 스캔",
+      "cols": 3,
+      "items": [
+        {
+          "title": "레인지",
+          "desc": "수직 + 수평 일부",
+          "icon": "search"
+        },
+        {
+          "title": "풀",
+          "desc": "리프 전체를 순서대로",
+          "icon": "link"
+        },
+        {
+          "title": "유니크",
+          "desc": "수직 탐색만",
+          "icon": "target"
+        },
+        {
+          "title": "스킵",
+          "desc": "리프를 골라 읽기",
+          "icon": "filter"
+        },
+        {
+          "title": "패스트 풀",
+          "desc": "멀티블록 · 무정렬",
+          "icon": "disk"
+        },
+        {
+          "title": "디센딩",
+          "desc": "뒤에서부터 읽기",
+          "icon": "arrow-left-right"
+        }
+      ],
+      "steps": [
+        {
+          "say": "인덱스 스캔은 여섯 가지예요."
+        },
+        {
+          "say": "레인지 스캔. 필요한 범위만 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "풀 스캔. 리프 전체를 순서대로 읽어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "유니크 스캔. 수직 탐색만으로 끝나요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "스킵 스캔. 필요한 리프만 골라 읽어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "패스트 풀 스캔. 통째로 빠르게 읽어요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "디센딩. 거꾸로 읽어요.",
+          "focus": [
+            5
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "id": "s03",
+      "section": "Index Range Scan",
+      "type": "data",
+      "title": "Index Range Scan",
+      "tables": [
+        "인덱스",
+        "EMP"
+      ],
+      "code": "SELECT * FROM EMP\nWHERE  DEPTNO = 20;",
+      "steps": [
+        {
+          "say": "가장 일반적인 방식이에요. 인덱스는 DEPTNO 순으로 정렬돼 있어요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "인덱스": {
+              "cols": [
+                "DEPTNO"
+              ]
+            }
+          }
+        },
+        {
+          "say": "루트에서 리프까지 내려가 시작점을 찾고,",
+          "t": {
+            "인덱스": {
+              "rows": [
+                2
+              ],
+              "notes": [
+                [
+                  2,
+                  "DEPTNO",
+                  "시작점"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "필요한 범위만 옆으로 읽어요.",
+          "t": {
+            "인덱스": {
+              "rows": [
+                2,
+                3,
+                4
+              ],
+              "notes": [
+                [
+                  5,
+                  "DEPTNO",
+                  "여기서 멈춤"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그리고 로우아이디로 테이블을 읽어요.",
+          "t": {
+            "인덱스": {
+              "tint": [
+                [
+                  2
+                ],
+                [
+                  3
+                ],
+                [
+                  4
+                ]
+              ],
+              "cols": [
+                "ROWID"
+              ]
+            },
+            "EMP": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  3
+                ],
+                [
+                  4
+                ]
+              ],
+              "cols": [
+                "ROWID"
+              ]
+            }
+          }
+        },
+        {
+          "say": "20번 부서 3명이 나와요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                3,
+                4
+              ],
+              "result": {
+                "title": "결과 3행",
+                "columns": [
+                  "ENAME",
+                  "DEPTNO"
+                ],
+                "rows": [
+                  [
+                    "SMITH",
+                    "20"
+                  ],
+                  [
+                    "JONES",
+                    "20"
+                  ],
+                  [
+                    "FORD",
+                    "20"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "Index Range Scan",
+      "tone": "info",
+      "title": "레인지 스캔의 조건",
+      "text": "**선두 컬럼을 가공하지 않고** 조건에 써야 해요. 성능은 스캔 범위와 테이블 액세스 횟수로 정해져요.",
+      "steps": [
+        {
+          "say": "선두 컬럼을 가공하지 않아야 레인지 스캔이 돼요."
+        },
+        {
+          "say": "하지만 레인지 스캔이 나왔다고 끝이 아니에요."
+        },
+        {
+          "say": "스캔 범위와 테이블 액세스를 줄여야 빨라요."
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "quiz",
+      "section": "Index Range Scan",
+      "question": "**Index Range Scan**이 가능하려면?",
+      "choices": [
+        "후행 컬럼에 조건이 있음",
+        "인덱스가 유니크해야 함",
+        "등치 조건만 사용함",
+        "선두 컬럼을 가공하지 않음"
+      ],
+      "answer": 4,
+      "explanation": "선두 컬럼을 가공하지 않고 조건에 써야 레인지 스캔이 돼요. 범위 조건도 쓸 수 있어요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 인덱스 레인지 스캔이 가능하려면 무엇이 필요할까요?"
+        }
+      ],
+      "id": "s04q"
+    },
+    {
+      "id": "s05",
+      "section": "Index Full Scan",
+      "type": "data",
+      "title": "Index Full Scan",
+      "tables": [
+        "EMP_IDX"
+      ],
+      "code": "-- 인덱스 EMP_IDX (ENAME, SAL)\nSELECT * FROM EMP\nWHERE  SAL > 200\nORDER  BY ENAME;\n\nTABLE ACCESS BY INDEX ROWID\n  INDEX FULL SCAN  EMP_IDX\nfilter(SAL>200)",
+      "steps": [
+        {
+          "say": "이름과 급여로 만든 인덱스예요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "EMP_IDX": {
+              "cols": [
+                "ENAME",
+                "SAL"
+              ]
+            }
+          }
+        },
+        {
+          "say": "조건에 선두 컬럼인 이름이 없어요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP_IDX": {
+              "cols": [
+                "ENAME"
+              ],
+              "notes": [
+                [
+                  0,
+                  "ENAME",
+                  "조건 없음"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 리프 전체를 처음부터 끝까지 읽어요.",
+          "focus": [
+            7
+          ],
+          "t": {
+            "EMP_IDX": {
+              "rows": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            }
+          }
+        },
+        {
+          "say": "급여 조건은 필터로 걸러요.",
+          "focus": [
+            8
+          ],
+          "t": {
+            "EMP_IDX": {
+              "cols": [
+                "SAL"
+              ],
+              "filter": [
+                1,
+                2,
+                3,
+                4
+              ]
+            }
+          }
+        },
+        {
+          "say": "남은 4명은 이미 이름 순이라 정렬이 필요 없어요.",
+          "focus": [
+            4
+          ],
+          "t": {
+            "EMP_IDX": {
+              "result": {
+                "title": "결과 4행",
+                "columns": [
+                  "ENAME",
+                  "SAL"
+                ],
+                "rows": [
+                  [
+                    "CLARK",
+                    "245"
+                  ],
+                  [
+                    "FORD",
+                    "300"
+                  ],
+                  [
+                    "JONES",
+                    "298"
+                  ],
+                  [
+                    "KING",
+                    "500"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "Index Full Scan",
+      "title": "언제 선택될까?",
+      "cols": 3,
+      "items": [
+        {
+          "title": "차선책",
+          "desc": "선두 조건이 없을 때",
+          "icon": "help"
+        },
+        {
+          "title": "소량 필터",
+          "desc": "인덱스가 더 작음",
+          "icon": "filter"
+        },
+        {
+          "title": "소트 생략",
+          "desc": "키 순으로 정렬됨",
+          "icon": "check",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "인덱스 풀 스캔은 언제 쓸까요?"
+        },
+        {
+          "say": "첫째, 레인지 스캔이 안 될 때 차선책이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 인덱스에서 걸러 소량만 테이블로 갈 때예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 결과가 정렬돼서 소트를 생략할 때예요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "callout",
+      "section": "Index Full Scan",
+      "tone": "warning",
+      "title": "대량이면 손해",
+      "text": "대부분의 행을 테이블로 가져가면 **Table Full Scan보다 느려요**. 부분범위 처리일 때만 유리해요.",
+      "steps": [
+        {
+          "say": "대부분의 행이 조건을 만족하면 위험해요."
+        },
+        {
+          "say": "테이블 풀 스캔보다 훨씬 느려요."
+        },
+        {
+          "say": "앞쪽 일부만 보고 멈출 때만 유리해요."
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "compare",
+      "section": "Index Unique Scan",
+      "title": "유니크 스캔이 될 때",
+      "left": {
+        "title": "Unique Scan",
+        "icon": "target",
+        "tone": "good",
+        "items": [
+          "유니크 인덱스",
+          "모든 컬럼을 = 조건",
+          "수직 탐색만"
+        ]
+      },
+      "right": {
+        "title": "Range Scan으로",
+        "icon": "search",
+        "tone": "bad",
+        "items": [
+          "일부 컬럼만 = 조건",
+          "범위 조건 사용"
+        ]
+      },
+      "steps": [
+        {
+          "say": "유니크 스캔은 수직 탐색만으로 끝나요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "유니크 인덱스의 모든 컬럼을 이퀄 조건으로 줄 때예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "일부 컬럼만 주면 레인지 스캔이 돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "비트윈이나 라이크 같은 범위 조건도 마찬가지예요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "quiz",
+      "section": "Index Unique Scan",
+      "question": "PK가 (주문일자, 주문번호)일 때, 주문일자만 = 조건으로 주면?",
+      "choices": [
+        "Index Unique Scan",
+        "Index Range Scan",
+        "Index Skip Scan",
+        "Index Fast Full Scan"
+      ],
+      "answer": 2,
+      "explanation": "일부 컬럼만 = 조건이면 Range Scan이에요. 모든 컬럼이 = 조건이어야 Unique Scan이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 결합 PK에서 앞 컬럼만 조건으로 주면 어떤 스캔일까요?"
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "id": "s10",
+      "section": "Index Skip Scan",
+      "type": "data",
+      "title": "Index Skip Scan",
+      "tables": [
+        "성별_연봉"
+      ],
+      "code": "SELECT * FROM 사원\nWHERE  연봉 BETWEEN 300 AND 400;",
+      "steps": [
+        {
+          "say": "인덱스는 성별, 연봉 순이에요.",
+          "t": {
+            "성별_연봉": {
+              "cols": [
+                "성별",
+                "연봉"
+              ]
+            }
+          }
+        },
+        {
+          "say": "그런데 조건에는 연봉만 있어요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "성별_연봉": {
+              "cols": [
+                "연봉"
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래도 성별 값마다 연봉 범위를 찾아가요.",
+          "t": {
+            "성별_연봉": {
+              "group": "성별"
+            }
+          }
+        },
+        {
+          "say": "남자 한 번, 여자 한 번 탐색하는 셈이에요.",
+          "t": {
+            "성별_연봉": {
+              "rows": [
+                1,
+                5
+              ],
+              "notes": [
+                [
+                  1,
+                  "연봉",
+                  "남 시작"
+                ],
+                [
+                  5,
+                  "연봉",
+                  "여 시작"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "가능성 있는 리프만 읽고 나머지는 건너뛰어요.",
+          "t": {
+            "성별_연봉": {
+              "filter": [
+                1,
+                2,
+                5,
+                6
+              ],
+              "result": {
+                "title": "결과 4행",
+                "columns": [
+                  "성별",
+                  "연봉"
+                ],
+                "rows": [
+                  [
+                    "남",
+                    "300"
+                  ],
+                  [
+                    "남",
+                    "350"
+                  ],
+                  [
+                    "여",
+                    "320"
+                  ],
+                  [
+                    "여",
+                    "380"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "section": "Index Skip Scan",
+      "title": "스킵 스캔의 효율",
+      "left": {
+        "title": "효과적",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "선두 값 종류 적음",
+          "후행 값 종류 많음"
+        ]
+      },
+      "right": {
+        "title": "비효율",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "선두 값 종류 많음",
+          "건너뛸 블록 없음"
+        ]
+      },
+      "steps": [
+        {
+          "say": "선두 컬럼 값 종류가 적으면 효과적이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "선두 값 종류가 많으면 건너뛸 게 없어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그러면 풀 스캔과 다를 바 없어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "type": "cards",
+      "section": "Index Skip Scan",
+      "title": "더 알아 둘 것",
+      "cols": 3,
+      "items": [
+        {
+          "title": "선두 범위",
+          "desc": "중간 조건 없을 때",
+          "icon": "ruler"
+        },
+        {
+          "title": "IN 명시",
+          "desc": "더 확실한 방법",
+          "icon": "checklist",
+          "tone": "good"
+        },
+        {
+          "title": "힌트",
+          "desc": "INDEX_SS",
+          "icon": "tag"
+        }
+      ],
+      "steps": [
+        {
+          "say": "세 가지만 더 알아 둘게요."
+        },
+        {
+          "say": "선두가 범위 조건이고 중간 조건이 없을 때도 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "값이 적으면 인 조건으로 명시하는 게 더 확실해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "힌트는 인덱스 에스에스예요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "quiz",
+      "section": "Index Skip Scan",
+      "question": "Index Skip Scan이 효과적인 경우는?",
+      "choices": [
+        "선두 값 종류가 적을 때",
+        "선두 값 종류가 많을 때",
+        "모든 컬럼이 = 조건",
+        "선두 컬럼이 가공됨"
+      ],
+      "answer": 1,
+      "explanation": "선두 컬럼 Distinct 값이 적을수록 건너뛸 블록이 많아요. 그래서 효과적이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 스킵 스캔이 효과적인 경우는?"
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "compare",
+      "section": "Index Fast Full Scan",
+      "title": "Full과 Fast Full",
+      "left": {
+        "title": "Index Full Scan",
+        "icon": "link",
+        "items": [
+          "논리 순서로 읽기",
+          "싱글 블록 I/O",
+          "정렬 보장"
+        ]
+      },
+      "right": {
+        "title": "Fast Full Scan",
+        "icon": "disk",
+        "items": [
+          "물리 순서로 읽기",
+          "멀티블록 I/O",
+          "정렬 보장 안 됨"
+        ]
+      },
+      "steps": [
+        {
+          "say": "인덱스 풀 스캔은 리프 링크를 따라 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "한 블록씩 읽고, 결과가 정렬돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "패스트 풀 스캔은 저장된 순서대로 통째로 읽어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "여러 블록씩 읽고 병렬도 돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "대신 정렬은 보장하지 않아요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "callout",
+      "section": "Index Fast Full Scan",
+      "tone": "warning",
+      "title": "시험 포인트",
+      "text": "Fast Full Scan은 **정렬 보장 안 함**. 필요한 컬럼이 **모두 인덱스에** 있어야 해요.",
+      "steps": [
+        {
+          "say": "패스트 풀 스캔은 정렬을 보장하지 않아요."
+        },
+        {
+          "say": "필요한 컬럼이 모두 인덱스에 있어야 써요."
+        },
+        {
+          "say": "힌트는 인덱스 에프에프에스예요."
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "quiz",
+      "section": "Index Fast Full Scan",
+      "question": "Index Fast Full Scan에 대한 설명으로 **틀린** 것은?",
+      "choices": [
+        "멀티블록 I/O로 읽는다",
+        "병렬 스캔이 가능하다",
+        "인덱스 컬럼만 써야 한다",
+        "결과가 키 순으로 정렬"
+      ],
+      "answer": 4,
+      "explanation": "Fast Full Scan은 물리 순서로 읽어요. 그래서 정렬을 보장하지 않아요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 패스트 풀 스캔에 대해 틀린 것은?"
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "flow",
+      "section": "Range Scan Descending",
+      "title": "거꾸로 읽기",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "리프 맨 뒤",
+          "desc": "수직 탐색으로 도착",
+          "icon": "target"
+        },
+        {
+          "title": "왼쪽으로 읽기",
+          "desc": "양방향 링크 덕분",
+          "icon": "link"
+        },
+        {
+          "title": "소트 없이 역순",
+          "desc": "MAX는 첫 건에서 멈춤",
+          "icon": "check",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "디센딩은 뒤에서 앞으로 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "리프가 양방향으로 연결돼서 가능해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "내림차순 결과를 소트 없이 얻어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "최댓값은 거꾸로 첫 건만 읽고 멈춰요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "실행계획엔 퍼스트 로우, 민맥스로 보여요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "cards",
+      "section": "기타 방식",
+      "title": "그 밖의 방식",
+      "cols": 2,
+      "items": [
+        {
+          "title": "Combine",
+          "desc": "비트맵 변환 후 결합",
+          "icon": "puzzle"
+        },
+        {
+          "title": "인덱스 조인",
+          "desc": "해시 조인으로 결합",
+          "icon": "link"
+        },
+        {
+          "title": "IN-List",
+          "desc": "= 조건을 반복",
+          "icon": "recycle"
+        },
+        {
+          "title": "OR 확장",
+          "desc": "UNION ALL 분기",
+          "icon": "branch"
+        }
+      ],
+      "steps": [
+        {
+          "say": "그 밖의 방식 네 가지예요."
+        },
+        {
+          "say": "인덱스 컴바인. 로우아이디를 비트맵으로 바꿔 합쳐요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "인덱스 조인. 인덱스끼리 해시 조인해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "테이블 액세스 없이 결과를 만들어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "인 리스트. 이퀄 조건을 값 개수만큼 반복해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "OR 확장. 유니온 올로 나눠 각각 인덱스를 써요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "quiz",
+      "section": "기타 방식",
+      "question": "테이블 액세스 없이 **인덱스끼리 해시 조인**하는 방식은?",
+      "choices": [
+        "인덱스 조인",
+        "Index Combine",
+        "IN-List Iterator",
+        "OR 확장"
+      ],
+      "answer": 1,
+      "explanation": "인덱스 조인은 인덱스끼리 해시 조인해서 결과를 만들어요. 테이블 액세스가 필요 없어요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 인덱스끼리 해시 조인하는 방식은 무엇일까요?"
+        }
+      ],
+      "id": "s18q"
+    },
+    {
+      "type": "cards",
+      "section": "Range Scan 불가",
+      "title": "레인지 스캔 불가 ①",
+      "cols": 3,
+      "items": [
+        {
+          "title": "컬럼 가공",
+          "desc": "함수나 연산 적용",
+          "icon": "warning",
+          "tone": "bad"
+        },
+        {
+          "title": "형변환",
+          "desc": "컬럼 쪽이 변환",
+          "icon": "recycle",
+          "tone": "bad"
+        },
+        {
+          "title": "부정형",
+          "desc": "<>, NOT IN",
+          "icon": "warning",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "이제 레인지 스캔이 안 되는 경우예요."
+        },
+        {
+          "say": "시작점을 못 찾으면 레인지 스캔이 안 돼요."
+        },
+        {
+          "say": "첫째, 선두 컬럼을 가공한 경우.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 컬럼 쪽에 형변환이 일어난 경우.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 같지 않다 같은 부정형 조건이에요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "code",
+      "section": "Range Scan 불가",
+      "title": "가공은 상수 쪽에",
+      "code": "-- 나쁨: 컬럼을 가공\nWHERE SUBSTR(ENAME, 1, 2) = '김민'\nWHERE SAL * 12 > 600\n\n-- 좋음: 상수 쪽을 변형\nWHERE ENAME LIKE '김민%'\nWHERE SAL > 600 / 12\n\n-- 꼭 가공해야 하면 함수기반 인덱스\nCREATE INDEX EMP_X3 ON EMP (UPPER(ENAME));",
+      "steps": [
+        {
+          "say": "컬럼에 함수를 씌우면 안 돼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "컬럼에 곱하기를 해도 마찬가지예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "컬럼은 그대로 두고 상수 쪽을 바꿔요.",
+          "focus": [
+            6,
+            7
+          ]
+        },
+        {
+          "say": "꼭 가공해야 하면 함수기반 인덱스를 만들어요.",
+          "focus": [
+            10
+          ]
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "compare",
+      "section": "Range Scan 불가",
+      "title": "형변환 방향",
+      "left": {
+        "title": "문자 컬럼 = 숫자",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "컬럼이 숫자로 변환",
+          "레인지 스캔 불가"
+        ]
+      },
+      "right": {
+        "title": "숫자 컬럼 = 문자",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "상수가 숫자로 변환",
+          "인덱스 정상 사용"
+        ]
+      },
+      "steps": [
+        {
+          "say": "오라클은 문자와 숫자를 비교하면 숫자로 바꿔요."
+        },
+        {
+          "say": "문자 컬럼에 숫자를 주면 컬럼이 변환돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "컬럼을 가공한 셈이라 레인지 스캔이 안 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "숫자 컬럼에 문자를 주면 상수가 변환돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래서 인덱스 사용엔 문제가 없어요. 단골 함정이에요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "callout",
+      "section": "Range Scan 불가",
+      "tone": "info",
+      "title": "LIKE는 예외",
+      "text": "LIKE는 문자 연산자. 숫자 컬럼에 쓰면 **컬럼이 문자로** 변환돼 Range Scan 불가.",
+      "steps": [
+        {
+          "say": "라이크는 문자 비교 연산자예요."
+        },
+        {
+          "say": "숫자 컬럼에 라이크를 쓰면 컬럼이 문자로 바뀌어요."
+        },
+        {
+          "say": "그래서 레인지 스캔을 못 해요."
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "cards",
+      "section": "Range Scan 불가",
+      "title": "레인지 스캔 불가 ②",
+      "cols": 2,
+      "items": [
+        {
+          "title": "LIKE %값",
+          "desc": "앞에 와일드카드",
+          "icon": "search",
+          "tone": "bad"
+        },
+        {
+          "title": "OR",
+          "desc": "다른 컬럼끼리",
+          "icon": "branch",
+          "tone": "bad"
+        },
+        {
+          "title": "IS NULL",
+          "desc": "단일 컬럼 인덱스",
+          "icon": "help",
+          "tone": "bad"
+        },
+        {
+          "title": "선두 없음",
+          "desc": "선두 조건 빠짐",
+          "icon": "filter",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "나머지 네 가지예요."
+        },
+        {
+          "say": "넷째, 라이크 앞에 퍼센트가 붙은 경우.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "다섯째, 서로 다른 컬럼을 오어로 묶은 경우.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "이때는 OR 확장으로 나눠야 인덱스를 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "여섯째, 단일 컬럼 인덱스에 이즈 널 조건.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "일곱째, 선두 컬럼 조건이 아예 없는 경우예요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s23"
+    },
+    {
+      "type": "quiz",
+      "section": "Range Scan 불가",
+      "question": "ENAME 인덱스로 **Range Scan이 가능한** 조건은?",
+      "choices": [
+        "ENAME LIKE '%민'",
+        "ENAME <> 'SCOTT'",
+        "ENAME LIKE '김%'",
+        "UPPER(ENAME) = 'KIM'"
+      ],
+      "answer": 3,
+      "explanation": "뒤에만 %가 붙은 LIKE는 시작점이 있어요. 그래서 Range Scan이 가능해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 이름 인덱스로 레인지 스캔이 가능한 조건은?"
+        }
+      ],
+      "id": "s24"
+    },
+    {
+      "type": "callout",
+      "section": "Range Scan 불가",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "가공하면 **정상적인 Range Scan**만 불가. Full Scan, Fast Full Scan은 가능해요.",
+      "steps": [
+        {
+          "say": "정확히는 정상적인 레인지 스캔이 안 되는 거예요."
+        },
+        {
+          "say": "인덱스 풀 스캔이나 패스트 풀 스캔은 여전히 돼요."
+        }
+      ],
+      "id": "s25"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "Range: 선두 컬럼 가공 금지",
+        "Full: 리프 전체, 정렬 보장",
+        "Unique: 전 컬럼 = 조건만",
+        "Skip: 선두 값 종류 적을수록",
+        "Fast Full: 멀티블록, 무정렬",
+        "가공·형변환·부정형·%값은 불가"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "레인지 스캔은 선두 컬럼을 가공하지 않아야 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "풀 스캔은 리프 전체를 읽고 정렬돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "유니크 스캔은 모든 컬럼이 이퀄 조건일 때만이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "스킵 스캔은 선두 값 종류가 적을수록 좋아요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "패스트 풀 스캔은 빠르지만 정렬이 없어요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "가공, 형변환, 부정형, 앞 퍼센트는 레인지 스캔 불가예요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s26"
+    }
+  ]
+}

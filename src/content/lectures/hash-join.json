@@ -1,0 +1,1265 @@
+{
+  "slug": "hash-join",
+  "title": "해시 조인",
+  "tables": {
+    "DEPT": {
+      "columns": [
+        "DEPTNO",
+        "DNAME"
+      ],
+      "rows": [
+        [
+          "10",
+          "회계"
+        ],
+        [
+          "20",
+          "연구"
+        ],
+        [
+          "30",
+          "영업"
+        ],
+        [
+          "40",
+          "운영"
+        ]
+      ]
+    },
+    "EMP": {
+      "columns": [
+        "ENAME",
+        "DEPTNO"
+      ],
+      "rows": [
+        [
+          "SMITH",
+          "20"
+        ],
+        [
+          "KING",
+          "10"
+        ],
+        [
+          "ALLEN",
+          "30"
+        ],
+        [
+          "FORD",
+          "20"
+        ],
+        [
+          "CLARK",
+          "10"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "해시 조인",
+      "subtitle": "작은 쪽은 메모리에, 큰 쪽은 탐색",
+      "icon": "database",
+      "steps": [
+        {
+          "say": "해시 조인을 시작할게요."
+        },
+        {
+          "say": "대량 등치 조인에서 가장 많이 쓰는 조인이에요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "id": "s02",
+      "section": "기본 메커니즘",
+      "type": "data",
+      "title": "Build와 Probe",
+      "tables": [
+        "DEPT",
+        "EMP"
+      ],
+      "steps": [
+        {
+          "say": "해시 조인은 두 단계예요. Build 단계. 작은 DEPT를 먼저 읽어요.",
+          "t": {
+            "DEPT": {
+              "rows": [
+                0,
+                1,
+                2,
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "조인 컬럼을 해시 함수에 넣어요.",
+          "t": {
+            "DEPT": {
+              "add": [
+                "버킷",
+                [
+                  "1",
+                  "2",
+                  "0",
+                  "1"
+                ]
+              ],
+              "cols": [
+                "DEPTNO"
+              ]
+            }
+          }
+        },
+        {
+          "say": "나온 버킷에 데이터를 넣어요. PGA의 Hash Area에 만들어요.",
+          "t": {
+            "DEPT": {
+              "group": "버킷"
+            }
+          }
+        },
+        {
+          "say": "Probe 단계. 큰 EMP를 한 건씩 같은 해시 함수에 넣어요.",
+          "t": {
+            "EMP": {
+              "add": [
+                "버킷",
+                [
+                  "2",
+                  "1",
+                  "0",
+                  "2",
+                  "1"
+                ]
+              ],
+              "rows": [
+                0
+              ],
+              "tint": [
+                [],
+                [],
+                [
+                  0
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "SMITH는 2번 버킷에서 20번과 짝이 돼요.",
+          "t": {
+            "DEPT": {
+              "rows": [
+                1
+              ]
+            },
+            "EMP": {
+              "rows": [
+                0
+              ],
+              "tint": [
+                [],
+                [],
+                [
+                  0
+                ]
+              ],
+              "result": {
+                "title": "결과",
+                "columns": [
+                  "ENAME",
+                  "DEPTNO",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "SMITH",
+                    "20",
+                    "연구"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "KING은 1번 버킷이에요. 체인의 10과 40을 뒤져요.",
+          "t": {
+            "DEPT": {
+              "rows": [
+                0,
+                3
+              ],
+              "notes": [
+                [
+                  0,
+                  "DEPTNO",
+                  "짝!"
+                ]
+              ]
+            },
+            "EMP": {
+              "rows": [
+                1
+              ],
+              "tint": [
+                [],
+                [
+                  1
+                ]
+              ],
+              "result": {
+                "title": "결과",
+                "columns": [
+                  "ENAME",
+                  "DEPTNO",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "SMITH",
+                    "20",
+                    "연구"
+                  ],
+                  [
+                    "KING",
+                    "10",
+                    "회계"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "정리하면, 작은 쪽으로 만들고 큰 쪽으로 찾아요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  2
+                ],
+                [
+                  1,
+                  4
+                ],
+                [
+                  0,
+                  3
+                ]
+              ],
+              "result": {
+                "title": "결과 5행",
+                "columns": [
+                  "ENAME",
+                  "DEPTNO",
+                  "DNAME"
+                ],
+                "rows": [
+                  [
+                    "SMITH",
+                    "20",
+                    "연구"
+                  ],
+                  [
+                    "KING",
+                    "10",
+                    "회계"
+                  ],
+                  [
+                    "ALLEN",
+                    "30",
+                    "영업"
+                  ],
+                  [
+                    "FORD",
+                    "20",
+                    "연구"
+                  ],
+                  [
+                    "CLARK",
+                    "10",
+                    "회계"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "code",
+      "section": "기본 메커니즘",
+      "title": "실행계획 모양",
+      "code": "HASH JOIN\n  TABLE ACCESS FULL DEPT\n  TABLE ACCESS FULL EMP",
+      "steps": [
+        {
+          "say": "실행계획에서 HASH JOIN 밑에 테이블이 두 개 나와요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "먼저 나오는 DEPT가 Build Input이에요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "나중에 나오는 EMP가 Probe Input이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "힌트는 USE HASH예요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "cards",
+      "section": "빠른 이유",
+      "title": "빠른 이유 3가지",
+      "cols": 3,
+      "items": [
+        {
+          "title": "PGA 탐색",
+          "desc": "래치 획득 없음",
+          "icon": "database"
+        },
+        {
+          "title": "랜덤 없음",
+          "desc": "인덱스 탐색 안 함",
+          "icon": "disk"
+        },
+        {
+          "title": "정렬 없음",
+          "desc": "해시 테이블만",
+          "icon": "layers"
+        }
+      ],
+      "steps": [
+        {
+          "say": "해시 조인이 빠른 이유는 세 가지예요."
+        },
+        {
+          "say": "첫째, PGA에서 찾아서 래치가 필요 없어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "소트 머지 조인과 같은 장점이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, Inner를 인덱스로 찾지 않아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래서 랜덤 액세스 부담이 없어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 양쪽을 정렬할 필요가 없어요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "compare",
+      "section": "빠른 이유",
+      "title": "해시 테이블과 인덱스",
+      "left": {
+        "title": "해시 테이블",
+        "icon": "recycle",
+        "tone": "bad",
+        "items": [
+          "일회성",
+          "쿼리 끝나면 소멸",
+          "매번 생성 비용"
+        ]
+      },
+      "right": {
+        "title": "인덱스",
+        "icon": "search",
+        "tone": "good",
+        "items": [
+          "영구 유지",
+          "여러 쿼리가 공유"
+        ]
+      },
+      "steps": [
+        {
+          "say": "해시 테이블은 일회성이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "쿼리가 끝나면 바로 사라져요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "초당 수백 번 도는 쿼리라면 매번 만들고 버려요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "CPU와 메모리 비용이 커지죠.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "인덱스는 영구적이고 여러 쿼리가 함께 써요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "cards",
+      "section": "Build Input 선택",
+      "title": "좋은 Build Input",
+      "cols": 3,
+      "items": [
+        {
+          "title": "작은 집합",
+          "desc": "Hash Area에 쏙",
+          "icon": "box",
+          "tone": "good"
+        },
+        {
+          "title": "필터 후 기준",
+          "desc": "실제 읽는 건수",
+          "icon": "filter"
+        },
+        {
+          "title": "중복 적은 키",
+          "desc": "체인이 짧음",
+          "icon": "tag",
+          "tone": "good"
+        }
+      ],
+      "steps": [
+        {
+          "say": "성능은 Build Input에 달려 있어요."
+        },
+        {
+          "say": "첫째, 작아야 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그래야 Hash Area에 다 들어가요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 크기는 조건 적용 후 건수로 따져요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 해시 키에 중복이 적어야 해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "중복이 많으면 체인이 길어져 느려요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "quiz",
+      "section": "Build Input 선택",
+      "question": "해시 조인의 **Build Input**으로 가장 좋은 집합은?",
+      "choices": [
+        "테이블 전체가 큰 쪽",
+        "이미 정렬된 쪽",
+        "필터 후 작고 중복 적은 쪽",
+        "필터 후 크고 중복 많은 쪽"
+      ],
+      "answer": 3,
+      "explanation": "필터 후 작고, 해시 키 중복이 적은 쪽이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. Build Input으로 가장 좋은 집합은?"
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "compare",
+      "section": "메모리를 넘으면",
+      "title": "In-Memory와 Grace",
+      "left": {
+        "title": "In-Memory",
+        "icon": "database",
+        "tone": "good",
+        "items": [
+          "Build가 메모리에",
+          "디스크 I/O 없음",
+          "가장 빠름"
+        ]
+      },
+      "right": {
+        "title": "Grace",
+        "icon": "disk",
+        "tone": "bad",
+        "items": [
+          "메모리 초과",
+          "파티션으로 분할",
+          "Temp 사용"
+        ]
+      },
+      "steps": [
+        {
+          "say": "Build가 Hash Area를 넘으면 어떻게 될까요?"
+        },
+        {
+          "say": "다 들어가면 In Memory 해시 조인이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "디스크를 안 써서 가장 빨라요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "넘치면 Grace 해시 조인이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "파티션으로 나눠 Temp에 저장해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "flow",
+      "section": "메모리를 넘으면",
+      "title": "Grace 해시 조인",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "양쪽 읽기",
+          "desc": "Build와 Probe",
+          "icon": "table"
+        },
+        {
+          "title": "파티션 단계",
+          "desc": "해시 값으로 분할",
+          "icon": "copy"
+        },
+        {
+          "title": "Temp 저장",
+          "desc": "파티션 1부터 n",
+          "icon": "disk"
+        },
+        {
+          "title": "조인 단계",
+          "desc": "같은 파티션 짝끼리",
+          "icon": "link"
+        }
+      ],
+      "steps": [
+        {
+          "say": "Grace 방식을 따라가 볼게요."
+        },
+        {
+          "say": "양쪽 집합을 모두 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "조인 컬럼 해시 값으로 파티션을 나눠요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "파티션을 Temp에 저장해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "같은 해시 값 파티션 짝끼리 조인해요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "짝마다 작은 쪽을 Build로 쓸 수 있어요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "cards",
+      "section": "메모리를 넘으면",
+      "title": "Hybrid와 Recursive",
+      "cols": 2,
+      "items": [
+        {
+          "title": "Hybrid",
+          "desc": "되는 만큼 메모리",
+          "icon": "idea",
+          "tone": "good"
+        },
+        {
+          "title": "Recursive",
+          "desc": "파티션 재분할",
+          "icon": "recycle"
+        }
+      ],
+      "steps": [
+        {
+          "say": "Hybrid는 Grace를 개선한 방식이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "가능한 만큼은 메모리에서 바로 조인해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "넘치는 파티션만 디스크로 내려요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "비트 벡터 필터로 필요 없는 Probe 행도 걸러요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "오라클은 실제로 Hybrid 방식을 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Recursive는 파티션 짝도 넘칠 때 다시 나눠요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "type": "compare",
+      "section": "등치 조인에서만",
+      "title": "해시 함수의 성질",
+      "left": {
+        "title": "보존됨",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "같은 값, 같은 해시"
+        ]
+      },
+      "right": {
+        "title": "보존 안 됨",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "값의 크고 작음"
+        ]
+      },
+      "steps": [
+        {
+          "say": "해시 함수는 같은 값에 같은 해시를 줘요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "하지만 크고 작은 순서는 지키지 않아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그래서 등치 조인에서만 쓸 수 있어요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "비등치 조인에 힌트를 줘도 무시돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "결국 NL이나 소트 머지로 처리돼요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "type": "callout",
+      "section": "등치 조인에서만",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "해시 조인은 인덱스 없어도 되고 대량에 유리. 하지만 **등치 조인만** 가능!",
+      "steps": [
+        {
+          "say": "해시 조인은 인덱스가 없어도 돼요."
+        },
+        {
+          "say": "대량 데이터에 유리해요."
+        },
+        {
+          "say": "하지만 등치 조인에서만 쓸 수 있어요."
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "quiz",
+      "section": "등치 조인에서만",
+      "question": "해시 조인에 대한 설명으로 **틀린** 것은?",
+      "choices": [
+        "BETWEEN 조인에 사용 가능",
+        "인덱스 없어도 사용 가능",
+        "PGA Hash Area 사용",
+        "대량 배치 조인에 유리"
+      ],
+      "answer": 1,
+      "explanation": "해시 조인은 등치 조인에서만 쓸 수 있어요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 해시 조인 설명으로 틀린 것은?"
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "compare",
+      "section": "유리할 때와 불리할 때",
+      "title": "유리할 때, 불리할 때",
+      "left": {
+        "title": "유리",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "인덱스 없음",
+          "랜덤 액세스 과다",
+          "대량 · 배치 · DW"
+        ]
+      },
+      "right": {
+        "title": "불리",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "비등치 조건",
+          "고빈도 OLTP",
+          "Build가 클 때"
+        ]
+      },
+      "steps": [
+        {
+          "say": "해시 조인이 유리한 경우부터 볼게요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "인덱스가 없거나 랜덤 액세스가 너무 많을 때.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "정렬하기엔 너무 큰 대량 조인일 때예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "반대로 비등치 조건이면 못 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "자주 도는 OLTP 쿼리에도 불리해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Build가 커서 Temp를 많이 써도 불리해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "소량을 빨리 보여 주는 부분범위 처리에도 불리해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "type": "callout",
+      "section": "유리할 때와 불리할 때",
+      "tone": "warning",
+      "title": "남용 주의",
+      "text": "원칙: **빈도 낮고, 오래 걸리는, 대량 조인**. 자주 도는 OLTP는 인덱스 + NL.",
+      "steps": [
+        {
+          "say": "해시 조인을 남용하면 안 돼요."
+        },
+        {
+          "say": "빈도가 낮고, 오래 걸리는 대량 조인에 써요."
+        },
+        {
+          "say": "자주 실행되는 쿼리는 인덱스와 NL로 풀어요."
+        }
+      ],
+      "id": "s15"
+    },
+    {
+      "type": "quiz",
+      "section": "유리할 때와 불리할 때",
+      "question": "해시 조인이 **가장 불리한** 경우는?",
+      "choices": [
+        "야간 대량 배치",
+        "초당 수백 번 OLTP 조회",
+        "인덱스 없는 대량 조인",
+        "DW 집계 조인"
+      ],
+      "answer": 2,
+      "explanation": "해시 테이블은 일회성이에요. 자주 도는 OLTP엔 불리해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 해시 조인이 가장 불리한 경우는?"
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "cards",
+      "section": "해시 조인 힌트",
+      "title": "해시 조인 힌트",
+      "cols": 2,
+      "items": [
+        {
+          "title": "해시 사용",
+          "desc": "USE_HASH(T)",
+          "icon": "database"
+        },
+        {
+          "title": "Build 기본",
+          "desc": "LEADING 첫 번째",
+          "icon": "workflow"
+        },
+        {
+          "title": "Build 지정",
+          "desc": "SWAP_JOIN_INPUTS",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "Probe 지정",
+          "desc": "NO_SWAP_JOIN_INPUTS",
+          "icon": "arrow-left-right"
+        }
+      ],
+      "steps": [
+        {
+          "say": "해시 조인 힌트를 볼게요."
+        },
+        {
+          "say": "USE HASH로 해시 조인을 써요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "LEADING의 첫 테이블이 Build가 돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "SWAP JOIN INPUTS로 Build를 직접 정해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "NO SWAP JOIN INPUTS는 Probe로 정해요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "code",
+      "section": "해시 조인 힌트",
+      "title": "세 테이블 해시 조인",
+      "code": "-- LEADING(T1 T2 T3) SWAP_JOIN_INPUTS(T3)\nHASH JOIN\n  TABLE ACCESS FULL T3\n  HASH JOIN\n    TABLE ACCESS FULL T1\n    TABLE ACCESS FULL T2",
+      "steps": [
+        {
+          "say": "T1, T2, T3 순서로 해시 조인해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "먼저 T1이 Build, T2가 Probe예요.",
+          "focus": [
+            5,
+            6
+          ]
+        },
+        {
+          "say": "그 결과와 T3를 다시 조인해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "스왑 힌트로 작은 T3가 Build가 됐어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "T1과 T2의 결과는 Probe로 흘려보내요.",
+          "focus": [
+            4
+          ]
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "compare",
+      "section": "해시 조인 힌트",
+      "title": "스왑 전과 후",
+      "left": {
+        "title": "스왑 안 함",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "큰 중간 결과가 Build",
+          "Temp 쓰기 쉬움"
+        ]
+      },
+      "right": {
+        "title": "T3 스왑",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "작은 T3가 Build",
+          "해시 테이블 작음"
+        ]
+      },
+      "steps": [
+        {
+          "say": "스왑을 안 하면 큰 중간 결과가 Build예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Hash Area를 넘쳐 Temp를 쓰기 쉬워요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "작은 T3를 Build로 바꿔요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "그러면 해시 테이블이 작아져요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "quiz",
+      "section": "해시 조인 힌트",
+      "question": "`LEADING(D) USE_HASH(E) SWAP_JOIN_INPUTS(E)`의 Build Input은?",
+      "choices": [
+        "D",
+        "D와 E 모두",
+        "옵티마이저가 결정",
+        "E"
+      ],
+      "answer": 4,
+      "explanation": "SWAP_JOIN_INPUTS로 지정한 E가 Build예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. LEADING은 D, 스왑은 E예요. Build는 누굴까요?"
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "cards",
+      "section": "세 조인 비교",
+      "title": "세 조인 한눈에",
+      "cols": 3,
+      "items": [
+        {
+          "title": "NL",
+          "desc": "소량 · 인덱스 필수",
+          "icon": "link"
+        },
+        {
+          "title": "소트 머지",
+          "desc": "비등치 대량",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "해시",
+          "desc": "대량 등치 조인",
+          "icon": "database"
+        }
+      ],
+      "steps": [
+        {
+          "say": "세 조인을 한눈에 비교해요."
+        },
+        {
+          "say": "NL 조인은 소량을 빨리. 인덱스가 생명이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "소트 머지는 인덱스 없는 비등치 대량 조인이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "해시 조인은 대량 등치 조인이에요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "table",
+      "section": "세 조인 비교",
+      "title": "세 조인 비교표",
+      "columns": [
+        "구분",
+        "NL",
+        "소트 머지",
+        "해시"
+      ],
+      "rows": [
+        [
+          "조인 조건",
+          "제한 없음",
+          "<> 제외",
+          "등치만"
+        ],
+        [
+          "인덱스",
+          "Inner 필수",
+          "불필요",
+          "불필요"
+        ],
+        [
+          "메모리",
+          "거의 없음",
+          "Sort Area",
+          "Hash Area"
+        ],
+        [
+          "부분범위",
+          "유리",
+          "불리",
+          "불리"
+        ],
+        [
+          "힌트",
+          "USE_NL",
+          "USE_MERGE",
+          "USE_HASH"
+        ]
+      ],
+      "steps": [
+        {
+          "say": "조인 조건부터요. NL은 제한이 없어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "소트 머지는 같지 않다만 빼고 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "해시는 같다 조건만 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "인덱스가 꼭 필요한 건 NL뿐이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "소트 머지와 해시는 PGA 메모리를 써요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "부분범위 처리는 NL만 유리해요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "작은 쪽 Build, 큰 쪽 Probe",
+        "PGA 탐색 · 랜덤 없음 · 정렬 없음",
+        "Build는 작고 해시 키 중복 적게",
+        "넘치면 Grace, 오라클은 Hybrid",
+        "등치 조인만, 고빈도 OLTP엔 불리",
+        "SWAP_JOIN_INPUTS(T)는 T를 Build로"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "작은 쪽으로 Build, 큰 쪽으로 Probe해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "PGA에서 찾고, 랜덤 액세스와 정렬이 없어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Build는 작고, 해시 키 중복이 적어야 해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "메모리를 넘으면 Grace, 오라클은 Hybrid예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "등치 조인만 되고, 잦은 OLTP엔 불리해요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "스왑 힌트로 Build를 직접 정해요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s23"
+    }
+  ]
+}

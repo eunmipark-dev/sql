@@ -1,0 +1,1320 @@
+{
+  "slug": "dml-tuning",
+  "title": "DML 튜닝",
+  "tables": {
+    "EMP": {
+      "columns": [
+        "ENAME",
+        "DEPTNO"
+      ],
+      "rows": [
+        [
+          "A",
+          "10"
+        ],
+        [
+          "B",
+          "10"
+        ],
+        [
+          "C",
+          "20"
+        ]
+      ]
+    },
+    "DEPT": {
+      "columns": [
+        "DEPTNO",
+        "LOC"
+      ],
+      "rows": [
+        [
+          "10",
+          "SEOUL"
+        ],
+        [
+          "20",
+          "BUSAN"
+        ]
+      ]
+    },
+    "고객": {
+      "columns": [
+        "번호",
+        "금액"
+      ],
+      "rows": [
+        [
+          "1",
+          "10"
+        ],
+        [
+          "2",
+          "20"
+        ],
+        [
+          "3",
+          "30"
+        ]
+      ]
+    },
+    "변경분": {
+      "columns": [
+        "번호",
+        "금액"
+      ],
+      "rows": [
+        [
+          "2",
+          "25"
+        ],
+        [
+          "4",
+          "40"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "DML 튜닝",
+      "subtitle": "변경에 따라붙는 일을 줄이기",
+      "icon": "database",
+      "steps": [
+        {
+          "say": "DML 튜닝을 시작할게요."
+        },
+        {
+          "say": "조회 튜닝은 적게 읽는 게 핵심이었죠."
+        },
+        {
+          "say": "DML 튜닝은 따라붙는 일을 줄이는 게 핵심이에요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "cards",
+      "section": "성능 요소",
+      "title": "DML 성능 요소",
+      "cols": 2,
+      "items": [
+        {
+          "title": "인덱스",
+          "desc": "인덱스마다 갱신",
+          "icon": "search",
+          "tone": "warn"
+        },
+        {
+          "title": "무결성 제약",
+          "desc": "PK, FK 확인",
+          "icon": "shield",
+          "tone": "warn"
+        },
+        {
+          "title": "조건절",
+          "desc": "대상 행 찾기",
+          "icon": "filter"
+        },
+        {
+          "title": "트리거",
+          "desc": "숨은 SQL 실행",
+          "icon": "warning",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "DML을 느리게 하는 요소가 많아요."
+        },
+        {
+          "say": "첫째, 인덱스예요. 인덱스마다 갱신해야 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 무결성 제약이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "PK와 FK는 인덱스나 다른 테이블을 확인해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 조건절이에요. 대상 행을 먼저 찾아야 해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "그래서 조회처럼 인덱스 튜닝이 필요해요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 트리거예요. 행마다 숨은 SQL이 돌아요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "cards",
+      "section": "성능 요소",
+      "title": "보이지 않는 부담",
+      "cols": 2,
+      "items": [
+        {
+          "title": "Redo",
+          "desc": "장애 복구용 기록",
+          "icon": "file"
+        },
+        {
+          "title": "Undo",
+          "desc": "변경 전 값 기록",
+          "icon": "recycle"
+        },
+        {
+          "title": "Lock",
+          "desc": "커밋까지 행 잠금",
+          "icon": "lock"
+        },
+        {
+          "title": "커밋",
+          "desc": "로그 기록 대기",
+          "icon": "disk"
+        }
+      ],
+      "steps": [
+        {
+          "say": "눈에 안 보이는 부담도 있어요."
+        },
+        {
+          "say": "Redo. 장애 복구를 위해 모든 변경을 기록해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Undo. 롤백을 위해 변경 전 값을 남겨요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Lock. 커밋까지 다른 트랜잭션을 막아요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "커밋. 로그가 디스크에 써질 때까지 기다려요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "type": "compare",
+      "section": "성능 요소",
+      "title": "인덱스 영향 범위",
+      "left": {
+        "title": "INSERT, DELETE",
+        "icon": "layers",
+        "tone": "bad",
+        "items": [
+          "모든 인덱스 갱신"
+        ]
+      },
+      "right": {
+        "title": "UPDATE",
+        "icon": "tag",
+        "items": [
+          "변경 컬럼 인덱스만",
+          "삭제 후 삽입 2번"
+        ]
+      },
+      "steps": [
+        {
+          "say": "인덱스 영향 범위가 시험에 나와요."
+        },
+        {
+          "say": "INSERT와 DELETE는 모든 인덱스에 영향을 줘요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "UPDATE는 바뀐 컬럼의 인덱스만 영향받아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "대신 인덱스에선 삭제 후 삽입, 두 번이에요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s04"
+    },
+    {
+      "type": "compare",
+      "section": "커밋 빈도",
+      "title": "커밋은 얼마나 자주?",
+      "left": {
+        "title": "너무 자주",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "건마다 sync 대기",
+          "일부만 반영 위험"
+        ]
+      },
+      "right": {
+        "title": "너무 드물게",
+        "icon": "lock",
+        "tone": "bad",
+        "items": [
+          "Undo 오래 점유",
+          "Lock 오래 유지",
+          "롤백 비용 큼"
+        ]
+      },
+      "steps": [
+        {
+          "say": "커밋할 때 로그 기록을 기다려요."
+        },
+        {
+          "say": "건마다 커밋하면 그 대기가 건수만큼 생겨요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "너무 드물면 Undo와 Lock을 오래 잡아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "정리하면, 업무상 의미 있는 단위로 커밋해요."
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "callout",
+      "section": "커밋 빈도",
+      "tone": "warning",
+      "title": "비동기 커밋",
+      "text": "**COMMIT WRITE BATCH NOWAIT**는 빠르지만 장애 시 커밋 데이터가 유실될 수 있어요.",
+      "steps": [
+        {
+          "say": "기록을 기다리지 않는 비동기 커밋도 있어요."
+        },
+        {
+          "say": "빠르지만 장애 때 데이터가 사라질 수 있어요."
+        },
+        {
+          "say": "그래서 일반 트랜잭션엔 쓰지 않아요."
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "quiz",
+      "section": "커밋 빈도",
+      "question": "**커밋 빈도**에 대한 설명으로 옳은 것은?",
+      "choices": [
+        "건마다 커밋이 가장 빠르다",
+        "업무 단위로 커밋한다",
+        "드물수록 Undo 부담이 준다",
+        "비동기 커밋은 유실이 없다"
+      ],
+      "answer": 2,
+      "explanation": "너무 자주 커밋하면 로그 대기가 쌓이고, 너무 드물면 Undo와 Lock을 오래 잡아요. 그래서 업무상 의미 있는 단위로 커밋해요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 커밋 빈도에 대한 설명으로 옳은 것은?"
+        }
+      ],
+      "id": "s06q"
+    },
+    {
+      "type": "compare",
+      "section": "Array Processing",
+      "title": "한 건씩 vs 묶어서",
+      "left": {
+        "title": "한 건씩",
+        "icon": "file",
+        "tone": "bad",
+        "items": [
+          "Call이 건수만큼",
+          "네트워크 왕복",
+          "컨텍스트 스위칭"
+        ]
+      },
+      "right": {
+        "title": "Array 처리",
+        "icon": "box",
+        "tone": "good",
+        "items": [
+          "한 Call에 여러 건",
+          "BULK COLLECT",
+          "JDBC addBatch"
+        ]
+      },
+      "steps": [
+        {
+          "say": "한 건씩 실행하면 Call이 건수만큼 생겨요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "왕복과 엔진 전환이 그만큼 늘어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Array 처리는 여러 건을 묶어 보내요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "PL SQL은 BULK COLLECT와 FORALL이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "자바는 addBatch와 executeBatch예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "물론 가장 빠른 건 루프 없는 SQL 하나예요."
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "compare",
+      "section": "Direct Path Insert",
+      "title": "일반 vs 다이렉트",
+      "left": {
+        "title": "Conventional",
+        "icon": "recycle",
+        "items": [
+          "Freelist 빈 블록",
+          "버퍼 캐시 경유",
+          "Undo, Redo 생성"
+        ]
+      },
+      "right": {
+        "title": "Direct Path",
+        "icon": "arrow-left-right",
+        "tone": "good",
+        "items": [
+          "HWM 위 새 블록",
+          "캐시 거치지 않음",
+          "Undo 생성 안 함"
+        ]
+      },
+      "steps": [
+        {
+          "say": "일반 INSERT부터 볼게요."
+        },
+        {
+          "say": "빈 공간이 있는 블록을 찾아 재사용해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "버퍼 캐시를 거치고 Undo와 Redo를 남겨요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "Direct Path는 이걸 다 건너뛰어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "HWM 위쪽 새 블록에 순서대로 바로 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "버퍼 캐시도, Undo도 거치지 않아요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "cards",
+      "section": "Direct Path Insert",
+      "title": "Direct Path 방법",
+      "cols": 3,
+      "items": [
+        {
+          "title": "APPEND",
+          "desc": "INSERT SELECT",
+          "icon": "tag"
+        },
+        {
+          "title": "VALUES용",
+          "desc": "APPEND_VALUES",
+          "icon": "tag"
+        },
+        {
+          "title": "CTAS",
+          "desc": "테이블 생성",
+          "icon": "table"
+        },
+        {
+          "title": "병렬",
+          "desc": "병렬 INSERT",
+          "icon": "users"
+        },
+        {
+          "title": "Loader",
+          "desc": "direct 옵션",
+          "icon": "file"
+        }
+      ],
+      "steps": [
+        {
+          "say": "Direct Path로 동작하는 방법이에요."
+        },
+        {
+          "say": "APPEND 힌트. INSERT SELECT에서만 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "VALUES 절은 APPEND_VALUES 힌트를 써요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "CTAS도 Direct Path예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "병렬 INSERT도 마찬가지예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "SQL 로더의 direct 옵션도 있어요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "실행계획엔 LOAD AS SELECT가 보여요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "cards",
+      "section": "Direct Path Insert",
+      "title": "주의할 점",
+      "cols": 3,
+      "items": [
+        {
+          "title": "배타 Lock",
+          "desc": "다른 DML 불가",
+          "icon": "lock",
+          "tone": "bad"
+        },
+        {
+          "title": "조회 에러",
+          "desc": "커밋 전엔 불가",
+          "icon": "warning",
+          "tone": "bad"
+        },
+        {
+          "title": "공간 재사용X",
+          "desc": "테이블 계속 커짐",
+          "icon": "box",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "주의할 점이 세 가지 있어요."
+        },
+        {
+          "say": "첫째, 테이블에 배타적 Lock이 걸려요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "커밋 전엔 다른 트랜잭션이 DML을 못 해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 같은 세션도 커밋 전엔 조회하면 에러예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 빈 공간을 재사용하지 않아요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "반복하면 테이블이 계속 커져요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "type": "quiz",
+      "section": "Direct Path Insert",
+      "question": "Direct Path Insert 설명으로 **틀린** 것은?",
+      "choices": [
+        "HWM 위에 순차 기록",
+        "버퍼 캐시 미경유",
+        "빈 공간을 우선 재사용",
+        "테이블 배타 Lock"
+      ],
+      "answer": 3,
+      "explanation": "HWM 위에만 쓰므로 빈 공간을 재사용하지 않아요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. Direct Path 설명으로 틀린 것은?"
+        }
+      ],
+      "id": "s11"
+    },
+    {
+      "type": "compare",
+      "section": "NOLOGGING",
+      "title": "NOLOGGING의 효과",
+      "left": {
+        "title": "효과 있음",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "APPEND INSERT",
+          "CTAS",
+          "인덱스 REBUILD"
+        ]
+      },
+      "right": {
+        "title": "효과 없음",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "일반 INSERT",
+          "UPDATE",
+          "DELETE"
+        ]
+      },
+      "steps": [
+        {
+          "say": "NOLOGGING은 Redo를 최소화해요."
+        },
+        {
+          "say": "단, Direct Path 작업에만 효과가 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "CTAS와 인덱스 재생성도 해당돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "일반 DML은 항상 Redo를 남겨요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "작업 뒤엔 백업이 필요해요. 복구가 안 되거든요."
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "quiz",
+      "section": "NOLOGGING",
+      "question": "NOLOGGING 테이블에서 **Redo가 최소화되는** 작업은?",
+      "choices": [
+        "APPEND INSERT SELECT",
+        "INSERT VALUES",
+        "UPDATE",
+        "DELETE"
+      ],
+      "answer": 1,
+      "explanation": "NOLOGGING은 Direct Path 작업에만 효과가 있어요. 일반 DML은 항상 Redo를 남겨요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. Redo가 최소화되는 작업은?"
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "compare",
+      "section": "수정 가능 조인 뷰",
+      "title": "다른 테이블 값으로 수정",
+      "left": {
+        "title": "상관 서브쿼리",
+        "icon": "copy",
+        "tone": "bad",
+        "items": [
+          "SET과 WHERE에서",
+          "같은 테이블 2번 읽기"
+        ]
+      },
+      "right": {
+        "title": "조인 뷰 UPDATE",
+        "icon": "link",
+        "tone": "good",
+        "items": [
+          "조인 결과를",
+          "한 번에 수정"
+        ]
+      },
+      "steps": [
+        {
+          "say": "다른 테이블 값으로 UPDATE할 때예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "상관 서브쿼리는 같은 테이블을 두 번 읽어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "수정 가능 조인 뷰는 한 번에 처리해요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "id": "s15",
+      "section": "수정 가능 조인 뷰",
+      "type": "data",
+      "title": "키 보존 테이블",
+      "tables": [
+        "EMP",
+        "DEPT"
+      ],
+      "steps": [
+        {
+          "say": "조인 뷰에선 키 보존 테이블만 수정할 수 있어요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  0,
+                  1
+                ],
+                [
+                  2
+                ]
+              ]
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "DEPT의 DEPTNO에 PK가 있다고 해 볼게요.",
+          "t": {
+            "DEPT": {
+              "cols": [
+                "DEPTNO"
+              ],
+              "notes": [
+                [
+                  0,
+                  "DEPTNO",
+                  "PK"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "조인하면 사원마다 부서가 하나씩 붙어요.",
+          "t": {
+            "EMP": {
+              "tint": [
+                [
+                  0,
+                  1
+                ],
+                [
+                  2
+                ]
+              ],
+              "result": {
+                "title": "조인 뷰",
+                "columns": [
+                  "ENAME",
+                  "DEPTNO",
+                  "LOC"
+                ],
+                "rows": [
+                  [
+                    "A",
+                    "10",
+                    "SEOUL"
+                  ],
+                  [
+                    "B",
+                    "10",
+                    "SEOUL"
+                  ],
+                  [
+                    "C",
+                    "20",
+                    "BUSAN"
+                  ]
+                ]
+              }
+            },
+            "DEPT": {
+              "tint": [
+                [
+                  0
+                ],
+                [
+                  1
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그럼 EMP 행은 조인 후에도 중복이 없어요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        {
+          "say": "EMP가 키 보존 테이블이라 수정할 수 있어요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "ENAME"
+              ]
+            }
+          }
+        },
+        {
+          "say": "DEPT 10번 행은 사원 수만큼 두 번 나와요.",
+          "t": {
+            "DEPT": {
+              "rows": [
+                0
+              ],
+              "notes": [
+                [
+                  0,
+                  "LOC",
+                  "두 번 나옴"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 DEPT의 LOC를 고치면 에러가 나요.",
+          "t": {
+            "DEPT": {
+              "cells": [
+                [
+                  0,
+                  "LOC"
+                ],
+                [
+                  1,
+                  "LOC"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "LOC",
+                  "수정 불가"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "수정 가능 조인 뷰",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "상대 테이블 조인 컬럼에 **Unique 제약**이 있어야 해요. 데이터만 1:1이면 **에러**!",
+      "steps": [
+        {
+          "say": "조인 상대의 조인 컬럼에 유니크 제약이 필요해요."
+        },
+        {
+          "say": "데이터가 일대일이어도 제약이 없으면 에러예요."
+        }
+      ],
+      "id": "s16"
+    },
+    {
+      "type": "quiz",
+      "section": "수정 가능 조인 뷰",
+      "question": "EMP, DEPT 조인 뷰에서 **EMP 컬럼 수정**이 가능한 조건은?",
+      "choices": [
+        "EMP.DEPTNO 인덱스",
+        "DEPT.DEPTNO 유니크",
+        "데이터상 1:1",
+        "DEPT가 키 보존"
+      ],
+      "answer": 2,
+      "explanation": "상대인 DEPT의 조인 컬럼에 유니크 제약이 있어야 해요. 그래야 EMP가 키 보존이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. EMP 컬럼을 수정하려면 무엇이 필요할까요?"
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "id": "s18",
+      "section": "MERGE",
+      "type": "data",
+      "title": "MERGE 동작",
+      "tables": [
+        "고객",
+        "변경분"
+      ],
+      "code": "MERGE INTO 고객 T\nUSING 변경분 S\nON (T.번호 = S.번호)\nWHEN MATCHED THEN\n  UPDATE SET T.금액 = S.금액\nWHEN NOT MATCHED THEN\n  INSERT VALUES (S.번호, S.금액);",
+      "steps": [
+        {
+          "say": "MERGE는 한 문장으로 갱신과 입력을 해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "USING 집합을 준비하고,",
+          "focus": [
+            2
+          ],
+          "t": {
+            "변경분": {
+              "rows": [
+                0,
+                1
+              ]
+            }
+          }
+        },
+        {
+          "say": "ON 조건으로 대상과 비교해요. 2번은 짝이 있어요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "고객": {
+              "tint": [
+                [
+                  1
+                ]
+              ]
+            },
+            "변경분": {
+              "tint": [
+                [
+                  0
+                ]
+              ],
+              "notes": [
+                [
+                  1,
+                  "번호",
+                  "짝 없음"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "있으면 UPDATE해요. 20이 25로 바뀌어요.",
+          "focus": [
+            4,
+            5
+          ],
+          "t": {
+            "고객": {
+              "set": [
+                [
+                  1,
+                  "금액",
+                  "25"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "없으면 INSERT해요. 4번이 새로 들어가요.",
+          "focus": [
+            6,
+            7
+          ],
+          "t": {
+            "변경분": {
+              "rows": [
+                1
+              ]
+            },
+            "고객": {
+              "result": {
+                "title": "MERGE 후 고객",
+                "columns": [
+                  "번호",
+                  "금액"
+                ],
+                "rows": [
+                  [
+                    "1",
+                    "10"
+                  ],
+                  [
+                    "2",
+                    "25"
+                  ],
+                  [
+                    "3",
+                    "30"
+                  ],
+                  [
+                    "4",
+                    "40"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "10g부터는 한쪽만 써도 되고, DELETE도 붙여요.",
+          "focus": [
+            4,
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "section": "MERGE",
+      "title": "MERGE 규칙",
+      "cols": 3,
+      "items": [
+        {
+          "title": "ON 컬럼",
+          "desc": "수정 불가",
+          "icon": "lock",
+          "tone": "bad"
+        },
+        {
+          "title": "DELETE",
+          "desc": "UPDATE된 행만",
+          "icon": "filter"
+        },
+        {
+          "title": "중복 키",
+          "desc": "ORA-30926",
+          "icon": "warning",
+          "tone": "bad"
+        }
+      ],
+      "steps": [
+        {
+          "say": "MERGE 규칙 세 가지예요."
+        },
+        {
+          "say": "첫째, ON 절 컬럼은 수정할 수 없어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, DELETE는 UPDATE된 행에만 적용돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, USING에 같은 키가 여럿이면 에러예요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "quiz",
+      "section": "MERGE",
+      "question": "MERGE 설명으로 **옳은** 것은?",
+      "choices": [
+        "ON 컬럼 수정 가능",
+        "DELETE는 INSERT행도",
+        "두 절 모두 필수",
+        "중복 키면 에러 가능"
+      ],
+      "answer": 4,
+      "explanation": "USING에 같은 키가 여럿이면 ORA-30926 에러가 나요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. MERGE 설명으로 옳은 것은?"
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "flow",
+      "section": "대량 변경",
+      "title": "대량 UPDATE 순서",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "인덱스 Unusable",
+          "desc": "유지 비용 제거",
+          "icon": "lock"
+        },
+        {
+          "title": "대량 UPDATE",
+          "desc": "테이블만 변경",
+          "icon": "database"
+        },
+        {
+          "title": "인덱스 REBUILD",
+          "desc": "NOLOGGING으로",
+          "icon": "recycle"
+        }
+      ],
+      "steps": [
+        {
+          "say": "대량 변경은 인덱스 유지 비용이 커요."
+        },
+        {
+          "say": "먼저 인덱스를 Unusable로 만들어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그다음 테이블만 변경해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "마지막에 인덱스를 다시 만들어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "단, 유니크 인덱스는 Unusable로 둘 수 없어요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "flow",
+      "section": "대량 변경",
+      "title": "대량 DELETE 대안",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "CTAS",
+          "desc": "남길 것만 복사",
+          "icon": "copy"
+        },
+        {
+          "title": "교체",
+          "desc": "TRUNCATE, RENAME",
+          "icon": "recycle"
+        },
+        {
+          "title": "재생성",
+          "desc": "인덱스, 제약",
+          "icon": "check"
+        }
+      ],
+      "steps": [
+        {
+          "say": "대부분 지운다면 반대로 생각해요."
+        },
+        {
+          "say": "남길 데이터만 새 테이블로 옮겨요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "원본을 비우거나 이름을 바꿔 교체해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "인덱스와 제약을 다시 만들어요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s22"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "INSERT, DELETE는 모든 인덱스",
+        "Array 처리로 Call 줄이기",
+        "Direct Path는 HWM 위에",
+        "NOLOGGING은 Direct Path만",
+        "조인 뷰: 상대 컬럼 유니크 제약",
+        "MERGE: ON 컬럼 수정 불가"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "INSERT와 DELETE는 모든 인덱스를 갱신해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "묶어서 처리하면 Call이 줄어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "Direct Path는 HWM 위에 쓰고 Undo가 없어요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "NOLOGGING은 Direct Path에만 효과가 있어요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "조인 뷰는 상대 쪽 유니크 제약이 필요해요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "MERGE는 ON 절 컬럼을 고칠 수 없어요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s23"
+    }
+  ]
+}

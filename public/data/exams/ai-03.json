@@ -1,0 +1,739 @@
+{
+  "id": "ai-03",
+  "kind": "ai",
+  "title": "모의고사 3회",
+  "round": 3,
+  "timeLimitMin": 90,
+  "questions": [
+    {
+      "id": 1,
+      "subject": 1,
+      "theory": "data-model",
+      "question": "다음 사례에서 드러난 데이터 모델링의 문제(유의점)로 가장 적절한 것은?\n\n> A사는 주문 처리 절차가 조금만 바뀌어도 매번 테이블 구조를 수정해야 했다. 분석해 보니 데이터 정의가 특정 업무 프로세스의 처리 방식에 강하게 묶여 설계되어 있었다.",
+      "choices": [
+        "중복(Duplication)",
+        "비일관성(Inconsistency)",
+        "추상화(Abstraction)",
+        "비유연성(Inflexibility)"
+      ],
+      "answer": 4,
+      "explanation": "업무 프로세스가 조금만 바뀌어도 모델을 자주 고쳐야 하는 것은 **비유연성**이며, 데이터 정의를 사용 프로세스와 분리하여 줄인다. 중복은 같은 데이터가 여러 곳에 저장되는 문제, 비일관성은 연관 관계가 불분명해 모순된 데이터가 생기는 문제다. 추상화는 유의점이 아니라 모델링의 특징이다."
+    },
+    {
+      "id": 2,
+      "subject": 1,
+      "theory": "entity",
+      "question": "렌터카 업무를 분석하여 다음과 같이 엔터티를 도출하였다.\n\n- 고객: 회원 가입 시 등록되는 고객 정보\n- 차량: 회사가 보유한 차량 정보\n- 대여계약: 고객이 차량을 빌릴 때 체결하는 계약\n- 계약차량내역: 대여계약과 차량으로부터 발생하는 차량별 대여·반납 내역\n\n다음 중 **발생 시점**에 따른 엔터티 분류로 가장 적절한 것은?",
+      "choices": [
+        "고객 - 중심 엔터티",
+        "대여계약 - 중심 엔터티",
+        "차량 - 행위 엔터티",
+        "계약차량내역 - 기본 엔터티"
+      ],
+      "answer": 2,
+      "explanation": "대여계약은 기본 엔터티(고객)로부터 발생해 업무의 중심 역할을 하고 데이터 양이 많은 **중심 엔터티**다. 고객과 차량은 업무에 원래 존재하며 독립적으로 생성되는 기본 엔터티이고, 계약차량내역은 대여계약과 차량이라는 2개 이상의 부모로부터 발생하는 행위 엔터티다."
+    },
+    {
+      "id": 3,
+      "subject": 1,
+      "theory": "attribute",
+      "question": "다음 중 속성에 대한 설명으로 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "하나의 인스턴스에서 하나의 속성은 하나의 속성값만 가진다.",
+        "주소를 시·구·동으로 나누어 관리할 업무 요구가 있다면 각각을 별도 속성으로 정의한다.",
+        "여러 값을 가질 수 있는 다중값 속성은 하나의 속성에 구분자로 이어서 저장하는 것이 원칙이다.",
+        "사원의 부서번호처럼 다른 엔터티와의 관계를 통해 포함된 속성은 FK 속성으로 분류한다."
+      ],
+      "answer": 3,
+      "explanation": "다중값 속성은 그대로 두면 한 속성에 여러 값이 들어가므로 **별도 엔터티로 분리**하여 1:M 관계로 표현하는 것이 원칙이다(제1정규형). 구분자로 이어 저장하면 원자값 조건을 어기게 된다. 속성 분해 여부는 업무 요구로 판단하며, 관계로 상속된 속성은 FK 속성이다."
+    },
+    {
+      "id": 4,
+      "subject": 1,
+      "theory": "relationship",
+      "question": "두 엔터티 사이에 관계를 정의할지 판단하기 위한 체크사항으로 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "두 엔터티가 이름이 같은 속성을 하나 이상 가지고 있는가?",
+        "두 엔터티 사이에 관심 있는 연관 규칙이 존재하는가?",
+        "두 엔터티 사이에 정보의 조합이 발생하는가?",
+        "업무 기술서나 장표에 관계 연결을 가능하게 하는 동사가 있는가?"
+      ],
+      "answer": 1,
+      "explanation": "관계 정의 체크사항은 연관 규칙 존재, 정보의 조합 발생, 업무 기술서·장표에 관계 연결 규칙 서술, 관계 연결을 가능하게 하는 **동사** 존재 여부다. 같은 이름의 속성을 가졌는지는 관계 정의의 판단 기준이 아니며, 이름만 같고 업무적으로 무관한 속성도 많다."
+    },
+    {
+      "id": 5,
+      "subject": 1,
+      "theory": "identifier",
+      "question": "다음 중 부모 엔터티와 자식 엔터티를 **비식별 관계**로 설정하는 것이 더 적합한 경우로 가장 적절한 것은?",
+      "choices": [
+        "자식 엔터티가 부모 엔터티 없이는 업무적으로 아무 의미가 없을 때",
+        "부모 인스턴스가 삭제된 이후에도 자식 인스턴스는 이력으로 남아 있어야 할 때",
+        "부모의 주식별자를 자식의 주식별자에 포함해 상위 정보를 조인 없이 활용하려 할 때",
+        "주문과 주문목록처럼 자식이 부모에 강하게 종속되어 항상 함께 생성될 때"
+      ],
+      "answer": 2,
+      "explanation": "부모가 삭제되어도 자식이 남아야 하거나, 부모 없이 자식이 생성될 수 있거나, 자식의 PK를 독립적으로 구성하는 것이 유리할 때는 **비식별 관계**가 적합하다. 나머지 보기처럼 자식이 부모에 강하게 종속되거나, 부모 식별자를 자식 PK에 넣어 조인 없이 활용하려는 경우는 식별 관계의 사용 근거다."
+    },
+    {
+      "id": 6,
+      "subject": 1,
+      "theory": "normalization",
+      "question": "다음 중 정규화와 반정규화에 대한 설명으로 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "정규화는 함수 종속성을 근거로 릴레이션을 분해하여 데이터 중복과 이상현상을 줄인다.",
+        "정규화된 모델은 입력·수정·삭제 성능이 대체로 향상되며, 조회 성능이 향상되는 경우도 있다.",
+        "반정규화를 적용하기 전에 뷰, 인덱스 조정, 클러스터링, 파티셔닝 같은 대안을 먼저 검토한다.",
+        "정규화로 제거하려는 이상현상에는 삽입 이상, 갱신 이상, 삭제 이상, 조회 이상이 있다."
+      ],
+      "answer": 4,
+      "explanation": "이상현상은 **삽입·갱신·삭제** 이상의 3가지이며, '조회 이상'은 존재하지 않는다. 정규화는 조인 증가로 조회가 느려질 수 있지만 테이블이 작아져 오히려 빨라지는 경우도 있으므로 2번은 옳다. 반정규화는 무결성 저하 위험이 있어 다른 방법을 먼저 검토한 뒤 적용한다."
+    },
+    {
+      "id": 7,
+      "subject": 1,
+      "theory": "relationship-and-join",
+      "question": "`주문` 엔터티가 `개인고객` 또는 `법인고객` 중 하나와 관계를 맺도록 ERD에 호(Arc)를 그려 표현하였다. 이러한 상호배타적(아크) 관계에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "하나의 주문은 개인고객과 법인고객 모두와 동시에 관계를 맺어야 한다.",
+        "아크로 묶인 관계들은 필수/선택 여부를 관계마다 서로 다르게 설계하는 것이 일반적이다.",
+        "어느 한 시점에 하나의 주문은 여러 고객 엔터티 중 오직 하나와만 관계를 맺는다.",
+        "FK 하나와 구분 컬럼으로 구현하면 참조 대상이 하나로 고정되어 물리적 FK 제약을 걸기 쉽다."
+      ],
+      "answer": 3,
+      "explanation": "아크 관계는 하나의 엔터티가 여러 엔터티 중 **오직 하나**와만 관계를 맺는 구조이며, 아크 안의 관계들은 보통 필수/선택 성격을 동일하게 설계한다. FK 하나와 구분 컬럼으로 구현하면 행마다 참조 대상 테이블이 달라지므로 물리적 FK 제약을 걸기 어렵다."
+    },
+    {
+      "id": 8,
+      "subject": 1,
+      "theory": "transaction-model",
+      "question": "업무상 주문은 반드시 1건 이상의 주문상세를 가져야 하고 주문상세도 반드시 하나의 주문에 속해야 한다. 그런데 ERD에는 주문상세 쪽이 선택(o)으로 잘못 표기되어 있었고, 개발자는 이를 근거로 주문을 INSERT한 뒤 바로 COMMIT하고 주문상세는 별도 트랜잭션으로 입력하도록 구현하였다.\n\n이 구현에서 가장 우려되는 문제는?",
+      "choices": [
+        "주문상세 입력이 실패하면 상세 품목이 없는 주문이 남아 데이터 정합성이 깨질 수 있다.",
+        "트랜잭션 범위가 불필요하게 커져 잠금 경합이 증가한다.",
+        "주문상세 없이는 주문을 저장할 수 없게 되어 신규 주문 입력이 불가능해진다.",
+        "주문 테이블의 PK에 NULL이 저장되어 엔터티 무결성이 깨진다."
+      ],
+      "answer": 1,
+      "explanation": "필수 관계를 선택으로 잘못 표현하면 헤더(주문)만 먼저 커밋하는 코드가 만들어져, 상세 입력 실패 시 **'빈 주문'**이 남는 정합성 오류가 생긴다. 트랜잭션이 커져 잠금 경합이 늘어나는 것은 반대로 선택 관계를 필수로 잘못 그렸을 때의 문제다."
+    },
+    {
+      "id": 9,
+      "subject": 1,
+      "theory": "null-attribute",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle 기준, 결과는 C1 / C2 / C3 / C4 순서)",
+      "code": "SELECT NVL2(NULL, 'A', 'B')   AS C1,\n       NULLIF(5, 5)            AS C2,\n       COALESCE(NULL, 0, 7)    AS C3,\n       'X' || NULL             AS C4\n  FROM DUAL;",
+      "choices": [
+        "A / NULL / 7 / NULL",
+        "B / NULL / 0 / X",
+        "B / 5 / 0 / NULL",
+        "A / 5 / 7 / X"
+      ],
+      "answer": 2,
+      "explanation": "`NVL2(a, b, c)`는 a가 NULL이면 c를 반환하므로 'B', `NULLIF(5, 5)`는 두 값이 같으므로 NULL, `COALESCE`는 왼쪽부터 처음 NULL이 아닌 값인 0을 반환한다. Oracle의 `||` 결합은 NULL을 빈 문자열처럼 처리하므로 'X'가 된다(SQL Server의 `+` 결합은 NULL을 반환한다)."
+    },
+    {
+      "id": 10,
+      "subject": 1,
+      "theory": "natural-vs-surrogate-key",
+      "question": "다음 중 본질식별자 대신 인조식별자 도입을 검토할 상황으로 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "본질식별자를 구성하는 속성이 너무 많아 조인 조건과 SQL이 지나치게 복잡해질 때",
+        "식별 관계가 하위로 계속 이어져 자식 엔터티의 PK가 지나치게 길어질 때",
+        "본질식별자를 구성하는 속성의 값이 업무상 변경될 가능성이 있을 때",
+        "식별자 자체만으로 업무 데이터의 중복 입력을 확실히 차단해야 할 때"
+      ],
+      "answer": 4,
+      "explanation": "식별자 자체로 업무 데이터 중복을 차단해야 한다면 **본질식별자**가 적합하다. 인조식별자는 PK 값만 다르면 같은 업무 데이터가 중복 저장될 수 있어 별도 유니크 제약이 필요하다. 속성이 너무 많을 때, PK가 하위로 계속 길어질 때, 본질 속성 값이 변할 수 있을 때는 인조식별자를 검토하는 대표적인 상황이다."
+    },
+    {
+      "id": 11,
+      "subject": 2,
+      "theory": "rdb-overview",
+      "question": "DEPT 테이블의 DEPTNO는 기본키이고, EMP 테이블의 EMPNO는 기본키, EMP.DEPTNO는 DEPT.DEPTNO를 참조하는 외래키다. EMP.DEPTNO에는 NOT NULL 제약이 없다. 현재 데이터가 다음과 같을 때 **오류가 발생하는** INSERT 문은?\n\n[DEPT]\n\n| DEPTNO | DNAME |\n|---|---|\n| 10 | 인사 |\n| 20 | 개발 |\n| 30 | 영업 |\n\n[EMP]\n\n| EMPNO | DEPTNO |\n|---|---|\n| 1 | 10 |\n| 2 | 20 |",
+      "choices": [
+        "`INSERT INTO EMP (EMPNO, DEPTNO) VALUES (3, 30);`",
+        "`INSERT INTO EMP (EMPNO, DEPTNO) VALUES (4, 40);`",
+        "`INSERT INTO EMP (EMPNO, DEPTNO) VALUES (5, NULL);`",
+        "`INSERT INTO EMP (EMPNO, DEPTNO) VALUES (6, 20);`"
+      ],
+      "answer": 2,
+      "explanation": "외래키 컬럼에는 참조 대상 테이블에 존재하는 값 또는 NULL만 입력할 수 있다(참조 무결성). DEPT에 40번 부서가 없으므로 2번은 무결성 제약 위반 오류가 발생한다. 외래키는 중복과 NULL을 허용하므로 20을 다시 넣거나 NULL을 넣는 것은 정상이다."
+    },
+    {
+      "id": 12,
+      "subject": 2,
+      "theory": "select",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle)",
+      "code": "SELECT 'A' || NULL || 'B',\n       '10' + '5',\n       CONCAT('X', 'Y')\nFROM   DUAL;",
+      "choices": [
+        "`NULL, 105, XY`",
+        "`AB, 105, XY`",
+        "`NULL, 15, XY`",
+        "`AB, 15, XY`"
+      ],
+      "answer": 4,
+      "explanation": "Oracle의 `||` 연결 연산에서 NULL은 빈 문자열처럼 처리되어 'A' || NULL || 'B'는 'AB'가 된다. Oracle에서 `+`는 산술 연산자이므로 '10'과 '5'가 숫자로 암시적 변환되어 15가 된다. CONCAT('X', 'Y')는 'XY'다. 참고로 SQL Server에서는 `+`가 문자열 연결이라 '105'가 된다."
+    },
+    {
+      "id": 13,
+      "subject": 2,
+      "theory": "select",
+      "question": "Oracle에서 컬럼 별칭(ALIAS)에 대한 설명으로 **적절하지 않은** 것은?",
+      "choices": [
+        "컬럼명 뒤에 AS 키워드를 생략하고 바로 별칭을 지정할 수 있다.",
+        "별칭을 큰따옴표로 감싸면 대소문자가 구분되어 지정한 그대로 출력된다.",
+        "AS 키워드를 사용하면 큰따옴표 없이도 공백이 포함된 별칭을 지정할 수 있다.",
+        "ORDER BY 절에서는 SELECT 절에서 정의한 별칭을 사용할 수 있다."
+      ],
+      "answer": 3,
+      "explanation": "별칭에 공백이나 특수문자를 넣거나 대소문자를 구분하려면 AS 사용 여부와 관계없이 큰따옴표(\")로 감싸야 한다. `SAL AS 월 급여`처럼 쓰면 오류가 발생한다. AS는 생략 가능하며, ORDER BY는 SELECT 이후에 실행되므로 별칭을 참조할 수 있다."
+    },
+    {
+      "id": 14,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 [T] 테이블에 SQL을 실행했을 때 결과로 옳은 것은? (Oracle)\n\n[T]\n\n| ID | CODE |\n|---|---|\n| 1 | A |\n| 2 | NULL |\n| 3 | B |\n| 4 | NULL |",
+      "code": "SELECT COUNT(DECODE(CODE, NULL, 'Y'))           AS D_CNT,\n       COUNT(CASE CODE WHEN NULL THEN 'Y' END) AS C_CNT\nFROM   T;",
+      "choices": [
+        "`D_CNT=2, C_CNT=2`",
+        "`D_CNT=2, C_CNT=0`",
+        "`D_CNT=0, C_CNT=0`",
+        "`D_CNT=0, C_CNT=2`"
+      ],
+      "answer": 2,
+      "explanation": "DECODE는 NULL과 NULL을 같은 값으로 취급하므로 CODE가 NULL인 2, 4행에서 'Y'를 반환해 D_CNT는 2다. 단순 CASE의 `WHEN NULL`은 `CODE = NULL` 비교와 같아 절대 참이 되지 않고, ELSE가 없으므로 모든 행이 NULL이 되어 C_CNT는 0이다. CASE로 NULL을 판별하려면 `CASE WHEN CODE IS NULL THEN ...`을 써야 한다."
+    },
+    {
+      "id": 15,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle)",
+      "code": "SELECT MOD(-17, 5),\n       MOD(17, -5),\n       ROUND(4567.89, -2),\n       TRUNC(4567.89, -1)\nFROM   DUAL;",
+      "choices": [
+        "`-2, 2, 4600, 4560`",
+        "`3, -3, 4600, 4560`",
+        "`-2, -2, 4500, 4560`",
+        "`-2, 2, 4600, 4570`"
+      ],
+      "answer": 1,
+      "explanation": "Oracle의 MOD 결과 부호는 피제수(앞의 값)를 따르므로 MOD(-17, 5) = -2, MOD(17, -5) = 2다. ROUND(4567.89, -2)는 십의 자리에서 반올림해 백의 자리까지 남기므로 4600이다. TRUNC(4567.89, -1)은 일의 자리 이하를 버려 4560이다."
+    },
+    {
+      "id": 16,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 SQL을 **SQL Server**에서 실행한 결과로 옳은 것은?",
+      "code": "SELECT LEN('SQLD  '),\n       SUBSTRING('DATABASE', 3, 4),\n       ISNULL(NULL, 'N'),\n       7 % 3;",
+      "choices": [
+        "`6, TABA, N, 1`",
+        "`4, ATAB, N, 1`",
+        "`4, TABA, N, 1`",
+        "`4, TABA, NULL, 1`"
+      ],
+      "answer": 3,
+      "explanation": "SQL Server의 LEN은 문자열 뒤쪽 공백을 제외하고 세므로 4다. SUBSTRING('DATABASE', 3, 4)는 3번째 글자부터 4글자인 'TABA'다. ISNULL은 Oracle의 NVL에 해당하여 'N'을 반환하고, `%`는 나머지 연산자(Oracle의 MOD)이므로 7 % 3 = 1이다."
+    },
+    {
+      "id": 17,
+      "subject": 2,
+      "theory": "where",
+      "question": "다음 [T] 테이블에서 C1은 CHAR(5), C2는 VARCHAR2(5) 타입이다. (가), (나) SQL의 결과로 옳은 것은? (Oracle, 표의 '·'는 저장된 공백 한 칸을 의미한다.)\n\n[T]\n\n| ID | C1 (CHAR(5)) | C2 (VARCHAR2(5)) |\n|---|---|---|\n| 1 | AB··· | AB |\n| 2 | AB··· | AB· |\n| 3 | ABC·· | ABC |",
+      "code": "-- (가)\nSELECT COUNT(*) FROM T WHERE C1 = 'AB';\n\n-- (나)\nSELECT COUNT(*) FROM T WHERE C2 = 'AB';",
+      "choices": [
+        "(가) 2, (나) 1",
+        "(가) 1, (나) 1",
+        "(가) 2, (나) 2",
+        "(가) 1, (나) 2"
+      ],
+      "answer": 1,
+      "explanation": "CHAR 컬럼과 문자 상수를 비교하면 짧은 쪽에 공백을 채워 길이를 맞춘 뒤 비교하므로 'AB···'와 'AB'는 같다. 따라서 (가)는 ID 1, 2의 2건이다. VARCHAR2 컬럼과의 비교는 공백을 채우지 않고 그대로 비교하므로 뒤에 공백이 붙은 'AB·'는 'AB'와 다르며, (나)는 ID 1만 해당하여 1건이다."
+    },
+    {
+      "id": 18,
+      "subject": 2,
+      "theory": "where",
+      "question": "다음 [EMP] 테이블에 SQL을 실행했을 때 결과 값은?\n\n[EMP]\n\n| ENAME | DEPTNO | SAL |\n|---|---|---|\n| A | 10 | 3000 |\n| B | 20 | 1500 |\n| C | NULL | 2000 |\n| D | 30 | NULL |\n| E | 20 | 4000 |\n| F | 30 | 1000 |",
+      "code": "SELECT COUNT(*)\nFROM   EMP\nWHERE  NOT (DEPTNO = 10 OR SAL >= 2500);",
+      "choices": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "answer": 2,
+      "explanation": "조건은 `DEPTNO <> 10 AND SAL < 2500`과 같으며, WHERE는 결과가 TRUE인 행만 반환한다. A는 DEPTNO = 10, E는 SAL >= 2500이어서 제외된다. C는 DEPTNO가 NULL이라 괄호 안이 UNKNOWN이고, D도 SAL이 NULL이라 UNKNOWN이 되며, NOT UNKNOWN도 UNKNOWN이므로 제외된다. 따라서 B, F의 **2**건이다."
+    },
+    {
+      "id": 19,
+      "subject": 2,
+      "theory": "group-by-having",
+      "question": "다음 [T] 테이블에 SQL을 실행한 결과로 옳은 것은?\n\n[T]\n\n| ID | A | B |\n|---|---|---|\n| 1 | 10 | 5 |\n| 2 | NULL | 20 |\n| 3 | 30 | NULL |\n| 4 | 40 | 10 |",
+      "code": "SELECT SUM(A + B),\n       SUM(A) + SUM(B),\n       SUM(NVL(A, 0) + NVL(B, 0))\nFROM   T;",
+      "choices": [
+        "`115, 115, 115`",
+        "`65, 65, 115`",
+        "`115, 65, 115`",
+        "`65, 115, 115`"
+      ],
+      "answer": 4,
+      "explanation": "SUM(A + B)는 행별로 먼저 더하므로 15, NULL, NULL, 50이 되고, NULL을 제외한 합계는 65다. SUM(A) + SUM(B)는 열별로 NULL을 제외하고 합산하므로 80 + 35 = 115다. NVL로 NULL을 0으로 바꾸면 15 + 20 + 30 + 50 = 115가 된다."
+    },
+    {
+      "id": 20,
+      "subject": 2,
+      "theory": "group-by-having",
+      "question": "다음 [EMP] 테이블에 대한 SQL과 그 실행 결과를 짝지은 것으로 옳은 것은? (Oracle)\n\n[EMP]\n\n| ENAME | DEPTNO | JOB | SAL |\n|---|---|---|---|\n| A | 10 | CLERK | 1000 |\n| B | 10 | MANAGER | 3000 |\n| C | 20 | CLERK | 1200 |\n| D | 20 | CLERK | 1300 |\n| E | 20 | ANALYST | 3000 |\n| F | 30 | CLERK | 900 |",
+      "choices": [
+        "`SELECT MAX(SUM(SAL)) FROM EMP GROUP BY DEPTNO;` → 5500",
+        "`SELECT COUNT(DISTINCT JOB) FROM EMP;` → 6",
+        "`SELECT DEPTNO, MAX(SUM(SAL)) FROM EMP GROUP BY DEPTNO;` → 20, 5500",
+        "`SELECT COUNT(*) FROM EMP GROUP BY JOB HAVING COUNT(*) >= 2;` → 2행"
+      ],
+      "answer": 1,
+      "explanation": "부서별 합계는 10번 4000, 20번 5500, 30번 900이므로 MAX(SUM(SAL))은 5500이다. COUNT(DISTINCT JOB)은 CLERK, MANAGER, ANALYST로 3이다. 중첩 집계는 결과가 1행이 되므로 DEPTNO를 함께 SELECT하면 오류가 발생한다. JOB별 건수는 CLERK 4, MANAGER 1, ANALYST 1이므로 HAVING을 만족하는 것은 1행뿐이다."
+    },
+    {
+      "id": 21,
+      "subject": 2,
+      "theory": "order-by",
+      "question": "다음 [T] 테이블에 대해 (가)~(다)를 실행했을 때 각각 **첫 번째로 출력되는 ID**로 옳은 것은?\n\n[T]\n\n| ID | SCORE |\n|---|---|\n| 1 | 70 |\n| 2 | NULL |\n| 3 | 90 |\n| 4 | 80 |",
+      "code": "-- (가) Oracle\nSELECT ID FROM T ORDER BY SCORE;\n\n-- (나) SQL Server\nSELECT ID FROM T ORDER BY SCORE;\n\n-- (다) Oracle\nSELECT ID FROM T ORDER BY SCORE DESC NULLS LAST;",
+      "choices": [
+        "(가) 2, (나) 1, (다) 3",
+        "(가) 1, (나) 2, (다) 2",
+        "(가) 1, (나) 2, (다) 3",
+        "(가) 2, (나) 2, (다) 3"
+      ],
+      "answer": 3,
+      "explanation": "Oracle은 NULL을 가장 큰 값으로 취급하므로 ASC 정렬에서 NULL이 마지막에 오고 첫 행은 SCORE 70인 ID 1이다. SQL Server는 NULL을 가장 작은 값으로 취급하므로 ASC에서 NULL인 ID 2가 먼저 나온다. (다)는 DESC지만 NULLS LAST로 NULL을 맨 뒤로 보냈으므로 90인 ID 3이 첫 행이다."
+    },
+    {
+      "id": 22,
+      "subject": 2,
+      "theory": "order-by",
+      "question": "EMP 테이블(ENAME, JOB, SAL)에 대해 실행할 때 **오류가 발생하는** SQL은?",
+      "choices": [
+        "`SELECT JOB, COUNT(*) FROM EMP GROUP BY JOB ORDER BY 2 DESC;`",
+        "`SELECT JOB, COUNT(*) CNT FROM EMP GROUP BY JOB ORDER BY CNT;`",
+        "`SELECT JOB, COUNT(*) FROM EMP GROUP BY JOB ORDER BY MAX(SAL);`",
+        "`SELECT JOB, COUNT(*) FROM EMP GROUP BY JOB ORDER BY SAL;`"
+      ],
+      "answer": 4,
+      "explanation": "GROUP BY를 사용하면 ORDER BY에는 GROUP BY 컬럼, 집계 함수, SELECT 항목(별칭·위치 번호 포함)만 쓸 수 있다. SAL은 그룹 컬럼도 집계 함수도 아니어서 한 그룹 안의 여러 SAL 중 무엇으로 정렬할지 정할 수 없으므로 오류가 발생한다. 3번처럼 SELECT에 없는 집계 함수 MAX(SAL)로 정렬하는 것은 가능하다."
+    },
+    {
+      "id": 23,
+      "subject": 2,
+      "theory": "join",
+      "question": "다음 [COLORS], [SIZES] 테이블에 SQL을 실행했을 때 결과 값은?\n\n[COLORS]\n\n| COLOR |\n|---|\n| RED |\n| BLUE |\n| GREEN |\n| BLACK |\n\n[SIZES]\n\n| SZ |\n|---|\n| S |\n| M |\n| L |\n| XL |",
+      "code": "SELECT COUNT(*)\nFROM   COLORS C, SIZES S\nWHERE  C.COLOR LIKE '%E%'\nAND    S.SZ <> 'XL';",
+      "choices": [
+        "7",
+        "9",
+        "12",
+        "16"
+      ],
+      "answer": 2,
+      "explanation": "두 테이블 사이에 조인 조건이 없으므로 카티션 곱(CROSS JOIN)이 발생하고, WHERE의 조건은 각 테이블의 행을 걸러내는 역할만 한다. 'E'를 포함하는 색상은 RED, BLUE, GREEN의 3건(BLACK 제외), XL이 아닌 사이즈는 3건이므로 3 × 3 = **9**다."
+    },
+    {
+      "id": 24,
+      "subject": 2,
+      "theory": "join",
+      "question": "다음 [DEPT], [EMP] 테이블에 대해 (가), (나) SQL을 실행했을 때 결과 값으로 옳은 것은? (Oracle)\n\n[DEPT]\n\n| DEPTNO | DNAME |\n|---|---|\n| 10 | 인사 |\n| 20 | 개발 |\n| 30 | 영업 |\n\n[EMP]\n\n| EMPNO | DEPTNO | JOB |\n|---|---|---|\n| 1 | 10 | CLERK |\n| 2 | 10 | MANAGER |\n| 3 | 20 | CLERK |\n| 4 | 20 | ANALYST |",
+      "code": "-- (가)\nSELECT COUNT(*)\nFROM   DEPT D, EMP E\nWHERE  D.DEPTNO = E.DEPTNO(+)\nAND    E.JOB(+) = 'CLERK';\n\n-- (나)\nSELECT COUNT(*)\nFROM   DEPT D, EMP E\nWHERE  D.DEPTNO = E.DEPTNO(+)\nAND    E.JOB = 'CLERK';",
+      "choices": [
+        "(가) 3, (나) 2",
+        "(가) 3, (나) 3",
+        "(가) 2, (나) 2",
+        "(가) 5, (나) 2"
+      ],
+      "answer": 1,
+      "explanation": "(가)는 EMP 쪽 일반 조건에도 (+)를 붙였으므로 JOB = 'CLERK'가 조인 시점에 적용된다. 10번과 20번은 CLERK 사원 1명씩 매칭되고, 30번은 매칭이 없어 NULL 행으로 남아 3건이다. (나)는 조인 후 JOB = 'CLERK'로 필터링하므로 JOB이 NULL인 30번 행이 제거되어 OUTER JOIN 효과가 사라지고 2건이 된다."
+    },
+    {
+      "id": 25,
+      "subject": 2,
+      "theory": "standard-join",
+      "question": "다음 [MEMBER], [COUPON] 테이블에 대해 (가), (나) SQL을 실행했을 때 결과 값으로 옳은 것은?\n\n[MEMBER]\n\n| MID | NAME |\n|---|---|\n| M1 | 가 |\n| M2 | 나 |\n| M3 | 다 |\n\n[COUPON]\n\n| CID | MID | STATUS |\n|---|---|---|\n| 1 | M1 | USED |\n| 2 | M1 | NEW |\n| 3 | M2 | USED |",
+      "code": "-- (가)\nSELECT COUNT(*)\nFROM   MEMBER M LEFT OUTER JOIN COUPON C\n       ON M.MID = C.MID AND M.NAME = '가';\n\n-- (나)\nSELECT COUNT(*)\nFROM   MEMBER M LEFT OUTER JOIN COUPON C\n       ON M.MID = C.MID\nWHERE  M.NAME = '가';",
+      "choices": [
+        "(가) 2, (나) 2",
+        "(가) 4, (나) 4",
+        "(가) 4, (나) 2",
+        "(가) 3, (나) 2"
+      ],
+      "answer": 3,
+      "explanation": "LEFT OUTER JOIN에서 ON 절의 조건은 조인 매칭 조건일 뿐 기준 테이블 행을 걸러내지 않는다. (가)에서 M1은 쿠폰 2건과 매칭되어 2행, M2와 M3은 `M.NAME = '가'`를 만족하지 않아 매칭 없이 NULL 행으로 1행씩 남아 4건이다. (나)는 조인 결과(M1 2행, M2 1행, M3 1행)를 WHERE에서 걸러 M1의 2건만 남는다."
+    },
+    {
+      "id": 26,
+      "subject": 2,
+      "theory": "standard-join",
+      "question": "다음 [EMP], [DEPT] 테이블에 대해 (가), (나) SQL을 실행했을 때 결과 값으로 옳은 것은?\n\n[EMP]\n\n| EMPNO | DEPTNO | REG_DT |\n|---|---|---|\n| 1 | 10 | 2024-01-01 |\n| 2 | 20 | 2024-02-01 |\n| 3 | 20 | 2024-03-01 |\n| 4 | 30 | 2024-01-01 |\n\n[DEPT]\n\n| DEPTNO | DNAME | REG_DT |\n|---|---|---|\n| 10 | 인사 | 2024-01-01 |\n| 20 | 개발 | 2024-01-01 |\n| 30 | 영업 | 2024-01-01 |",
+      "code": "-- (가)\nSELECT COUNT(*) FROM EMP NATURAL JOIN DEPT;\n\n-- (나)\nSELECT COUNT(*) FROM EMP JOIN DEPT USING (DEPTNO);",
+      "choices": [
+        "(가) 4, (나) 4",
+        "(가) 2, (나) 2",
+        "(가) 4, (나) 2",
+        "(가) 2, (나) 4"
+      ],
+      "answer": 4,
+      "explanation": "NATURAL JOIN은 이름이 같은 **모든** 컬럼(DEPTNO, REG_DT)을 조인 조건으로 사용한다. 두 값이 모두 같은 사원은 1번(10, 2024-01-01)과 4번(30, 2024-01-01)뿐이어서 (가)는 2건이다. USING (DEPTNO)는 지정한 DEPTNO만으로 조인하므로 모든 사원이 매칭되어 (나)는 4건이다."
+    },
+    {
+      "id": 27,
+      "subject": 2,
+      "theory": "subquery",
+      "question": "다음 SQL의 실행 결과로 옳은 것은?\n\n[EMP]\n\n| ENAME | DEPTNO | SAL |\n|---|---|---|\n| A | 10 | 300 |\n| B | 10 | 500 |\n| C | 20 | 400 |\n| D | 20 | 200 |\n| E | 30 | 500 |\n| F | 30 | 400 |",
+      "code": "SELECT ENAME\n  FROM EMP\n WHERE (DEPTNO, SAL) IN (SELECT DEPTNO, MAX(SAL)\n                           FROM EMP\n                          GROUP BY DEPTNO)\n ORDER BY ENAME;",
+      "choices": [
+        "`B, E`",
+        "`B, C, E, F`",
+        "`C`",
+        "`B, C, E`"
+      ],
+      "answer": 4,
+      "explanation": "다중 컬럼 서브쿼리는 (DEPTNO, SAL) 쌍이 통째로 일치해야 한다. 서브쿼리 결과는 (10, 500), (20, 400), (30, 500)이므로 B, C, E가 반환된다. `WHERE SAL IN (SELECT MAX(SAL) ...)`처럼 SAL만 비교하면 30번 부서의 F(400)도 20번 최댓값 400과 같아 포함되므로 `B, C, E, F`가 된다."
+    },
+    {
+      "id": 28,
+      "subject": 2,
+      "theory": "subquery",
+      "question": "서브쿼리에 대한 설명으로 가장 적절하지 **않은** 것은? (Oracle 기준)",
+      "choices": [
+        "스칼라 서브쿼리는 한 행 한 컬럼만 반환해야 하며, 결과가 없으면 NULL을 반환한다.",
+        "WHERE 절 서브쿼리 안에서도 ORDER BY를 사용해 비교 대상의 순서를 정할 수 있다.",
+        "단일행 비교 연산자와 쓴 서브쿼리가 2행 이상을 반환하면 실행 시 오류가 발생한다.",
+        "인라인 뷰에서 정의한 컬럼이나 별칭은 메인 쿼리에서 참조할 수 있다."
+      ],
+      "answer": 2,
+      "explanation": "Oracle에서 서브쿼리 안에 ORDER BY를 쓸 수 있는 곳은 FROM 절의 인라인 뷰뿐이다. WHERE 절 서브쿼리에 ORDER BY를 쓰면 오류가 발생한다. 나머지는 옳다. 단일행 연산자(=, >, < 등)와 함께 쓴 서브쿼리가 여러 행을 반환하면 실행 시점에 오류가 나며, 이때는 IN, ANY, ALL 같은 다중행 연산자를 써야 한다."
+    },
+    {
+      "id": 29,
+      "subject": 2,
+      "theory": "set-operators",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle 기준, 값의 순서는 고려하지 않는다)\n\n[A]\n\n| X |\n|---|\n| 1 |\n| 2 |\n| 3 |\n\n[B]\n\n| X |\n|---|\n| 2 |\n| 3 |\n| 4 |\n\n[C]\n\n| X |\n|---|\n| 3 |\n| 5 |",
+      "code": "SELECT X FROM A\nUNION\nSELECT X FROM B\nMINUS\nSELECT X FROM C;",
+      "choices": [
+        "`1, 2, 3, 4`",
+        "`1, 2`",
+        "`1, 2, 4`",
+        "`4`"
+      ],
+      "answer": 3,
+      "explanation": "Oracle에서 집합 연산자의 우선순위는 같으므로 위에서 아래로 차례대로 수행한다. 먼저 A UNION B = {1, 2, 3, 4}를 만든 뒤 C = {3, 5}를 빼면 {1, 2, 4}가 남는다. `1, 2, 3, 4`는 B MINUS C를 먼저 계산해 A와 합친 경우의 결과다."
+    },
+    {
+      "id": 30,
+      "subject": 2,
+      "theory": "set-operators",
+      "question": "다음 중 결과 집합이 **다른** 하나는? (Oracle 기준, 행의 순서는 고려하지 않는다)\n\n[A]\n\n| X |\n|---|\n| 1 |\n| 2 |\n| 2 |\n| 3 |\n\n[B]\n\n| X |\n|---|\n| 2 |\n| 3 |\n| 3 |\n| 4 |",
+      "choices": [
+        "`SELECT X FROM A INTERSECT SELECT X FROM B UNION SELECT X FROM B`",
+        "`SELECT X FROM A UNION SELECT X FROM B`",
+        "`SELECT DISTINCT X FROM (SELECT X FROM A UNION ALL SELECT X FROM B)`",
+        "`SELECT X FROM A UNION SELECT X FROM B WHERE X > 3`"
+      ],
+      "answer": 1,
+      "explanation": "1번은 A INTERSECT B = {2, 3}에 B를 UNION하므로 {2, 3, 4}다. 2번과 3번은 모두 {1, 2, 3, 4}다. 4번의 WHERE는 두 번째 SELECT에만 적용되어 B에서 4만 가져오지만, A의 {1, 2, 3}(UNION으로 중복 제거)과 합쳐져 역시 {1, 2, 3, 4}가 된다. 시험 포인트: 개별 SELECT의 WHERE는 그 SELECT에만 적용된다."
+    },
+    {
+      "id": 31,
+      "subject": 2,
+      "theory": "group-functions",
+      "question": "다음 SQL의 결과 건수는?\n\n[SALES]\n\n| REGION | CH | AMT |\n|---|---|---|\n| 서울 | 온라인 | 10 |\n| 서울 | 매장 | 20 |\n| 부산 | 온라인 | 30 |\n| 부산 | 온라인 | 40 |\n| 대구 | 매장 | 50 |",
+      "code": "SELECT REGION, CH, SUM(AMT)\n  FROM SALES\n GROUP BY GROUPING SETS (REGION, CH, ());",
+      "choices": [
+        "5건",
+        "6건",
+        "8건",
+        "10건"
+      ],
+      "answer": 2,
+      "explanation": "GROUPING SETS는 나열한 수준만 만든다. REGION별 3건(서울, 부산, 대구), CH별 2건(온라인, 매장), ()에 해당하는 총계 1건으로 3 + 2 + 1 = 6건이다. (REGION, CH) 조합 수준은 나열하지 않았으므로 생기지 않는다. 8건은 ROLLUP(REGION, CH), 10건은 CUBE(REGION, CH)의 결과다."
+    },
+    {
+      "id": 32,
+      "subject": 2,
+      "theory": "group-functions",
+      "question": "다음 SQL의 결과 건수는?\n\n[EMP]\n\n| DEPTNO | JOB | SAL |\n|---|---|---|\n| 10 | CLERK | 100 |\n| 10 | MANAGER | 200 |\n| 20 | CLERK | 150 |\n| 20 | CLERK | 250 |\n| 30 | SALESMAN | 300 |",
+      "code": "SELECT DEPTNO, JOB, SUM(SAL)\n  FROM EMP\n GROUP BY DEPTNO, ROLLUP(JOB);",
+      "choices": [
+        "8건",
+        "5건",
+        "10건",
+        "7건"
+      ],
+      "answer": 4,
+      "explanation": "`GROUP BY DEPTNO, ROLLUP(JOB)`은 (DEPTNO, JOB)과 (DEPTNO) 두 수준만 만드는 부분 ROLLUP이며 총계 행은 없다. (DEPTNO, JOB) 조합은 10-CLERK, 10-MANAGER, 20-CLERK, 30-SALESMAN 4건, 부서 소계 3건으로 7건이다. 8건은 총계까지 포함하는 ROLLUP(DEPTNO, JOB)의 결과다."
+    },
+    {
+      "id": 33,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 SQL에서 ENAME이 'B'인 행의 R, C, P 값으로 옳은 것은? (소수점 셋째 자리에서 반올림)\n\n[EMP]\n\n| ENAME | SAL |\n|---|---|\n| A | 500 |\n| B | 200 |\n| C | 200 |\n| D | 100 |",
+      "code": "SELECT ENAME,\n       RATIO_TO_REPORT(SAL) OVER ()          AS R,\n       CUME_DIST()          OVER (ORDER BY SAL) AS C,\n       PERCENT_RANK()       OVER (ORDER BY SAL) AS P\n  FROM EMP;",
+      "choices": [
+        "R = 0.2, C = 0.75, P = 0.33",
+        "R = 0.2, C = 0.5, P = 0.33",
+        "R = 0.4, C = 0.75, P = 0.25",
+        "R = 0.2, C = 0.75, P = 0.5"
+      ],
+      "answer": 1,
+      "explanation": "RATIO_TO_REPORT는 전체 합 1000에 대한 비율이므로 200 / 1000 = 0.2다. CUME_DIST는 현재 값 이하인 행 수의 비율로, 동점(B, C)을 모두 포함해 3 / 4 = 0.75다. PERCENT_RANK는 (RANK - 1) / (전체 행 수 - 1)이며 B의 RANK는 2이므로 1 / 3 ≈ 0.33이다."
+    },
+    {
+      "id": 34,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 SQL의 실행 결과로 옳은 것은?\n\n[EMP]\n\n| ENAME | DEPTNO | SAL |\n|---|---|---|\n| A | 10 | 100 |\n| B | 10 | 150 |\n| C | 20 | 300 |\n| D | 20 | 300 |\n| E | 20 | 600 |",
+      "code": "SELECT ENAME\n  FROM (SELECT ENAME, SAL,\n               AVG(SAL) OVER (PARTITION BY DEPTNO) AS AVG_SAL\n          FROM EMP)\n WHERE SAL > AVG_SAL\n ORDER BY ENAME;",
+      "choices": [
+        "`C, D, E`",
+        "`E`",
+        "`B, E`",
+        "`B, C, D, E`"
+      ],
+      "answer": 3,
+      "explanation": "PARTITION BY만 있고 ORDER BY가 없으므로 각 행에 해당 부서 전체의 평균이 붙는다. 10번 평균은 125로 B(150)가, 20번 평균은 1200 / 3 = 400으로 E(600)가 평균보다 크다. 결과는 B, E이며, `C, D, E`는 전체 평균 290과 비교했을 때의 결과다. 윈도우 함수는 WHERE 절에 직접 쓸 수 없어 인라인 뷰로 감싼 뒤 필터링한다."
+    },
+    {
+      "id": 35,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 SQL의 실행 결과에서 CNT 값을 SAL 오름차순으로 나열한 것으로 옳은 것은?\n\n[EMP]\n\n| ENAME | SAL |\n|---|---|\n| A | 100 |\n| B | 150 |\n| C | 200 |\n| D | 300 |\n| E | 350 |",
+      "code": "SELECT ENAME, SAL,\n       COUNT(*) OVER (ORDER BY SAL\n                      RANGE BETWEEN 100 PRECEDING AND CURRENT ROW) AS CNT\n  FROM EMP\n ORDER BY SAL;",
+      "choices": [
+        "`1, 2, 2, 2, 2`",
+        "`1, 2, 3, 3, 3`",
+        "`1, 2, 3, 2, 2`",
+        "`1, 2, 3, 4, 5`"
+      ],
+      "answer": 3,
+      "explanation": "RANGE는 행 개수가 아니라 정렬 값의 범위로 윈도우를 정한다. 각 행에서 [SAL - 100, SAL] 범위의 행 수를 센다. 100 → [0, 100] 1건, 150 → [50, 150] 2건, 200 → [100, 200] 3건, 300 → [200, 300] 2건(200, 300), 350 → [250, 350] 2건(300, 350)이다. `1, 2, 2, 2, 2`는 `ROWS BETWEEN 1 PRECEDING AND CURRENT ROW`의 결과다."
+    },
+    {
+      "id": 36,
+      "subject": 2,
+      "theory": "top-n",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle 12c 이상 기준)\n\n[EMP]\n\n| ENAME | SAL |\n|---|---|\n| A | 500 |\n| B | 450 |\n| C | 400 |\n| D | 350 |\n| E | 300 |\n| F | 250 |\n| G | 200 |",
+      "code": "SELECT ENAME\n  FROM EMP\n ORDER BY SAL DESC\nOFFSET 3 ROWS FETCH NEXT 3 ROWS ONLY;",
+      "choices": [
+        "`D, E, F`",
+        "`C, D, E`",
+        "`D, E, F, G`",
+        "`E, F, G`"
+      ],
+      "answer": 1,
+      "explanation": "SAL 내림차순 A, B, C, D, E, F, G에서 OFFSET 3 ROWS로 앞의 3행(A, B, C)을 건너뛰고, FETCH NEXT 3 ROWS ONLY로 그다음 3행 D, E, F를 가져온다. 페이지당 3건일 때 2페이지에 해당한다. `C, D, E`는 OFFSET을 2로 잘못 계산한 경우다."
+    },
+    {
+      "id": 37,
+      "subject": 2,
+      "theory": "top-n",
+      "question": "다음 SQL의 결과 건수는?\n\n[EMP]\n\n| ENAME | DEPTNO | SAL |\n|---|---|---|\n| A | 10 | 300 |\n| B | 10 | 500 |\n| C | 10 | 400 |\n| D | 20 | 200 |\n| E | 20 | 600 |\n| F | 30 | 100 |",
+      "code": "SELECT DEPTNO, ENAME, SAL\n  FROM (SELECT DEPTNO, ENAME, SAL,\n               ROW_NUMBER() OVER (PARTITION BY DEPTNO\n                                  ORDER BY SAL DESC) AS RN\n          FROM EMP)\n WHERE RN <= 2;",
+      "choices": [
+        "6건",
+        "5건",
+        "2건",
+        "4건"
+      ],
+      "answer": 2,
+      "explanation": "ROW_NUMBER는 부서별로 SAL 내림차순 번호를 새로 매긴다. 10번은 B(1), C(2), A(3), 20번은 E(1), D(2), 30번은 F(1)이다. RN <= 2를 만족하는 행은 B, C, E, D, F로 5건이다. 30번 부서는 1명뿐이라 1건만 나온다. PARTITION BY가 없다면 전체 상위 2건만 반환된다."
+    },
+    {
+      "id": 38,
+      "subject": 2,
+      "theory": "hierarchical-query",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle 기준, 출력 순서대로 표기)\n\n[ORG]\n\n| ID | NAME | PID |\n|---|---|---|\n| 1 | ROOT | NULL |\n| 2 | SALES | 1 |\n| 3 | DEV | 1 |\n| 4 | WEB | 3 |\n| 5 | APP | 3 |\n| 6 | KR | 2 |",
+      "code": "SELECT NAME\n  FROM ORG\n START WITH PID IS NULL\nCONNECT BY PRIOR ID = PID\n ORDER SIBLINGS BY NAME;",
+      "choices": [
+        "`ROOT, DEV, SALES, APP, WEB, KR`",
+        "`APP, DEV, KR, ROOT, SALES, WEB`",
+        "`ROOT, SALES, KR, DEV, WEB, APP`",
+        "`ROOT, DEV, APP, WEB, SALES, KR`"
+      ],
+      "answer": 4,
+      "explanation": "ORDER SIBLINGS BY는 계층 구조(부모 바로 아래에 자식이 오는 깊이 우선 순서)를 유지한 채 같은 부모를 가진 형제끼리만 정렬한다. ROOT의 자식 DEV, SALES 중 DEV가 먼저 오고, DEV의 자식 APP, WEB을 출력한 뒤 SALES와 그 자식 KR을 출력한다. `APP, DEV, KR, ...`는 일반 ORDER BY NAME으로 계층 순서가 깨진 결과다."
+    },
+    {
+      "id": 39,
+      "subject": 2,
+      "theory": "hierarchical-query",
+      "question": "다음 SQL의 결과에 **포함되는** 행으로 옳은 것은? (Oracle 기준, ENAME | ROOT_NM | LEVEL 순서로 표기)\n\n[EMP]\n\n| EMPNO | ENAME | MGR |\n|---|---|---|\n| 1 | KING | NULL |\n| 2 | JONES | 1 |\n| 3 | SCOTT | 2 |\n| 4 | BLAKE | 1 |\n| 5 | ALLEN | 4 |\n| 6 | WARD | 4 |",
+      "code": "SELECT ENAME,\n       CONNECT_BY_ROOT ENAME AS ROOT_NM,\n       LEVEL\n  FROM EMP\n START WITH MGR = 1\nCONNECT BY PRIOR EMPNO = MGR;",
+      "choices": [
+        "`WARD | BLAKE | 2`",
+        "`SCOTT | KING | 3`",
+        "`ALLEN | BLAKE | 3`",
+        "`KING | KING | 1`"
+      ],
+      "answer": 1,
+      "explanation": "START WITH MGR = 1을 만족하는 JONES와 BLAKE가 각각 루트(LEVEL 1)가 되어 두 개의 트리가 전개된다. 결과는 JONES(JONES, 1), SCOTT(JONES, 2), BLAKE(BLAKE, 1), ALLEN(BLAKE, 2), WARD(BLAKE, 2) 5행이다. KING은 시작 조건을 만족하지 않고 하위로 전개되지도 않으므로 결과에 없으며, CONNECT_BY_ROOT는 실제 시작 행인 JONES 또는 BLAKE를 반환한다."
+    },
+    {
+      "id": 40,
+      "subject": 2,
+      "theory": "pivot-unpivot",
+      "question": "다음 SQL의 결과에 대한 설명으로 옳은 것은? (Oracle 기준)\n\n[ORDERS]\n\n| CUST | PROD | QTY |\n|---|---|---|\n| A | 사과 | 2 |\n| A | 배 | 3 |\n| B | 사과 | 5 |\n| A | 사과 | 4 |\n| C | 배 | 1 |",
+      "code": "SELECT *\n  FROM (SELECT CUST, PROD, QTY FROM ORDERS)\n PIVOT (SUM(QTY) FOR PROD IN ('사과' AS APPLE, '배' AS PEAR))\n ORDER BY CUST;",
+      "choices": [
+        "결과는 5행이며, CUST가 A인 행이 3개 존재한다.",
+        "CUST가 B인 행의 PEAR 값은 0이다.",
+        "CUST가 A인 행의 APPLE 값은 6이다.",
+        "결과 컬럼은 CUST, PROD, APPLE, PEAR 네 개다."
+      ],
+      "answer": 3,
+      "explanation": "인라인 뷰에서 QTY(집계 대상)와 PROD(FOR 컬럼)를 뺀 나머지는 CUST뿐이므로 CUST별로 암시적 GROUP BY가 되어 A, B, C 3행이 나온다. A의 APPLE은 2 + 4 = 6, PEAR는 3이다. B는 배 주문이 없어 PEAR가 0이 아니라 NULL이며, PROD는 FOR 컬럼이라 결과 컬럼은 CUST, APPLE, PEAR 세 개다."
+    },
+    {
+      "id": 41,
+      "subject": 2,
+      "theory": "regex",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle 기준, C1, C2 순서로 표기)",
+      "code": "SELECT REGEXP_COUNT('A1B22C333', '[[:digit:]]')  AS C1,\n       REGEXP_COUNT('A1B22C333', '[[:digit:]]+') AS C2\n  FROM DUAL;",
+      "choices": [
+        "3, 3",
+        "6, 6",
+        "6, 1",
+        "6, 3"
+      ],
+      "answer": 4,
+      "explanation": "`[[:digit:]]`는 숫자 한 글자와 일치하므로 1, 2, 2, 3, 3, 3으로 C1 = 6이다. `[[:digit:]]+`는 연속된 숫자 덩어리와 일치하므로 '1', '22', '333'으로 C2 = 3이다. 시험 포인트: POSIX 문자 클래스 `[:digit:]`는 대괄호 표현식 안에 넣어 `[[:digit:]]`처럼 대괄호를 두 겹으로 쓰는 것이 표준 형식이며, `+`의 유무에 따라 한 글자 단위 일치인지 덩어리 단위 일치인지가 갈린다."
+    },
+    {
+      "id": 42,
+      "subject": 2,
+      "theory": "regex",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle 기준)",
+      "code": "SELECT REGEXP_INSTR('ab12cd345', '[0-9]+', 1, 2, 1) AS POS\n  FROM DUAL;",
+      "choices": [
+        "7",
+        "10",
+        "9",
+        "5"
+      ],
+      "answer": 2,
+      "explanation": "인수는 순서대로 position = 1, occurrence = 2, return_opt = 1이다. `[0-9]+`의 두 번째 일치는 7~9번째 위치의 '345'다. return_opt가 1이면 일치 시작 위치가 아니라 일치가 끝난 다음 위치를 반환하므로 9 + 1 = 10이다. return_opt가 0(기본값)이었다면 7을 반환한다."
+    },
+    {
+      "id": 43,
+      "subject": 2,
+      "theory": "dml",
+      "question": "다음 두 테이블에 대해 아래 MERGE 문을 실행(Oracle)한 후 STOCK 테이블에 남아 있는 ITEM을 모두 고른 것은?\n\n**STOCK**\n\n| ITEM | QTY |\n|---|---|\n| P1 | 10 |\n| P2 | 5 |\n| P3 | 8 |\n| P4 | 0 |\n\n**ADJUST**\n\n| ITEM | DELTA |\n|---|---|\n| P1 | -4 |\n| P2 | -5 |\n| P5 | 3 |",
+      "code": "MERGE INTO stock t\nUSING adjust s\nON (t.item = s.item)\nWHEN MATCHED THEN\n  UPDATE SET t.qty = t.qty + s.delta\n  DELETE WHERE t.qty = 0\nWHEN NOT MATCHED THEN\n  INSERT (item, qty) VALUES (s.item, s.delta);",
+      "choices": [
+        "P1, P3, P5",
+        "P1, P2, P3, P4, P5",
+        "P1, P3",
+        "P1, P3, P4, P5"
+      ],
+      "answer": 4,
+      "explanation": "P1은 10-4=6, P2는 5-5=0으로 갱신된다. Oracle의 DELETE WHERE는 **UPDATE된 행만** 대상으로 **갱신 후 값**을 평가하므로 P2만 삭제된다. P4는 QTY가 0이지만 원본과 매칭되지 않아 UPDATE되지 않았으므로 삭제되지 않는다. P5는 INSERT되어 최종적으로 P1, P3, P4, P5가 남는다."
+    },
+    {
+      "id": 44,
+      "subject": 2,
+      "theory": "dml",
+      "question": "DML에 대한 설명으로 **적절하지 않은** 것은?",
+      "choices": [
+        "INSERT ... SELECT 문은 입력 대상 테이블이 미리 존재해야 한다.",
+        "Oracle에서는 INSERT ALL 구문으로 여러 행을 한 문장에 입력할 수 있다.",
+        "기본 설정의 SQL Server에서 BEGIN TRAN 없이 실행한 DELETE도 ROLLBACK으로 복구된다.",
+        "UPDATE 문에서 WHERE 절을 생략하면 테이블의 모든 행이 수정 대상이 된다."
+      ],
+      "answer": 3,
+      "explanation": "SQL Server는 기본이 **AUTO COMMIT**이므로 BEGIN TRAN 없이 실행한 DELETE는 문장 단위로 즉시 커밋되어 ROLLBACK으로 복구할 수 없다. INSERT ... SELECT는 기존 테이블에 입력하는 구문이며(새로 만들며 복사하는 것은 CTAS), Oracle은 INSERT ALL로 다중 행 입력이 가능하다."
+    },
+    {
+      "id": 45,
+      "subject": 2,
+      "theory": "tcl",
+      "question": "T 테이블에는 C 값이 10인 한 행이 커밋되어 있다. Oracle에서 아래 문장을 순서대로 실행한 후 `SELECT c FROM t;`의 결과는?",
+      "code": "UPDATE t SET c = 20;\nSAVEPOINT a;\nUPDATE t SET c = 30;\nSAVEPOINT a;\nUPDATE t SET c = 40;\nROLLBACK TO a;\nCOMMIT;",
+      "choices": [
+        "10",
+        "30",
+        "20",
+        "40"
+      ],
+      "answer": 2,
+      "explanation": "같은 이름으로 저장점을 다시 만들면 **나중 것이 앞의 것을 대체**한다. 따라서 저장점 a는 C가 30인 시점을 가리키고, ROLLBACK TO a는 40으로 바꾼 UPDATE만 취소한다. 이 상태로 COMMIT되므로 결과는 **30**이다."
+    },
+    {
+      "id": 46,
+      "subject": 2,
+      "theory": "tcl",
+      "question": "Oracle에서 트랜잭션의 COMMIT 전후 데이터 상태에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "COMMIT 전에는 변경한 본인만 변경 값을 보고, 다른 사용자는 변경 전 값을 본다.",
+        "COMMIT 전이라도 다른 사용자는 변경 중인 행을 자유롭게 수정할 수 있다.",
+        "ROLLBACK을 실행해도 변경 중인 행에 걸린 잠금은 COMMIT 전까지 유지된다.",
+        "세션이 비정상 종료되면 진행 중이던 트랜잭션은 자동으로 COMMIT된다."
+      ],
+      "answer": 1,
+      "explanation": "COMMIT 전 변경 내용은 변경한 사용자 본인만 조회할 수 있고, 다른 사용자는 마지막으로 커밋된 값을 본다. 변경 중인 행에는 잠금이 걸려 다른 사용자가 수정할 수 없으며, 잠금은 COMMIT 또는 ROLLBACK 시 해제된다. 비정상 종료 시 진행 중인 트랜잭션은 **ROLLBACK**된다."
+    },
+    {
+      "id": 47,
+      "subject": 2,
+      "theory": "ddl",
+      "question": "제약조건에 대한 설명으로 **적절하지 않은** 것은? (Oracle)",
+      "choices": [
+        "PRIMARY KEY는 테이블당 하나만 정의할 수 있으며 NULL을 허용하지 않는다.",
+        "UNIQUE 제약조건이 정의된 컬럼에는 NULL을 입력할 수 없다.",
+        "NOT NULL 제약조건은 컬럼 레벨에서 정의한다.",
+        "FOREIGN KEY 컬럼에는 NULL을 입력할 수 있다."
+      ],
+      "answer": 2,
+      "explanation": "UNIQUE는 중복만 금지할 뿐 **NULL을 허용**하며, Oracle에서는 여러 행에 NULL이 들어갈 수 있다. PRIMARY KEY는 UNIQUE + NOT NULL로 테이블당 하나이고, NOT NULL은 컬럼 레벨로 정의하며, FK 컬럼은 NULL을 허용한다."
+    },
+    {
+      "id": 48,
+      "subject": 2,
+      "theory": "ddl",
+      "question": "EMP2 테이블에는 100건의 데이터가 있다. ENAME 컬럼은 VARCHAR2(20)이고 저장된 값 중 가장 긴 값은 15바이트이며, PHONE 컬럼에는 NULL인 행이 일부 존재한다. 또한 DEPT_CD 컬럼(VARCHAR2(3))에는 아직 DEFAULT가 정의되어 있지 않다. 다음 ALTER 문에 대한 설명으로 **적절하지 않은** 것은? (Oracle)",
+      "choices": [
+        "ALTER TABLE emp2 MODIFY (ename VARCHAR2(30)); 은 정상 실행된다.",
+        "ALTER TABLE emp2 MODIFY (ename VARCHAR2(10)); 은 오류가 발생한다.",
+        "ALTER TABLE emp2 MODIFY (phone NOT NULL); 은 정상 실행되고 기존 NULL은 유지된다.",
+        "ALTER TABLE emp2 MODIFY (dept_cd DEFAULT 'D01'); 은 이후 입력 행부터 적용된다."
+      ],
+      "answer": 3,
+      "explanation": "기존 행에 NULL이 있는 컬럼은 NOT NULL로 변경할 수 없으므로 3번은 오류가 발생한다. 컬럼 크기를 늘리는 것은 가능하지만, 저장된 값(15바이트)보다 작게 줄이는 것은 불가하다. DEFAULT 변경은 기존 행에는 영향이 없고 이후 입력되는 행부터 적용된다."
+    },
+    {
+      "id": 49,
+      "subject": 2,
+      "theory": "dcl",
+      "question": "다음 DCL 문장 중 문법적으로 올바른 것은? (Oracle)",
+      "choices": [
+        "GRANT SELECT, UPDATE ON scott.emp TO kim;",
+        "GRANT SELECT ON scott.emp FROM kim;",
+        "REVOKE SELECT ON scott.emp TO kim;",
+        "GRANT CREATE TABLE ON scott TO kim WITH GRANT OPTION;"
+      ],
+      "answer": 1,
+      "explanation": "권한 부여는 `GRANT 권한 ON 객체 TO 사용자`, 회수는 `REVOKE 권한 ON 객체 FROM 사용자` 형식이다. 2번과 3번은 TO와 FROM을 바꿔 썼다. CREATE TABLE은 시스템 권한이므로 ON 절을 쓰지 않으며, 재부여 옵션도 WITH ADMIN OPTION을 사용해야 한다."
+    },
+    {
+      "id": 50,
+      "subject": 2,
+      "theory": "dcl",
+      "question": "DBA가 아래 문장을 실행했지만 DEV1 사용자는 데이터베이스에 **접속조차 할 수 없었다**. DEV1이 접속할 수 있도록 하기 위해 실행해야 할 문장으로 가장 적절한 것은? (Oracle)",
+      "code": "CREATE USER dev1 IDENTIFIED BY pw1;\nGRANT CREATE TABLE TO dev1;",
+      "choices": [
+        "GRANT RESOURCE TO dev1;",
+        "GRANT SELECT ANY TABLE TO dev1;",
+        "GRANT CREATE TABLE TO dev1 WITH ADMIN OPTION;",
+        "GRANT CREATE SESSION TO dev1;"
+      ],
+      "answer": 4,
+      "explanation": "새로 만든 사용자는 아무 권한이 없어 접속할 수 없으며, 접속하려면 **CREATE SESSION** 시스템 권한(또는 이를 포함한 CONNECT 롤)이 필요하다. RESOURCE 롤은 객체 생성 권한 묶음이고, SELECT ANY TABLE이나 ADMIN OPTION 추가는 접속 권한과 관계가 없다."
+    }
+  ]
+}

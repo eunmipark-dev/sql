@@ -1,0 +1,1232 @@
+{
+  "slug": "order-by",
+  "title": "ORDER BY 절",
+  "tables": {
+    "EMP": {
+      "columns": [
+        "ENAME",
+        "DEPTNO",
+        "SAL"
+      ],
+      "rows": [
+        [
+          "SMITH",
+          "20",
+          "100"
+        ],
+        [
+          "KING",
+          "10",
+          "300"
+        ],
+        [
+          "ADAMS",
+          "20",
+          "100"
+        ],
+        [
+          "FORD",
+          "20",
+          "300"
+        ]
+      ]
+    },
+    "COMM": {
+      "columns": [
+        "ENAME",
+        "COMM"
+      ],
+      "rows": [
+        [
+          "SMITH",
+          "NULL"
+        ],
+        [
+          "ALLEN",
+          "100"
+        ],
+        [
+          "KING",
+          "NULL"
+        ],
+        [
+          "MARTIN",
+          "300"
+        ],
+        [
+          "TURNER",
+          "0"
+        ],
+        [
+          "WARD",
+          "200"
+        ]
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "type": "title",
+      "section": "시작",
+      "title": "ORDER BY 절",
+      "subtitle": "정렬 기준과 DBMS별 NULL 위치",
+      "icon": "sort",
+      "steps": [
+        {
+          "say": "ORDER BY 절을 배워 볼게요."
+        },
+        {
+          "say": "NULL 위치와 정렬 가능한 컬럼이 자주 나와요."
+        }
+      ],
+      "id": "s01"
+    },
+    {
+      "type": "cards",
+      "section": "기본 문법",
+      "title": "정렬 기본 규칙",
+      "cols": 2,
+      "items": [
+        {
+          "title": "ASC 기본",
+          "desc": "생략하면 오름차순",
+          "icon": "check"
+        },
+        {
+          "title": "기준별 방향",
+          "desc": "DESC는 제 것만",
+          "icon": "arrow-left-right"
+        },
+        {
+          "title": "동점일 때만",
+          "desc": "다음 기준 적용",
+          "icon": "scale"
+        },
+        {
+          "title": "오름차순 앞",
+          "desc": "작은 수, 이른 날",
+          "icon": "sort"
+        }
+      ],
+      "steps": [
+        {
+          "say": "정렬의 기본 규칙은 네 가지예요."
+        },
+        {
+          "say": "첫째, 기본값은 ASC, 오름차순이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "DESC는 내림차순이에요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, 방향은 기준마다 따로 정해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "DESC는 앞 기준까지 번지지 않아요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 앞 기준이 같을 때만 다음 기준을 봐요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 오름차순은 작은 수, 이른 날짜가 먼저예요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "문자는 사전순이에요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s02"
+    },
+    {
+      "type": "callout",
+      "section": "기본 문법",
+      "tone": "warning",
+      "title": "순서 보장",
+      "text": "ORDER BY가 없으면 결과 순서는 **보장되지 않아요**.",
+      "steps": [
+        {
+          "say": "ORDER BY가 없으면 순서는 보장되지 않아요."
+        }
+      ],
+      "id": "s03"
+    },
+    {
+      "id": "s04",
+      "section": "기본 문법",
+      "type": "data",
+      "title": "3단계 정렬 예제",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT ENAME, DEPTNO, SAL FROM EMP\nORDER BY DEPTNO, SAL DESC, ENAME;",
+      "steps": [
+        {
+          "say": "부서, 급여 내림차순, 이름 순으로 정렬해 볼게요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                1,
+                2,
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "먼저 부서 번호 10번이 20번보다 앞서요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "sort": [
+                [
+                  "DEPTNO",
+                  "asc"
+                ]
+              ],
+              "cols": [
+                "DEPTNO"
+              ]
+            }
+          }
+        },
+        {
+          "say": "20번 안에서는 급여가 큰 순서예요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "sort": [
+                [
+                  "DEPTNO",
+                  "asc"
+                ],
+                [
+                  "SAL",
+                  "desc"
+                ]
+              ],
+              "rows": [
+                0,
+                2,
+                3
+              ],
+              "cols": [
+                "SAL"
+              ]
+            }
+          }
+        },
+        {
+          "say": "급여 100인 ADAMS와 SMITH가 동점이에요.",
+          "t": {
+            "EMP": {
+              "cells": [
+                [
+                  0,
+                  "SAL"
+                ],
+                [
+                  2,
+                  "SAL"
+                ]
+              ],
+              "notes": [
+                [
+                  0,
+                  "SAL",
+                  "동점"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그래서 이름 사전순으로 ADAMS가 먼저예요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "sort": [
+                [
+                  "DEPTNO",
+                  "asc"
+                ],
+                [
+                  "SAL",
+                  "desc"
+                ],
+                [
+                  "ENAME",
+                  "asc"
+                ]
+              ],
+              "cells": [
+                [
+                  0,
+                  "ENAME"
+                ],
+                [
+                  2,
+                  "ENAME"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "quiz",
+      "section": "기본 문법",
+      "question": "**ORDER BY A, B DESC**에서 A의 정렬 방향은?",
+      "choices": [
+        "내림차순",
+        "오름차순",
+        "정렬 안 함",
+        "오류"
+      ],
+      "answer": 2,
+      "explanation": "DESC는 B에만 붙어요. A는 기본값인 오름차순이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. A 컬럼은 어떤 순서로 정렬될까요?"
+        }
+      ],
+      "id": "s05"
+    },
+    {
+      "type": "cards",
+      "section": "정렬 기준 지정",
+      "title": "정렬 기준 4가지",
+      "cols": 2,
+      "items": [
+        {
+          "title": "컬럼명",
+          "desc": "ORDER BY SAL",
+          "icon": "table"
+        },
+        {
+          "title": "별칭",
+          "desc": "ORDER BY 연봉",
+          "icon": "tag"
+        },
+        {
+          "title": "위치 번호",
+          "desc": "ORDER BY 2",
+          "icon": "checklist"
+        },
+        {
+          "title": "표현식",
+          "desc": "SAL*12 같은 식",
+          "icon": "shapes"
+        }
+      ],
+      "steps": [
+        {
+          "say": "정렬 기준은 네 가지로 쓸 수 있어요."
+        },
+        {
+          "say": "첫째, 컬럼 이름이에요. 가장 흔해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "둘째, SELECT에서 붙인 별칭이에요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "셋째, 위치 번호예요. SELECT의 몇 번째 항목이요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "넷째, 함수나 계산식도 돼요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s06"
+    },
+    {
+      "type": "compare",
+      "section": "정렬 기준 지정",
+      "title": "섞어 써도 될까?",
+      "left": {
+        "title": "혼용",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "DEPTNO, 2 DESC",
+          "3, 연봉 DESC",
+          "→ 정상"
+        ]
+      },
+      "right": {
+        "title": "범위 초과",
+        "icon": "warning",
+        "tone": "bad",
+        "items": [
+          "SELECT 항목 2개",
+          "ORDER BY 3",
+          "→ 오류"
+        ]
+      },
+      "steps": [
+        {
+          "say": "컬럼명, 별칭, 위치 번호는 섞어 써도 돼요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "단, 위치 번호는 SELECT 항목 수를 넘으면 안 돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "항목이 두 개인데 3번으로 정렬하면 오류예요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "위치 번호는 읽기 어려워 실무에선 잘 안 써요.",
+          "focus": [
+            0
+          ]
+        }
+      ],
+      "id": "s07"
+    },
+    {
+      "type": "callout",
+      "section": "정렬 기준 지정",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "ORDER BY는 SELECT 다음에 실행돼요. 그래서 **별칭을 쓸 수 있는 유일한 절**이에요.",
+      "steps": [
+        {
+          "say": "ORDER BY는 SELECT 다음에 실행돼요."
+        },
+        {
+          "say": "그래서 별칭을 쓸 수 있는 유일한 절이에요."
+        }
+      ],
+      "id": "s08"
+    },
+    {
+      "type": "quiz",
+      "section": "정렬 기준 지정",
+      "question": "**SELECT ENAME, SAL FROM EMP ORDER BY 3**의 결과는?",
+      "choices": [
+        "오류",
+        "ENAME 순 정렬",
+        "SAL 순 정렬",
+        "정렬 없이 출력"
+      ],
+      "answer": 1,
+      "explanation": "SELECT 항목은 두 개뿐이에요. 3번은 범위를 넘어 오류예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 항목이 둘인데 3번으로 정렬하면?"
+        }
+      ],
+      "id": "s09"
+    },
+    {
+      "type": "compare",
+      "section": "NULL 정렬 순서",
+      "title": "NULL은 어디에 올까?",
+      "left": {
+        "title": "Oracle",
+        "icon": "database",
+        "items": [
+          "NULL은 가장 큰 값",
+          "ASC면 맨 뒤",
+          "DESC면 맨 앞"
+        ]
+      },
+      "right": {
+        "title": "SQL Server",
+        "icon": "database",
+        "items": [
+          "NULL은 가장 작은 값",
+          "ASC면 맨 앞",
+          "DESC면 맨 뒤"
+        ]
+      },
+      "steps": [
+        {
+          "say": "NULL 위치는 DBMS마다 달라요."
+        },
+        {
+          "say": "오라클은 NULL을 가장 큰 값으로 봐요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "그래서 오름차순이면 맨 뒤에 와요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL 서버는 NULL을 가장 작은 값으로 봐요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "오름차순이면 맨 앞에 와요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "정리하면 둘은 정반대예요.",
+          "focus": [
+            0,
+            1
+          ]
+        }
+      ],
+      "id": "s10"
+    },
+    {
+      "id": "s11",
+      "section": "NULL 정렬 순서",
+      "type": "data",
+      "title": "오라클 COMM 정렬",
+      "tables": [
+        "COMM"
+      ],
+      "code": "SELECT ENAME, COMM FROM EMP\nORDER BY COMM;",
+      "steps": [
+        {
+          "say": "오라클에서 COMM 오름차순으로 볼게요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "COMM": {
+              "sort": [
+                [
+                  "COMM",
+                  "asc"
+                ]
+              ],
+              "cols": [
+                "COMM"
+              ]
+            }
+          }
+        },
+        {
+          "say": "0은 NULL이 아니에요. 가장 작은 값이에요.",
+          "t": {
+            "COMM": {
+              "rows": [
+                4
+              ],
+              "notes": [
+                [
+                  4,
+                  "COMM",
+                  "NULL 아님"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "그다음 100, 200이에요.",
+          "t": {
+            "COMM": {
+              "rows": [
+                1,
+                5
+              ]
+            }
+          }
+        },
+        {
+          "say": "그리고 300이에요.",
+          "t": {
+            "COMM": {
+              "rows": [
+                3
+              ]
+            }
+          }
+        },
+        {
+          "say": "NULL인 SMITH와 KING은 맨 뒤예요.",
+          "t": {
+            "COMM": {
+              "rows": [
+                0,
+                2
+              ],
+              "cells": [
+                [
+                  0,
+                  "COMM"
+                ],
+                [
+                  2,
+                  "COMM"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "NULL끼리의 순서는 보장되지 않아요.",
+          "t": {
+            "COMM": {
+              "rows": [
+                0,
+                2
+              ],
+              "notes": [
+                [
+                  2,
+                  "COMM",
+                  "순서 미보장"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "SQL 서버라면 NULL이 맨 앞에 와요.",
+          "t": {
+            "COMM": {
+              "rows": [
+                0,
+                2
+              ],
+              "notes": [
+                [
+                  0,
+                  "COMM",
+                  "SQL서버는 맨 앞"
+                ]
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "section": "NULL 정렬 순서",
+      "title": "NULL 위치 직접 정하기",
+      "left": {
+        "title": "Oracle",
+        "icon": "check",
+        "tone": "good",
+        "items": [
+          "NULLS FIRST",
+          "NULLS LAST",
+          "직접 지정 가능"
+        ]
+      },
+      "right": {
+        "title": "SQL Server",
+        "icon": "lock",
+        "items": [
+          "NULLS 미지원",
+          "CASE 식으로 처리"
+        ]
+      },
+      "steps": [
+        {
+          "say": "오라클은 NULL 위치를 직접 정할 수 있어요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "NULLS FIRST는 맨 앞이에요. NULLS LAST는 맨 뒤예요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "SQL 서버는 이 문법이 없어요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "대신 CASE 식으로 정렬 순서를 만들어요.",
+          "focus": [
+            1
+          ]
+        }
+      ],
+      "id": "s12"
+    },
+    {
+      "type": "quiz",
+      "section": "NULL 정렬 순서",
+      "question": "Oracle에서 **ORDER BY COMM DESC**를 하면 NULL은?",
+      "choices": [
+        "맨 뒤",
+        "맨 앞",
+        "중간",
+        "결과에서 제외"
+      ],
+      "answer": 2,
+      "explanation": "오라클은 NULL을 가장 큰 값으로 봐요. 내림차순이면 맨 앞이에요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. 오라클 내림차순에서 NULL은 어디에 올까요?"
+        }
+      ],
+      "id": "s13"
+    },
+    {
+      "type": "cards",
+      "section": "SELECT에 없는 컬럼",
+      "title": "없는 컬럼으로 정렬?",
+      "cols": 2,
+      "items": [
+        {
+          "title": "일반 쿼리",
+          "desc": "가능",
+          "icon": "check",
+          "tone": "good"
+        },
+        {
+          "title": "DISTINCT",
+          "desc": "불가",
+          "icon": "lock",
+          "tone": "bad"
+        },
+        {
+          "title": "GROUP BY",
+          "desc": "그룹 컬럼, 집계만",
+          "icon": "layers",
+          "tone": "warn"
+        },
+        {
+          "title": "인라인 뷰",
+          "desc": "뷰의 SELECT만",
+          "icon": "eye",
+          "tone": "warn"
+        }
+      ],
+      "steps": [
+        {
+          "say": "SELECT에 없는 컬럼으로 정렬할 수 있을까요?"
+        },
+        {
+          "say": "일반 쿼리는 가능해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "DBMS가 정렬용 컬럼을 몰래 읽어 두거든요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "DISTINCT를 쓰면 불가능해요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "GROUP BY는 그룹 컬럼과 집계 함수만 돼요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "인라인 뷰는 뷰가 SELECT한 컬럼만 돼요.",
+          "focus": [
+            3
+          ]
+        }
+      ],
+      "id": "s14"
+    },
+    {
+      "id": "s15",
+      "section": "SELECT에 없는 컬럼",
+      "type": "data",
+      "title": "DISTINCT는 왜 불가?",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT DISTINCT DEPTNO FROM EMP\nORDER BY SAL;   -- 오류",
+      "steps": [
+        {
+          "say": "DISTINCT로 부서 번호만 뽑았다고 해 봐요.",
+          "focus": [
+            1
+          ],
+          "t": {
+            "EMP": {
+              "group": "DEPTNO",
+              "result": {
+                "title": "DISTINCT DEPTNO",
+                "columns": [
+                  "DEPTNO"
+                ],
+                "rows": [
+                  [
+                    "10"
+                  ],
+                  [
+                    "20"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "20번 부서 한 행에 급여가 여러 개 섞여 있어요.",
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                2,
+                3
+              ],
+              "cols": [
+                "SAL"
+              ]
+            }
+          }
+        },
+        {
+          "say": "어느 값으로 정렬할지 몰라 오류가 나요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "cells": [
+                [
+                  0,
+                  "SAL"
+                ],
+                [
+                  3,
+                  "SAL"
+                ]
+              ],
+              "notes": [
+                [
+                  3,
+                  "SAL",
+                  "100? 300?"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "SELECT에 있는 DEPTNO로는 정상이에요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "DEPTNO"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "s16",
+      "section": "SELECT에 없는 컬럼",
+      "type": "data",
+      "title": "GROUP BY에서는",
+      "tables": [
+        "EMP"
+      ],
+      "code": "SELECT DEPTNO FROM EMP\nGROUP BY DEPTNO\nORDER BY COUNT(*) DESC;",
+      "steps": [
+        {
+          "say": "GROUP BY 뒤에는 그룹 단위만 남아요.",
+          "focus": [
+            2
+          ],
+          "t": {
+            "EMP": {
+              "group": "DEPTNO"
+            }
+          }
+        },
+        {
+          "say": "개별 컬럼인 SAL로는 정렬할 수 없어요.",
+          "t": {
+            "EMP": {
+              "cols": [
+                "SAL"
+              ],
+              "notes": [
+                [
+                  3,
+                  "SAL",
+                  "그룹당 여러 값"
+                ]
+              ]
+            }
+          }
+        },
+        {
+          "say": "하지만 집계 함수로는 정렬할 수 있어요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "result": {
+                "title": "그룹 결과",
+                "columns": [
+                  "DEPTNO",
+                  "COUNT(*)"
+                ],
+                "rows": [
+                  [
+                    "10",
+                    "1"
+                  ],
+                  [
+                    "20",
+                    "3"
+                  ]
+                ]
+              }
+            }
+          }
+        },
+        {
+          "say": "SELECT에 없는 COUNT 스타도 괜찮아요. 20번이 먼저예요.",
+          "focus": [
+            3
+          ],
+          "t": {
+            "EMP": {
+              "rows": [
+                0,
+                2,
+                3
+              ],
+              "result": {
+                "title": "ORDER BY COUNT(*) DESC",
+                "columns": [
+                  "DEPTNO",
+                  "COUNT(*)"
+                ],
+                "rows": [
+                  [
+                    "20",
+                    "3"
+                  ],
+                  [
+                    "10",
+                    "1"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "section": "SELECT에 없는 컬럼",
+      "tone": "tip",
+      "title": "시험 포인트",
+      "text": "\"SELECT에 없는 컬럼은 정렬 불가\"는 **틀린 말**. 제약은 **DISTINCT, GROUP BY**뿐이에요.",
+      "steps": [
+        {
+          "say": "SELECT에 없는 컬럼으로 정렬 불가. 이건 틀린 말이에요."
+        },
+        {
+          "say": "제약은 DISTINCT와 GROUP BY에서만 생겨요."
+        }
+      ],
+      "id": "s17"
+    },
+    {
+      "type": "quiz",
+      "section": "SELECT에 없는 컬럼",
+      "question": "SELECT에 없는 컬럼으로 정렬할 수 **없는** 경우는?",
+      "choices": [
+        "일반 SELECT문",
+        "WHERE절 사용 시",
+        "DISTINCT 사용 시",
+        "별칭 사용 시"
+      ],
+      "answer": 3,
+      "explanation": "DISTINCT는 중복을 지워 원래 행을 알 수 없어요. 그래서 불가예요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. SELECT에 없는 컬럼으로 정렬할 수 없는 경우는?"
+        }
+      ],
+      "id": "s18"
+    },
+    {
+      "type": "flow",
+      "section": "실행 순서",
+      "title": "ORDER BY는 마지막",
+      "direction": "down",
+      "nodes": [
+        {
+          "title": "FROM",
+          "desc": "테이블",
+          "icon": "table"
+        },
+        {
+          "title": "WHERE",
+          "desc": "행 필터",
+          "icon": "filter"
+        },
+        {
+          "title": "GROUP BY",
+          "desc": "그룹",
+          "icon": "layers"
+        },
+        {
+          "title": "HAVING",
+          "desc": "그룹 필터",
+          "icon": "filter"
+        },
+        {
+          "title": "SELECT",
+          "desc": "별칭 정의",
+          "icon": "tag"
+        },
+        {
+          "title": "ORDER BY",
+          "desc": "마지막 정렬",
+          "icon": "sort"
+        }
+      ],
+      "steps": [
+        {
+          "say": "실행 순서를 볼게요."
+        },
+        {
+          "say": "먼저 FROM과 WHERE예요.",
+          "focus": [
+            0,
+            1
+          ]
+        },
+        {
+          "say": "이어서 GROUP BY와 HAVING이에요.",
+          "focus": [
+            2,
+            3
+          ]
+        },
+        {
+          "say": "그다음 SELECT에서 별칭이 정해져요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "ORDER BY는 맨 마지막이에요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "그래서 SELECT의 별칭과 계산식을 쓸 수 있어요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "정렬은 비용이 커서 필요할 때만 쓰세요.",
+          "focus": [
+            5
+          ]
+        }
+      ],
+      "id": "s19"
+    },
+    {
+      "type": "flow",
+      "section": "실행 순서",
+      "title": "ROWNUM과 ORDER BY",
+      "direction": "right",
+      "nodes": [
+        {
+          "title": "ROWNUM 먼저",
+          "desc": "번호부터 매김",
+          "icon": "tag",
+          "tone": "warn"
+        },
+        {
+          "title": "그다음 정렬",
+          "desc": "번호가 뒤섞임",
+          "icon": "warning"
+        },
+        {
+          "title": "인라인 뷰",
+          "desc": "정렬 후 상위 N건",
+          "icon": "check"
+        }
+      ],
+      "steps": [
+        {
+          "say": "오라클 ROWNUM과 함께 쓸 땐 주의하세요."
+        },
+        {
+          "say": "같은 쿼리에선 ROWNUM이 먼저 매겨져요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "정렬은 그 뒤에 일어나요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "정렬 후 상위 몇 건은 인라인 뷰로 구해요.",
+          "focus": [
+            2
+          ]
+        }
+      ],
+      "id": "s20"
+    },
+    {
+      "type": "quiz",
+      "section": "실행 순서",
+      "question": "논리적 실행 순서에서 **ORDER BY**의 위치는?",
+      "choices": [
+        "가장 먼저",
+        "WHERE 다음",
+        "SELECT 직전",
+        "가장 마지막"
+      ],
+      "answer": 4,
+      "explanation": "ORDER BY는 SELECT 다음, 가장 마지막에 실행돼요.",
+      "steps": [
+        {
+          "say": "퀴즈예요. ORDER BY는 언제 실행될까요?"
+        }
+      ],
+      "id": "s21"
+    },
+    {
+      "type": "checklist",
+      "section": "핵심 요약",
+      "title": "오늘의 핵심",
+      "items": [
+        "기본은 ASC, 방향은 기준마다",
+        "컬럼명·별칭·위치 번호 혼용 OK",
+        "위치 번호 범위 초과는 오류",
+        "NULL: 오라클 최대, SQL서버 최소",
+        "DISTINCT면 없는 컬럼 정렬 불가",
+        "ORDER BY는 가장 마지막 실행"
+      ],
+      "steps": [
+        {
+          "say": "마지막으로 정리할게요."
+        },
+        {
+          "say": "기본은 오름차순, 방향은 기준마다 정해요.",
+          "focus": [
+            0
+          ]
+        },
+        {
+          "say": "컬럼명, 별칭, 위치 번호는 섞어 써도 돼요.",
+          "focus": [
+            1
+          ]
+        },
+        {
+          "say": "위치 번호가 범위를 넘으면 오류예요.",
+          "focus": [
+            2
+          ]
+        },
+        {
+          "say": "NULL은 오라클이 최댓값, SQL 서버는 최솟값이에요.",
+          "focus": [
+            3
+          ]
+        },
+        {
+          "say": "DISTINCT면 없는 컬럼으론 정렬 못 해요.",
+          "focus": [
+            4
+          ]
+        },
+        {
+          "say": "ORDER BY는 가장 마지막에 실행돼요.",
+          "focus": [
+            5
+          ]
+        },
+        {
+          "say": "수고하셨어요. 이제 문제로 확인해 봐요.",
+          "focus": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      ],
+      "id": "s22"
+    }
+  ]
+}

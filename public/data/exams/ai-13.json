@@ -1,0 +1,746 @@
+{
+  "id": "ai-13",
+  "kind": "ai",
+  "title": "모의고사 13회",
+  "round": 13,
+  "timeLimitMin": 90,
+  "questions": [
+    {
+      "id": 1,
+      "subject": 1,
+      "theory": "data-model",
+      "question": "대학 학사 시스템 구축을 위해 모델링팀이 다음 분석을 수행하였다.\n\n- (가) 학생·강좌·수강·교수 등 업무와 관련된 데이터가 무엇인지, 그 데이터들이 서로 어떤 관계인지를 구조적으로 분석하였다.\n- (나) 수강신청·성적처리 업무 시나리오를 따라가며 업무가 실제로 무엇을 하는지(해야 하는지)를 분석하였다.\n- (다) 업무 프로세스를 행, 엔터티를 열로 놓고 각 프로세스가 엔터티에 주는 영향(C·R·U·D)을 표시하여 분석하였다.\n\n(가)~(다)를 데이터 모델링의 3가지 관점과 바르게 연결한 것은?",
+      "choices": [
+        "(가) 프로세스 관점, (나) 데이터 관점, (다) 상관 관점",
+        "(가) 데이터 관점, (나) 상관 관점, (다) 프로세스 관점",
+        "(가) 데이터 관점, (나) 프로세스 관점, (다) 상관 관점",
+        "(가) 상관 관점, (나) 프로세스 관점, (다) 데이터 관점"
+      ],
+      "answer": 3,
+      "explanation": "데이터 모델링의 3가지 관점은 다음과 같다.\n\n- **데이터 관점(What)**: 업무가 어떤 데이터와 관련 있는지, 데이터 간 관계는 무엇인지 → 정적·구조 분석 → (가)\n- **프로세스 관점(How)**: 업무가 실제로 무엇을 하는지 → 시나리오·동적 분석 → (나)\n- **상관 관점(Interaction)**: 업무 처리 방법에 따라 데이터가 어떤 영향을 받는지 → **CRUD 매트릭스** 분석 → (다)\n\nCRUD 매트릭스는 상관 관점의 대표 기법이므로 (다)를 데이터 관점이나 프로세스 관점으로 연결한 보기는 틀렸다."
+    },
+    {
+      "id": 2,
+      "subject": 1,
+      "theory": "entity",
+      "question": "학사 시스템의 엔터티 이름을 정하면서 다음과 같이 처리하였다. 엔터티 명명 규칙에 비추어 가장 적절한 것은?",
+      "choices": [
+        "학생이 강좌를 신청할 때 생성되는 엔터티를 '학생강좌'보다 생성 의미가 드러나는 '수강신청'으로 명명하였다.",
+        "엔터티는 여러 인스턴스의 집합이므로 '학생들', '강좌목록'처럼 복수형으로 명명하였다.",
+        "이름을 짧게 하려고 '교수'는 'PRF', '수강'은 'ENR'처럼 약어로 엔터티명을 정하였다.",
+        "학부 영역과 대학원 영역의 '학생' 엔터티는 관리 대상이 서로 다르지만 같은 이름 '학생'으로 두 개를 정의하였다."
+      ],
+      "answer": 1,
+      "explanation": "엔터티 명명 규칙은 **현업 업무 용어 사용, 약어 지양, 단수 명사 사용, 모델 내 유일한 이름, 생성 의미대로 부여**이다. '학생강좌'처럼 두 엔터티 이름을 단순히 붙이기보다 엔터티가 생성되는 업무 의미('수강신청')가 드러나게 짓는 것이 바람직하다.\n\n- 2번: 엔터티 이름은 집합에 속한 한 개체의 의미를 나타내므로 **단수 명사**를 쓴다.\n- 3번: 의미가 모호해지는 **약어는 지양**한다.\n- 4번: 모든 엔터티 이름은 모델 안에서 **유일**해야 한다(예: 학부생, 대학원생으로 구분)."
+    },
+    {
+      "id": 3,
+      "subject": 1,
+      "theory": "attribute",
+      "question": "엔터티, 인스턴스, 속성, 속성값의 관계에 대한 설명으로 가장 **적절하지 않은** 것은?",
+      "choices": [
+        "속성은 업무에서 필요로 하는, 의미상 더 이상 분리되지 않는 최소의 데이터 단위이다.",
+        "한 개의 엔터티는 두 개 이상의 인스턴스 집합이어야 하고, 두 개 이상의 속성을 갖는다.",
+        "한 개의 인스턴스에서 한 개의 속성은 한 개의 속성값을 갖는다.",
+        "학생 엔터티에서 '김하늘', '이바다'와 같은 값 하나하나가 속성이며, '학생명'은 이 값들이 모인 인스턴스이다."
+      ],
+      "answer": 4,
+      "explanation": "'김하늘', '이바다'는 **속성값**이고, '학생명'은 **속성**이다. 인스턴스는 학번·학생명·학과 등 속성값들이 모인 한 명의 학생(한 행)을 말하므로 4번은 용어를 뒤바꾼 틀린 설명이다.\n\n나머지는 모두 옳다. 속성은 더 이상 분리되지 않는 최소 데이터 단위이며, 한 엔터티는 2개 이상의 인스턴스와 2개 이상의 속성을 갖고, 한 인스턴스에서 한 속성은 하나의 속성값만 가진다(여러 값을 가지면 다중값 속성으로 보고 별도 엔터티로 분리한다)."
+    },
+    {
+      "id": 4,
+      "subject": 1,
+      "theory": "relationship",
+      "question": "학사 시스템에서 다음 두 관계를 정의하였다.\n\n- (가) `학과`와 `교수`: 교수는 반드시 한 학과에 소속되어 존재한다.\n- (나) `학생`과 `수강신청`: 학생이 수강신청이라는 행위를 해야 두 엔터티가 연결된다.\n\n관계의 분류와 표현에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "(가)는 행위적 관계, (나)는 존재적 관계이다.",
+        "(가)는 존재적 관계, (나)는 행위적 관계이며, ERD에서는 두 관계를 구분하지 않고 같은 관계선으로 표현한다.",
+        "(가)는 존재적 관계, (나)는 행위적 관계이며, ERD에서는 행위적 관계를 점선으로 그려 구분한다.",
+        "(가)는 행위적 관계, (나)는 존재적 관계이며, UML 클래스 다이어그램에서도 두 관계를 모두 실선으로 표현한다."
+      ],
+      "answer": 2,
+      "explanation": "한 엔터티의 존재가 다른 엔터티의 존재에 영향을 주는 관계(학과-교수)는 **존재적 관계**, 어떤 행위가 있어야 성립하는 관계(학생-수강신청)는 **행위적 관계**다.\n\nERD에서는 존재적 관계와 행위적 관계를 **구분하지 않고** 동일한 관계선으로 표현한다. 이를 구분하는 것은 UML 클래스 다이어그램으로, 연관 관계는 실선, 의존 관계는 점선으로 나타낸다. 따라서 3번(ERD에서 점선으로 구분)과 4번(UML에서 모두 실선)은 틀렸고, 1번은 분류를 뒤바꿨다."
+    },
+    {
+      "id": 5,
+      "subject": 1,
+      "theory": "identifier",
+      "question": "`학생` 엔터티에는 학교가 부여하는 '학번'과 '주민등록번호'가 있다. 두 속성 모두 모든 학생에게 반드시 존재하고 서로 중복되지 않는다. 업무에서는 주로 학번으로 학생을 구분하므로 학번을 주식별자로 지정하였다.\n\n식별자에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "주민등록번호도 학생을 유일하게 구분하므로, `수강` 엔터티는 학번 대신 주민등록번호를 상속받아 학생과의 관계를 연결해도 된다.",
+        "주민등록번호는 보조식별자로, 인스턴스를 유일하게 구분할 수는 있지만 대표성이 없어 다른 엔터티와의 참조 관계 연결에는 사용하지 않는다.",
+        "학번은 학교가 정한 규칙에 따라 부여되므로 업무에 의해 만들어진 식별자가 아니라 인조식별자이다.",
+        "학번은 `학생` 엔터티가 다른 엔터티로부터 받아온 식별자이므로 외부식별자이다."
+      ],
+      "answer": 2,
+      "explanation": "대표성 여부에 따라 **주식별자**와 **보조식별자**로 나뉜다. 학번이 주식별자이면 주민등록번호는 보조식별자이며, 보조식별자는 유일성은 있지만 대표성이 없어 **참조 관계 연결에 사용하지 않는다**. 따라서 1번은 틀렸다.\n\n- 3번: 학번은 학사 업무에서 실제로 부여·사용하는 값이므로 **본질식별자**이다. 인조식별자는 원래 식별자가 복잡해 인위적으로 만든 일련번호 등을 말한다.\n- 4번: 학번은 학생 엔터티 내부에서 스스로 만들어지는 **내부식별자**이다. 외부식별자는 부모로부터 받아온 FK 성격의 식별자다."
+    },
+    {
+      "id": 6,
+      "subject": 1,
+      "theory": "normalization",
+      "question": "다음 `강좌` 테이블의 PK는 강좌코드이며, 업무 규칙상 교수명과 교수연구실은 교수번호에 의해 결정된다.\n\n| 강좌코드 | 강좌명 | 교수번호 | 교수명 | 교수연구실 |\n|---|---|---|---|---|\n| C01 | 데이터베이스 | P1 | 김교수 | 공학관 301 |\n| C02 | 운영체제 | P1 | 김교수 | 공학관 301 |\n| C03 | 현대시론 | P2 | 이교수 | 인문관 205 |\n\n다음 상황 (가)~(다)에 대한 설명으로 가장 적절한 것은?\n\n- (가) 아직 담당 강좌가 없는 신임 교수 P3의 연구실 정보를 입력할 수 없다.\n- (나) 교수 P1이 연구실을 옮기면 C01, C02 두 행을 모두 고쳐야 하며, 한 행만 고치면 데이터가 불일치한다.\n- (다) C03 강좌를 폐강하여 행을 삭제하면 교수 P2의 연구실 정보도 함께 사라진다.",
+      "choices": [
+        "(가) 갱신 이상, (나) 삽입 이상, (다) 삭제 이상이며 제3정규화로 해결한다.",
+        "(가) 삽입 이상, (나) 갱신 이상, (다) 삭제 이상이며 부분 함수 종속을 제거하는 제2정규화로 해결한다.",
+        "(가) 삭제 이상, (나) 갱신 이상, (다) 삽입 이상이며 제3정규화로 해결한다.",
+        "(가) 삽입 이상, (나) 갱신 이상, (다) 삭제 이상이며 교수 정보를 교수번호를 PK로 하는 별도 테이블로 분리하는 제3정규화로 해결한다."
+      ],
+      "answer": 4,
+      "explanation": "- (가) 원하지 않는 데이터(강좌) 없이는 입력할 수 없으므로 **삽입 이상**\n- (나) 중복 저장된 값을 일부만 고치면 불일치가 생기므로 **갱신 이상**\n- (다) 한 정보를 지우면 다른 정보까지 사라지므로 **삭제 이상**\n\n원인은 `강좌코드 → 교수번호 → 교수명, 교수연구실`의 **이행 함수 종속**이다. PK가 단일 컬럼(강좌코드)이라 부분 함수 종속은 존재할 수 없으므로 제2정규화가 아니라, 교수번호를 결정자로 하는 교수 테이블을 분리하는 **제3정규화**로 해결한다. 따라서 2번은 정규형이 틀렸고 1·3번은 이상현상 연결이 틀렸다."
+    },
+    {
+      "id": 7,
+      "subject": 1,
+      "theory": "relationship-and-join",
+      "question": "학사 시스템의 테이블이 다음과 같이 설계되어 있다. `학생`과 `강좌`의 M:N 관계는 교차 엔터티 `수강`으로 해소하였고, 수강은 두 부모의 PK를 상속받는 식별 관계이다.\n\n- STUDENT(**STU_NO** PK, STU_NM, DEPT_CD)\n- COURSE(**CRS_CD** PK, CRS_NM, PROF_NO)\n- ENROLL(**STU_NO, CRS_CD** PK, SCORE) — STU_NO는 STUDENT, CRS_CD는 COURSE를 참조하는 FK\n\n다음 요구사항 중 **다른 테이블과 조인하지 않고 ENROLL 테이블만으로** 처리할 수 있는 것은?",
+      "choices": [
+        "강좌코드가 'C01'인 강좌를 수강한 학생들의 학번과 점수 조회",
+        "강좌코드가 'C01'인 강좌를 수강한 학생들의 이름 조회",
+        "학과코드가 'D10'인 학생들의 평균 점수 조회",
+        "교수번호가 'P01'인 교수가 담당하는 강좌의 수강생 수 조회"
+      ],
+      "answer": 1,
+      "explanation": "식별 관계로 부모의 PK(STU_NO, CRS_CD)가 ENROLL의 PK에 포함되어 있으므로, 학번·강좌코드·점수만 필요한 1번은 `SELECT STU_NO, SCORE FROM ENROLL WHERE CRS_CD = 'C01'`처럼 **조인 없이** 처리할 수 있다.\n\n- 2번: 학생 이름(STU_NM)은 STUDENT에만 있으므로 STUDENT와 조인해야 한다.\n- 3번: 학과코드(DEPT_CD)는 STUDENT의 일반 속성이므로 조인이 필요하다.\n- 4번: 담당 교수(PROF_NO)는 COURSE에 있으므로 COURSE와 조인해야 한다.\n\n관계를 통해 상속된 키가 조인 키가 되며, 필요한 컬럼이 상속된 키뿐이라면 부모 테이블과의 조인을 생략할 수 있다."
+    },
+    {
+      "id": 8,
+      "subject": 1,
+      "theory": "transaction-model",
+      "question": "학사 시스템 모델의 일부가 아래와 같다. (IE 표기법: `|`는 필수, `o`는 선택, `{`는 여러 건)\n\n업무 규칙상 **수강 정정**은 기존 강좌의 수강 행을 삭제하고 새 강좌의 수강 행을 입력하는 작업이며, 정정 도중 오류가 나면 기존 수강 내역이 그대로 유지되어야 한다.\n\n다음 중 **하나의 트랜잭션으로 묶어 처리해야 하는** 작업으로 가장 적절한 것은?",
+      "code": "교수 ||--o{ 강좌 : 담당한다\n학과 ||--o{ 학생 : 소속시킨다\n학생 ||--o{ 수강 : 신청한다\n강좌 ||--o{ 수강 : 개설된다",
+      "choices": [
+        "신임 교수 등록과 그 교수가 담당할 첫 강좌 개설",
+        "학과 신설과 그 학과의 첫 입학생 등록",
+        "수강 정정 시 기존 강좌 수강 행의 DELETE와 새 강좌 수강 행의 INSERT",
+        "학생 등록과 그 학생의 첫 학기 수강신청"
+      ],
+      "answer": 3,
+      "explanation": "트랜잭션은 업무상 **쪼갤 수 없는 하나의 논리적 작업 단위**다. 수강 정정은 'DELETE만 반영되고 INSERT가 실패'하면 학생이 수강 내역을 잃게 되므로 두 문장을 하나의 트랜잭션으로 묶어 모두 성공하면 COMMIT, 하나라도 실패하면 ROLLBACK해야 한다(원자성).\n\n나머지는 모델에서 상대 쪽이 `o{`(선택)으로 표현되어 있다. 교수는 강좌 없이, 학과는 학생 없이, 학생은 수강 없이 존재할 수 있으므로 생성 시점과 주체가 다른 **독립 트랜잭션**으로 처리할 수 있다. 선택 관계를 억지로 한 트랜잭션에 묶으면 불필요하게 트랜잭션이 커지고 잠금 경합이 늘어난다."
+    },
+    {
+      "id": 9,
+      "subject": 1,
+      "theory": "null-attribute",
+      "question": "다음 [GRADE] 테이블에 SQL을 실행했을 때 결과로 옳은 것은? (Oracle 기준)\n\n[GRADE]\n\n| STU | MID | FIN |\n|---|---|---|\n| S1 | 60 | 70 |\n| S2 | 40 | NULL |\n| S3 | 60 | NULL |\n| S4 | NULL | NULL |\n| S5 | 30 | 80 |",
+      "code": "SELECT STU\n  FROM GRADE\n WHERE NOT (MID > 50 AND FIN > 50)\n ORDER BY STU;",
+      "choices": [
+        "S5",
+        "S3, S4",
+        "S2, S3, S4, S5",
+        "S2, S5"
+      ],
+      "answer": 4,
+      "explanation": "NULL과의 비교는 UNKNOWN이 되며, WHERE 절은 **TRUE인 행만** 반환한다. 3값 논리에서 `FALSE AND UNKNOWN = FALSE`, `TRUE AND UNKNOWN = UNKNOWN`, `NOT UNKNOWN = UNKNOWN`이다.\n\n| STU | MID > 50 | FIN > 50 | AND | NOT(...) |\n|---|---|---|---|---|\n| S1 | TRUE | TRUE | TRUE | FALSE |\n| S2 | FALSE | UNKNOWN | **FALSE** | **TRUE** |\n| S3 | TRUE | UNKNOWN | UNKNOWN | UNKNOWN |\n| S4 | UNKNOWN | UNKNOWN | UNKNOWN | UNKNOWN |\n| S5 | FALSE | TRUE | FALSE | **TRUE** |\n\n따라서 S2, S5가 반환된다. S2처럼 한쪽이 FALSE이면 다른 쪽이 NULL이어도 AND 결과가 FALSE로 확정된다는 점이 함정이다. S3, S4는 NOT을 적용해도 UNKNOWN이므로 제외된다."
+    },
+    {
+      "id": 10,
+      "subject": 1,
+      "theory": "natural-vs-surrogate-key",
+      "question": "학사 시스템의 식별자 설계에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "학번은 학교가 학생에게 부여하는 번호이므로 시스템이 만든 인조식별자로 분류한다.",
+        "`수강` 엔터티의 PK를 (학번, 수강순번)으로 정하면, 수강순번은 업무 의미 없이 편의상 부여한 값이므로 이 PK는 인조식별자에 해당한다.",
+        "인조식별자 '수강ID'를 PK로 사용하면 (학번, 강좌코드, 개설학기) 조합의 중복 입력도 PK 제약에 의해 자동으로 차단된다.",
+        "인조식별자는 업무 의미가 없으므로, 학생이 확인할 수 있도록 성적표 화면과 보고서에 반드시 출력한다."
+      ],
+      "answer": 2,
+      "explanation": "(부모 식별자 + 순번)처럼 부모 식별자에 일련번호를 붙인 형태도 **인조식별자**로 본다. 순번은 업무가 아니라 편의상 부여한 값이기 때문이다.\n\n- 1번: 학번은 학사 업무에서 실제로 부여·사용하는 값이므로 **본질식별자**이다.\n- 3번: 인조식별자는 매번 새 값이 부여되므로 본질 속성 조합의 중복을 막지 못한다. 중복을 막으려면 (학번, 강좌코드, 개설학기)에 **UNIQUE 제약**을 별도로 정의해야 한다.\n- 4번: 인조식별자는 업무 의미가 없으므로 일반적으로 화면·보고서에 **노출하지 않는다**."
+    },
+    {
+      "id": 11,
+      "subject": 2,
+      "theory": "rdb-overview",
+      "question": "기본키(PK)와 외래키(FK)의 특성에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "외래키 컬럼은 NULL을 가질 수 있으며, 같은 값이 여러 행에 중복되어 나타날 수 있다.",
+        "한 테이블에는 기본키를 여러 개 정의할 수 있으며, 기본키 컬럼은 NULL을 허용한다.",
+        "외래키는 반드시 다른 테이블의 기본키를 참조해야 하므로 같은 테이블의 컬럼을 참조할 수 없다.",
+        "기본키는 반드시 하나의 컬럼으로 구성되어야 하며, 여러 컬럼을 묶어 기본키로 지정할 수 없다."
+      ],
+      "answer": 1,
+      "explanation": "외래키는 부모 테이블의 키 값 또는 NULL만 가질 수 있으며, 여러 자식 행이 같은 부모를 참조하므로 **중복이 허용**된다. 예를 들어 여러 학생이 같은 학과코드를 가지고, 학과 미배정 학생은 학과코드가 NULL일 수 있다.\n\n- 2번: 기본키는 테이블당 **하나**이며 **NOT NULL + UNIQUE**이다.\n- 3번: 외래키는 같은 테이블을 참조할 수 있다(예: 강좌의 선수과목코드가 같은 강좌 테이블의 강좌코드를 참조하는 셀프 참조).\n- 4번: 여러 컬럼을 묶은 **복합 기본키**도 가능하다(예: 수강의 (학번, 강좌코드))."
+    },
+    {
+      "id": 12,
+      "subject": 2,
+      "theory": "select",
+      "question": "다음 [STUDENT] 테이블에 대해 (가)~(라) SQL을 실행했을 때, **결과 행 수가 나머지 셋과 다른** 것은?\n\n[STUDENT]\n\n| STU_NO | DEPT_CD | GRADE |\n|---|---|---|\n| 1 | CS | 1 |\n| 2 | CS | 2 |\n| 3 | EE | 1 |\n| 4 | NULL | 1 |\n| 5 | NULL | 2 |\n| 6 | CS | 1 |",
+      "code": "-- (가)\nSELECT DISTINCT DEPT_CD FROM STUDENT;\n\n-- (나)\nSELECT DEPT_CD FROM STUDENT GROUP BY DEPT_CD;\n\n-- (다)\nSELECT DISTINCT DEPT_CD, GRADE FROM STUDENT;\n\n-- (라)\nSELECT DISTINCT DEPT_CD FROM STUDENT WHERE GRADE IN (1, 2);",
+      "choices": [
+        "(가)",
+        "(나)",
+        "(다)",
+        "(라)"
+      ],
+      "answer": 3,
+      "explanation": "DISTINCT는 SELECT 목록 **전체 컬럼의 조합**을 기준으로 중복을 제거하며, NULL끼리는 같은 값으로 보아 하나만 남긴다.\n\n- (가) DEPT_CD의 서로 다른 값: CS, EE, NULL → **3행**\n- (나) GROUP BY도 NULL을 하나의 그룹으로 묶는다: CS, EE, NULL → **3행**\n- (다) (DEPT_CD, GRADE) 조합: (CS,1), (CS,2), (EE,1), (NULL,1), (NULL,2) → **5행**\n- (라) GRADE가 모두 1 또는 2이므로 (가)와 같다 → **3행**\n\n따라서 결과 행 수가 다른 것은 (다)이다."
+    },
+    {
+      "id": 13,
+      "subject": 2,
+      "theory": "select",
+      "question": "다음 [GRADE] 테이블에 SQL을 실행한 결과의 STU 출력 순서로 옳은 것은? (Oracle 기준)\n\n[GRADE]\n\n| STU | MID | FIN |\n|---|---|---|\n| S1 | 80 | 90 |\n| S2 | 70 | NULL |\n| S3 | 60 | 90 |\n| S4 | 100 | 20 |",
+      "code": "SELECT STU, MID + FIN / 2 AS R\n  FROM GRADE\n ORDER BY R DESC;",
+      "choices": [
+        "S1, S4, S3, S2",
+        "S2, S1, S3, S4",
+        "S1, S3, S4, S2",
+        "S2, S1, S4, S3"
+      ],
+      "answer": 4,
+      "explanation": "산술 연산은 `*`, `/`가 `+`, `-`보다 먼저 수행되므로 `MID + FIN / 2`는 `MID + (FIN / 2)`이다. 또 NULL이 포함된 산술 연산 결과는 NULL이다.\n\n| STU | 계산 | R |\n|---|---|---|\n| S1 | 80 + 45 | 125 |\n| S2 | 70 + NULL | NULL |\n| S3 | 60 + 45 | 105 |\n| S4 | 100 + 10 | 110 |\n\nORDER BY에는 SELECT 절의 별칭 R을 쓸 수 있다. Oracle은 NULL을 가장 큰 값으로 취급하므로 DESC 정렬에서 NULL이 **맨 앞**에 온다. 따라서 S2, S1(125), S4(110), S3(105) 순이다.\n\n- 2번은 `(MID + FIN) / 2`로 잘못 계산한 순서(85, 75, 60)이다.\n- 1번은 NULL을 맨 뒤로 보낸 순서로, SQL Server처럼 NULL을 가장 작은 값으로 본 결과다."
+    },
+    {
+      "id": 14,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle 기준, 결과는 A / B / C / D 순서)",
+      "code": "SELECT REPLACE('2025-1학기', '-')                        AS A,\n       LENGTH(TRIM('  DB 개론  '))                           AS B,\n       LOWER(SUBSTR('SQLD_EXAM', INSTR('SQLD_EXAM', '_') + 1)) AS C,\n       CONCAT(UPPER('db'), RPAD('1', 3, '0'))                AS D\n  FROM DUAL;",
+      "choices": [
+        "20251학기 / 9 / exam / DB100",
+        "20251학기 / 5 / exam / DB100",
+        "2025 1학기 / 5 / _exam / DB001",
+        "20251학기 / 5 / sqld / DB001"
+      ],
+      "answer": 2,
+      "explanation": "- **A**: REPLACE의 세 번째 인수를 생략하면 찾은 문자열을 **삭제**한다 → `20251학기`\n- **B**: TRIM은 양쪽 공백을 제거하므로 `'DB 개론'`이 되고, LENGTH는 가운데 공백도 한 글자로 센다 → D, B, 공백, 개, 론 = **5**\n- **C**: INSTR('SQLD_EXAM', '_')는 5이므로 SUBSTR(…, 6)은 `EXAM`, LOWER를 적용하면 `exam`\n- **D**: RPAD('1', 3, '0')은 오른쪽을 '0'으로 채워 `100`, UPPER('db')는 `DB`이므로 CONCAT 결과는 `DB100`\n\n1번은 TRIM 전의 길이(앞뒤 공백 포함 9)를, 3·4번은 SUBSTR 시작 위치와 RPAD 방향을 잘못 계산했다."
+    },
+    {
+      "id": 15,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 [SCORE] 테이블에 SQL을 실행했을 때 GRD 값을 STU 순서(A~E)대로 나열한 것으로 옳은 것은? (Oracle 기준)\n\n[SCORE]\n\n| STU | PT |\n|---|---|\n| A | 100 |\n| B | 89.9 |\n| C | 90 |\n| D | NULL |\n| E | 79 |",
+      "code": "SELECT STU,\n       CASE TRUNC(PT / 10)\n            WHEN 10 THEN 'A'\n            WHEN 9  THEN 'A'\n            WHEN 8  THEN 'B'\n            ELSE 'F'\n       END AS GRD\n  FROM SCORE\n ORDER BY STU;",
+      "choices": [
+        "A, B, A, F, F",
+        "A, A, A, NULL, F",
+        "A, B, A, NULL, F",
+        "F, B, A, F, F"
+      ],
+      "answer": 1,
+      "explanation": "`TRUNC(PT / 10)`은 소수점 이하를 버린다.\n\n| STU | PT / 10 | TRUNC | GRD |\n|---|---|---|---|\n| A | 10 | 10 | A (WHEN 10) |\n| B | 8.99 | 8 | **B** (반올림이 아니라 버림) |\n| C | 9 | 9 | A |\n| D | NULL | NULL | **F** (어떤 WHEN과도 일치하지 않아 ELSE) |\n| E | 7.9 | 7 | F |\n\n단순 CASE에서 NULL은 어떤 WHEN 값과도 같지 않으므로 ELSE로 간다. ELSE가 있으므로 NULL이 아니라 'F'가 반환된다. 2번은 89.9를 반올림한 것으로, 3번은 NULL이 그대로 NULL이 된다고 본 것으로 틀렸다."
+    },
+    {
+      "id": 16,
+      "subject": 2,
+      "theory": "functions",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle 기준, 결과는 A / B / C / D 순서)",
+      "code": "SELECT TO_CHAR(1234567, 'FM9,999,999')                    AS A,\n       TO_NUMBER('025') + 1                                 AS B,\n       TO_CHAR(DATE '2025-03-02' + 36/24, 'MM-DD HH24')     AS C,\n       EXTRACT(DAY FROM LAST_DAY(DATE '2025-02-10'))        AS D\n  FROM DUAL;",
+      "choices": [
+        "1234567 / 26 / 03-03 12 / 28",
+        "1,234,567 / 26 / 03-03 12 / 29",
+        "1,234,567 / 26 / 03-03 12 / 28",
+        "1,234,567 / 26 / 03-04 00 / 28"
+      ],
+      "answer": 3,
+      "explanation": "- **A**: 숫자 포맷 `FM9,999,999`는 천 단위 구분 기호를 넣고 FM으로 앞쪽 공백을 제거한다 → `1,234,567`\n- **B**: TO_NUMBER('025')는 25이므로 + 1 = **26**\n- **C**: 날짜 + 숫자에서 1은 하루이므로 36/24는 1.5일(36시간)이다. 2025-03-02 00:00 + 36시간 = 2025-03-03 12:00 → `03-03 12`\n- **D**: 2025년은 윤년이 아니므로 LAST_DAY(2025-02-10)는 2025-02-28, 일(DAY)은 **28**\n\n2번은 2월 말일을 29로, 4번은 36/24를 2일로 잘못 계산했다. 1번은 포맷 모델의 쉼표(,)를 무시했다."
+    },
+    {
+      "id": 17,
+      "subject": 2,
+      "theory": "where",
+      "question": "다음 [ENROLL] 테이블에 대해 (가), (나) SQL을 실행했을 때 결과로 옳은 것은?\n\n[ENROLL]\n\n| STU_NO | SCORE |\n|---|---|\n| S1 | 95 |\n| S2 | 70 |\n| S3 | 85 |\n| S4 | NULL |\n| S5 | 60 |\n| S6 | 90 |",
+      "code": "-- (가)\nSELECT COUNT(*) FROM ENROLL WHERE SCORE BETWEEN 90 AND 70;\n\n-- (나)\nSELECT COUNT(*) FROM ENROLL WHERE SCORE NOT BETWEEN 70 AND 90;",
+      "choices": [
+        "(가) 3 / (나) 2",
+        "(가) 0 / (나) 2",
+        "(가) 3 / (나) 3",
+        "(가) 0 / (나) 3"
+      ],
+      "answer": 2,
+      "explanation": "`A BETWEEN x AND y`는 `A >= x AND A <= y`와 같다. 따라서 (가)는 `SCORE >= 90 AND SCORE <= 70`이 되어 만족하는 값이 없으므로 **0**이다. 작은 값을 앞에 써야 한다는 점이 함정이다(70~90 범위로 해석하면 3이 된다).\n\n(나) `NOT BETWEEN 70 AND 90`은 `SCORE < 70 OR SCORE > 90`이다. 95(S1), 60(S5)이 해당하여 **2**이다. S4의 NULL은 비교 결과가 UNKNOWN이므로 NOT을 붙여도 포함되지 않는다."
+    },
+    {
+      "id": 18,
+      "subject": 2,
+      "theory": "where",
+      "question": "Oracle에서 비어 있는 STU_TEL 테이블(STU_NO NUMBER, TEL VARCHAR2(20))에 아래 INSERT 문을 실행하였다. 이후 (가)~(다)의 결과로 옳은 것은?",
+      "code": "INSERT INTO STU_TEL VALUES (1, '010-1111-2222');\nINSERT INTO STU_TEL VALUES (2, '');\nINSERT INTO STU_TEL VALUES (3, NULL);\nINSERT INTO STU_TEL VALUES (4, '010-3333-4444');\n\n-- (가)\nSELECT COUNT(*) FROM STU_TEL WHERE TEL = '';\n-- (나)\nSELECT COUNT(*) FROM STU_TEL WHERE TEL IS NULL;\n-- (다)\nSELECT COUNT(TEL) FROM STU_TEL;",
+      "choices": [
+        "(가) 1 / (나) 1 / (다) 3",
+        "(가) 1 / (나) 1 / (다) 2",
+        "(가) 0 / (나) 1 / (다) 3",
+        "(가) 0 / (나) 2 / (다) 2"
+      ],
+      "answer": 4,
+      "explanation": "Oracle은 길이가 0인 빈 문자열 `''`을 **NULL로 취급**한다. 따라서 2번 학생의 TEL도 NULL로 저장되어 TEL이 NULL인 행은 2, 3번 두 건이다.\n\n- (가) `TEL = ''`은 `TEL = NULL`과 같아 결과가 항상 UNKNOWN → **0**\n- (나) IS NULL로 비교하면 2, 3번 → **2**\n- (다) COUNT(컬럼)은 NULL을 제외하므로 1, 4번 → **2**\n\nSQL Server는 빈 문자열과 NULL을 구분하므로 (가) 1, (나) 1, (다) 3이 되지만(1번 보기), 이 문제는 Oracle 기준이다."
+    },
+    {
+      "id": 19,
+      "subject": 2,
+      "theory": "group-by-having",
+      "question": "다음 [ENROLL] 테이블에 SQL을 실행한 결과로 옳은 것은? (학번 앞 4자리는 입학년도이다. 결과는 YR / CNT / AVG_SC 순서)\n\n[ENROLL]\n\n| STU_NO | CRS_CD | SCORE |\n|---|---|---|\n| 2023001 | C1 | 80 |\n| 2023002 | C1 | NULL |\n| 2024001 | C1 | 90 |\n| 2024002 | C2 | 70 |\n| 2023001 | C2 | 60 |\n| 2025001 | C1 | 100 |",
+      "code": "SELECT SUBSTR(STU_NO, 1, 4) AS YR,\n       COUNT(*)              AS CNT,\n       AVG(SCORE)            AS AVG_SC\n  FROM ENROLL\n GROUP BY SUBSTR(STU_NO, 1, 4)\nHAVING COUNT(SCORE) >= 2\n ORDER BY YR;",
+      "choices": [
+        "2023 / 3 / 70, 2024 / 2 / 80",
+        "2023 / 3 / 46.67, 2024 / 2 / 80",
+        "2023 / 2 / 70, 2024 / 2 / 80",
+        "2023 / 3 / 70, 2024 / 2 / 80, 2025 / 1 / 100"
+      ],
+      "answer": 1,
+      "explanation": "GROUP BY에는 컬럼뿐 아니라 `SUBSTR(STU_NO, 1, 4)` 같은 표현식도 쓸 수 있다.\n\n| YR | 행 | COUNT(*) | COUNT(SCORE) | AVG(SCORE) |\n|---|---|---|---|---|\n| 2023 | 80, NULL, 60 | 3 | 2 | (80+60)/2 = **70** |\n| 2024 | 90, 70 | 2 | 2 | 80 |\n| 2025 | 100 | 1 | 1 | 100 |\n\nHAVING `COUNT(SCORE) >= 2`에서 2025 그룹은 1이라 제외된다. CNT는 COUNT(*)이므로 NULL 행을 포함한 3이고, AVG는 NULL을 제외한 2건의 평균 70이다. 2번은 NULL을 0으로 보고 3으로 나눈 값, 3번은 CNT를 COUNT(SCORE)로 착각한 값이다."
+    },
+    {
+      "id": 20,
+      "subject": 2,
+      "theory": "group-by-having",
+      "question": "다음 [ENROLL] 테이블에 SQL을 실행한 결과로 옳은 것은? (S1은 C1 강좌를 재수강하였다.)\n\n[ENROLL]\n\n| STU_NO | CRS_CD | SCORE |\n|---|---|---|\n| S1 | C1 | 85 |\n| S1 | C1 | 95 |\n| S2 | C1 | 90 |\n| S2 | C2 | 70 |\n| S3 | C2 | 92 |\n| S3 | C3 | NULL |\n| S4 | C1 | 60 |\n| S4 | C3 | 88 |",
+      "code": "SELECT STU_NO\n  FROM ENROLL\n GROUP BY STU_NO\nHAVING COUNT(DISTINCT CRS_CD) >= 2\n   AND MAX(SCORE) >= 90\n ORDER BY STU_NO;",
+      "choices": [
+        "S1, S2, S3",
+        "S2",
+        "S2, S3",
+        "S2, S3, S4"
+      ],
+      "answer": 3,
+      "explanation": "학생별로 그룹을 만든 뒤 HAVING의 두 조건을 모두 만족하는 그룹만 남긴다.\n\n| STU_NO | COUNT(DISTINCT CRS_CD) | MAX(SCORE) | 결과 |\n|---|---|---|---|\n| S1 | 1 (C1만) | 95 | 제외 |\n| S2 | 2 | 90 | **포함** |\n| S3 | 2 (C2, C3) | 92 (NULL 무시) | **포함** |\n| S4 | 2 | 88 | 제외 |\n\nS1은 행이 2개지만 같은 강좌를 두 번 수강했으므로 DISTINCT 적용 후 1이다(COUNT(*)로 착각하면 1번). S3의 C3 점수는 NULL이지만 COUNT(DISTINCT CRS_CD)는 CRS_CD 기준이라 2로 세고, MAX는 NULL을 무시해 92가 된다."
+    },
+    {
+      "id": 21,
+      "subject": 2,
+      "theory": "order-by",
+      "question": "다음 [STUDENT] 테이블에 SQL을 실행한 결과의 출력 순서로 옳은 것은? (Oracle 기준)\n\n[STUDENT]\n\n| STU_NM | DEPT_CD | GPA |\n|---|---|---|\n| 김 | CS | 3.5 |\n| 이 | NULL | 4.0 |\n| 박 | EE | NULL |\n| 최 | CS | NULL |\n| 정 | NULL | 3.2 |\n| 한 | EE | 3.9 |",
+      "code": "SELECT STU_NM, DEPT_CD, GPA\n  FROM STUDENT\n ORDER BY 2 NULLS FIRST, GPA DESC NULLS LAST;",
+      "choices": [
+        "김, 최, 한, 박, 이, 정",
+        "이, 정, 김, 최, 한, 박",
+        "정, 이, 최, 김, 박, 한",
+        "이, 정, 최, 김, 박, 한"
+      ],
+      "answer": 2,
+      "explanation": "`ORDER BY 2`는 SELECT 목록의 두 번째 컬럼(DEPT_CD)을 뜻한다.\n\n1. DEPT_CD 오름차순 + **NULLS FIRST** → NULL 그룹(이, 정)이 먼저, 그다음 CS, EE\n2. 같은 DEPT_CD 안에서는 GPA 내림차순 + **NULLS LAST**\n\n- NULL 그룹: 이(4.0), 정(3.2)\n- CS: 김(3.5), 최(NULL은 마지막)\n- EE: 한(3.9), 박(NULL은 마지막)\n\n결과는 이, 정, 김, 최, 한, 박이다. 4번은 Oracle 기본 동작(DESC에서 NULL이 먼저)을 적용한 순서인데, NULLS LAST를 명시했으므로 틀렸다. 1번은 NULLS FIRST를 무시한 순서다."
+    },
+    {
+      "id": 22,
+      "subject": 2,
+      "theory": "order-by",
+      "question": "STUDENT(STU_NO, STU_NM, DEPT_CD, GPA) 테이블에 대해 Oracle에서 (가)~(라)를 실행할 때, **오류 없이 실행되는** 것은?",
+      "code": "-- (가)\nSELECT DISTINCT DEPT_CD FROM STUDENT ORDER BY STU_NM;\n\n-- (나)\nSELECT DEPT_CD, COUNT(*) FROM STUDENT GROUP BY DEPT_CD ORDER BY GPA;\n\n-- (다)\nSELECT STU_NM\n  FROM (SELECT STU_NM, DEPT_CD FROM STUDENT)\n ORDER BY GPA;\n\n-- (라)\nSELECT STU_NM FROM STUDENT ORDER BY GPA DESC, DEPT_CD;",
+      "choices": [
+        "(가)",
+        "(나)",
+        "(다)",
+        "(라)"
+      ],
+      "answer": 4,
+      "explanation": "일반 SELECT 문은 SELECT 목록에 없는 컬럼으로도 정렬할 수 있다. 따라서 (라)는 GPA, DEPT_CD가 SELECT 목록에 없어도 정상 실행된다.\n\n- (가) DISTINCT를 쓰면 중복 제거 후 결과에 남은 컬럼으로만 정렬할 수 있다. STU_NM은 결과에 없으므로 오류(ORA-01791)가 발생한다.\n- (나) GROUP BY를 쓰면 ORDER BY에는 GROUP BY 컬럼이나 집계 함수만 올 수 있다. GPA는 그룹핑되지 않은 컬럼이라 오류다(`ORDER BY AVG(GPA)`라면 가능).\n- (다) 인라인 뷰가 STU_NM, DEPT_CD만 반환하므로 바깥 쿼리는 GPA를 알 수 없어 오류다."
+    },
+    {
+      "id": 23,
+      "subject": 2,
+      "theory": "join",
+      "question": "다음 [ENROLL], [GRADE_RANGE] 테이블에 SQL을 실행했을 때 결과 건수는?\n\n[ENROLL]\n\n| STU_NO | SCORE |\n|---|---|\n| S1 | 95 |\n| S2 | 90 |\n| S3 | 85 |\n| S4 | 65 |\n| S5 | NULL |\n\n[GRADE_RANGE]\n\n| GRADE | LO | HI |\n|---|---|---|\n| A | 90 | 100 |\n| B | 80 | 90 |\n| C | 70 | 79 |",
+      "code": "SELECT E.STU_NO, G.GRADE\n  FROM ENROLL E, GRADE_RANGE G\n WHERE E.SCORE BETWEEN G.LO AND G.HI;",
+      "choices": [
+        "4건",
+        "3건",
+        "5건",
+        "2건"
+      ],
+      "answer": 1,
+      "explanation": "BETWEEN을 이용한 Non-EQUI JOIN은 조건을 만족하는 **모든** 등급 행과 결합된다. GRADE_RANGE의 A(90~100)와 B(80~90)가 90에서 경계가 겹치는 점이 함정이다.\n\n- S1(95) → A\n- S2(90) → **A, B 두 행** (90은 두 범위 모두에 포함)\n- S3(85) → B\n- S4(65) → 해당 범위 없음 → 제외\n- S5(NULL) → 비교 결과 UNKNOWN → 제외\n\n따라서 1 + 2 + 1 = **4건**이다. 학생 수(3명)만큼 나온다고 보면 3건으로 잘못 계산하게 된다. 등급 범위 테이블은 경계가 겹치지 않도록 설계해야 한다."
+    },
+    {
+      "id": 24,
+      "subject": 2,
+      "theory": "join",
+      "question": "다음 [PROFESSOR], [COURSE] 테이블에 SQL을 실행한 결과로 옳은 것은? (Oracle 기준, 이름은 가나다순으로 정렬된다.)\n\n[PROFESSOR]\n\n| PROF_NO | PROF_NM |\n|---|---|\n| P1 | 김 |\n| P2 | 이 |\n| P3 | 박 |\n\n[COURSE]\n\n| CRS_CD | PROF_NO |\n|---|---|\n| C1 | P1 |\n| C2 | P1 |\n| C3 | P3 |\n| C4 | NULL |",
+      "code": "SELECT P.PROF_NM, COUNT(C.CRS_CD) AS CNT\n  FROM PROFESSOR P, COURSE C\n WHERE P.PROF_NO = C.PROF_NO(+)\n GROUP BY P.PROF_NM\n ORDER BY P.PROF_NM;",
+      "choices": [
+        "김 2, 박 1",
+        "김 2, 박 1, 이 1",
+        "김 2, 박 1, 이 0",
+        "김 2, 박 1, 이 0, NULL 1"
+      ],
+      "answer": 3,
+      "explanation": "`(+)`는 데이터가 부족한 쪽(COURSE)에 붙이므로 PROFESSOR 기준 LEFT OUTER JOIN이다. 담당 강좌가 없는 '이'(P2)도 COURSE 컬럼이 NULL인 한 행으로 남는다.\n\n- 김: C1, C2 → 2\n- 박: C3 → 1\n- 이: 매칭 없음 → C.CRS_CD가 NULL → **COUNT(C.CRS_CD) = 0**\n\nCOUNT(*)를 썼다면 '이'도 1이 되지만(2번), COUNT(컬럼)은 NULL을 세지 않는다. 교수가 없는 C4는 PROFESSOR 기준 외부 조인에서 결과에 나타나지 않으므로 4번은 틀렸다."
+    },
+    {
+      "id": 25,
+      "subject": 2,
+      "theory": "standard-join",
+      "question": "다음 [STUDENT], [ENROLL], [COURSE] 테이블에 SQL을 실행한 결과로 옳은 것은? (행의 순서는 고려하지 않는다. (STU_NO, CRS_NM)으로 표기)\n\n[STUDENT]\n\n| STU_NO |\n|---|\n| S1 |\n| S2 |\n| S3 |\n\n[ENROLL]\n\n| STU_NO | CRS_CD |\n|---|---|\n| S1 | C1 |\n| S1 | C9 |\n| S2 | C2 |\n\n[COURSE]\n\n| CRS_CD | CRS_NM |\n|---|---|\n| C1 | DB |\n| C2 | OS |",
+      "code": "SELECT S.STU_NO, C.CRS_NM\n  FROM STUDENT S\n       LEFT OUTER JOIN ENROLL E ON S.STU_NO = E.STU_NO\n       INNER JOIN COURSE C      ON E.CRS_CD = C.CRS_CD;",
+      "choices": [
+        "(S1, DB), (S1, NULL), (S2, OS), (S3, NULL)",
+        "(S1, DB), (S2, OS), (S3, NULL)",
+        "(S1, DB), (S1, NULL), (S2, OS)",
+        "(S1, DB), (S2, OS)"
+      ],
+      "answer": 4,
+      "explanation": "조인은 FROM 절에 쓴 순서대로 단계적으로 수행된다.\n\n1. `STUDENT LEFT OUTER JOIN ENROLL` → (S1,C1), (S1,C9), (S2,C2), (S3,NULL) 4행\n2. 그 결과와 COURSE를 **INNER JOIN** → `E.CRS_CD = C.CRS_CD`를 만족하는 행만 남는다.\n   - (S1,C1) → DB ✔\n   - (S1,C9) → COURSE에 C9 없음 ✘\n   - (S2,C2) → OS ✔\n   - (S3,NULL) → NULL 비교는 UNKNOWN ✘\n\n결과는 (S1, DB), (S2, OS) 2행이다. 앞에서 LEFT OUTER JOIN으로 살린 S3도 뒤의 INNER JOIN에서 제거된다. S3를 남기려면 두 번째 조인도 LEFT OUTER JOIN으로 써야 한다."
+    },
+    {
+      "id": 26,
+      "subject": 2,
+      "theory": "standard-join",
+      "question": "다음 [PROFESSOR], [COURSE] 테이블에 SQL을 실행한 결과로 옳은 것은? (C1 / C2 / C3 순서)\n\n[PROFESSOR]\n\n| PROF_NO |\n|---|\n| P1 |\n| P2 |\n| P3 |\n\n[COURSE]\n\n| CRS_CD | PROF_NO |\n|---|---|\n| C1 | P1 |\n| C2 | P1 |\n| C3 | P4 |\n| C4 | NULL |",
+      "code": "SELECT COUNT(*)          AS C1,\n       COUNT(P.PROF_NO)  AS C2,\n       COUNT(C.CRS_CD)   AS C3\n  FROM PROFESSOR P\n       FULL OUTER JOIN COURSE C\n         ON P.PROF_NO = C.PROF_NO;",
+      "choices": [
+        "6 / 4 / 6",
+        "6 / 4 / 4",
+        "5 / 4 / 4",
+        "4 / 3 / 4"
+      ],
+      "answer": 2,
+      "explanation": "FULL OUTER JOIN은 양쪽의 매칭 행 + 왼쪽에만 있는 행 + 오른쪽에만 있는 행을 모두 반환한다.\n\n| P.PROF_NO | C.CRS_CD | 구분 |\n|---|---|---|\n| P1 | C1 | 매칭 |\n| P1 | C2 | 매칭 |\n| P2 | NULL | 왼쪽만 |\n| P3 | NULL | 왼쪽만 |\n| NULL | C3 | 오른쪽만 (P4 없음) |\n| NULL | C4 | 오른쪽만 (PROF_NO NULL) |\n\n- C1 = COUNT(*) = **6**\n- C2 = COUNT(P.PROF_NO) = P1, P1, P2, P3 = **4**\n- C3 = COUNT(C.CRS_CD) = C1~C4 = **4**\n\n1번은 COUNT(C.CRS_CD)에 NULL 행까지 센 값이다."
+    },
+    {
+      "id": 27,
+      "subject": 2,
+      "theory": "subquery",
+      "question": "다음 [DEPT], [STUDENT] 테이블에 대해 (가), (나) SQL을 실행했을 때 결과로 옳은 것은? (Oracle 기준)\n\n[DEPT]\n\n| DEPT_CD | DEPT_NM | COLLEGE |\n|---|---|---|\n| D1 | 컴퓨터공학과 | 공과대학 |\n| D2 | 전자공학과 | 공과대학 |\n| D3 | 국문학과 | 인문대학 |\n\n[STUDENT]\n\n| STU_NM | DEPT_CD |\n|---|---|\n| 김 | D1 |\n| 이 | D2 |\n| 박 | D3 |",
+      "code": "-- (가)\nSELECT STU_NM FROM STUDENT\n WHERE DEPT_CD = (SELECT DEPT_CD FROM DEPT WHERE DEPT_NM = '물리학과');\n\n-- (나)\nSELECT STU_NM FROM STUDENT\n WHERE DEPT_CD = (SELECT DEPT_CD FROM DEPT WHERE COLLEGE = '공과대학');",
+      "choices": [
+        "(가)는 0건이 정상 조회되고, (나)는 오류가 발생한다.",
+        "(가)와 (나) 모두 오류가 발생한다.",
+        "(가)는 0건, (나)는 김, 이 2건이 조회된다.",
+        "(가)는 전체 3건이 조회되고, (나)는 오류가 발생한다."
+      ],
+      "answer": 1,
+      "explanation": "`=` 같은 단일행 비교 연산자 뒤의 서브쿼리는 **단일행 서브쿼리**여야 한다.\n\n- (가) '물리학과'가 없어 서브쿼리 결과가 0행이다. 이때 서브쿼리 값은 NULL로 취급되어 `DEPT_CD = NULL`은 UNKNOWN이므로 **오류 없이 0건**이 반환된다.\n- (나) 공과대학 학과는 D1, D2 **2행**이므로 단일행 비교 연산자와 함께 쓸 수 없어 오류(ORA-01427: 단일 행 하위 질의에 2개 이상의 행이 리턴되었습니다)가 발생한다.\n\n(나)를 의도대로 실행하려면 `IN`(다중행 연산자)을 써야 한다. 3번은 `=`를 IN처럼 해석한 것이다."
+    },
+    {
+      "id": 28,
+      "subject": 2,
+      "theory": "subquery",
+      "question": "장학 선정 기준표 [SCHOLAR]와 [STUDENT] 테이블에 대해 (가), (나) SQL을 실행했을 때 결과로 옳은 것은?\n\n[STUDENT]\n\n| STU_NM | DEPT | GRADE |\n|---|---|---|\n| A | CS | 1 |\n| B | CS | 2 |\n| C | EE | 1 |\n| D | EE | 2 |\n| E | ME | 1 |\n\n[SCHOLAR]\n\n| DEPT | GRADE |\n|---|---|\n| CS | 1 |\n| EE | 2 |",
+      "code": "-- (가)\nSELECT COUNT(*) FROM STUDENT\n WHERE (DEPT, GRADE) IN (SELECT DEPT, GRADE FROM SCHOLAR);\n\n-- (나)\nSELECT COUNT(*) FROM STUDENT\n WHERE DEPT  IN (SELECT DEPT  FROM SCHOLAR)\n   AND GRADE IN (SELECT GRADE FROM SCHOLAR);",
+      "choices": [
+        "(가) 2 / (나) 2",
+        "(가) 4 / (나) 4",
+        "(가) 4 / (나) 2",
+        "(가) 2 / (나) 4"
+      ],
+      "answer": 4,
+      "explanation": "(가)는 **다중컬럼 서브쿼리**로 (DEPT, GRADE) **쌍**을 비교한다(pairwise). 기준표의 쌍 (CS,1), (EE,2)와 정확히 일치하는 A, D만 해당하므로 **2**이다.\n\n(나)는 각 컬럼을 따로 비교한다(non-pairwise). DEPT ∈ {CS, EE}이고 GRADE ∈ {1, 2}이면 되므로 (CS,2)인 B, (EE,1)인 C까지 포함되어 A, B, C, D **4**이다. E는 ME라서 제외된다.\n\n두 방식은 결과가 같아 보이지만, 컬럼을 따로 비교하면 기준표에 없는 조합까지 선택될 수 있다."
+    },
+    {
+      "id": 29,
+      "subject": 2,
+      "theory": "set-operators",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle 기준, 값의 순서는 고려하지 않는다)\n\n[A]\n\n| X |\n|---|\n| 1 |\n| 1 |\n| 2 |\n\n[B]\n\n| X |\n|---|\n| 2 |\n| 3 |\n\n[C]\n\n| X |\n|---|\n| 3 |",
+      "code": "SELECT X FROM A\nUNION ALL\nSELECT X FROM B\nMINUS\nSELECT X FROM C;",
+      "choices": [
+        "1, 1, 2, 2",
+        "1, 1, 2",
+        "1, 2",
+        "1, 2, 3"
+      ],
+      "answer": 3,
+      "explanation": "집합 연산자는 우선순위가 같아 **위에서부터 차례로** 수행된다.\n\n1. `A UNION ALL B` → 1, 1, 2, 2, 3 (중복 유지)\n2. 그 결과 `MINUS C` → 3을 제거하고, **MINUS도 결과의 중복을 제거**하므로 1, 2\n\nUNION ALL에서 살아 있던 중복(1, 1 / 2, 2)도 뒤의 MINUS 단계에서 하나로 합쳐진다. 1번은 MINUS가 중복을 유지한다고 착각한 결과다. UNION ALL을 제외한 UNION, INTERSECT, MINUS는 모두 결과에서 중복을 제거한다."
+    },
+    {
+      "id": 30,
+      "subject": 2,
+      "theory": "set-operators",
+      "question": "다음 [ENROLL] 테이블에서 **DB와 OS 강좌를 모두 수강한 학생**의 학번을 조회하려 한다. 표의 데이터에 대해 요구사항을 정확히 만족하는 SQL은? (S2는 DB를 재수강하였다.)\n\n[ENROLL]\n\n| STU_NO | CRS_CD | TERM |\n|---|---|---|\n| S1 | DB | 2024-1 |\n| S1 | OS | 2024-2 |\n| S2 | DB | 2024-1 |\n| S2 | DB | 2025-1 |\n| S3 | OS | 2025-1 |",
+      "code": "-- (가)\nSELECT STU_NO FROM ENROLL WHERE CRS_CD = 'DB' AND CRS_CD = 'OS';\n\n-- (나)\nSELECT STU_NO FROM ENROLL WHERE CRS_CD = 'DB'\nINTERSECT\nSELECT STU_NO FROM ENROLL WHERE CRS_CD = 'OS';\n\n-- (다)\nSELECT STU_NO FROM ENROLL\n WHERE CRS_CD IN ('DB', 'OS')\n GROUP BY STU_NO\nHAVING COUNT(*) >= 2;\n\n-- (라)\nSELECT STU_NO FROM ENROLL WHERE CRS_CD = 'DB'\nMINUS\nSELECT STU_NO FROM ENROLL WHERE CRS_CD = 'OS';",
+      "choices": [
+        "(가)",
+        "(나)",
+        "(다)",
+        "(라)"
+      ],
+      "answer": 2,
+      "explanation": "정답은 S1 한 명이다.\n\n- (가) 한 행의 CRS_CD가 동시에 'DB'이면서 'OS'일 수 없으므로 **0건**이다.\n- (나) DB 수강생 {S1, S2}와 OS 수강생 {S1, S3}의 **교집합**인 S1을 반환한다. ✔\n- (다) S2는 DB를 두 번 수강해 행이 2개이므로 COUNT(*) >= 2를 만족해 S1, S2가 반환된다. `COUNT(DISTINCT CRS_CD) = 2`라면 올바르다.\n- (라) MINUS는 DB만 수강하고 OS는 수강하지 않은 S2를 반환한다."
+    },
+    {
+      "id": 31,
+      "subject": 2,
+      "theory": "group-functions",
+      "question": "다음 [SCHOLAR] 테이블에 SQL을 실행했을 때, **DEPT와 GRADE가 모두 NULL로 출력되는 행의 수**와 그중 **GD가 1인 행의 S 값**으로 옳은 것은?\n\n[SCHOLAR]\n\n| DEPT | GRADE | FEE |\n|---|---|---|\n| CS | 1 | 100 |\n| CS | 2 | 200 |\n| EE | 1 | 300 |\n| NULL | 1 | 50 |",
+      "code": "SELECT DEPT, GRADE,\n       SUM(FEE)       AS S,\n       GROUPING(DEPT) AS GD\n  FROM SCHOLAR\n GROUP BY ROLLUP(DEPT, GRADE);",
+      "choices": [
+        "2건 / 650",
+        "1건 / 650",
+        "2건 / 50",
+        "1건 / 700"
+      ],
+      "answer": 1,
+      "explanation": "ROLLUP(DEPT, GRADE)는 (DEPT, GRADE) → (DEPT) 소계 → () 총계를 만든다. 원본 데이터에 DEPT가 NULL인 행이 있으면 NULL도 하나의 DEPT 그룹이 된다.\n\n| DEPT | GRADE | S | GD |\n|---|---|---|---|\n| CS | 1 | 100 | 0 |\n| CS | 2 | 200 | 0 |\n| CS | NULL | 300 | 0 |\n| EE | 1 | 300 | 0 |\n| EE | NULL | 300 | 0 |\n| NULL | 1 | 50 | 0 |\n| NULL | NULL | 50 | 0 ← NULL 학과의 소계 |\n| NULL | NULL | 650 | 1 ← 전체 총계 |\n\nDEPT, GRADE가 모두 NULL로 보이는 행은 **2건**이고, 집계로 생긴 총계 행만 GROUPING(DEPT) = 1이며 S는 100+200+300+50 = **650**이다. 이처럼 원본 NULL과 집계 NULL을 구분하기 위해 GROUPING 함수를 사용한다."
+    },
+    {
+      "id": 32,
+      "subject": 2,
+      "theory": "group-functions",
+      "question": "다음 [STUDENT] 테이블에 SQL을 실행했을 때 결과 건수는?\n\n[STUDENT]\n\n| STU_NO | DEPT | GRADE |\n|---|---|---|\n| 1 | CS | 1 |\n| 2 | CS | 1 |\n| 3 | CS | 2 |\n| 4 | EE | 2 |\n| 5 | EE | 3 |",
+      "code": "SELECT DEPT, GRADE, COUNT(*) AS CNT\n  FROM STUDENT\n GROUP BY CUBE(DEPT, GRADE)\nHAVING GROUPING(DEPT) = 1;",
+      "choices": [
+        "1건",
+        "3건",
+        "5건",
+        "4건"
+      ],
+      "answer": 4,
+      "explanation": "CUBE(DEPT, GRADE)는 (DEPT, GRADE), (DEPT), (GRADE), () 네 가지 그룹핑 조합을 만든다. GROUPING(DEPT) = 1인 행은 DEPT가 집계(생략)된 그룹, 즉 **(GRADE) 소계와 () 총계**다.\n\n- (GRADE) 소계: GRADE 1(2명), 2(2명), 3(1명) → 3행\n- () 총계: 5명 → 1행\n\n따라서 **4건**이다. HAVING 절에서도 GROUPING 함수를 사용해 특정 집계 수준만 골라낼 수 있다. 3건은 총계 행을 빠뜨린 것이다."
+    },
+    {
+      "id": 33,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 [ENROLL] 테이블에 SQL을 실행했을 때, STU가 **B인 행**과 **E인 행**의 (DIFF, CNT) 값으로 옳은 것은?\n\n[ENROLL]\n\n| STU | CRS | SCORE |\n|---|---|---|\n| A | DB | 60 |\n| B | DB | 90 |\n| C | DB | 90 |\n| D | OS | 70 |\n| E | OS | 60 |",
+      "code": "SELECT STU,\n       SCORE - AVG(SCORE) OVER (PARTITION BY CRS)            AS DIFF,\n       COUNT(*)           OVER (PARTITION BY CRS ORDER BY SCORE) AS CNT\n  FROM ENROLL\n ORDER BY STU;",
+      "choices": [
+        "B (10, 2) / E (-5, 1)",
+        "B (10, 3) / E (5, 2)",
+        "B (10, 3) / E (-5, 1)",
+        "B (-10, 2) / E (-5, 2)"
+      ],
+      "answer": 3,
+      "explanation": "- **DIFF**: 파티션(강좌)별 평균과의 차이다. DB 평균은 (60+90+90)/3 = 80이므로 B는 90 − 80 = **10**, OS 평균은 65이므로 E는 60 − 65 = **−5**\n- **CNT**: `ORDER BY`만 있고 윈도우 절이 없으면 기본 범위가 `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`다. RANGE는 정렬 값이 같은 행(동료 행)을 함께 포함한다.\n  - DB: A(60) → 1, B·C(90) → 동점이므로 둘 다 **3**\n  - OS: E(60) → **1**, D(70) → 2\n\n1번은 B를 ROWS 기준(행 단위)으로 센 값이고, 2번은 E의 정렬 위치를 잘못 본 값이다."
+    },
+    {
+      "id": 34,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 [CREDIT_LOG] 테이블에 SQL을 실행했을 때 PREV_SUM 값을 출력 순서대로 나열한 것으로 옳은 것은?\n\n[CREDIT_LOG]\n\n| STU | TERM | CREDIT |\n|---|---|---|\n| S1 | T1 | 18 |\n| S1 | T2 | 15 |\n| S1 | T3 | 21 |\n| S2 | T1 | 12 |\n| S2 | T2 | 18 |",
+      "code": "SELECT STU, TERM,\n       SUM(CREDIT) OVER (PARTITION BY STU\n                         ORDER BY TERM\n                         ROWS BETWEEN UNBOUNDED PRECEDING\n                                  AND 1 PRECEDING) AS PREV_SUM\n  FROM CREDIT_LOG\n ORDER BY STU, TERM;",
+      "choices": [
+        "NULL, 18, 33, NULL, 12",
+        "0, 18, 33, 0, 12",
+        "18, 33, 54, 12, 30",
+        "NULL, 18, 33, 54, 66"
+      ],
+      "answer": 1,
+      "explanation": "윈도우 절 `ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING`은 파티션의 처음부터 **현재 행 바로 앞 행까지**를 범위로 한다. 즉 현재 행을 제외한 '이전 학기까지의 누적 학점'이다.\n\n- S1: T1은 앞 행이 없어 범위가 비므로 SUM은 **NULL**, T2는 18, T3는 18+15 = 33\n- S2: 파티션이 바뀌므로 다시 시작 → T1은 NULL, T2는 12\n\n빈 범위의 SUM은 0이 아니라 NULL이다(2번 오답). 3번은 현재 행까지 포함한 일반 누적합, 4번은 PARTITION BY를 무시한 결과다."
+    },
+    {
+      "id": 35,
+      "subject": 2,
+      "theory": "window-functions",
+      "question": "다음 [ENROLL] 테이블에 SQL을 실행했을 때 RK 값을 STU 순서(A~E)대로 나열한 것으로 옳은 것은? (Oracle 기준)\n\n[ENROLL]\n\n| STU | SCORE |\n|---|---|\n| A | 90 |\n| B | NULL |\n| C | 85 |\n| D | 90 |\n| E | 70 |",
+      "code": "SELECT STU,\n       RANK() OVER (ORDER BY SCORE DESC) AS RK\n  FROM ENROLL\n ORDER BY STU;",
+      "choices": [
+        "1, 5, 3, 1, 4",
+        "2, 1, 4, 2, 5",
+        "1, NULL, 3, 1, 4",
+        "2, 1, 3, 2, 4"
+      ],
+      "answer": 2,
+      "explanation": "Oracle은 NULL을 **가장 큰 값**으로 취급하므로 `ORDER BY SCORE DESC`에서 NULL이 맨 앞에 온다. 순위 함수도 NULL 행을 제외하지 않고 정렬 순서대로 순위를 매긴다.\n\n정렬 순서: B(NULL) → A(90), D(90) → C(85) → E(70)\n\n- B: 1\n- A, D: 동점 2\n- C: RANK는 동점 수만큼 건너뛰므로 **4**\n- E: 5\n\n1번은 NULL을 맨 뒤로 보낸 결과(SQL Server 방식), 4번은 DENSE_RANK 결과다. NULL을 뒤로 보내려면 `ORDER BY SCORE DESC NULLS LAST`를 지정한다."
+    },
+    {
+      "id": 36,
+      "subject": 2,
+      "theory": "top-n",
+      "question": "다음 [ENROLL] 테이블에 대해 (가)~(다)를 실행했을 때 결과 건수로 옳은 것은?\n\n[ENROLL]\n\n| STU | SCORE |\n|---|---|\n| A | 95 |\n| B | 90 |\n| C | 90 |\n| D | 85 |\n| E | 80 |",
+      "code": "-- (가)\nSELECT COUNT(*) FROM (SELECT ROW_NUMBER() OVER (ORDER BY SCORE DESC) AS R FROM ENROLL) WHERE R <= 3;\n\n-- (나)\nSELECT COUNT(*) FROM (SELECT RANK()       OVER (ORDER BY SCORE DESC) AS R FROM ENROLL) WHERE R <= 3;\n\n-- (다)\nSELECT COUNT(*) FROM (SELECT DENSE_RANK() OVER (ORDER BY SCORE DESC) AS R FROM ENROLL) WHERE R <= 3;",
+      "choices": [
+        "(가) 3 / (나) 3 / (다) 3",
+        "(가) 3 / (나) 4 / (다) 4",
+        "(가) 2 / (나) 3 / (다) 4",
+        "(가) 3 / (나) 3 / (다) 4"
+      ],
+      "answer": 4,
+      "explanation": "SCORE 내림차순 순위를 비교하면 다음과 같다.\n\n| STU | SCORE | ROW_NUMBER | RANK | DENSE_RANK |\n|---|---|---|---|---|\n| A | 95 | 1 | 1 | 1 |\n| B | 90 | 2 | 2 | 2 |\n| C | 90 | 3 | 2 | 2 |\n| D | 85 | 4 | **4** | **3** |\n| E | 80 | 5 | 5 | 4 |\n\n- (가) ROW_NUMBER ≤ 3 → A, B, C = **3**\n- (나) RANK ≤ 3 → A, B, C = **3** (동점 뒤 순위 3을 건너뛰어 D는 4)\n- (다) DENSE_RANK ≤ 3 → A, B, C, D = **4**\n\n윈도우 함수 결과는 WHERE 절에서 직접 쓸 수 없으므로 인라인 뷰에서 계산한 뒤 바깥에서 필터링한다."
+    },
+    {
+      "id": 37,
+      "subject": 2,
+      "theory": "top-n",
+      "question": "다음 [ENROLL] 테이블에 SQL을 실행했을 때 결과 건수는? (Oracle 12c 이상 기준)\n\n[ENROLL]\n\n| STU | SCORE |\n|---|---|\n| A | 95 |\n| B | 90 |\n| C | 90 |\n| D | 85 |\n| E | 80 |",
+      "code": "SELECT STU, SCORE\n  FROM ENROLL\n ORDER BY SCORE DESC\n FETCH FIRST 40 PERCENT ROWS WITH TIES;",
+      "choices": [
+        "2건",
+        "5건",
+        "3건",
+        "4건"
+      ],
+      "answer": 3,
+      "explanation": "`FETCH FIRST 40 PERCENT`는 전체 5건의 40%인 **2건**을 정렬 순서대로 가져온다. 여기에 `WITH TIES`가 붙으면 마지막으로 포함된 행(B, 90)과 정렬 값이 같은 행도 함께 반환한다.\n\n- 앞 2건: A(95), B(90)\n- WITH TIES: 마지막 값 90과 같은 C(90) 추가\n\n따라서 A, B, C **3건**이다. `ROWS ONLY`였다면 2건이다. WITH TIES는 ORDER BY 기준으로 동점을 판단하므로 ORDER BY와 함께 사용한다."
+    },
+    {
+      "id": 38,
+      "subject": 2,
+      "theory": "hierarchical-query",
+      "question": "다음 [ORG] 테이블에 SQL을 실행했을 때, 결과에 **포함되는** 행은? (Oracle 기준, NAME | P_NAME | LV 순서로 표기)\n\n[ORG]\n\n| ID | NAME | PID |\n|---|---|---|\n| 1 | 대학본부 | NULL |\n| 2 | 공과대학 | 1 |\n| 3 | 인문대학 | 1 |\n| 4 | 컴퓨터공학과 | 2 |\n| 5 | 전자공학과 | 2 |\n| 6 | 국문학과 | 3 |",
+      "code": "SELECT NAME,\n       PRIOR NAME AS P_NAME,\n       LEVEL      AS LV\n  FROM ORG\n START WITH ID = 2\nCONNECT BY PRIOR ID = PID;",
+      "choices": [
+        "컴퓨터공학과 | 공과대학 | 2",
+        "공과대학 | 대학본부 | 1",
+        "전자공학과 | 공과대학 | 3",
+        "국문학과 | 인문대학 | 2"
+      ],
+      "answer": 1,
+      "explanation": "`PRIOR 컬럼`을 SELECT 절에 쓰면 현재 행의 **직전(부모) 행**의 컬럼 값을 보여 준다.\n\nSTART WITH ID = 2이므로 공과대학이 루트(LEVEL 1)이고, 그 하위만 전개된다.\n\n| NAME | P_NAME | LV |\n|---|---|---|\n| 공과대학 | NULL | 1 |\n| 컴퓨터공학과 | 공과대학 | 2 |\n| 전자공학과 | 공과대학 | 2 |\n\n- 2번: 루트 행은 직전 행이 없으므로 PRIOR NAME이 NULL이다. 원래 테이블의 부모(대학본부)가 나오지 않는다.\n- 3번: 전자공학과는 루트 바로 아래이므로 LEVEL 2이다.\n- 4번: 국문학과는 인문대학 하위이므로 공과대학에서 시작한 전개에 포함되지 않는다."
+    },
+    {
+      "id": 39,
+      "subject": 2,
+      "theory": "hierarchical-query",
+      "question": "다음 [ORG] 테이블에 SQL을 실행한 결과로 옳은 것은? (Oracle 기준, PATH / LV 순서로 표기)\n\n[ORG]\n\n| ID | NAME | PID |\n|---|---|---|\n| 1 | 대학본부 | NULL |\n| 2 | 공과대학 | 1 |\n| 3 | 인문대학 | 1 |\n| 4 | 컴퓨터공학과 | 2 |\n| 5 | 전자공학과 | 2 |\n| 6 | 국문학과 | 3 |",
+      "code": "SELECT SYS_CONNECT_BY_PATH(NAME, '/') AS PATH,\n       LEVEL                          AS LV\n  FROM ORG\n WHERE CONNECT_BY_ISLEAF = 1\n START WITH NAME = '컴퓨터공학과'\nCONNECT BY ID = PRIOR PID;",
+      "choices": [
+        "/대학본부/공과대학/컴퓨터공학과 / 3",
+        "/컴퓨터공학과/공과대학/대학본부 / 3",
+        "/컴퓨터공학과/공과대학/대학본부 / 1",
+        "/대학본부/공과대학/컴퓨터공학과 / 1"
+      ],
+      "answer": 2,
+      "explanation": "`CONNECT BY ID = PRIOR PID`는 직전 행의 PID(부모 ID)를 ID로 가진 행, 즉 **부모 방향으로 올라가는 역방향 전개**다.\n\n| NAME | LEVEL | SYS_CONNECT_BY_PATH | ISLEAF |\n|---|---|---|---|\n| 컴퓨터공학과 | 1 | /컴퓨터공학과 | 0 |\n| 공과대학 | 2 | /컴퓨터공학과/공과대학 | 0 |\n| 대학본부 | 3 | /컴퓨터공학과/공과대학/대학본부 | 1 |\n\n- LEVEL과 경로는 **전개 시작점(START WITH)** 기준이므로 컴퓨터공학과가 LEVEL 1이고 경로의 맨 앞에 온다.\n- 역방향 전개에서는 더 올라갈 부모가 없는 대학본부가 리프(CONNECT_BY_ISLEAF = 1)가 된다.\n\n따라서 결과는 `/컴퓨터공학과/공과대학/대학본부`, LEVEL 3인 한 행이다."
+    },
+    {
+      "id": 40,
+      "subject": 2,
+      "theory": "pivot-unpivot",
+      "question": "다음 [ENROLL_G] 테이블에 SQL을 실행한 결과로 옳은 것은? (Oracle 기준, (DEPT, A, B, F)를 출력 순서대로 표기)\n\n[ENROLL_G]\n\n| DEPT | GRADE |\n|---|---|\n| CS | A |\n| CS | B |\n| CS | A |\n| EE | B |\n| EE | C |",
+      "code": "SELECT *\n  FROM (SELECT DEPT, GRADE FROM ENROLL_G)\n PIVOT (COUNT(*) FOR GRADE IN ('A' AS A, 'B' AS B, 'F' AS F))\n ORDER BY DEPT;",
+      "choices": [
+        "(CS, 2, 1, NULL), (EE, NULL, 1, NULL)",
+        "(CS, 2, 1, 0), (EE, 0, 1, 1)",
+        "(CS, 1, 1, 0), (EE, 0, 1, 0)",
+        "(CS, 2, 1, 0), (EE, 0, 1, 0)"
+      ],
+      "answer": 4,
+      "explanation": "PIVOT은 FOR 컬럼(GRADE)과 집계 대상을 제외한 나머지 컬럼(DEPT)으로 **암시적 GROUP BY**를 한다. 각 IN 목록 값은 `COUNT(CASE WHEN GRADE = 'A' THEN 1 END)`처럼 계산된다고 보면 된다.\n\n- CS: A 2건, B 1건, F 0건 → (CS, 2, 1, **0**)\n- EE: A 0건, B 1건, F 0건 → (EE, **0**, 1, **0**)\n\nCOUNT는 해당하는 행이 없으면 NULL이 아니라 **0**을 반환한다(SUM이었다면 NULL). IN 목록에 없는 'C'는 어떤 열로도 집계되지 않으므로 무시되며, F로 계산되지도 않는다(2번 오답)."
+    },
+    {
+      "id": 41,
+      "subject": 2,
+      "theory": "regex",
+      "question": "다음 SQL의 실행 결과로 옳은 것은? (Oracle 기준, A / B / C 순서)",
+      "code": "SELECT REGEXP_SUBSTR('2025CS0123', '[[:alpha:]]+')          AS A,\n       REGEXP_SUBSTR('ab1234c56d7', '[0-9]{2,}', 1, 2)      AS B,\n       REGEXP_COUNT('a.b.c', '.')                           AS C\n  FROM DUAL;",
+      "choices": [
+        "CS / 1234 / 2",
+        "2025CS / 56 / 5",
+        "CS / 56 / 5",
+        "CS / 56 / 2"
+      ],
+      "answer": 3,
+      "explanation": "- **A**: `[[:alpha:]]+`는 알파벳이 1개 이상 연속된 부분이다. 숫자는 포함되지 않으므로 첫 번째 일치는 `CS`\n- **B**: `[0-9]{2,}`는 숫자가 **2개 이상** 연속된 부분이다. 'ab1234c56d7'에서 일치하는 부분은 1234, 56이며(7은 한 자리라 제외) 두 번째 일치는 `56`\n- **C**: 정규 표현식에서 `.`은 '마침표'가 아니라 **임의의 한 문자**다. 'a.b.c'의 다섯 문자가 모두 일치하므로 **5**. 마침표만 세려면 `'\\.'`처럼 이스케이프해야 한다(그 경우 2).\n\n1번은 첫 번째 일치를 고른 것이고, 4번은 `.`을 문자 그대로의 마침표로 해석한 것이다."
+    },
+    {
+      "id": 42,
+      "subject": 2,
+      "theory": "regex",
+      "question": "다음 [STU_CODE] 테이블에 SQL을 실행했을 때 결과 값은? (Oracle 기준, 대소문자를 구분한다.)\n\n[STU_CODE]\n\n| CODE |\n|---|\n| CS101 |\n| EE202 |\n| XCS10 |\n| ABEE |\n| cs303 |\n| MEEE |",
+      "code": "SELECT COUNT(*)\n  FROM STU_CODE\n WHERE REGEXP_LIKE(CODE, '^CS|EE$');",
+      "choices": [
+        "3",
+        "2",
+        "4",
+        "5"
+      ],
+      "answer": 1,
+      "explanation": "`|`(OR)는 우선순위가 가장 낮으므로 `'^CS|EE$'`는 `(^CS)` 또는 `(EE$)`로 해석된다. 즉 'CS로 **시작**하거나 EE로 **끝나는**' 값이다.\n\n| CODE | ^CS | EE$ | 결과 |\n|---|---|---|---|\n| CS101 | ✔ | | 포함 |\n| EE202 | | ✘ (EE로 시작하지만 끝은 2) | 제외 |\n| XCS10 | ✘ | | 제외 |\n| ABEE | | ✔ | 포함 |\n| cs303 | ✘ (소문자) | | 제외 |\n| MEEE | | ✔ | 포함 |\n\n따라서 **3**이다. `'^(CS|EE)'`로 해석하면 CS101, EE202의 2건이 되어 2번 오답이 된다."
+    },
+    {
+      "id": 43,
+      "subject": 2,
+      "theory": "dml",
+      "question": "Oracle에서 아래 문장을 순서대로 실행했을 때 마지막 SELECT의 결과로 옳은 것은? (SUM / COUNT 순서)",
+      "code": "CREATE TABLE enroll (\n  stu_no  VARCHAR2(5),\n  crs_cd  VARCHAR2(5),\n  score   NUMBER DEFAULT 0\n);\nINSERT INTO enroll VALUES ('S1', 'DB', 80);\nINSERT INTO enroll (stu_no, crs_cd) VALUES ('S2', 'DB');\nINSERT INTO enroll VALUES ('S3', 'DB', NULL);\nINSERT INTO enroll VALUES ('S4', 'OS', 70);\n\nUPDATE enroll SET score = score + 10 WHERE crs_cd = 'DB';\n\nSELECT SUM(score), COUNT(score) FROM enroll;",
+      "choices": [
+        "160 / 2",
+        "170 / 3",
+        "180 / 4",
+        "150 / 3"
+      ],
+      "answer": 2,
+      "explanation": "1. S1: 80\n2. S2: SCORE 컬럼을 생략했으므로 **DEFAULT 0**이 입력된다.\n3. S3: NULL을 **명시적으로** 입력했으므로 DEFAULT가 아닌 NULL이 저장된다.\n4. S4: 70 (OS)\n\nUPDATE는 DB 강좌 행에만 +10을 적용한다. S1 → 90, S2 → 10, S3는 **NULL + 10 = NULL**로 그대로 NULL이다.\n\n최종 SCORE: 90, 10, NULL, 70 → SUM = 170, COUNT(SCORE) = 3 (NULL 제외)\n\n1번은 생략된 컬럼이 NULL이 된다고 본 경우, 3번은 NULL + 10을 10으로 본 경우다."
+    },
+    {
+      "id": 44,
+      "subject": 2,
+      "theory": "dml",
+      "question": "다음 두 테이블에 대해 아래 MERGE 문을 실행(Oracle)한 후 STU_GPA 테이블의 데이터로 옳은 것은? (STU_NO, GPA 순)\n\n**STU_GPA**\n\n| STU_NO | GPA |\n|---|---|\n| S1 | 3.5 |\n| S2 | 2.8 |\n| S3 | 4.0 |\n\n**NEW_GPA**\n\n| STU_NO | GPA |\n|---|---|\n| S1 | 3.2 |\n| S2 | 3.1 |\n| S4 | 3.6 |\n| S5 | 2.5 |",
+      "code": "MERGE INTO stu_gpa t\nUSING new_gpa s\n   ON (t.stu_no = s.stu_no)\n WHEN MATCHED THEN\n   UPDATE SET t.gpa = s.gpa\n    WHERE s.gpa > t.gpa\n WHEN NOT MATCHED THEN\n   INSERT (stu_no, gpa) VALUES (s.stu_no, s.gpa)\n    WHERE s.gpa >= 3.0;",
+      "choices": [
+        "(S1, 3.2), (S2, 3.1), (S3, 4.0), (S4, 3.6)",
+        "(S1, 3.5), (S2, 3.1), (S3, 4.0), (S4, 3.6), (S5, 2.5)",
+        "(S1, 3.2), (S2, 3.1), (S3, 4.0), (S4, 3.6), (S5, 2.5)",
+        "(S1, 3.5), (S2, 3.1), (S3, 4.0), (S4, 3.6)"
+      ],
+      "answer": 4,
+      "explanation": "Oracle MERGE는 각 분기에 **WHERE 조건**을 붙여 조건을 만족하는 행만 UPDATE 또는 INSERT할 수 있다.\n\n| 원본 행 | ON 일치 | 처리 |\n|---|---|---|\n| S1 (3.2) | 일치 | 3.2 > 3.5 거짓 → **UPDATE 안 함**, 3.5 유지 |\n| S2 (3.1) | 일치 | 3.1 > 2.8 참 → 3.1로 UPDATE |\n| S4 (3.6) | 불일치 | 3.6 ≥ 3.0 참 → INSERT |\n| S5 (2.5) | 불일치 | 2.5 ≥ 3.0 거짓 → **INSERT 안 함** |\n\nS3는 원본에 없으므로 그대로 남는다. 결과는 (S1, 3.5), (S2, 3.1), (S3, 4.0), (S4, 3.6)이다. 1번은 UPDATE의 WHERE를, 2번은 INSERT의 WHERE를 무시한 결과다."
+    },
+    {
+      "id": 45,
+      "subject": 2,
+      "theory": "tcl",
+      "question": "CRS_SEAT 테이블은 `CRS_CD VARCHAR2(5) PRIMARY KEY, CNT NUMBER CHECK (CNT <= 3)`으로 정의되어 있고, ('DB', 2) 한 행이 커밋되어 있다. Oracle에서 아래 문장을 순서대로 실행한 후 CRS_SEAT 테이블의 데이터로 옳은 것은? (오류가 발생한 문장은 무시하고 다음 문장이 실행된다고 가정한다.)",
+      "code": "UPDATE crs_seat SET cnt = cnt + 1 WHERE crs_cd = 'DB';\nSAVEPOINT sp1;\nUPDATE crs_seat SET cnt = cnt + 1 WHERE crs_cd = 'DB';\nINSERT INTO crs_seat VALUES ('OS', 1);\nROLLBACK TO sp1;\nCOMMIT;",
+      "choices": [
+        "('DB', 2)",
+        "('DB', 4), ('OS', 1)",
+        "('DB', 3)",
+        "('DB', 3), ('OS', 1)"
+      ],
+      "answer": 3,
+      "explanation": "Oracle에서 한 문장이 오류로 실패하면 **그 문장만 취소**(문장 수준 롤백)되고, 트랜잭션의 앞선 변경은 그대로 유지된다.\n\n1. 첫 UPDATE: CNT 2 → 3\n2. SAVEPOINT sp1 (CNT = 3인 시점)\n3. 두 번째 UPDATE: 4가 되어 CHECK 위반 → 이 문장만 실패, CNT는 3 유지\n4. INSERT ('OS', 1) 성공\n5. ROLLBACK TO sp1: sp1 이후의 INSERT 취소\n6. COMMIT: ('DB', 3) 확정\n\n1번은 오류 때문에 트랜잭션 전체가 취소된다고 본 경우이고, 4번은 ROLLBACK TO sp1이 INSERT를 취소한다는 점을 놓친 경우다."
+    },
+    {
+      "id": 46,
+      "subject": 2,
+      "theory": "tcl",
+      "question": "성적 처리 트랜잭션 TX1이 학생 S1의 점수를 조회해 80점을 얻었다. 그 사이 다른 트랜잭션 TX2가 S1의 점수를 90점으로 **UPDATE하고 COMMIT**했고, TX1이 같은 SELECT를 다시 실행하자 90점이 조회되었다.\n\n이 현상과, 이 현상을 방지할 수 있는 **가장 낮은** 격리 수준을 바르게 짝지은 것은? (ANSI 표준 기준)",
+      "choices": [
+        "Non-Repeatable Read / REPEATABLE READ",
+        "Phantom Read / REPEATABLE READ",
+        "Dirty Read / READ COMMITTED",
+        "Non-Repeatable Read / READ COMMITTED"
+      ],
+      "answer": 1,
+      "explanation": "한 트랜잭션 안에서 **같은 행**을 두 번 읽는 사이 다른 트랜잭션이 그 행을 **수정(또는 삭제)하고 커밋**해서 값이 달라지는 현상은 **Non-Repeatable Read**다.\n\n| 격리 수준 | Dirty Read | Non-Repeatable Read | Phantom Read |\n|---|---|---|---|\n| READ UNCOMMITTED | 발생 | 발생 | 발생 |\n| READ COMMITTED | 방지 | **발생** | 발생 |\n| REPEATABLE READ | 방지 | **방지** | 발생 |\n| SERIALIZABLE | 방지 | 방지 | 방지 |\n\n따라서 이를 막는 가장 낮은 격리 수준은 REPEATABLE READ이다. READ COMMITTED는 커밋된 값만 읽게 할 뿐 재조회 시 값이 바뀌는 것은 막지 못한다(4번 오답). Phantom Read는 새 행의 **삽입**으로 없던 행이 나타나는 현상이고, Dirty Read는 커밋되지 않은 값을 읽는 현상이다."
+    },
+    {
+      "id": 47,
+      "subject": 2,
+      "theory": "ddl",
+      "question": "Oracle의 VIEW, INDEX, SEQUENCE에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "뷰는 정의 시점의 SELECT 결과를 별도 저장 공간에 복사해 두므로, 원본 테이블을 삭제해도 뷰는 계속 조회할 수 있다.",
+        "인덱스는 조회 속도를 높일 수 있지만, INSERT·UPDATE·DELETE 시 인덱스도 함께 갱신되어 DML 부하가 늘어날 수 있다.",
+        "뷰의 정의를 바꾸려면 `ALTER VIEW 뷰명 AS SELECT …`로 SELECT 문을 직접 수정한다.",
+        "SQL Server는 순번 생성에 시퀀스만 사용할 수 있으며, 테이블 컬럼에 IDENTITY 속성을 지정할 수 없다."
+      ],
+      "answer": 2,
+      "explanation": "인덱스는 검색 속도를 높이는 객체지만, 데이터가 바뀌면 인덱스 구조도 함께 갱신해야 하므로 **DML 성능에는 부담**이 된다. 그래서 무분별하게 많이 만들지 않는다.\n\n- 1번: 뷰는 데이터를 갖지 않는 **가상 테이블**(저장된 SELECT 문)이므로 원본 테이블이 없으면 조회할 수 없다.\n- 3번: Oracle은 ALTER VIEW로 정의(SELECT 문)를 바꿀 수 없어 `CREATE OR REPLACE VIEW`로 다시 생성한다.\n- 4번: SQL Server는 순번 생성에 주로 **IDENTITY 속성**을 사용한다."
+    },
+    {
+      "id": 48,
+      "subject": 2,
+      "theory": "ddl",
+      "question": "Oracle에서 선수과목을 관리하기 위해 아래와 같이 COURSE 테이블을 생성한 뒤(처음에는 비어 있음) ㄱ~ㄹ을 순서대로 실행했다. **실패하는** 문장을 모두 고른 것은? (오류가 발생한 문장은 무시하고 다음 문장이 실행된다고 가정한다.)",
+      "code": "CREATE TABLE course (\n  crs_cd  VARCHAR2(5)  PRIMARY KEY,\n  crs_nm  VARCHAR2(20) NOT NULL,\n  pre_cd  VARCHAR2(5)  REFERENCES course(crs_cd)\n);\n\nㄱ. INSERT INTO course VALUES ('C2', '자료구조', 'C1');\nㄴ. INSERT INTO course VALUES ('C1', '프로그래밍', NULL);\nㄷ. INSERT INTO course VALUES ('C2', '자료구조', 'C1');\nㄹ. DELETE FROM course WHERE crs_cd = 'C1';",
+      "choices": [
+        "ㄱ",
+        "ㄹ",
+        "ㄱ, ㄹ",
+        "ㄱ, ㄷ, ㄹ"
+      ],
+      "answer": 3,
+      "explanation": "PRE_CD는 같은 테이블의 CRS_CD를 참조하는 **셀프 참조 FK**다. FK 컬럼에는 부모에 존재하는 값 또는 NULL만 들어갈 수 있다.\n\n- ㄱ: 아직 'C1'이 없으므로 부모 키 없음 오류로 **실패**\n- ㄴ: PRE_CD가 NULL이므로 성공 (FK 컬럼은 NULL 허용)\n- ㄷ: 이제 'C1'이 있으므로 성공\n- ㄹ: 'C2'가 'C1'을 참조하고 있고 ON DELETE 옵션이 없으므로 자식 레코드 존재 오류로 **실패**\n\n따라서 실패하는 문장은 ㄱ, ㄹ이다. ㄷ은 ㄱ과 같은 문장이지만 ㄴ이 먼저 실행되어 부모 행이 생긴 뒤이므로 성공한다."
+    },
+    {
+      "id": 49,
+      "subject": 2,
+      "theory": "dcl",
+      "question": "PROF 사용자가 소유한 GRADE 테이블(STU_NO, CRS_CD, SCORE)에 대해 조교 TA1에게 다음 요구사항에 맞게 권한을 부여하려 한다. 가장 적절한 문장은? (Oracle 기준)\n\n> 조교는 성적 테이블을 조회할 수 있어야 하고, 점수(SCORE) 컬럼만 수정할 수 있어야 한다. 조교가 자신의 권한을 다른 사용자에게 다시 부여할 수는 없어야 한다.",
+      "choices": [
+        "`GRANT SELECT, UPDATE ON prof.grade TO ta1;`",
+        "`GRANT SELECT, UPDATE (score) ON prof.grade TO ta1 WITH GRANT OPTION;`",
+        "`GRANT ALL ON prof.grade TO ta1;`",
+        "`GRANT SELECT, UPDATE (score) ON prof.grade TO ta1;`"
+      ],
+      "answer": 4,
+      "explanation": "오브젝트 권한 중 UPDATE는 `UPDATE (컬럼)` 형태로 **특정 컬럼에만** 부여할 수 있다. 4번은 조회(SELECT)와 SCORE 컬럼 수정만 허용하고, WITH GRANT OPTION이 없으므로 TA1이 권한을 재부여할 수 없다.\n\n- 1번: 컬럼을 지정하지 않아 STU_NO, CRS_CD까지 모든 컬럼을 수정할 수 있다.\n- 2번: WITH GRANT OPTION 때문에 TA1이 다른 사용자에게 권한을 다시 줄 수 있다.\n- 3번: ALL은 INSERT, DELETE 등 모든 오브젝트 권한을 주므로 최소 권한 원칙에 어긋난다."
+    },
+    {
+      "id": 50,
+      "subject": 2,
+      "theory": "dcl",
+      "question": "DBMS가 제공하는 롤(ROLE)에 대한 설명으로 가장 적절한 것은?",
+      "choices": [
+        "SQL Server의 db_datareader는 데이터베이스 수준 롤로, 해당 데이터베이스의 모든 사용자 테이블을 조회할 수 있는 권한을 묶어 둔 것이다.",
+        "Oracle의 CONNECT 롤에는 CREATE TABLE 권한이 포함되어 있어 CONNECT 롤만 받아도 테이블을 만들 수 있다.",
+        "Oracle의 롤에는 시스템 권한만 담을 수 있고, SELECT ON 테이블과 같은 오브젝트 권한은 담을 수 없다.",
+        "롤에 부여된 권한을 회수해도, 이미 그 롤을 부여받은 사용자에게는 회수 결과가 반영되지 않는다."
+      ],
+      "answer": 1,
+      "explanation": "SQL Server는 서버 수준 롤(sysadmin 등)과 데이터베이스 수준 롤(db_owner, **db_datareader**, db_datawriter 등)을 제공하며, db_datareader는 해당 DB의 모든 사용자 테이블을 읽을 수 있는 롤이다.\n\n- 2번: Oracle의 CONNECT 롤은 **접속(CREATE SESSION)** 용도이며, 객체 생성 권한은 RESOURCE 롤에 들어 있다.\n- 3번: 롤에는 시스템 권한과 오브젝트 권한을 **함께** 담을 수 있다.\n- 4번: 롤의 권한을 변경하면 그 롤을 받은 **모든 사용자에게 즉시** 반영된다. 이것이 롤을 쓰는 주된 장점이다."
+    }
+  ]
+}

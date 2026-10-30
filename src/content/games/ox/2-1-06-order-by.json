@@ -1,0 +1,21 @@
+[
+  { "text": "ORDER BY 절에서 정렬 방향을 생략하면 오름차순(ASC)으로 정렬된다.", "answer": true, "explain": "ASC가 기본값이며 생략 가능하다." },
+  { "text": "ORDER BY A, B DESC는 A와 B를 모두 내림차순으로 정렬한다.", "answer": false, "explain": "DESC는 B에만 적용되며 A는 기본값인 오름차순이다." },
+  { "text": "ORDER BY의 두 번째 정렬 기준은 첫 번째 기준 값이 같은 행끼리만 적용된다.", "answer": true, "explain": "동점일 때만 다음 기준으로 정렬한다." },
+  { "text": "ORDER BY 절이 없으면 결과는 테이블에 입력된 순서대로 출력되는 것이 보장된다.", "answer": false, "explain": "ORDER BY가 없으면 결과 순서는 보장되지 않는다." },
+  { "text": "ORDER BY 2는 SELECT 절의 두 번째 항목을 기준으로 정렬한다.", "answer": true, "explain": "위치 번호는 SELECT 목록의 n번째 항목을 가리킨다." },
+  { "text": "ORDER BY 절에서 컬럼명과 위치 번호를 함께 섞어 쓰면 오류가 발생한다.", "answer": false, "explain": "컬럼명, 별칭, 위치 번호를 혼용해도 오류가 아니다." },
+  { "text": "ORDER BY 절에 SELECT 항목 수보다 큰 위치 번호를 쓰면 오류가 발생한다.", "answer": true, "explain": "존재하지 않는 SELECT 항목을 가리키므로 오류다." },
+  { "text": "ORDER BY 절에는 SAL * 12와 같은 표현식을 정렬 기준으로 사용할 수 있다.", "answer": true, "explain": "함수나 연산식도 정렬 기준으로 쓸 수 있다." },
+  { "text": "Oracle은 NULL을 가장 작은 값으로 취급하여 오름차순 정렬 시 맨 앞에 출력한다.", "answer": false, "explain": "Oracle은 NULL을 가장 큰 값으로 취급해 ASC에서 맨 뒤, DESC에서 맨 앞에 온다." },
+  { "text": "SQL Server에서 오름차순 정렬 시 NULL은 맨 앞에 출력된다.", "answer": true, "explain": "SQL Server는 NULL을 가장 작은 값으로 취급한다." },
+  { "text": "Oracle에서 내림차순(DESC) 정렬 시 NULL은 맨 뒤에 출력된다.", "answer": false, "explain": "Oracle에서 NULL은 최댓값 취급이라 DESC 정렬 시 맨 앞에 온다." },
+  { "text": "Oracle에서는 NULLS FIRST, NULLS LAST로 NULL의 정렬 위치를 직접 지정할 수 있다.", "answer": true, "explain": "예: ORDER BY COMM DESC NULLS LAST." },
+  { "text": "SQL Server는 ORDER BY 절에서 NULLS LAST 옵션을 지원한다.", "answer": false, "explain": "SQL Server는 NULLS FIRST/LAST를 지원하지 않아 CASE 식으로 처리한다." },
+  { "text": "일반 SELECT 문에서는 SELECT 절에 없는 컬럼으로도 ORDER BY 정렬이 가능하다.", "answer": true, "explain": "DBMS가 정렬에 필요한 컬럼을 내부적으로 함께 읽어 둔다." },
+  { "text": "SELECT DISTINCT DEPTNO FROM EMP ORDER BY SAL은 정상적으로 실행된다.", "answer": false, "explain": "DISTINCT 사용 시 SELECT 목록에 없는 컬럼으로 정렬할 수 없어 오류다." },
+  { "text": "GROUP BY를 사용한 쿼리에서는 SELECT 절에 없는 집계 함수로도 정렬할 수 있다.", "answer": true, "explain": "예: GROUP BY DEPTNO ORDER BY COUNT(*) DESC는 정상이다." },
+  { "text": "GROUP BY DEPTNO를 사용한 쿼리에서 그룹 컬럼이 아닌 SAL로 ORDER BY 정렬할 수 있다.", "answer": false, "explain": "GROUP BY 사용 시 GROUP BY 컬럼, 집계 함수, SELECT 항목만 정렬 기준으로 쓸 수 있다." },
+  { "text": "Oracle에서 ROWNUM과 ORDER BY를 같은 쿼리 블록에 쓰면 정렬 후에 ROWNUM이 매겨진다.", "answer": false, "explain": "ROWNUM이 먼저 매겨진 뒤 정렬된다. 정렬 후 상위 N건은 인라인 뷰로 구한다." },
+  { "text": "ORDER BY 절은 SELECT 문의 논리적 실행 순서에서 가장 마지막에 수행된다.", "answer": true, "explain": "SELECT 다음에 실행되므로 컬럼 별칭도 사용할 수 있다." }
+]
