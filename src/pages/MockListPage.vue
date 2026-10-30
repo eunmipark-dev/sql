@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ChevronRight, Dices, Info, LayoutList, ListTree } from '@lucide/vue'
+import { ChevronRight, Dices, LayoutList, ListTree } from '@lucide/vue'
 import ExamGrid from '@/components/exam/ExamGrid.vue'
 import TopicTree from '@/components/exam/TopicTree.vue'
 import ProgressStat from '@/components/exam/ProgressStat.vue'
@@ -37,7 +37,7 @@ const INTRO = {
   },
 } as const
 const intro = computed(() => INTRO[kind.value === 'sqlp' ? 'sqlp' : 'ai'])
-watch(intro, (i) => (document.title = `${i.title} · SQL 자격증`), { immediate: true })
+watch(intro, (i) => (document.title = `${i.title} · Pass SQLD/SQLP`), { immediate: true })
 const total = computed(() =>
   progress.statsByExams(
     exams.value.map((e) => e.id),

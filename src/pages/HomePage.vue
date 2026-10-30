@@ -17,7 +17,7 @@ import { useCertStore } from '@/stores/cert'
  * 홈 = '오늘 할 것' (Speak 처럼 열자마자 할 일 하나를 크게).
  * 연속 학습일 · 오늘 목표 → 이어서 하기 → 오늘 복습·랜덤 → 실력 요약
  */
-document.title = 'SQL 자격증'
+document.title = 'Pass SQLD/SQLP'
 const certStore = useCertStore()
 const activity = useActivityStore()
 const { items: resume, next } = useResume()

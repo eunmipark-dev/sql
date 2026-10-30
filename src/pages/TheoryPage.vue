@@ -56,7 +56,7 @@ watch(
     const out = await renderMarkdown(d.body.replace(/^\s*# .*\r?\n/, ''))
     html.value = out.html
     headings.value = out.headings
-    document.title = `${d.title} · SQL 자격증`
+    document.title = `${d.title} · Pass SQLD/SQLP`
     Promise.all([loadBankIndex('ai'), loadBankIndex('sqlp')])
       .then(([ai, sqlp]) => (practiceCount.value = { ai: ai[d.slug]?.count ?? 0, sqlp: sqlp[d.slug]?.count ?? 0 }))
       .catch(() => (practiceCount.value = { ai: 0, sqlp: 0 }))

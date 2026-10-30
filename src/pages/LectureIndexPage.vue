@@ -14,7 +14,7 @@ import type { TheoryDoc } from '@/types'
  * 강의만 모아 보기: 선택한 자격증 범위의 이론 문서 중 강의가 있는 것 (과목 → 장).
  * 상태: 완료(학습 완료 표시) / 학습 중(강의를 듣다 멈췄거나 문서를 읽음) / 미학습
  */
-document.title = '강의 · SQL 자격증'
+document.title = '강의 · Pass SQLD/SQLP'
 const certStore = useCertStore()
 const theory = useTheoryStore()
 

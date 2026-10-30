@@ -22,7 +22,7 @@ import { useProgressStore } from '@/stores/progress'
 import { useTheoryStore } from '@/stores/theory'
 import { useWrongNotesStore } from '@/stores/wrongNotes'
 
-document.title = '마이페이지 · SQL 자격증'
+document.title = '마이페이지 · Pass SQLD/SQLP'
 const auth = useAuthStore()
 const certStore = useCertStore()
 const progress = useProgressStore()

@@ -208,7 +208,7 @@ watch(
       doneParts.value = readDoneParts(s)
       partIndex.value = 0
       lecture.value = l
-      document.title = `${l.title} 강의 · SQL 자격증`
+      document.title = `${l.title} 강의 · Pass SQLD/SQLP`
       const p = partOf(parts.value, resumedFrom.value)
       partIndex.value = p?.index ?? 0
       if (resumedFrom.value) player.goScene(resumedFrom.value - (p?.start ?? 0))

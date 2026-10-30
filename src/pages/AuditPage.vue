@@ -16,7 +16,7 @@ import type { Exam } from '@/types'
  * - 정답률 이상: 푼 사람이 MIN_SOLVERS 명 이상인데 정답률이 아주 낮거나, 한 오답에 정답보다 많이 몰린 문제
  * 펼치면 문제·정답·해설·코멘트를 바로 볼 수 있다
  */
-document.title = '문제 검수 · SQL 자격증'
+document.title = '문제 검수 · Pass SQLD/SQLP'
 const certStore = useCertStore()
 
 /** 정답률이 이보다 낮으면 의심 */

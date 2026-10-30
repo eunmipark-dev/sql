@@ -17,7 +17,7 @@ import { useActivityStore } from '@/stores/activity'
  * 정답은 데이터에 적어 두지 않고 그 자리에서 실제로 실행해서 정한다 (AI 가 정답을 잘못 적을 일이 없다).
  * 풀고 나면 실제 결과 표를 보여주고, SQL 을 고쳐서 다시 실행해 볼 수 있다
  */
-document.title = 'SQL 결과 맞히기 · SQL 자격증'
+document.title = 'SQL 결과 맞히기 · Pass SQLD/SQLP'
 const activity = useActivityStore()
 
 const ROUND = 5

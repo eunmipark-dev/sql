@@ -51,6 +51,6 @@ function setTime(e: Event) {
       <span class="text-muted-foreground">알림 시각</span>
       <input type="time" :value="reminder.time" class="ml-auto h-9 rounded-md border bg-background px-2 tabular-nums" @change="setTime" />
     </label>
-    <p v-if="denied" class="mt-3 text-xs text-destructive">알림 권한이 꺼져 있어요. 휴대폰 설정 → 앱 → SQL 자격증 → 알림에서 켜 주세요.</p>
+    <p v-if="denied" class="mt-3 text-xs text-destructive">알림 권한이 꺼져 있어요. 휴대폰 설정 → 앱 → Pass SQLD → 알림에서 켜 주세요.</p>
   </section>
 </template>

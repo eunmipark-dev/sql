@@ -41,7 +41,7 @@ watch(
   async () => {
     loading.value = true
     all.value = await loadBank(kind.value, slug.value).catch(() => [])
-    document.title = `${doc.value?.title ?? slug.value} 문제 · SQL 자격증`
+    document.title = `${doc.value?.title ?? slug.value} 문제 · Pass SQLD/SQLP`
     await until(() => progress.loaded).toBe(true, { timeout: 5000 })
     resetOrder(false)
     current.value = resumeIndex()
@@ -193,14 +193,6 @@ const filters: { value: Filter; label: string }[] = [
         </div>
 
         <div v-if="question" class="mt-6 rounded-xl border p-6">
-          <div class="mb-4 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-            출처: {{ question.examTitle }} {{ question.number }}번
-            <SolvedStatus
-              v-if="picked[keyOf(question)] === undefined"
-              :exam-id="question.examId"
-              :question-id="question.number"
-            />
-          </div>
           <QuestionView
             :question="question"
             :number="current + 1"
@@ -208,7 +200,16 @@ const filters: { value: Filter; label: string }[] = [
             :revealed="picked[keyOf(question)] !== undefined"
             :bookmark="{ examId: question.examId, questionId: question.number }"
             @select="select"
-          />
+          >
+            <template #meta>
+              <span class="text-muted-foreground">출처: {{ question.examTitle }} {{ question.number }}번</span>
+              <SolvedStatus
+                v-if="picked[keyOf(question)] === undefined"
+                :exam-id="question.examId"
+                :question-id="question.number"
+              />
+            </template>
+          </QuestionView>
         </div>
 
         <div class="mt-6 flex items-center gap-2">

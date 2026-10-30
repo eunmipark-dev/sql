@@ -23,12 +23,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- Google 로그인 후 돌아오는 주소: kr.co.clobot.sqlcert://auth-callback (src/lib/native.ts AUTH_REDIRECT) -->
+            <!-- Google 로그인 후 돌아오는 주소: app.passcert.sql://auth-callback (src/lib/native.ts AUTH_REDIRECT) -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="kr.co.clobot.sqlcert" android:host="auth-callback" />
+                <data android:scheme="app.passcert.sql" android:host="auth-callback" />
             </intent-filter>
 
         </activity>

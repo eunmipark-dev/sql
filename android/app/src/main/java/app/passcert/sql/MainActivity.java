@@ -1,4 +1,4 @@
-package kr.co.clobot.sqlcert;
+package app.passcert.sql;
 
 import com.getcapacitor.BridgeActivity;
 

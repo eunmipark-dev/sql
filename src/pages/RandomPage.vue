@@ -17,7 +17,7 @@ import type { Exam, Question } from '@/types'
  * 랜덤 문제: 선택한 자격증의 모의고사 전체(객관식)에서 회차·문항을 무작위로 하나씩 뽑는다.
  * 고르면 바로 채점하고 풀이 기록·오답노트에 남긴다. 이번 방문에서 나온 문제는 다시 뽑지 않는다
  */
-document.title = '랜덤 문제 · SQL 자격증'
+document.title = '랜덤 문제 · Pass SQLD/SQLP'
 const certStore = useCertStore()
 const progress = useProgressStore()
 
@@ -153,21 +153,6 @@ useEventListener(window, 'keydown', (e: KeyboardEvent) => {
 
     <template v-else>
       <div :class="cn('mt-6 rounded-xl border p-6 transition-opacity', drawing && 'opacity-50')">
-        <!-- 출처: 어느 모의고사 몇 번인지 -->
-        <div class="mb-4 flex flex-wrap items-center gap-2 text-xs">
-          <Badge>{{ certStore.info.label }}</Badge>
-          <span class="font-semibold">{{ current.exam.title }} · {{ current.number }}번</span>
-          <Badge variant="outline">{{ current.question.subject }}과목</Badge>
-          <RouterLink
-            v-if="theoryDoc"
-            :to="{ name: 'theory', params: { slug: theoryDoc.slug } }"
-            class="inline-flex items-center gap-1 text-muted-foreground hover:text-primary"
-          >
-            <BookOpen class="size-3.5" /> {{ theoryDoc.title }}
-          </RouterLink>
-          <SolvedStatus v-if="picked === undefined" :exam-id="current.exam.id" :question-id="current.question.id" class="ml-auto" />
-        </div>
-
         <QuestionView
           :question="current.question"
           :number="current.number"
@@ -175,7 +160,22 @@ useEventListener(window, 'keydown', (e: KeyboardEvent) => {
           :revealed="picked !== undefined"
           :bookmark="{ examId: current.exam.id, questionId: current.question.id }"
           @select="select"
-        />
+        >
+          <!-- 출처: 어느 모의고사 몇 번인지 -->
+          <template #meta>
+            <Badge>{{ certStore.info.label }}</Badge>
+            <span class="font-semibold">{{ current.exam.title }} · {{ current.number }}번</span>
+            <Badge variant="outline">{{ current.question.subject }}과목</Badge>
+            <RouterLink
+              v-if="theoryDoc"
+              :to="{ name: 'theory', params: { slug: theoryDoc.slug } }"
+              class="inline-flex items-center gap-1 text-muted-foreground hover:text-primary"
+            >
+              <BookOpen class="size-3.5" /> {{ theoryDoc.title }}
+            </RouterLink>
+            <SolvedStatus v-if="picked === undefined" :exam-id="current.exam.id" :question-id="current.question.id" />
+          </template>
+        </QuestionView>
       </div>
 
       <div class="mt-5 flex flex-wrap items-center gap-2">

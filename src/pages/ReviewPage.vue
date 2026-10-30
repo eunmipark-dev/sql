@@ -18,7 +18,7 @@ import type { Exam, WrongNote } from '@/types'
  * 오늘 복습: 복습 날짜가 된 오답을 한 문제씩 다시 푼다 (간격 복습 1일 → 3일 → 7일).
  * 시작할 때 목록을 고정해 두고(푸는 동안 줄어들지 않게) 끝까지 간다
  */
-document.title = '오늘 복습 · SQL 자격증'
+document.title = '오늘 복습 · Pass SQLD/SQLP'
 const certStore = useCertStore()
 const progress = useProgressStore()
 const wrongNotes = useWrongNotesStore()
@@ -149,13 +149,6 @@ useEventListener(window, 'keydown', (e: KeyboardEvent) => {
 
     <template v-else-if="current">
       <div class="mt-5 rounded-xl border p-4 sm:p-6">
-        <div class="mb-4 flex flex-wrap items-center gap-2 text-xs">
-          <Badge variant="secondary">{{ current.exam.kind === 'past' ? `기출 · ${current.exam.title}` : current.exam.title }}</Badge>
-          <Badge variant="outline">{{ current.question.subject }}과목</Badge>
-          <span class="inline-flex items-center gap-1 text-muted-foreground">
-            <CalendarClock class="size-3.5" /> 복습 {{ (current.note.reviewStage ?? 0) + 1 }}회차 · 틀림 {{ current.note.wrongCount }}
-          </span>
-        </div>
         <QuestionView
           :question="current.question"
           :number="current.number"
@@ -164,7 +157,15 @@ useEventListener(window, 'keydown', (e: KeyboardEvent) => {
           :bookmark="{ examId: current.note.examId, questionId: current.note.questionId }"
           always-extras
           @select="select"
-        />
+        >
+          <template #meta>
+            <Badge variant="secondary">{{ current.exam.kind === 'past' ? `기출 · ${current.exam.title}` : current.exam.title }}</Badge>
+            <Badge variant="outline">{{ current.question.subject }}과목</Badge>
+            <span class="inline-flex items-center gap-1 text-muted-foreground">
+              <CalendarClock class="size-3.5" /> 복습 {{ (current.note.reviewStage ?? 0) + 1 }}회차 · 틀림 {{ current.note.wrongCount }}
+            </span>
+          </template>
+        </QuestionView>
       </div>
 
       <div v-if="schedule" :class="cn('mt-4 rounded-xl px-4 py-3 text-sm font-medium', schedule.good ? 'bg-success/10 text-success' : 'bg-muted')">

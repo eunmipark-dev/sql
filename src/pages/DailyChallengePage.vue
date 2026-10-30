@@ -26,7 +26,7 @@ import { useProgressStore } from '@/stores/progress'
  * 푼 문제는 풀이 기록·오답노트·랭킹에 그대로 남고, 끝나면 🟩🟥 결과를 공유할 수 있다.
  * 어디까지 풀었는지는 이 기기에 기억해서, 중간에 나가도 이어서 푼다
  */
-document.title = '오늘의 챌린지 · SQL 자격증'
+document.title = '오늘의 챌린지 · Pass SQLD/SQLP'
 const certStore = useCertStore()
 const activity = useActivityStore()
 const progress = useProgressStore()
@@ -193,10 +193,6 @@ const message = computed(() => {
       </ol>
 
       <div class="mt-5 rounded-xl border p-5 sm:p-6">
-        <div class="mb-4 flex flex-wrap items-center gap-2 text-xs">
-          <Badge variant="outline">{{ current.question.subject }}과목</Badge>
-          <span class="text-muted-foreground">{{ current.examTitle }} · {{ current.number }}번</span>
-        </div>
         <QuestionView
           :question="current.question"
           :number="index + 1"
@@ -204,7 +200,12 @@ const message = computed(() => {
           :revealed="answered"
           :bookmark="{ examId: current.examId, questionId: current.question.id }"
           @select="select"
-        />
+        >
+          <template #meta>
+            <Badge variant="outline">{{ current.question.subject }}과목</Badge>
+            <span class="text-muted-foreground">{{ current.examTitle }} · {{ current.number }}번</span>
+          </template>
+        </QuestionView>
       </div>
 
       <div class="mt-5 flex items-center gap-2">

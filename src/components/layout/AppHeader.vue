@@ -68,10 +68,10 @@ function selectCert(c: Cert) {
 <template>
   <header class="sticky top-0 z-40 border-b bg-background/80 pt-(--inset-top) backdrop-blur">
     <div class="mx-auto flex h-14 max-w-7xl items-center gap-2 px-4">
-      <RouterLink to="/" class="mr-1 flex items-center sm:mr-2" aria-label="SQL 자격증 홈">
+      <RouterLink to="/" class="mr-1 flex items-center sm:mr-2" aria-label="Pass SQLD/SQLP 홈">
         <AppLogo />
         <span class="ml-2 hidden text-[17px] whitespace-nowrap tracking-tight sm:inline">
-          <b class="font-extrabold">SQL</b><span class="ml-1 font-medium">자격증</span>
+          <b class="font-extrabold">Pass</b>
         </span>
       </RouterLink>
 

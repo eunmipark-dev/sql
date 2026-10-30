@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils'
  * SQL 실습장: 연습 테이블(EMP · DEPT · T1 · T2)에 아무 SQL 이나 실행해 본다.
  * 실행이 끝나면 데이터는 되돌려진다 (늘 같은 데이터로 연습)
  */
-document.title = 'SQL 실습장 · SQL 자격증'
+document.title = 'SQL 실습장 · Pass SQLD/SQLP'
 
 const EXAMPLES = [
   { label: '부서별 급여 합계', sql: 'SELECT deptno, COUNT(*) AS cnt, SUM(sal) AS total\nFROM emp\nGROUP BY deptno\nORDER BY deptno' },

@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace = "kr.co.clobot.sqlcert"
+    namespace = "app.passcert.sql"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "kr.co.clobot.sqlcert"
+        applicationId "app.passcert.sql"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

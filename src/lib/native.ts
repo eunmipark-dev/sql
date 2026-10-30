@@ -13,7 +13,7 @@ import type { Router } from 'vue-router'
 export const isNative = Capacitor.isNativePlatform()
 
 /** 로그인 후 돌아올 앱 주소. AndroidManifest 의 intent-filter, Supabase Redirect URLs 와 같아야 한다 */
-export const AUTH_REDIRECT = 'kr.co.clobot.sqlcert://auth-callback'
+export const AUTH_REDIRECT = 'app.passcert.sql://auth-callback'
 
 export function setupNativeShell(router: Router) {
   if (!isNative) return

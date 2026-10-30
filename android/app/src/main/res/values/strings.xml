@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">SQL 자격증</string>
-    <string name="title_activity_main">SQL 자격증</string>
-    <string name="package_name">kr.co.clobot.sqlcert</string>
-    <string name="custom_url_scheme">kr.co.clobot.sqlcert</string>
+    <string name="app_name">Pass SQLD</string>
+    <string name="title_activity_main">Pass SQLD</string>
+    <string name="package_name">app.passcert.sql</string>
+    <string name="custom_url_scheme">app.passcert.sql</string>
 </resources>

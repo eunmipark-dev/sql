@@ -8,7 +8,7 @@ import { useAuthStore } from '@/stores/auth'
 import { useCertStore } from '@/stores/cert'
 
 /** 미니게임 모음: 오늘의 챌린지 · 60초 O/X · 순서 퍼즐 · SQL 결과 맞히기 (+ SQL 실습장). 푼 기록은 비로그인이면 이 기기, 로그인하면 계정에 */
-document.title = '미니게임 · SQL 자격증'
+document.title = '미니게임 · Pass SQLD/SQLP'
 const auth = useAuthStore()
 const certStore = useCertStore()
 const activity = useActivityStore()

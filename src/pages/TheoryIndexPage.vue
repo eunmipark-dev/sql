@@ -13,7 +13,7 @@ const { show } = useSearchDialog()
 const theory = useTheoryStore()
 const certStore = useCertStore()
 const overall = computed(() => theory.statsOf(certStore.docs))
-document.title = '이론 · SQL 자격증'
+document.title = '이론 · Pass SQLD/SQLP'
 </script>
 
 <template>

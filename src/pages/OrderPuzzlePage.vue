@@ -13,7 +13,7 @@ import { useCertStore } from '@/stores/cert'
  * 순서 퍼즐: 카드를 눌러 순서대로 쌓는다 (끌기보다 휴대폰에서 정확하다). 한 판 = 5문제.
  * 점수 = 한 번에 맞힌 퍼즐 × 100 + 빨리 끝낸 보너스 (150초에서 걸린 초를 뺀 만큼)
  */
-document.title = '순서 퍼즐 · SQL 자격증'
+document.title = '순서 퍼즐 · Pass SQLD/SQLP'
 const certStore = useCertStore()
 const activity = useActivityStore()
 const ROUND = 5

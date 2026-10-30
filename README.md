@@ -1,6 +1,6 @@
-# SQL 자격증 스터디 (SQLD / SQLP)
+# Pass SQLD/SQLP
 
-이론 · 기출문제 · 오답노트로 구성된 SQL 자격증 학습 사이트.
+SQLD · SQLP 자격증 학습 앱 (Pass 시리즈). 이론 · 기출문제 · 오답노트로 구성.
 
 ## 스택
 
@@ -138,13 +138,13 @@ src/
 - 준비: JDK 21, Android Studio(Android SDK 포함)
 - `npm run android` — 웹 빌드 → `android/`에 복사 → Android Studio 열기 (여기서 기기/에뮬레이터 실행, APK 빌드)
 - `npm run android:sync` — 웹 코드만 고친 뒤 앱에 반영
-- 설정: `capacitor.config.ts` (appId `kr.co.clobot.sqlcert` — 스토어 출시 후에는 변경 불가)
+- 설정: `capacitor.config.ts` (appId `app.passcert.sql` — 스토어 출시 후에는 변경 불가)
 
 앱에서 달라지는 점
 
 - **TTS**: WebView의 speechSynthesis 대신 기기 TTS(`@capacitor-community/text-to-speech`). 기기에 한국어 음성 데이터가 없으면 설정 → 텍스트 음성 변환에서 설치한다.
-- **Google 로그인**: 앱 WebView에서는 Google이 로그인을 막으므로 외부 브라우저(커스텀 탭)로 열고, `kr.co.clobot.sqlcert://auth-callback` 딥링크로 돌아와 PKCE code를 세션으로 교환한다.
-  - Supabase → Authentication → URL Configuration → Redirect URLs에 `kr.co.clobot.sqlcert://auth-callback` 추가 필요
+- **Google 로그인**: 앱 WebView에서는 Google이 로그인을 막으므로 외부 브라우저(커스텀 탭)로 열고, `app.passcert.sql://auth-callback` 딥링크로 돌아와 PKCE code를 세션으로 교환한다.
+  - Supabase → Authentication → URL Configuration → Redirect URLs에 `app.passcert.sql://auth-callback` 추가 필요
   - 딥링크 주소는 `AndroidManifest.xml`의 intent-filter, `src/lib/native.ts`의 `AUTH_REDIRECT`와 같아야 한다
 - **뒤로가기 버튼**: 앱 안에서 뒤로, 더 갈 곳이 없으면 종료
 - **시스템 바 여백**: Android 15부터 화면이 상태바·하단 버튼(3버튼/제스처 바) 밑까지 그려진다. `style.css`의 `--inset-top/right/bottom/left`(= `env(safe-area-inset-*)`와 Capacitor가 넣는 `--safe-area-inset-*` 중 큰 값)로 헤더, 하단 탭, 페이지 아래 여백, 서랍, 강의 화면 높이를 맞춘다. 화면 아래·옆에 붙는 요소를 새로 만들 때는 이 변수를 쓴다.

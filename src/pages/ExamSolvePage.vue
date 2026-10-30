@@ -51,7 +51,7 @@ watch(
         .get(id)
         .catch((e) => console.error('[이어 풀기 불러오기 실패]', e))
       exam.value = loaded
-      document.title = `${loaded.title} · SQL 자격증`
+      document.title = `${loaded.title} · Pass SQLD/SQLP`
       start(draft ?? undefined)
     } catch (e) {
       loadError.value = String(e instanceof Error ? e.message : e)
@@ -413,7 +413,6 @@ const palette = computed(() =>
       </div>
 
       <div v-if="question" class="mt-6 rounded-xl border p-6">
-        <SolvedStatus :exam-id="exam.id" :question-id="question.id" class="mb-3" />
         <QuestionView
           :question="question"
           :number="current + 1"
@@ -421,7 +420,9 @@ const palette = computed(() =>
           :revealed="checked[question.id]"
           :bookmark="{ examId: exam.id, questionId: question.id }"
           @select="select"
-        />
+        >
+          <template #meta><SolvedStatus :exam-id="exam.id" :question-id="question.id" /></template>
+        </QuestionView>
       </div>
       <div v-else-if="practical" class="mt-6 rounded-xl border p-6">
         <PracticalView

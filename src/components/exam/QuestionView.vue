@@ -25,7 +25,7 @@ const props = defineProps<{
    * 기본은 정답이 공개된 뒤에만 — 시험 중 메모나 코멘트가 힌트가 되지 않게
    */
   alwaysExtras?: boolean
-  /** 북마크·복사 버튼을 부모가 카드 위쪽에 따로 둔다 (문제 본문을 가로로 넓게 쓰려고) */
+  /** 북마크·복사 버튼을 부모가 카드 위쪽에 따로 둔다 (부모 헤더에 다른 버튼과 함께 둘 때) */
   bookmarkOutside?: boolean
 }>()
 
@@ -78,13 +78,18 @@ function choiceClass(n: number) {
 
 <template>
   <div ref="root">
-    <div class="mb-4 flex gap-2 text-base leading-7 font-medium">
-      <span class="shrink-0 font-bold text-primary">{{ number }}.</span>
-      <div class="q-body min-w-0 flex-1" v-html="renderBlock(question.question)" />
-      <div v-if="!bookmarkOutside" class="-mt-1 -mr-2 flex shrink-0 self-start">
+    <!-- 출처 등 메타 정보 + 복사·북마크. 본문 옆이 아니라 위에 둬서 문제·표가 카드 너비를 다 쓴다 -->
+    <div v-if="!bookmarkOutside || $slots.meta" class="mb-4 flex items-start gap-2">
+      <div class="flex min-h-6 min-w-0 flex-1 flex-wrap items-center gap-2 text-xs"><slot name="meta" /></div>
+      <div v-if="!bookmarkOutside" class="-my-1.5 -mr-1.5 flex shrink-0">
         <CopyQuestionButton :question="question" :selected="selected" :revealed="revealed" />
         <BookmarkButton v-if="bookmark" :exam-id="bookmark.examId" :question-id="bookmark.questionId" />
       </div>
+    </div>
+
+    <div class="mb-4 flex gap-2 text-base leading-7 font-medium">
+      <span class="shrink-0 font-bold text-primary">{{ number }}.</span>
+      <div class="q-body min-w-0 flex-1" v-html="renderBlock(question.question)" />
     </div>
 
     <CodeBlock v-if="question.code" :code="question.code" class="mb-4" />

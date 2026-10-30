@@ -15,7 +15,7 @@ import { useCertStore } from '@/stores/cert'
  * 맞힌 문장은 다시 내지 않는다 (안 푼 문장 → 틀린 문장 순서, 다 맞히면 처음부터).
  * 맞히면 10점 (5연속마다 ×2, ×3 …), 틀리면 3초가 깎인다. 끝나면 틀린 문장을 정답과 함께 다시 본다
  */
-document.title = '60초 O/X · SQL 자격증'
+document.title = '60초 O/X · Pass SQLD/SQLP'
 const certStore = useCertStore()
 const activity = useActivityStore()
 const TIME_MS = 60_000

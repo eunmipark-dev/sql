@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 import { currentWeek, loadLeaderboard, XP_DAILY_MAX, XP_RULES, type RankingPeriod, type RankingRow } from '@/services/rankingRepository'
 import { useAuthStore } from '@/stores/auth'
 
-document.title = '랭킹 · SQL 자격증'
+document.title = '랭킹 · Pass SQLD/SQLP'
 const auth = useAuthStore()
 
 // 홈의 '전체 랭킹'에서 들어오면 ?period=all
